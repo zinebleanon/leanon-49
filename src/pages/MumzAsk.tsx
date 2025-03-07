@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { 
   Search, 
   HelpCircle, 
@@ -16,13 +17,18 @@ import {
   HeartPulse,
   GraduationCap,
   Users,
-  PartyPopper
+  PartyPopper,
+  User,
+  Clock,
+  ChevronRight,
+  CheckCircle
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -53,22 +59,85 @@ const MumzAsk = () => {
   
   const recentQuestions = [
     {
+      id: 1,
       question: "How do I manage morning sickness during the first trimester?",
+      detail: "I'm 8 weeks pregnant and struggling with severe morning sickness. I've tried ginger tea but it's not helping much. Are there any other natural remedies that worked for you?",
       askedBy: "Emma T.",
+      askedAt: "2 days ago",
       answers: 24,
-      category: "Pregnancy"
+      category: "Pregnancy",
+      answersData: [
+        {
+          id: 1,
+          text: "I found that eating small, frequent meals helped a lot with my morning sickness. Try keeping crackers by your bed and eat a few before getting up in the morning. Also, stay hydrated but sip water slowly throughout the day rather than drinking large amounts at once.",
+          answeredBy: "Dr. Sarah K.",
+          isExpert: true,
+          upvotes: 42,
+          time: "1 day ago"
+        },
+        {
+          id: 2,
+          text: "Acupressure wristbands (like the ones for motion sickness) were a lifesaver for me! You can find them at most pharmacies. Also, vitamin B6 supplements helped me - but check with your doctor before taking any supplements.",
+          answeredBy: "Michelle R.",
+          isExpert: false,
+          upvotes: 28,
+          time: "2 days ago"
+        }
+      ]
     },
     {
+      id: 2,
       question: "Can anyone recommend a good nursery in Dubai Marina?",
+      detail: "We're moving to Dubai Marina next month and need to find a good nursery for our 3-year-old. Preferably one with outdoor space and a good curriculum. Any recommendations would be appreciated!",
       askedBy: "Olivia M.",
+      askedAt: "3 days ago",
       answers: 18,
-      category: "Schools/Nursery"
+      category: "Schools/Nursery",
+      answersData: [
+        {
+          id: 1,
+          text: "We love Blossom Nursery in Dubai Marina. They have a great outdoor play area and follow the British EYFS curriculum. The staff are incredibly caring and professional. They also offer flexible timings which was really helpful for us.",
+          answeredBy: "Jessica W.",
+          isExpert: false,
+          upvotes: 15,
+          time: "2 days ago"
+        },
+        {
+          id: 2,
+          text: "Kids Harbor is another excellent option. They have a fantastic program and the teachers are all qualified with early childhood education degrees. My son has been going there for a year and we've been very happy with his progress.",
+          answeredBy: "Aisha K.",
+          isExpert: false,
+          upvotes: 12,
+          time: "1 day ago"
+        }
+      ]
     },
     {
+      id: 3,
       question: "Looking for postpartum recovery tips after C-section",
+      detail: "I had a C-section two weeks ago and I'm struggling with the recovery. Any tips from moms who've been through this? Particularly interested in how to manage pain and take care of the incision site.",
       askedBy: "Jessica K.",
+      askedAt: "1 week ago",
       answers: 32,
-      category: "Postpartum"
+      category: "Postpartum",
+      answersData: [
+        {
+          id: 1,
+          text: "Rest as much as possible and don't hesitate to ask for help with household chores and baby care. When getting up from bed, roll to your side first, then use your arms to push yourself up. Use a pillow to support your incision when coughing or laughing. And wear high-waisted underwear to avoid irritating the incision.",
+          answeredBy: "Midwife Rachel T.",
+          isExpert: true,
+          upvotes: 35,
+          time: "6 days ago"
+        },
+        {
+          id: 2,
+          text: "A postpartum belly band was so helpful for me - it gave support to my core and made moving around much more comfortable. Also, keep the incision clean and dry, and watch for any signs of infection (increased redness, swelling, or discharge).",
+          answeredBy: "Lina M.",
+          isExpert: false,
+          upvotes: 28,
+          time: "5 days ago"
+        }
+      ]
     }
   ];
 
@@ -81,6 +150,17 @@ const MumzAsk = () => {
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName === selectedCategory ? null : categoryName);
+  };
+
+  const toggleExpandQuestion = (id: number) => {
+    setExpandedQuestion(expandedQuestion === id ? null : id);
+  };
+
+  const handleUpvote = (questionId: number, answerId: number) => {
+    toast({
+      title: "Upvoted!",
+      description: "You found this answer helpful.",
+    });
   };
   
   return (
@@ -152,24 +232,121 @@ const MumzAsk = () => {
               <Button variant="ghost" className="rounded-full">View All</Button>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               {recentQuestions
                 .filter(item => !selectedCategory || item.category === selectedCategory)
-                .map((item, index) => (
-                <Card key={index} className="p-6 bg-white/50 backdrop-blur-sm border-white/20 hover:shadow-md transition-all">
+                .map((item) => (
+                <Card 
+                  key={item.id} 
+                  className={`p-6 bg-white/50 backdrop-blur-sm border-white/20 hover:shadow-md transition-all ${expandedQuestion === item.id ? 'md:col-span-2' : ''}`}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="px-3 py-1 bg-pink-500/10 text-pink-700 text-xs rounded-full">
+                    <Badge variant="outline" className="bg-pink-500/10 text-pink-700 border-pink-200">
                       {item.category}
-                    </span>
+                    </Badge>
+                    {expandedQuestion !== item.id && (
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground ml-auto">
+                        <MessageSquare className="h-3 w-3" />
+                        {item.answers} answers
+                      </span>
+                    )}
                   </div>
-                  <h3 className="text-xl font-medium mb-4">{item.question}</h3>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>Asked by {item.askedBy}</span>
-                    <span className="flex items-center gap-1">
-                      <MessageSquare className="h-4 w-4" />
-                      {item.answers} answers
-                    </span>
-                  </div>
+                  
+                  <h3 className="text-xl font-medium mb-3">{item.question}</h3>
+                  
+                  {expandedQuestion === item.id ? (
+                    <div className="space-y-6">
+                      <div className="bg-background/50 p-4 rounded-lg">
+                        <p className="text-sm text-muted-foreground mb-4">{item.detail}</p>
+                        <div className="flex items-center justify-between text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="bg-primary/10 rounded-full w-6 h-6 flex items-center justify-center">
+                              <User className="h-3 w-3 text-primary" />
+                            </div>
+                            <span>{item.askedBy}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            <span>{item.askedAt}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="h-4 w-4 text-primary" />
+                          <h4 className="font-medium">Answers ({item.answers})</h4>
+                        </div>
+                        
+                        {item.answersData.map((answer) => (
+                          <div key={answer.id} className="bg-white p-4 rounded-lg shadow-sm">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center">
+                                <User className="h-4 w-4 text-primary" />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium text-sm">{answer.answeredBy}</span>
+                                  {answer.isExpert && (
+                                    <Badge variant="outline" className="bg-blue-500/10 text-blue-700 border-blue-200 text-xs">
+                                      <CheckCircle className="h-3 w-3 mr-1" /> Expert
+                                    </Badge>
+                                  )}
+                                </div>
+                                <span className="text-xs text-muted-foreground">{answer.time}</span>
+                              </div>
+                            </div>
+                            
+                            <p className="text-sm mb-3">{answer.text}</p>
+                            
+                            <div className="flex justify-between items-center">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="text-xs flex items-center gap-1"
+                                onClick={() => handleUpvote(item.id, answer.id)}
+                              >
+                                <ThumbsUp className="h-3 w-3" />
+                                Helpful ({answer.upvotes})
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => toggleExpandQuestion(item.id)}
+                      >
+                        Show Less
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="bg-primary/10 rounded-full w-6 h-6 flex items-center justify-center">
+                            <User className="h-3 w-3 text-primary" />
+                          </div>
+                          <span>{item.askedBy}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          <span>{item.askedAt}</span>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        variant="outline" 
+                        className="w-full flex items-center justify-center gap-2"
+                        onClick={() => toggleExpandQuestion(item.id)}
+                      >
+                        Show Answers
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </>
+                  )}
                 </Card>
               ))}
             </div>
