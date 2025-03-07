@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Bookmark, ShoppingBag } from 'lucide-react';
+import { Users, HelpCircle, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -22,7 +22,6 @@ const Navbar = () => {
     { name: 'Mumz Ally', icon: <Users className="h-4 w-4" />, path: '/ally' },
     { name: 'Mumz Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Mumz Save', icon: <Bookmark className="h-4 w-4" />, path: '/save' },
-    { name: 'Mumz World', icon: <ShoppingBag className="h-4 w-4" />, path: '/world' },
   ];
   
   return (
