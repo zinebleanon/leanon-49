@@ -2,12 +2,13 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Bookmark } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Users, HelpCircle, Bookmark, Heart } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +18,18 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isMobileMenuOpen]);
   
   const navItems = [
     { name: 'Mumz Ally', icon: <Users className="h-4 w-4" />, path: '/ally' },
@@ -34,9 +47,10 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link 
           to="/" 
-          className="text-2xl font-medium tracking-tight animate-fade-in"
+          className="text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-2"
         >
-          MumzAllies
+          <Heart className="text-primary" size={24} fill="currentColor" />
+          <span>MumzAllies</span>
         </Link>
         
         <div className="hidden md:flex items-center space-x-8">
@@ -44,7 +58,12 @@ const Navbar = () => {
             <Link
               key={item.name}
               to={item.path}
-              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors flex items-center gap-2 animated-underline"
+              className={cn(
+                "text-sm font-medium flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-300",
+                location.pathname === item.path
+                  ? "bg-primary/10 text-primary"
+                  : "text-foreground/80 hover:text-foreground hover:bg-secondary"
+              )}
             >
               {item.icon}
               {item.name}
@@ -52,9 +71,9 @@ const Navbar = () => {
           ))}
           
           <Button
+            variant="warm"
             className={cn(
               "transition-all duration-300 rounded-full",
-              isScrolled ? "bg-primary text-primary-foreground" : "bg-white/90 text-foreground hover:bg-white"
             )}
           >
             Join Us
@@ -83,7 +102,12 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="text-lg font-medium py-2 flex items-center gap-3 animate-slide-up"
+                  className={cn(
+                    "text-lg font-medium py-2 flex items-center gap-3 animate-slide-up rounded-full px-4",
+                    location.pathname === item.path
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground/80"
+                  )}
                   style={{
                     animationDelay: `${index * 0.05}s`
                   }}
@@ -97,6 +121,7 @@ const Navbar = () => {
             
             <div className="mt-auto pb-10">
               <Button
+                variant="warm"
                 className="w-full py-6 rounded-full animate-slide-up"
                 style={{ animationDelay: '0.2s' }}
               >
