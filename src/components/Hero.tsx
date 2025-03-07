@@ -38,7 +38,7 @@ const Hero = () => {
       title: 'Mumz Ally', 
       description: 'Find your lifetime Allies in Motherhood.',
       icon: <Users className="h-6 w-6" />,
-      color: 'from-pink-100 to-pink-50',
+      color: 'from-orange-100 to-orange-50',
       path: '/ally'
     },
     { 
@@ -46,7 +46,7 @@ const Hero = () => {
       title: 'Mumz Ask', 
       description: 'Community of mumz supporting each other questions, doubt and needs genuinely without judgment. Join the community.',
       icon: <HelpCircle className="h-6 w-6" />,
-      color: 'from-rose-100 to-rose-50',
+      color: 'from-amber-100 to-amber-50',
       path: '/ask'
     },
     { 
@@ -54,7 +54,7 @@ const Hero = () => {
       title: 'Mumz Save', 
       description: 'Discover exclusive discount on your favorite brands. Items to sell and buy around Mumz World.',
       icon: <Bookmark className="h-6 w-6" />,
-      color: 'from-orange-100 to-orange-50',
+      color: 'from-yellow-100 to-yellow-50',
       path: '/save'
     }
   ];
@@ -65,17 +65,17 @@ const Hero = () => {
       className="relative min-h-screen flex items-center py-20 px-6 md:px-8 overflow-hidden"
     >
       <div 
-        className="absolute inset-0 bg-gradient-to-r from-pink-50/80 to-transparent z-0" 
+        className="absolute inset-0 bg-gradient-to-r from-orange-50/80 to-transparent z-0" 
         data-parallax="0.15"
       ></div>
       
       <div 
-        className="absolute top-1/4 right-0 w-96 h-96 rounded-full bg-pink-100/30 blur-3xl z-0" 
+        className="absolute top-1/4 right-0 w-96 h-96 rounded-full bg-orange-100/30 blur-3xl z-0" 
         data-parallax="0.2"
       ></div>
       
       <div 
-        className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-rose-100/20 blur-3xl z-0" 
+        className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-amber-100/20 blur-3xl z-0" 
         data-parallax="0.1"
       ></div>
       
@@ -124,7 +124,7 @@ const Hero = () => {
               className={cn(
                 "relative p-6 md:p-8 rounded-2xl bg-gradient-to-br",
                 feature.color,
-                "border border-pink-200/30 shadow-lg hover:shadow-xl transition-all group",
+                "border border-orange-200/30 shadow-lg hover:shadow-xl transition-all group",
                 textStyles,
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               )}

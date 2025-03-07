@@ -38,7 +38,7 @@ const ProfileCard = ({
 }: ProfileProps) => {
   return (
     <Card className="overflow-hidden hover:shadow-md transition-all">
-      <div className="bg-gradient-to-r from-primary/10 to-purple-400/10 p-4">
+      <div className="bg-gradient-to-r from-primary/10 to-amber-400/10 p-4">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
@@ -60,7 +60,7 @@ const ProfileCard = ({
         
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <BabyIcon className="h-4 w-4 text-purple-500" />
+            <BabyIcon className="h-4 w-4 text-amber-500" />
             <span className="text-sm">
               {kids.map((kid, i) => (
                 <span key={i}>
@@ -72,17 +72,17 @@ const ProfileCard = ({
           </div>
           
           <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-purple-500" />
+            <MapPin className="h-4 w-4 text-amber-500" />
             <span className="text-sm">{location}</span>
           </div>
           
           <div className="flex items-center gap-2">
-            <Flag className="h-4 w-4 text-purple-500" />
+            <Flag className="h-4 w-4 text-amber-500" />
             <span className="text-sm">{nationality}</span>
           </div>
           
           <div className="flex items-center gap-2">
-            <Briefcase className="h-4 w-4 text-purple-500" />
+            <Briefcase className="h-4 w-4 text-amber-500" />
             <span className="text-sm">{workStatus}</span>
           </div>
         </div>
