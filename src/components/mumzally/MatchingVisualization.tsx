@@ -34,15 +34,6 @@ const MatchingVisualization = () => {
     }
   }, [userHeartActive, jessicaHeartActive]);
   
-  const handleHeartClick = (mumId: number) => {
-    // Only handle hearts in the visualization area
-    if (mumId === 0) {
-      setUserHeartActive(!userHeartActive);
-    } else if (mumId === 2) {
-      setJessicaHeartActive(!jessicaHeartActive);
-    }
-  };
-  
   return (
     <section className="py-12 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -54,6 +45,7 @@ const MatchingVisualization = () => {
         </p>
         
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-center max-w-4xl mx-auto glass p-8 rounded-3xl">
+          {/* User Profile */}
           <div className="relative">
             <div className="flex items-center justify-center w-80 h-80 rounded-full bg-gradient-to-br from-primary/20 to-purple-300/20 border border-primary/10">
               <div className="relative w-64 h-64 bg-white rounded-full overflow-hidden shadow-lg">
@@ -66,35 +58,56 @@ const MatchingVisualization = () => {
                 </div>
               </div>
             </div>
-            {/* Heart moved outside the profile circle */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-8" onClick={() => handleHeartClick(0)}>
-              <div className={cn(
-                "transform transition-all duration-500",
-                (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
-              )}>
+          </div>
+          
+          {/* Heart in the middle */}
+          <div className="relative flex flex-col items-center">
+            <div className="flex justify-center items-center space-x-0 z-10">
+              {/* Left half of heart */}
+              <div 
+                className="cursor-pointer" 
+                onClick={() => setUserHeartActive(!userHeartActive)}
+              >
                 <Heart 
                   className={cn(
-                    "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
+                    "h-14 w-14 transition-all duration-300",
                     userHeartActive ? "text-red-500" : "text-gray-300",
-                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
+                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : ""
                   )}
-                  style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}
+                  style={{ 
+                    clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)',
+                    fillOpacity: userHeartActive ? '1' : '0'
+                  }}
+                />
+              </div>
+              
+              {/* Right half of heart */}
+              <div 
+                className="cursor-pointer" 
+                onClick={() => setJessicaHeartActive(!jessicaHeartActive)}
+              >
+                <Heart 
+                  className={cn(
+                    "h-14 w-14 transition-all duration-300",
+                    jessicaHeartActive ? "text-red-500" : "text-gray-300",
+                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : ""
+                  )}
+                  style={{ 
+                    clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)',
+                    fillOpacity: jessicaHeartActive ? '1' : '0'
+                  }}
                 />
               </div>
             </div>
+            
+            {(userHeartActive && jessicaHeartActive) && (
+              <div className="absolute top-16 text-center animate-fade-in">
+                <p className="text-primary font-medium mt-2">You Are MumzAllies!</p>
+              </div>
+            )}
           </div>
           
-          {(userHeartActive && jessicaHeartActive) ? (
-            <div className="relative transform transition-all duration-500 animate-pulse flex flex-col items-center">
-              <Heart className="h-14 w-14 text-red-500 fill-red-500" />
-              <p className="text-primary font-medium mt-2">You Are MumzAllies!</p>
-            </div>
-          ) : (
-            <div className="relative">
-              <div className="h-0.5 w-20 bg-dashed bg-primary/50 hidden lg:block"></div>
-            </div>
-          )}
-          
+          {/* Jessica Profile */}
           <div className="relative">
             <div className="flex items-center justify-center w-80 h-80 rounded-full bg-gradient-to-br from-primary/20 to-purple-300/20 border border-primary/10">
               <div className="relative w-64 h-64 bg-white rounded-full overflow-hidden shadow-lg">
@@ -105,22 +118,6 @@ const MatchingVisualization = () => {
                   <h3 className="text-xl font-semibold mb-1">Jessica</h3>
                   <p className="text-sm text-muted-foreground mb-3">29, Mom of one</p>
                 </div>
-              </div>
-            </div>
-            {/* Heart moved outside the profile circle */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-8" onClick={() => handleHeartClick(2)}>
-              <div className={cn(
-                "transform transition-all duration-500",
-                (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
-              )}>
-                <Heart 
-                  className={cn(
-                    "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
-                    jessicaHeartActive ? "text-red-500" : "text-gray-300",
-                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
-                  )}
-                  style={{ clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)' }}
-                />
               </div>
             </div>
           </div>
