@@ -60,7 +60,7 @@ const MatchingVisualization = () => {
             </div>
           </div>
           
-          {/* Heart in the middle - improved design with separate halves */}
+          {/* Heart in the middle - better heart shape */}
           <div className="relative flex flex-col items-center">
             <div className="flex flex-col items-center">
               <div className="relative flex items-center">
@@ -69,11 +69,11 @@ const MatchingVisualization = () => {
                   className="cursor-pointer transform hover:scale-105 transition-transform"
                   onClick={() => setUserHeartActive(!userHeartActive)}
                 >
-                  <svg width="32" height="55" viewBox="0 0 32 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="40" height="68" viewBox="0 0 40 68" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path 
-                      d="M32,16.5 Q32,9 25,4 Q18,0 12,7 Q6,14 0,25 Q16,42 32,52 Z" 
-                      fill={userHeartActive ? "#D946EF" : "#e2e8f0"} 
-                      stroke={userHeartActive ? "#D946EF" : "#94a3b8"}
+                      d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
+                      fill={userHeartActive ? "#ea384c" : "#e2e8f0"} 
+                      stroke={userHeartActive ? "#ea384c" : "#94a3b8"}
                       strokeWidth="1.5"
                     />
                   </svg>
@@ -84,11 +84,11 @@ const MatchingVisualization = () => {
                   className="cursor-pointer transform hover:scale-105 transition-transform"
                   onClick={() => setJessicaHeartActive(!jessicaHeartActive)}
                 >
-                  <svg width="32" height="55" viewBox="0 0 32 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="40" height="68" viewBox="0 0 40 68" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path 
-                      d="M0,16.5 Q0,9 7,4 Q14,0 20,7 Q26,14 32,25 Q16,42 0,52 Z" 
-                      fill={jessicaHeartActive ? "#8B5CF6" : "#e2e8f0"} 
-                      stroke={jessicaHeartActive ? "#8B5CF6" : "#94a3b8"}
+                      d="M0,20 C0,11 5,4 12,1 C19,-2 26,2 30,6 C34,10 38,16 40,22 C27,40 13,56 0,68 Z" 
+                      fill={jessicaHeartActive ? "#ea384c" : "#e2e8f0"} 
+                      stroke={jessicaHeartActive ? "#ea384c" : "#94a3b8"}
                       strokeWidth="1.5"
                     />
                   </svg>
