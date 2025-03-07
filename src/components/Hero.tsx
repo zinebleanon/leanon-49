@@ -38,7 +38,7 @@ const Hero = () => {
       title: 'Mumz Ally', 
       description: 'Connect with other moms for support, advice, and friendship.',
       icon: <Users className="h-6 w-6" />,
-      color: 'from-purple-500/20 to-purple-300/5',
+      color: 'from-orange-400/20 to-orange-300/5',
       path: '/ally'
     },
     { 
@@ -46,7 +46,7 @@ const Hero = () => {
       title: 'Mumz Ask', 
       description: 'Get answers to your parenting questions from experienced moms and experts.',
       icon: <HelpCircle className="h-6 w-6" />,
-      color: 'from-pink-500/20 to-pink-300/5',
+      color: 'from-amber-400/20 to-amber-300/5',
       path: '/ask'
     },
     { 
@@ -54,7 +54,7 @@ const Hero = () => {
       title: 'Mumz Save', 
       description: 'Discover exclusive deals and savings on products for you and your family.',
       icon: <Bookmark className="h-6 w-6" />,
-      color: 'from-blue-500/20 to-blue-300/5',
+      color: 'from-yellow-400/20 to-yellow-300/5',
       path: '/save'
     }
   ];
@@ -88,7 +88,7 @@ const Hero = () => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            Welcome to Mumz
+            Welcome to MumzAllies
           </p>
           
           <h1 
@@ -99,7 +99,7 @@ const Hero = () => {
             )}
             style={{ transitionDelay: '100ms' }}
           >
-            Supporting <span className="text-gradient">mothers</span> at every stage
+            Motherhood together feels <span className="text-gradient">less alone</span>
           </h1>
           
           <p 
@@ -110,8 +110,7 @@ const Hero = () => {
             )}
             style={{ transitionDelay: '200ms' }}
           >
-            Join our community of mothers who support, share, and save together.
-            Mumz is your all-in-one platform for motherhood.
+            Mumz need Mumz. Join us.
           </p>
         </div>
         

@@ -36,7 +36,7 @@ const Navbar = () => {
           to="/" 
           className="text-2xl font-medium tracking-tight animate-fade-in"
         >
-          Mumz
+          MumzAllies
         </Link>
         
         <div className="hidden md:flex items-center space-x-8">
@@ -57,7 +57,7 @@ const Navbar = () => {
               isScrolled ? "bg-primary text-primary-foreground" : "bg-white/90 text-foreground hover:bg-white"
             )}
           >
-            Join Mumz
+            Join Us
           </Button>
         </div>
         
@@ -100,7 +100,7 @@ const Navbar = () => {
                 className="w-full py-6 rounded-full animate-slide-up"
                 style={{ animationDelay: '0.2s' }}
               >
-                Join Mumz
+                Join Us
               </Button>
             </div>
           </nav>

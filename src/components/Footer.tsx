@@ -10,9 +10,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div>
-            <div className="text-2xl font-medium tracking-tight mb-4">Mumz</div>
+            <div className="text-2xl font-medium tracking-tight mb-4">MumzAllies</div>
             <p className="text-muted-foreground mb-4 max-w-xs">
-              Supporting mothers at every stage with community, answers, and savings.
+              Motherhood together feels less alone. Mumz need Mumz.
             </p>
           </div>
           
@@ -67,7 +67,7 @@ const Footer = () => {
         
         <div className="flex flex-col md:flex-row md:items-center md:justify-between pt-8 border-t border-border/40">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} Mumz. All rights reserved.
+            © {currentYear} MumzAllies. All rights reserved.
           </p>
           
           <div className="flex space-x-6 mt-4 md:mt-0">
