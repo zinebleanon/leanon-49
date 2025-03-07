@@ -38,10 +38,10 @@ const MatchingVisualization = () => {
     <section className="py-12 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-semibold text-center mb-4">
-          How Ally Matching Works
+          How to Find Your MumzAllies
         </h2>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-          Find your perfect Ally by connecting with those who share similar interests, parenting styles, and life stages in the UAE.
+          Connect with other moms who share similar interests, parenting styles, and life stages in the UAE to build your support network.
         </p>
         
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-center max-w-4xl mx-auto glass p-8 rounded-3xl">
