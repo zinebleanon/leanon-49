@@ -1,10 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { toast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
 import { 
   Bookmark, 
   Tag, 
@@ -13,12 +14,15 @@ import {
   PercentCircle,
   Star,
   DollarSign,
-  Package
+  Package,
+  Check,
+  CreditCard
 } from 'lucide-react';
 
 const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('deals'); // 'deals' or 'marketplace'
+  const [email, setEmail] = useState('');
   
   useEffect(() => {
     // Simulate loading state for smooth intro
@@ -28,6 +32,27 @@ const MumzSave = () => {
     
     return () => clearTimeout(timer);
   }, []);
+  
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email to subscribe",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // This would connect to a payment processor in a real implementation
+    toast({
+      title: "Subscription Initialized",
+      description: "We'll redirect you to payment shortly",
+    });
+    
+    // Reset email field
+    setEmail('');
+  };
   
   if (isLoading) {
     return (
@@ -151,6 +176,98 @@ const MumzSave = () => {
                 </div>
                 <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
                 <div className="absolute -top-10 -left-10 w-32 h-32 bg-blue-500/5 rounded-full blur-xl"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Subscription Section */}
+        <section className="py-16 px-6 md:px-8 bg-primary/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <Badge className="mb-2" variant="outline">Premium Access</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Unlock Exclusive Benefits</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Subscribe to Mumz Save for just 20 AED per month and get access to premium deals, early notifications, and special marketplace privileges.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <Card className="p-8 border-2 border-primary/20 bg-white/50 backdrop-blur-sm">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-2xl font-semibold">Premium Membership</h3>
+                  <Badge variant="default" className="text-lg py-1 px-3">20 AED/month</Badge>
+                </div>
+                
+                <ul className="space-y-4 mb-6">
+                  <li className="flex items-center gap-3">
+                    <Check className="h-5 w-5 text-green-500" />
+                    <span>Exclusive premium deals (up to 50% off)</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="h-5 w-5 text-green-500" />
+                    <span>Early access to limited-time offers</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="h-5 w-5 text-green-500" />
+                    <span>Featured marketplace listings</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="h-5 w-5 text-green-500" />
+                    <span>Members-only events and giveaways</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="h-5 w-5 text-green-500" />
+                    <span>Direct messaging with premium sellers</span>
+                  </li>
+                </ul>
+                
+                <Button className="w-full" size="lg">
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Subscribe Now
+                </Button>
+              </Card>
+              
+              <div className="space-y-6">
+                <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 border border-primary/10">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                      <Star className="h-6 w-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-medium">Premium Deals</h4>
+                      <p className="text-muted-foreground">Exclusive discounts up to 50% off retail prices</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 border border-primary/10">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
+                      <Tag className="h-6 w-6 text-orange-500" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-medium">Featured Listings</h4>
+                      <p className="text-muted-foreground">Get your items seen first in the marketplace</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <form onSubmit={handleSubscribe} className="bg-white/50 backdrop-blur-sm rounded-lg p-6 border border-primary/10">
+                  <h4 className="text-lg font-medium mb-4">Get Started Today</h4>
+                  <div className="flex gap-3">
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button type="submit">
+                      Subscribe
+                    </Button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
