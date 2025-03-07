@@ -1,6 +1,6 @@
 
 import { cn } from '@/lib/utils';
-import { Users, HelpCircle, Bookmark, ShoppingBag } from 'lucide-react';
+import { Users, HelpCircle, Bookmark } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="py-12 px-6 md:px-8 border-t border-border/40">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-5 gap-8 mb-12">
+        <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="text-2xl font-medium tracking-tight mb-4">MumzAllies</div>
             <p className="text-muted-foreground mb-4 max-w-xs">
@@ -54,23 +54,7 @@ const Footer = () => {
               Mumz Save
             </h3>
             <ul className="space-y-3">
-              {['Deals', 'Exclusive Offers', 'Partner Brands', 'Gift Cards', 'Rewards'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors animated-underline">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-medium mb-4 flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4" />
-              Mumz World
-            </h3>
-            <ul className="space-y-3">
-              {['Sell Items', 'Buy Items', 'Marketplace', 'Popular Categories', 'Safety Tips'].map((item) => (
+              {['Deals', 'Exclusive Offers', 'Partner Brands', 'Marketplace', 'Mumz World'].map((item) => (
                 <li key={item}>
                   <a href="#" className="text-muted-foreground hover:text-foreground transition-colors animated-underline">
                     {item}

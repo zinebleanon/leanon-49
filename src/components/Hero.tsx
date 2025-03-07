@@ -1,8 +1,7 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Users, HelpCircle, Bookmark, ShoppingBag } from 'lucide-react';
+import { ArrowRight, Users, HelpCircle, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
@@ -52,18 +51,10 @@ const Hero = () => {
     { 
       id: 'save',
       title: 'Mumz Save', 
-      description: 'Discover exclusive discount on your favorite brands.',
+      description: 'Discover exclusive discount on your favorite brands. Items to sell and buy around Mumz World.',
       icon: <Bookmark className="h-6 w-6" />,
       color: 'from-yellow-400/20 to-yellow-300/5',
       path: '/save'
-    },
-    { 
-      id: 'world',
-      title: 'Mumz World', 
-      description: 'Items to sell and buy.',
-      icon: <ShoppingBag className="h-6 w-6" />,
-      color: 'from-orange-300/20 to-orange-200/5',
-      path: '/world'
     }
   ];
   
@@ -122,7 +113,7 @@ const Hero = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {features.map((feature, index) => (
             <div 
               key={feature.id}
