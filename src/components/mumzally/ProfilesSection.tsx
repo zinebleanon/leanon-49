@@ -1,5 +1,6 @@
 
 import ProfileCard, { Kid } from './ProfileCard';
+import { toast } from "@/hooks/use-toast";
 
 interface MumProfile {
   id: number;
@@ -20,6 +21,15 @@ interface ProfilesSectionProps {
 }
 
 const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
+  const handleHeartClick = (id: number) => {
+    toast({
+      title: "Connection Request Sent",
+      description: "You've sent a connection request to become Allies!",
+    });
+    
+    onHeartClick(id);
+  };
+  
   return (
     <section className="py-12 px-6 md:px-8 bg-secondary/20">
       <div className="max-w-7xl mx-auto">
@@ -32,7 +42,7 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
             <ProfileCard 
               key={profile.id}
               {...profile}
-              onHeartClick={onHeartClick}
+              onHeartClick={handleHeartClick}
             />
           ))}
         </div>

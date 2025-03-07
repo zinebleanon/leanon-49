@@ -5,6 +5,7 @@ import { Heart, UserCircle, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { toast } from "@/hooks/use-toast";
 
 const MatchingVisualization = () => {
   const [matchAnimation, setMatchAnimation] = useState(false);
@@ -16,6 +17,12 @@ const MatchingVisualization = () => {
   useEffect(() => {
     if (userHeartActive && jessicaHeartActive) {
       setMatchAnimation(true);
+      
+      // Show Ally match notification
+      toast({
+        title: "You Are MumzAllies!",
+        description: "You've made a new connection with Jessica",
+      });
       
       // Simulate match and open chat after animation
       setTimeout(() => {
@@ -43,7 +50,7 @@ const MatchingVisualization = () => {
           How Ally Matching Works
         </h2>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-          Find your perfect Mumz Ally by connecting with those who share similar interests, parenting styles, and life stages.
+          Find your perfect Ally by connecting with those who share similar interests, parenting styles, and life stages.
         </p>
         
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-center max-w-4xl mx-auto glass p-8 rounded-3xl">
@@ -56,29 +63,31 @@ const MatchingVisualization = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-1">You</h3>
                   <p className="text-sm text-muted-foreground mb-3">35, Mom of two</p>
-                  <div className="absolute bottom-6 left-6" onClick={() => handleHeartClick(0)}>
-                    <div className={cn(
-                      "transform transition-all duration-500",
-                      (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
-                    )}>
-                      <Heart 
-                        className={cn(
-                          "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
-                          userHeartActive ? "text-red-500" : "text-gray-300",
-                          (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
-                        )}
-                        style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}
-                      />
-                    </div>
-                  </div>
                 </div>
+              </div>
+            </div>
+            {/* Heart moved outside the profile circle */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-8" onClick={() => handleHeartClick(0)}>
+              <div className={cn(
+                "transform transition-all duration-500",
+                (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
+              )}>
+                <Heart 
+                  className={cn(
+                    "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
+                    userHeartActive ? "text-red-500" : "text-gray-300",
+                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
+                  )}
+                  style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}
+                />
               </div>
             </div>
           </div>
           
           {(userHeartActive && jessicaHeartActive) ? (
-            <div className="relative transform transition-all duration-500 animate-pulse">
+            <div className="relative transform transition-all duration-500 animate-pulse flex flex-col items-center">
               <Heart className="h-14 w-14 text-red-500 fill-red-500" />
+              <p className="text-primary font-medium mt-2">You Are MumzAllies!</p>
             </div>
           ) : (
             <div className="relative">
@@ -95,22 +104,23 @@ const MatchingVisualization = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-1">Jessica</h3>
                   <p className="text-sm text-muted-foreground mb-3">29, Mom of one</p>
-                  <div className="absolute bottom-6 right-6" onClick={() => handleHeartClick(2)}>
-                    <div className={cn(
-                      "transform transition-all duration-500",
-                      (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
-                    )}>
-                      <Heart 
-                        className={cn(
-                          "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
-                          jessicaHeartActive ? "text-red-500" : "text-gray-300",
-                          (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
-                        )}
-                        style={{ clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)' }}
-                      />
-                    </div>
-                  </div>
                 </div>
+              </div>
+            </div>
+            {/* Heart moved outside the profile circle */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-8" onClick={() => handleHeartClick(2)}>
+              <div className={cn(
+                "transform transition-all duration-500",
+                (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
+              )}>
+                <Heart 
+                  className={cn(
+                    "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
+                    jessicaHeartActive ? "text-red-500" : "text-gray-300",
+                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
+                  )}
+                  style={{ clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)' }}
+                />
               </div>
             </div>
           </div>
@@ -118,7 +128,7 @@ const MatchingVisualization = () => {
         
         {/* Chat visualization that appears after matching */}
         {chatOpen && (
-          <div className="mt-8 max-w-xl mx-auto glass p-6 rounded-2xl animate-fade-in">
+          <div className="mt-16 max-w-xl mx-auto glass p-6 rounded-2xl animate-fade-in">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
@@ -127,7 +137,7 @@ const MatchingVisualization = () => {
                 <h3 className="font-medium">Chat with Jessica</h3>
               </div>
               <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-200">
-                New Match
+                New Ally
               </Badge>
             </div>
             <div className="space-y-4 mb-4">
