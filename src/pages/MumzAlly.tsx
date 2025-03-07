@@ -14,6 +14,8 @@ const MumzAlly = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [matchAnimation, setMatchAnimation] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
+  const [userHeartActive, setUserHeartActive] = useState(false);
+  const [jessicaHeartActive, setJessicaHeartActive] = useState(false);
   
   useEffect(() => {
     // Simulate loading state for smooth intro
@@ -24,13 +26,28 @@ const MumzAlly = () => {
     return () => clearTimeout(timer);
   }, []);
   
+  // Check if both hearts are active to trigger the match
+  useEffect(() => {
+    if (userHeartActive && jessicaHeartActive) {
+      setMatchAnimation(true);
+      
+      // Simulate match and open chat after animation
+      setTimeout(() => {
+        setChatOpen(true);
+      }, 1500);
+    } else {
+      setMatchAnimation(false);
+      setChatOpen(false);
+    }
+  }, [userHeartActive, jessicaHeartActive]);
+  
   const handleHeartClick = (mumId: number) => {
-    setMatchAnimation(true);
-    
-    // Simulate match and open chat after animation
-    setTimeout(() => {
-      setChatOpen(true);
-    }, 1500);
+    // Only handle hearts in the visualization area
+    if (mumId === 0) {
+      setUserHeartActive(!userHeartActive);
+    } else if (mumId === 2) {
+      setJessicaHeartActive(!jessicaHeartActive);
+    }
   };
   
   const filters = [
@@ -118,8 +135,12 @@ const MumzAlly = () => {
               
               <div className="relative">
                 <div className="aspect-square max-w-md mx-auto rounded-3xl bg-gradient-to-br from-purple-500/20 to-purple-300/5 p-1">
-                  <div className="h-full w-full rounded-3xl bg-white/90 backdrop-blur-sm flex items-center justify-center p-8">
-                    <Users className="h-32 w-32 text-purple-500/70" />
+                  <div className="h-full w-full rounded-3xl bg-white/90 backdrop-blur-sm flex items-center justify-center p-8 overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1591727826491-c30be2c4fd31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" 
+                      alt="Two moms with their kids at a park" 
+                      className="object-cover w-full h-full rounded-2xl"
+                    />
                   </div>
                 </div>
                 <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-purple-500/10 rounded-full blur-xl"></div>
@@ -187,14 +208,18 @@ const MumzAlly = () => {
                       </div>
                       <h3 className="text-xl font-semibold mb-1">You</h3>
                       <p className="text-sm text-muted-foreground mb-3">35, Mom of two</p>
-                      <div className="absolute bottom-6 right-6" onClick={() => handleHeartClick(2)}>
+                      <div className="absolute bottom-6 left-6" onClick={() => handleHeartClick(0)}>
                         <div className={cn(
                           "transform transition-all duration-500",
-                          matchAnimation ? "scale-110" : ""
+                          (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
                         )}>
                           <Heart 
-                            className="h-12 w-12 text-red-500 fill-red-500 cursor-pointer hover:scale-110 transition-transform" 
-                            style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
+                            className={cn(
+                              "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
+                              userHeartActive ? "text-red-500" : "text-gray-300",
+                              (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
+                            )}
+                            style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}
                           />
                         </div>
                       </div>
@@ -203,7 +228,7 @@ const MumzAlly = () => {
                 </div>
               </div>
               
-              {matchAnimation ? (
+              {(userHeartActive && jessicaHeartActive) ? (
                 <div className="relative transform transition-all duration-500 animate-pulse">
                   <Heart className="h-14 w-14 text-red-500 fill-red-500" />
                 </div>
@@ -222,14 +247,18 @@ const MumzAlly = () => {
                       </div>
                       <h3 className="text-xl font-semibold mb-1">Jessica</h3>
                       <p className="text-sm text-muted-foreground mb-3">29, Mom of one</p>
-                      <div className="absolute bottom-6 left-6">
+                      <div className="absolute bottom-6 right-6" onClick={() => handleHeartClick(2)}>
                         <div className={cn(
                           "transform transition-all duration-500",
-                          matchAnimation ? "scale-110" : ""
+                          (userHeartActive && jessicaHeartActive) ? "scale-110" : ""
                         )}>
                           <Heart 
-                            className="h-12 w-12 text-red-500 fill-red-500 cursor-pointer hover:scale-110 transition-transform" 
-                            style={{ clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)' }}
+                            className={cn(
+                              "h-12 w-12 cursor-pointer hover:scale-110 transition-transform",
+                              jessicaHeartActive ? "text-red-500" : "text-gray-300",
+                              (userHeartActive && jessicaHeartActive) ? "fill-red-500" : "fill-transparent"
+                            )}
+                            style={{ clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)' }}
                           />
                         </div>
                       </div>
