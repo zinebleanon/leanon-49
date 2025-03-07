@@ -41,7 +41,7 @@ const MatchingVisualization = () => {
           How Ally Matching Works
         </h2>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-          Find your perfect Ally by connecting with those who share similar interests, parenting styles, and life stages.
+          Find your perfect Ally by connecting with those who share similar interests, parenting styles, and life stages in the UAE.
         </p>
         
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-center max-w-4xl mx-auto glass p-8 rounded-3xl">
@@ -54,57 +54,38 @@ const MatchingVisualization = () => {
                     <UserCircle className="h-12 w-12 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-1">You</h3>
-                  <p className="text-sm text-muted-foreground mb-3">35, Mom of two</p>
+                  <p className="text-sm text-muted-foreground mb-3">35, Mom of two in Dubai</p>
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Heart in the middle */}
+          {/* Heart in the middle - now as one connected unit */}
           <div className="relative flex flex-col items-center">
-            <div className="flex justify-center items-center space-x-0 z-10">
-              {/* Left half of heart */}
-              <div 
-                className="cursor-pointer" 
-                onClick={() => setUserHeartActive(!userHeartActive)}
-              >
+            <div className="flex flex-col items-center">
+              <div className="flex justify-center items-center">
                 <Heart 
                   className={cn(
-                    "h-14 w-14 transition-all duration-300",
-                    userHeartActive ? "text-red-500" : "text-gray-300",
-                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : ""
+                    "h-14 w-14 transition-all duration-300 cursor-pointer",
+                    (userHeartActive && jessicaHeartActive) ? "text-red-500 fill-red-500" : "text-gray-300",
                   )}
-                  style={{ 
-                    clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)',
-                    fillOpacity: userHeartActive ? '1' : '0'
+                  onClick={() => {
+                    if (!userHeartActive) {
+                      setUserHeartActive(true);
+                    } else if (!jessicaHeartActive) {
+                      setJessicaHeartActive(true);
+                    } else {
+                      setUserHeartActive(false);
+                      setJessicaHeartActive(false);
+                    }
                   }}
                 />
               </div>
               
-              {/* Right half of heart */}
-              <div 
-                className="cursor-pointer" 
-                onClick={() => setJessicaHeartActive(!jessicaHeartActive)}
-              >
-                <Heart 
-                  className={cn(
-                    "h-14 w-14 transition-all duration-300",
-                    jessicaHeartActive ? "text-red-500" : "text-gray-300",
-                    (userHeartActive && jessicaHeartActive) ? "fill-red-500" : ""
-                  )}
-                  style={{ 
-                    clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)',
-                    fillOpacity: jessicaHeartActive ? '1' : '0'
-                  }}
-                />
-              </div>
+              {(userHeartActive && jessicaHeartActive) && (
+                <p className="text-primary font-medium mt-2 whitespace-nowrap">You Are MumzAllies!</p>
+              )}
             </div>
-            
-            {(userHeartActive && jessicaHeartActive) && (
-              <div className="absolute top-16 text-center animate-fade-in">
-                <p className="text-primary font-medium mt-2">You Are MumzAllies!</p>
-              </div>
-            )}
           </div>
           
           {/* Jessica Profile */}
@@ -116,7 +97,7 @@ const MatchingVisualization = () => {
                     <UserCircle className="h-12 w-12 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-1">Jessica</h3>
-                  <p className="text-sm text-muted-foreground mb-3">29, Mom of one</p>
+                  <p className="text-sm text-muted-foreground mb-3">29, Mom of one in Abu Dhabi</p>
                 </div>
               </div>
             </div>
@@ -140,7 +121,7 @@ const MatchingVisualization = () => {
             <div className="space-y-4 mb-4">
               <div className="flex justify-start">
                 <div className="bg-secondary/50 rounded-2xl rounded-tl-sm p-3 max-w-[80%]">
-                  <p className="text-sm">Hi! I noticed we both have young kids and live nearby. Would you be interested in a playdate at Central Park this weekend?</p>
+                  <p className="text-sm">Hi! I noticed we both have young kids and live in the UAE. Would you be interested in a playdate at Dubai Mall this weekend?</p>
                 </div>
               </div>
             </div>
