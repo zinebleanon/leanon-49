@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Users, HelpCircle, Bookmark } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,6 +32,33 @@ const Hero = () => {
   
   const textStyles = "transition-all duration-700 ease-smooth";
   
+  const features = [
+    { 
+      id: 'ally',
+      title: 'Mumz Ally', 
+      description: 'Connect with other moms for support, advice, and friendship.',
+      icon: <Users className="h-6 w-6" />,
+      color: 'from-purple-500/20 to-purple-300/5',
+      path: '/ally'
+    },
+    { 
+      id: 'ask',
+      title: 'Mumz Ask', 
+      description: 'Get answers to your parenting questions from experienced moms and experts.',
+      icon: <HelpCircle className="h-6 w-6" />,
+      color: 'from-pink-500/20 to-pink-300/5',
+      path: '/ask'
+    },
+    { 
+      id: 'save',
+      title: 'Mumz Save', 
+      description: 'Discover exclusive deals and savings on products for you and your family.',
+      icon: <Bookmark className="h-6 w-6" />,
+      color: 'from-blue-500/20 to-blue-300/5',
+      path: '/save'
+    }
+  ];
+  
   return (
     <section 
       ref={sectionRef}
@@ -51,16 +79,16 @@ const Hero = () => {
         data-parallax="0.1"
       ></div>
       
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-8 items-center z-10">
-        <div className="max-w-2xl">
+      <div className="max-w-7xl mx-auto w-full z-10">
+        <div className="text-center mb-16">
           <p 
             className={cn(
-              "text-sm md:text-base font-medium mb-4 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 w-fit",
+              "text-sm md:text-base font-medium mb-4 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 mx-auto w-fit",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            Introducing Nova
+            Welcome to Mumz
           </p>
           
           <h1 
@@ -71,55 +99,54 @@ const Hero = () => {
             )}
             style={{ transitionDelay: '100ms' }}
           >
-            Simplicity is the <span className="text-gradient">ultimate sophistication</span>
+            Supporting <span className="text-gradient">mothers</span> at every stage
           </h1>
           
           <p 
             className={cn(
-              "text-lg md:text-xl text-muted-foreground mb-8 max-w-lg",
+              "text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
             style={{ transitionDelay: '200ms' }}
           >
-            Discover a new standard in design, where every detail has been meticulously refined to create an experience that feels intuitive and exceptional.
+            Join our community of mothers who support, share, and save together.
+            Mumz is your all-in-one platform for motherhood.
           </p>
-          
-          <div 
-            className={cn(
-              "flex flex-col sm:flex-row gap-4",
-              textStyles,
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            )}
-            style={{ transitionDelay: '300ms' }}
-          >
-            <Button size="lg" className="rounded-full px-8 py-6">
-              Explore Products
-            </Button>
-            <Button variant="outline" size="lg" className="rounded-full px-8 py-6 group">
-              Learn More
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </div>
         </div>
         
-        <div 
-          className={cn(
-            "relative",
-            textStyles,
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          )}
-          style={{ transitionDelay: '400ms' }}
-        >
-          <div className="aspect-square max-w-md mx-auto relative">
-            <div className="w-full h-full rounded-3xl bg-gradient-to-br from-secondary/80 to-secondary/20 shadow-xl animate-float overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-2 rounded-2xl bg-white/80 backdrop-blur-sm overflow-hidden flex items-center justify-center">
-                <div className="w-2/3 h-2/3 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 shadow-inner"></div>
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          {features.map((feature, index) => (
+            <div 
+              key={feature.id}
+              className={cn(
+                "relative p-6 md:p-8 rounded-2xl bg-gradient-to-br",
+                feature.color,
+                "border border-white/10 shadow-lg hover:shadow-xl transition-all group",
+                textStyles,
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              )}
+              style={{ transitionDelay: `${300 + index * 100}ms` }}
+            >
+              <div className="flex flex-col h-full">
+                <div className="bg-white/10 rounded-full p-3 w-fit mb-4">
+                  {feature.icon}
+                </div>
+                
+                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                
+                <p className="text-muted-foreground mb-6">{feature.description}</p>
+                
+                <Link 
+                  to={feature.path}
+                  className="mt-auto group inline-flex items-center text-primary font-medium"
+                >
+                  Explore
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </div>
             </div>
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
-            <div className="absolute -top-10 -left-10 w-32 h-32 bg-primary/5 rounded-full blur-xl"></div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
