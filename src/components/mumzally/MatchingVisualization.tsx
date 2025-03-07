@@ -60,26 +60,39 @@ const MatchingVisualization = () => {
             </div>
           </div>
           
-          {/* Heart in the middle - now as one connected unit */}
+          {/* Heart in the middle - now with separate halves */}
           <div className="relative flex flex-col items-center">
             <div className="flex flex-col items-center">
-              <div className="flex justify-center items-center">
-                <Heart 
-                  className={cn(
-                    "h-14 w-14 transition-all duration-300 cursor-pointer",
-                    (userHeartActive && jessicaHeartActive) ? "text-red-500 fill-red-500" : "text-gray-300",
-                  )}
-                  onClick={() => {
-                    if (!userHeartActive) {
-                      setUserHeartActive(true);
-                    } else if (!jessicaHeartActive) {
-                      setJessicaHeartActive(true);
-                    } else {
-                      setUserHeartActive(false);
-                      setJessicaHeartActive(false);
-                    }
-                  }}
-                />
+              <div className="relative flex justify-center items-center">
+                {/* Left half of heart - your side */}
+                <div 
+                  className="cursor-pointer"
+                  onClick={() => setUserHeartActive(!userHeartActive)}
+                >
+                  <svg width="30" height="50" viewBox="0 0 30 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path 
+                      d="M30,16.5 Q30,10 24,5 Q18,0 12,7 Q6,14 0,25 Q15,40 30,50 Z" 
+                      fill={userHeartActive ? "#ef4444" : "#e2e8f0"} 
+                      stroke={userHeartActive ? "#ef4444" : "#94a3b8"}
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </div>
+                
+                {/* Right half of heart - Jessica's side */}
+                <div 
+                  className="cursor-pointer"
+                  onClick={() => setJessicaHeartActive(!jessicaHeartActive)}
+                >
+                  <svg width="30" height="50" viewBox="0 0 30 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path 
+                      d="M0,16.5 Q0,10 6,5 Q12,0 18,7 Q24,14 30,25 Q15,40 0,50 Z" 
+                      fill={jessicaHeartActive ? "#ef4444" : "#e2e8f0"} 
+                      stroke={jessicaHeartActive ? "#ef4444" : "#94a3b8"}
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </div>
               </div>
               
               {(userHeartActive && jessicaHeartActive) && (
