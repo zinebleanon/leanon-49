@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Users, HelpCircle, Bookmark } from 'lucide-react';
+import { ArrowRight, Users, HelpCircle, Bookmark, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
@@ -36,7 +36,7 @@ const Hero = () => {
     { 
       id: 'ally',
       title: 'Mumz Ally', 
-      description: 'Connect with other moms for support, advice, and friendship.',
+      description: 'Find your lifetime Allies in Motherhood.',
       icon: <Users className="h-6 w-6" />,
       color: 'from-orange-400/20 to-orange-300/5',
       path: '/ally'
@@ -44,7 +44,7 @@ const Hero = () => {
     { 
       id: 'ask',
       title: 'Mumz Ask', 
-      description: 'Get answers to your parenting questions from experienced moms and experts.',
+      description: 'Community of mumz supporting each other questions, doubt and needs genuinely without judgment. Join the community.',
       icon: <HelpCircle className="h-6 w-6" />,
       color: 'from-amber-400/20 to-amber-300/5',
       path: '/ask'
@@ -52,10 +52,18 @@ const Hero = () => {
     { 
       id: 'save',
       title: 'Mumz Save', 
-      description: 'Discover exclusive deals and savings on products for you and your family.',
+      description: 'Discover exclusive discount on your favorite brands.',
       icon: <Bookmark className="h-6 w-6" />,
       color: 'from-yellow-400/20 to-yellow-300/5',
       path: '/save'
+    },
+    { 
+      id: 'world',
+      title: 'Mumz World', 
+      description: 'Items to sell and buy.',
+      icon: <ShoppingBag className="h-6 w-6" />,
+      color: 'from-orange-300/20 to-orange-200/5',
+      path: '/world'
     }
   ];
   
@@ -114,7 +122,7 @@ const Hero = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {features.map((feature, index) => (
             <div 
               key={feature.id}
