@@ -112,7 +112,7 @@ const MumzSave = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                  <span className="text-gradient">Mumz Save</span> & Mumz World
+                  <span className="text-gradient">Mumz Save, Sell & Buy</span>
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8">
                   Discover exclusive deals on top brands for your family and connect with other moms to buy and sell items. 
