@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -32,7 +31,6 @@ const MumzAsk = () => {
   const { toast } = useToast();
   
   useEffect(() => {
-    // Simulate loading state for smooth intro
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -176,8 +174,7 @@ const MumzAsk = () => {
                 Get Answers with <span className="text-gradient">Mumz Ask</span>
               </h1>
               <p className="text-lg text-muted-foreground">
-                Ask questions, get advice, and learn from experienced moms and parenting experts.
-                No question is too big or small.
+                Ask questions, get advice, and learn from experienced moms.
               </p>
             </div>
             
