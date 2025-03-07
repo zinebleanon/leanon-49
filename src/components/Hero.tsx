@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -80,23 +81,12 @@ const Hero = () => {
       
       <div className="max-w-7xl mx-auto w-full z-10">
         <div className="text-center mb-16">
-          <p 
-            className={cn(
-              "text-sm md:text-base font-medium mb-4 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 mx-auto w-fit",
-              textStyles,
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            )}
-          >
-            Welcome to MumzAllies
-          </p>
-          
           <h1 
             className={cn(
               "text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight md:leading-tight tracking-tight mb-6",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
-            style={{ transitionDelay: '100ms' }}
           >
             Motherhood together feels <span className="text-gradient">less alone</span>
           </h1>
