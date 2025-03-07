@@ -10,7 +10,13 @@ import {
   MessageSquare, 
   ThumbsUp,
   UserCheck,
-  Award
+  Award,
+  Baby,
+  Heart,
+  HeartPulse,
+  GraduationCap,
+  Users,
+  PartyPopper
 } from 'lucide-react';
 
 const MumzAsk = () => {
@@ -34,28 +40,32 @@ const MumzAsk = () => {
   }
   
   const questionCategories = [
-    "Newborn Care", "Sleep", "Feeding", "Health", "Development", 
-    "Behavior", "Education", "Activities", "Products", "Self-Care"
+    { name: "Pregnancy", icon: <Baby className="h-4 w-4 mr-1" /> },
+    { name: "Postpartum", icon: <Heart className="h-4 w-4 mr-1" /> },
+    { name: "Health", icon: <HeartPulse className="h-4 w-4 mr-1" /> },
+    { name: "Schools/Nursery", icon: <GraduationCap className="h-4 w-4 mr-1" /> },
+    { name: "Nannys", icon: <Users className="h-4 w-4 mr-1" /> },
+    { name: "Entertainment & Birthdays", icon: <PartyPopper className="h-4 w-4 mr-1" /> }
   ];
   
   const recentQuestions = [
     {
-      question: "How do I get my toddler to sleep through the night?",
+      question: "How do I manage morning sickness during the first trimester?",
       askedBy: "Emma T.",
       answers: 24,
-      category: "Sleep"
+      category: "Pregnancy"
     },
     {
-      question: "What are some healthy snack ideas for picky eaters?",
+      question: "Can anyone recommend a good nursery in Dubai Marina?",
       askedBy: "Olivia M.",
       answers: 18,
-      category: "Feeding"
+      category: "Schools/Nursery"
     },
     {
-      question: "When should I start potty training?",
+      question: "Looking for postpartum recovery tips after C-section",
       askedBy: "Jessica K.",
       answers: 32,
-      category: "Development"
+      category: "Postpartum"
     }
   ];
   
@@ -93,8 +103,14 @@ const MumzAsk = () => {
             
             <div className="flex flex-wrap gap-3 justify-center">
               {questionCategories.map((category) => (
-                <Button key={category} variant="outline" size="sm" className="rounded-full">
-                  {category}
+                <Button 
+                  key={category.name} 
+                  variant="outline" 
+                  size="sm" 
+                  className="rounded-full flex items-center"
+                >
+                  {category.icon}
+                  {category.name}
                 </Button>
               ))}
             </div>
