@@ -18,9 +18,12 @@ import {
   Users,
   PartyPopper
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { toast } = useToast();
   
   useEffect(() => {
     // Simulate loading state for smooth intro
@@ -68,6 +71,17 @@ const MumzAsk = () => {
       category: "Postpartum"
     }
   ];
+
+  const handleAskQuestion = () => {
+    toast({
+      title: "Coming Soon!",
+      description: "The ability to ask questions will be available soon.",
+    });
+  };
+
+  const handleCategoryClick = (categoryName: string) => {
+    setSelectedCategory(categoryName === selectedCategory ? null : categoryName);
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -87,32 +101,45 @@ const MumzAsk = () => {
               </p>
             </div>
             
-            <div className="relative max-w-2xl mx-auto mb-16">
-              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <input
-                type="search"
-                placeholder="Search for questions or topics..."
-                className="w-full py-4 pl-12 pr-4 rounded-full border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <Button className="absolute right-1 top-1 rounded-full">
-                Search
-              </Button>
-            </div>
-            
-            <div className="flex flex-wrap gap-3 justify-center">
+            {/* Filter Categories (moved above search bar) */}
+            <div className="flex flex-wrap gap-3 justify-center mb-8">
               {questionCategories.map((category) => (
                 <Button 
                   key={category.name} 
-                  variant="outline" 
+                  variant={selectedCategory === category.name ? "default" : "outline"} 
                   size="sm" 
                   className="rounded-full flex items-center"
+                  onClick={() => handleCategoryClick(category.name)}
                 >
                   {category.icon}
                   {category.name}
                 </Button>
               ))}
+            </div>
+            
+            <div className="flex flex-col items-center gap-4 max-w-2xl mx-auto mb-16">
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <input
+                  type="search"
+                  placeholder="Search for questions or topics..."
+                  className="w-full py-4 pl-12 pr-4 rounded-full border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <Button className="absolute right-1 top-1 rounded-full">
+                  Search
+                </Button>
+              </div>
+              
+              <Button 
+                size="lg" 
+                className="rounded-full mt-2 w-full sm:w-auto"
+                onClick={handleAskQuestion}
+              >
+                <HelpCircle className="mr-2 h-4 w-4" />
+                Ask Mumz
+              </Button>
             </div>
           </div>
         </section>
@@ -126,7 +153,9 @@ const MumzAsk = () => {
             </div>
             
             <div className="grid md:grid-cols-3 gap-6">
-              {recentQuestions.map((item, index) => (
+              {recentQuestions
+                .filter(item => !selectedCategory || item.category === selectedCategory)
+                .map((item, index) => (
                 <Card key={index} className="p-6 bg-white/50 backdrop-blur-sm border-white/20 hover:shadow-md transition-all">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="px-3 py-1 bg-pink-500/10 text-pink-700 text-xs rounded-full">
@@ -143,13 +172,6 @@ const MumzAsk = () => {
                   </div>
                 </Card>
               ))}
-            </div>
-            
-            <div className="mt-10 text-center">
-              <Button size="lg" className="rounded-full">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Ask a Question
-              </Button>
             </div>
           </div>
         </section>
