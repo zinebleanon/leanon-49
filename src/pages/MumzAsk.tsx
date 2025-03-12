@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import { 
   Search, 
   HelpCircle, 
@@ -21,7 +22,8 @@ import {
   User,
   Clock,
   ChevronRight,
-  CheckCircle
+  CheckCircle,
+  X
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -29,6 +31,7 @@ const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
+  const [showAskForm, setShowAskForm] = useState(false);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -141,10 +144,11 @@ const MumzAsk = () => {
   ];
 
   const handleAskQuestion = () => {
-    toast({
-      title: "Coming Soon!",
-      description: "The ability to ask questions will be available soon.",
-    });
+    setShowAskForm(true);
+  };
+
+  const handleCloseAskForm = () => {
+    setShowAskForm(false);
   };
 
   const handleCategoryClick = (categoryName: string) => {
@@ -222,6 +226,31 @@ const MumzAsk = () => {
           </div>
         </section>
         
+        {/* Ask Question Modal */}
+        {showAskForm && (
+          <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+            <div className="bg-background rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-semibold">Ask a Question</h2>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={handleCloseAskForm}
+                    className="rounded-full"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+                <AskQuestionForm 
+                  categories={questionCategories} 
+                  onClose={handleCloseAskForm} 
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Recent Questions Section */}
         <section className="py-16 px-6 md:px-8 bg-secondary/30">
           <div className="max-w-7xl mx-auto">
@@ -239,7 +268,7 @@ const MumzAsk = () => {
                   className={`p-6 bg-white/50 backdrop-blur-sm border-white/20 hover:shadow-md transition-all ${expandedQuestion === item.id ? 'md:col-span-2' : ''}`}
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="bg-pink-500/10 text-pink-700 border-pink-200">
+                    <Badge variant="outline" className="bg-orange-500/10 text-orange-700 border-orange-200">
                       {item.category}
                     </Badge>
                     {expandedQuestion !== item.id && (
@@ -360,8 +389,8 @@ const MumzAsk = () => {
             
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="bg-pink-500/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                  <UserCheck className="h-10 w-10 text-pink-500" />
+                <div className="bg-orange-500/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                  <UserCheck className="h-10 w-10 text-orange-500" />
                 </div>
                 <h3 className="text-xl font-medium mb-4">Expert Verified</h3>
                 <p className="text-muted-foreground">
@@ -370,8 +399,8 @@ const MumzAsk = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-pink-500/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                  <ThumbsUp className="h-10 w-10 text-pink-500" />
+                <div className="bg-orange-500/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                  <ThumbsUp className="h-10 w-10 text-orange-500" />
                 </div>
                 <h3 className="text-xl font-medium mb-4">Community Approved</h3>
                 <p className="text-muted-foreground">
@@ -380,8 +409,8 @@ const MumzAsk = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-pink-500/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                  <Award className="h-10 w-10 text-pink-500" />
+                <div className="bg-orange-500/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                  <Award className="h-10 w-10 text-orange-500" />
                 </div>
                 <h3 className="text-xl font-medium mb-4">Quality Answers</h3>
                 <p className="text-muted-foreground">
