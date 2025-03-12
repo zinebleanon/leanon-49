@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -140,14 +139,14 @@ const MumzSave = () => {
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
                   <span className="text-gradient">Mumz Save, Sell & Buy</span>
                   <br />
-                  <span className="text-2xl md:text-3xl text-muted-foreground mt-4 block font-sans">
+                  <span className="text-2xl md:text-3xl text-muted-foreground mt-4 block font-playfair">
                     Everything you need
                   </span>
-                  <span className="text-2xl md:text-3xl text-muted-foreground block font-sans">
+                  <span className="text-2xl md:text-3xl text-muted-foreground block font-playfair">
                     from exclusive UAE discounts to decluttering unused kids gear.
                   </span>
                 </h1>
-                <p className="text-lg text-muted-foreground mb-8 font-sans">
+                <p className="text-lg text-muted-foreground mb-8 font-playfair">
                   Discover exclusive deals on top UAE brands for your family and connect with other moms to declutter your home by selling unused children's items.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -194,7 +193,7 @@ const MumzSave = () => {
             <div className="text-center mb-12">
               <Badge className="mb-2" variant="outline">Premium Access</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">Unlock Exclusive Benefits</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-sans">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-playfair">
                 Subscribe to Mumz Save for just 20 AED per month and get access to premium deals, early notifications, and special marketplace privileges.
               </p>
             </div>
@@ -206,7 +205,7 @@ const MumzSave = () => {
                   <Badge variant="default" className="text-lg py-1 px-4 whitespace-nowrap">20 AED/month</Badge>
                 </div>
                 
-                <ul className="space-y-4 mb-6 font-sans">
+                <ul className="space-y-4 mb-6 font-playfair">
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
                     <span>Exclusive deals on brands Mumz love</span>
@@ -239,7 +238,7 @@ const MumzSave = () => {
                     </div>
                     <div>
                       <h4 className="text-lg font-medium font-playfair">Premium Deals</h4>
-                      <p className="text-muted-foreground font-sans">Exclusive discounts up to 50% off at UAE's top baby retailers</p>
+                      <p className="text-muted-foreground font-playfair">Exclusive discounts up to 50% off at UAE's top baby retailers</p>
                     </div>
                   </div>
                 </div>
@@ -251,7 +250,7 @@ const MumzSave = () => {
                     </div>
                     <div>
                       <h4 className="text-lg font-medium font-playfair">Featured Listings</h4>
-                      <p className="text-muted-foreground font-sans">Get your items seen first in the UAE marketplace</p>
+                      <p className="text-muted-foreground font-playfair">Get your items seen first in the UAE marketplace</p>
                     </div>
                   </div>
                 </div>
@@ -387,7 +386,7 @@ const MumzSave = () => {
                       <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-6 font-sans">
+                  <p className="text-muted-foreground mb-6 font-playfair">
                     "I saved over 1,200 AED on baby essentials with the exclusive deals from Mumz Save. Found great offers at Babyshop in Mall of the Emirates!"
                   </p>
                   <div className="flex items-center gap-3">
@@ -407,7 +406,7 @@ const MumzSave = () => {
                       <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-6 font-sans">
+                  <p className="text-muted-foreground mb-6 font-playfair">
                     "The Mumzworld exclusive discounts helped me furnish my baby's nursery for half the price I expected to pay. Delivery across Dubai was fast too!"
                   </p>
                   <div className="flex items-center gap-3">
@@ -427,7 +426,7 @@ const MumzSave = () => {
                       <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-6 font-sans">
+                  <p className="text-muted-foreground mb-6 font-playfair">
                     "The premium membership paid for itself in one purchase! Found an exclusive deal on a Cybex car seat at FirstCry Abu Dhabi that saved me 800 AED."
                   </p>
                   <div className="flex items-center gap-3">
@@ -456,7 +455,7 @@ const MumzSave = () => {
                     <Tag className="h-10 w-10 text-primary" />
                   </div>
                   <h3 className="text-xl font-medium mb-4 font-playfair">List Your Items</h3>
-                  <p className="text-muted-foreground font-sans">
+                  <p className="text-muted-foreground font-playfair">
                     Take photos, set your price, and create listings for unused kids gear your family has outgrown. Reach moms across all seven emirates.
                   </p>
                 </div>
@@ -466,7 +465,7 @@ const MumzSave = () => {
                     <ShoppingBag className="h-10 w-10 text-primary" />
                   </div>
                   <h3 className="text-xl font-medium mb-4 font-playfair">Shop & Browse</h3>
-                  <p className="text-muted-foreground font-sans">
+                  <p className="text-muted-foreground font-playfair">
                     Find gently used items at a fraction of UAE retail prices from other moms in Dubai, Abu Dhabi, Sharjah and beyond.
                   </p>
                 </div>
@@ -476,7 +475,7 @@ const MumzSave = () => {
                     <DollarSign className="h-10 w-10 text-primary" />
                   </div>
                   <h3 className="text-xl font-medium mb-4 font-playfair">Save & Declutter</h3>
-                  <p className="text-muted-foreground font-sans">
+                  <p className="text-muted-foreground font-playfair">
                     Save dirhams on things you need and declutter your UAE home by selling unused kids gear, all while connecting with local moms.
                   </p>
                 </div>
@@ -492,3 +491,4 @@ const MumzSave = () => {
 };
 
 export default MumzSave;
+
