@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -202,7 +203,7 @@ const MumzSave = () => {
               <Card className="p-8 border-2 border-primary/20 bg-white/50 backdrop-blur-sm">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-2xl font-semibold font-playfair">Premium Membership</h3>
-                  <Badge variant="default" className="text-lg py-1 px-3">20 AED/month</Badge>
+                  <Badge variant="default" className="text-lg py-1 px-4 whitespace-nowrap">20 AED/month</Badge>
                 </div>
                 
                 <ul className="space-y-4 mb-6 font-sans">
