@@ -187,7 +187,7 @@ const MumzSave = () => {
               <Badge className="mb-2" variant="outline">Premium Access</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">Unlock Exclusive Benefits</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-playfair">
-                Subscribe to Mumz Save for just 20 AED per month and get access to premium deals, early notifications, and special marketplace privileges.
+                Subscribe to Mumz Save for just 20 AED per month and get featured listings, premium deals, and early access to the best offers.
               </p>
             </div>
             
@@ -201,15 +201,15 @@ const MumzSave = () => {
                 <ul className="space-y-4 mb-6 font-playfair">
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
-                    <span>Exclusive deals on brands Mumz love</span>
+                    <span>Featured listings at the top of search results</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
-                    <span>Access to marketplace listing features</span>
+                    <span>Priority placement in Mumz Marketplace</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
-                    <span>Members-only events and giveaways</span>
+                    <span>Premium deals from top UAE brands</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
@@ -230,8 +230,8 @@ const MumzSave = () => {
                       <Star className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-medium font-playfair">Premium Deals</h4>
-                      <p className="text-muted-foreground font-playfair">Exclusive discounts up to 50% off at UAE's top baby retailers</p>
+                      <h4 className="text-lg font-medium font-playfair">Featured Listings</h4>
+                      <p className="text-muted-foreground font-playfair">Get your items seen first with priority placement in search results</p>
                     </div>
                   </div>
                 </div>
@@ -491,3 +491,4 @@ const MumzSave = () => {
 };
 
 export default MumzSave;
+
