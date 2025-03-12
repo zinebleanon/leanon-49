@@ -5,7 +5,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Users, HelpCircle, Bookmark, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Hero = () => {
+interface HeroProps {
+  onJoinClick: () => void;
+}
+
+const Hero = ({ onJoinClick }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   
@@ -108,7 +112,12 @@ const Hero = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
           style={{ transitionDelay: '300ms' }}>
-            <Button variant="warm" size="lg" className="rounded-full shadow-md">
+            <Button 
+              variant="warm" 
+              size="lg" 
+              className="rounded-full shadow-md"
+              onClick={onJoinClick}
+            >
               <Heart className="mr-1" size={18} /> Join Our Community
             </Button>
             <Button variant="outline" size="lg" className="rounded-full">

@@ -11,7 +11,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "Sign Up",
-      description: "Complete our subscription form with your details, children information, and neighborhood."
+      description: "Complete our subscription form with your email to join our community."
     },
     {
       icon: <Users className="h-6 w-6 text-primary" />,
