@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
+import ReactionBar, { Reaction } from '@/components/mumzask/ReactionBar';
+import CommentSection, { Comment } from '@/components/mumzask/CommentSection';
 import { 
   Search, 
   HelpCircle, 
@@ -27,17 +29,194 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
+// Adding interfaces for better type checking
+interface Answer {
+  id: number;
+  text: string;
+  answeredBy: string;
+  isExpert: boolean;
+  upvotes: number;
+  time: string;
+}
+
+interface QuestionData {
+  id: number;
+  question: string;
+  detail: string;
+  askedBy: string;
+  askedAt: string;
+  answers: number;
+  category: string;
+  answersData: Answer[];
+  reactions?: Reaction[];
+  comments?: Comment[];
+  showComments?: boolean;
+}
+
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const [showAskForm, setShowAskForm] = useState(false);
+  const [recentQuestions, setRecentQuestions] = useState<QuestionData[]>([]);
   const { toast } = useToast();
   
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
+    
+    // Initialize with sample data
+    setRecentQuestions([
+      {
+        id: 1,
+        question: "How do I manage morning sickness during the first trimester?",
+        detail: "I'm 8 weeks pregnant and struggling with severe morning sickness. I've tried ginger tea but it's not helping much. Are there any other natural remedies that worked for you?",
+        askedBy: "Emma T.",
+        askedAt: "2 days ago",
+        answers: 24,
+        category: "Pregnancy",
+        reactions: [
+          { type: 'like', count: 15 },
+          { type: 'love', count: 8 },
+          { type: 'helpful', count: 22 },
+          { type: 'thanks', count: 10 }
+        ],
+        comments: [
+          { 
+            id: 101, 
+            text: "I had the same issue and found that eating saltine crackers before getting out of bed helped a lot.", 
+            user: { name: "Sophie K." }, 
+            timestamp: "1 day ago", 
+            likes: 5, 
+            dislikes: 0 
+          },
+          { 
+            id: 102, 
+            text: "Peppermint tea worked better for me than ginger tea. Also try to avoid strong smells.", 
+            user: { name: "Lisa M." }, 
+            timestamp: "12 hours ago", 
+            likes: 3, 
+            dislikes: 0 
+          }
+        ],
+        showComments: false,
+        answersData: [
+          {
+            id: 1,
+            text: "I found that eating small, frequent meals helped a lot with my morning sickness. Try keeping crackers by your bed and eat a few before getting up in the morning. Also, stay hydrated but sip water slowly throughout the day rather than drinking large amounts at once.",
+            answeredBy: "Dr. Sarah K.",
+            isExpert: true,
+            upvotes: 42,
+            time: "1 day ago"
+          },
+          {
+            id: 2,
+            text: "Acupressure wristbands (like the ones for motion sickness) were a lifesaver for me! You can find them at most pharmacies. Also, vitamin B6 supplements helped me - but check with your doctor before taking any supplements.",
+            answeredBy: "Michelle R.",
+            isExpert: false,
+            upvotes: 28,
+            time: "2 days ago"
+          }
+        ]
+      },
+      {
+        id: 2,
+        question: "Can anyone recommend a good nursery in Dubai Marina?",
+        detail: "We're moving to Dubai Marina next month and need to find a good nursery for our 3-year-old. Preferably one with outdoor space and a good curriculum. Any recommendations would be appreciated!",
+        askedBy: "Olivia M.",
+        askedAt: "3 days ago",
+        answers: 18,
+        category: "Schools/Nursery",
+        reactions: [
+          { type: 'like', count: 8 },
+          { type: 'love', count: 2 },
+          { type: 'helpful', count: 14 },
+          { type: 'thanks', count: 6 }
+        ],
+        comments: [
+          { 
+            id: 201, 
+            text: "We're also moving to that area. Following this thread for recommendations!", 
+            user: { name: "Rachel T." }, 
+            timestamp: "2 days ago", 
+            likes: 2, 
+            dislikes: 0 
+          }
+        ],
+        showComments: false,
+        answersData: [
+          {
+            id: 1,
+            text: "We love Blossom Nursery in Dubai Marina. They have a great outdoor play area and follow the British EYFS curriculum. The staff are incredibly caring and professional. They also offer flexible timings which was really helpful for us.",
+            answeredBy: "Jessica W.",
+            isExpert: false,
+            upvotes: 15,
+            time: "2 days ago"
+          },
+          {
+            id: 2,
+            text: "Kids Harbor is another excellent option. They have a fantastic program and the teachers are all qualified with early childhood education degrees. My son has been going there for a year and we've been very happy with his progress.",
+            answeredBy: "Aisha K.",
+            isExpert: false,
+            upvotes: 12,
+            time: "1 day ago"
+          }
+        ]
+      },
+      {
+        id: 3,
+        question: "Looking for postpartum recovery tips after C-section",
+        detail: "I had a C-section two weeks ago and I'm struggling with the recovery. Any tips from mumz who've been through this? Particularly interested in how to manage pain and take care of the incision site.",
+        askedBy: "Jessica K.",
+        askedAt: "1 week ago",
+        answers: 32,
+        category: "Postpartum",
+        reactions: [
+          { type: 'like', count: 18 },
+          { type: 'love', count: 12 },
+          { type: 'helpful', count: 25 },
+          { type: 'thanks', count: 15 }
+        ],
+        comments: [
+          { 
+            id: 301, 
+            text: "I'm in the same situation. Looking forward to seeing the advice here.", 
+            user: { name: "Hannah P." }, 
+            timestamp: "5 days ago", 
+            likes: 8, 
+            dislikes: 0 
+          },
+          { 
+            id: 302, 
+            text: "Has anyone tried post-surgery compression garments? Are they helpful?", 
+            user: { name: "Mia K." }, 
+            timestamp: "4 days ago", 
+            likes: 4, 
+            dislikes: 1 
+          }
+        ],
+        showComments: false,
+        answersData: [
+          {
+            id: 1,
+            text: "Rest as much as possible and don't hesitate to ask for help with household chores and baby care. When getting up from bed, roll to your side first, then use your arms to push yourself up. Use a pillow to support your incision when coughing or laughing. And wear high-waisted underwear to avoid irritating the incision.",
+            answeredBy: "Midwife Rachel T.",
+            isExpert: true,
+            upvotes: 35,
+            time: "6 days ago"
+          },
+          {
+            id: 2,
+            text: "A postpartum belly band was so helpful for me - it gave support to my core and made moving around much more comfortable. Also, keep the incision clean and dry, and watch for any signs of infection (increased redness, swelling, or discharge).",
+            answeredBy: "Lina M.",
+            isExpert: false,
+            upvotes: 28,
+            time: "5 days ago"
+          }
+        ]
+      }
+    ]);
     
     return () => clearTimeout(timer);
   }, []);
@@ -57,90 +236,6 @@ const MumzAsk = () => {
     { name: "Schools/Nursery", icon: <GraduationCap className="h-4 w-4 mr-1" /> },
     { name: "Nannys", icon: <Users className="h-4 w-4 mr-1" /> },
     { name: "Entertainment & Birthdays", icon: <PartyPopper className="h-4 w-4 mr-1" /> }
-  ];
-  
-  const recentQuestions = [
-    {
-      id: 1,
-      question: "How do I manage morning sickness during the first trimester?",
-      detail: "I'm 8 weeks pregnant and struggling with severe morning sickness. I've tried ginger tea but it's not helping much. Are there any other natural remedies that worked for you?",
-      askedBy: "Emma T.",
-      askedAt: "2 days ago",
-      answers: 24,
-      category: "Pregnancy",
-      answersData: [
-        {
-          id: 1,
-          text: "I found that eating small, frequent meals helped a lot with my morning sickness. Try keeping crackers by your bed and eat a few before getting up in the morning. Also, stay hydrated but sip water slowly throughout the day rather than drinking large amounts at once.",
-          answeredBy: "Dr. Sarah K.",
-          isExpert: true,
-          upvotes: 42,
-          time: "1 day ago"
-        },
-        {
-          id: 2,
-          text: "Acupressure wristbands (like the ones for motion sickness) were a lifesaver for me! You can find them at most pharmacies. Also, vitamin B6 supplements helped me - but check with your doctor before taking any supplements.",
-          answeredBy: "Michelle R.",
-          isExpert: false,
-          upvotes: 28,
-          time: "2 days ago"
-        }
-      ]
-    },
-    {
-      id: 2,
-      question: "Can anyone recommend a good nursery in Dubai Marina?",
-      detail: "We're moving to Dubai Marina next month and need to find a good nursery for our 3-year-old. Preferably one with outdoor space and a good curriculum. Any recommendations would be appreciated!",
-      askedBy: "Olivia M.",
-      askedAt: "3 days ago",
-      answers: 18,
-      category: "Schools/Nursery",
-      answersData: [
-        {
-          id: 1,
-          text: "We love Blossom Nursery in Dubai Marina. They have a great outdoor play area and follow the British EYFS curriculum. The staff are incredibly caring and professional. They also offer flexible timings which was really helpful for us.",
-          answeredBy: "Jessica W.",
-          isExpert: false,
-          upvotes: 15,
-          time: "2 days ago"
-        },
-        {
-          id: 2,
-          text: "Kids Harbor is another excellent option. They have a fantastic program and the teachers are all qualified with early childhood education degrees. My son has been going there for a year and we've been very happy with his progress.",
-          answeredBy: "Aisha K.",
-          isExpert: false,
-          upvotes: 12,
-          time: "1 day ago"
-        }
-      ]
-    },
-    {
-      id: 3,
-      question: "Looking for postpartum recovery tips after C-section",
-      detail: "I had a C-section two weeks ago and I'm struggling with the recovery. Any tips from mumz who've been through this? Particularly interested in how to manage pain and take care of the incision site.",
-      askedBy: "Jessica K.",
-      askedAt: "1 week ago",
-      answers: 32,
-      category: "Postpartum",
-      answersData: [
-        {
-          id: 1,
-          text: "Rest as much as possible and don't hesitate to ask for help with household chores and baby care. When getting up from bed, roll to your side first, then use your arms to push yourself up. Use a pillow to support your incision when coughing or laughing. And wear high-waisted underwear to avoid irritating the incision.",
-          answeredBy: "Midwife Rachel T.",
-          isExpert: true,
-          upvotes: 35,
-          time: "6 days ago"
-        },
-        {
-          id: 2,
-          text: "A postpartum belly band was so helpful for me - it gave support to my core and made moving around much more comfortable. Also, keep the incision clean and dry, and watch for any signs of infection (increased redness, swelling, or discharge).",
-          answeredBy: "Lina M.",
-          isExpert: false,
-          upvotes: 28,
-          time: "5 days ago"
-        }
-      ]
-    }
   ];
 
   const handleAskQuestion = () => {
@@ -164,6 +259,99 @@ const MumzAsk = () => {
       title: "Upvoted!",
       description: "You found this answer helpful.",
     });
+  };
+  
+  const handleReaction = (questionId: number, reactionType: string) => {
+    // Here we would normally make an API call to save the reaction
+    console.log(`Question ${questionId} reacted with ${reactionType}`);
+  };
+  
+  const toggleComments = (questionId: number) => {
+    setRecentQuestions(prevQuestions => 
+      prevQuestions.map(q => 
+        q.id === questionId 
+          ? { ...q, showComments: !q.showComments } 
+          : q
+      )
+    );
+  };
+  
+  const handleAddComment = (questionId: number, commentText: string) => {
+    // Here we would normally make an API call to save the comment
+    setRecentQuestions(prevQuestions => 
+      prevQuestions.map(q => {
+        if (q.id === questionId) {
+          const newComment = {
+            id: Math.floor(Math.random() * 1000), // In a real app, this would come from the server
+            text: commentText,
+            user: { name: "You" }, // In a real app, this would be the current user
+            timestamp: "Just now",
+            likes: 0,
+            dislikes: 0,
+            userLiked: false,
+            userDisliked: false
+          };
+          
+          return {
+            ...q,
+            comments: [...(q.comments || []), newComment]
+          };
+        }
+        return q;
+      })
+    );
+  };
+  
+  const handleLikeComment = (questionId: number, commentId: number) => {
+    // Here we would normally make an API call to like the comment
+    setRecentQuestions(prevQuestions => 
+      prevQuestions.map(q => {
+        if (q.id === questionId && q.comments) {
+          return {
+            ...q,
+            comments: q.comments.map(c => 
+              c.id === commentId 
+                ? { 
+                    ...c, 
+                    likes: c.userLiked ? c.likes - 1 : c.likes + 1,
+                    userLiked: !c.userLiked,
+                    // If the user had previously disliked, remove the dislike
+                    dislikes: c.userDisliked ? c.dislikes - 1 : c.dislikes,
+                    userDisliked: c.userDisliked ? false : c.userDisliked
+                  } 
+                : c
+            )
+          };
+        }
+        return q;
+      })
+    );
+  };
+  
+  const handleDislikeComment = (questionId: number, commentId: number) => {
+    // Here we would normally make an API call to dislike the comment
+    setRecentQuestions(prevQuestions => 
+      prevQuestions.map(q => {
+        if (q.id === questionId && q.comments) {
+          return {
+            ...q,
+            comments: q.comments.map(c => 
+              c.id === commentId 
+                ? { 
+                    ...c, 
+                    dislikes: c.userDisliked ? c.dislikes - 1 : c.dislikes + 1,
+                    userDisliked: !c.userDisliked,
+                    // If the user had previously liked, remove the like
+                    likes: c.userLiked ? c.likes - 1 : c.likes,
+                    userLiked: c.userLiked ? false : c.userLiked
+                  } 
+                : c
+            )
+          };
+        }
+        return q;
+      })
+    );
   };
   
   return (
@@ -299,6 +487,27 @@ const MumzAsk = () => {
                         </div>
                       </div>
                       
+                      {/* Emoji Reactions */}
+                      <ReactionBar 
+                        initialReactions={item.reactions}
+                        onReact={(type) => handleReaction(item.id, type)}
+                        showComments={item.showComments}
+                        commentCount={item.comments?.length || 0}
+                        onToggleComments={() => toggleComments(item.id)}
+                      />
+                      
+                      {/* Comment Section */}
+                      {item.showComments && (
+                        <div className="mt-4 pt-4 border-t">
+                          <CommentSection 
+                            comments={item.comments || []}
+                            onAddComment={(text) => handleAddComment(item.id, text)}
+                            onLike={(commentId) => handleLikeComment(item.id, commentId)}
+                            onDislike={(commentId) => handleDislikeComment(item.id, commentId)}
+                          />
+                        </div>
+                      )}
+                      
                       <div className="space-y-4">
                         <div className="flex items-center gap-2">
                           <MessageSquare className="h-4 w-4 text-primary" />
@@ -362,6 +571,15 @@ const MumzAsk = () => {
                           <Clock className="h-3 w-3" />
                           <span>{item.askedAt}</span>
                         </div>
+                      </div>
+                      
+                      {/* Emoji Reactions - Compact View */}
+                      <div className="mb-4">
+                        <ReactionBar 
+                          initialReactions={item.reactions}
+                          onReact={(type) => handleReaction(item.id, type)}
+                          commentCount={item.comments?.length || 0}
+                        />
                       </div>
                       
                       <Button 
