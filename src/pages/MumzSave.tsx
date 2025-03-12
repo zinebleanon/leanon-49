@@ -208,7 +208,7 @@ const MumzSave = () => {
                 <ul className="space-y-4 mb-6 font-sans">
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
-                    <span>Exclusive deals on brands Mumz love (up to 50% off)</span>
+                    <span>Exclusive deals on brands Mumz love</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
@@ -221,10 +221,6 @@ const MumzSave = () => {
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
                     <span>Early access to special offers</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="h-5 w-5 text-green-500" />
-                    <span>Direct messaging with premium sellers</span>
                   </li>
                 </ul>
                 
