@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -75,7 +76,7 @@ const MumzSave = () => {
   const featuredDeals = [
     {
       title: "30% Off Babyzen YOYO Stroller",
-      brand: "Mumzworld UAE",
+      brand: "Mumzworld",
       discount: "30%",
       originalPrice: "2,499 AED",
       salePrice: "1,749 AED",
@@ -84,7 +85,7 @@ const MumzSave = () => {
     },
     {
       title: "Buy One Get One Free Baby Clothes",
-      brand: "Mothercare Dubai Mall",
+      brand: "Mothercare",
       discount: "50%",
       originalPrice: "199 AED",
       salePrice: "99 AED",
@@ -93,7 +94,7 @@ const MumzSave = () => {
     },
     {
       title: "Nanit Pro Baby Monitor Bundle",
-      brand: "FirstCry Abu Dhabi",
+      brand: "FirstCry",
       discount: "25%",
       originalPrice: "999 AED",
       salePrice: "749 AED",
