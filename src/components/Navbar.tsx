@@ -59,7 +59,7 @@ const Navbar = () => {
           to="/" 
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
         >
-          <Heart className="text-primary h-5 w-5 md:h-6 md:w-6" fill="currentColor" />
+          <Heart className="text-[#ea384c] h-5 w-5 md:h-6 md:w-6" fill="#ea384c" />
           <span>MumzAlly</span>
         </Link>
         
