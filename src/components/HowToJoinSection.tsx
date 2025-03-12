@@ -44,21 +44,15 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {steps.map((step, index) => (
-            <div key={index} className="relative">
-              <div className="bg-card border rounded-lg p-6 h-full flex flex-col items-center text-center relative z-10 hover:shadow-md transition-shadow">
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
-                  {index + 1}
-                </div>
-                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4 mt-4">
-                  {step.icon}
-                </div>
-                <h3 className="text-xl font-medium mb-2 font-playfair">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
+            <div key={index} className="relative p-6 rounded-lg bg-gradient-to-br from-orange-50 to-amber-50 border shadow-sm hover:shadow-md transition-all">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                {index + 1}
               </div>
-              
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 right-0 w-full h-0.5 bg-primary/20 translate-y-8 -translate-x-1/2 z-0"></div>
-              )}
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 mt-4">
+                {step.icon}
+              </div>
+              <h3 className="text-xl font-medium mb-2 font-playfair">{step.title}</h3>
+              <p className="text-muted-foreground">{step.description}</p>
             </div>
           ))}
         </div>
@@ -67,8 +61,8 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
           <Button 
             onClick={onJoinClick} 
             variant="warm" 
-            className="rounded-full px-6 text-base"
             size="lg"
+            className="rounded-full px-6"
           >
             <Heart className="mr-2 h-4 w-4" fill="currentColor" />
             Join Our Community
