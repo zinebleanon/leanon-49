@@ -1,4 +1,5 @@
-import { UserCircle } from 'lucide-react';
+
+import { UserCircle, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -81,16 +82,14 @@ const ConnectionRequests = () => {
                     onClick={() => handleAccept(request.id, request.name)}
                   >
                     <div className="flex items-center gap-2">
-                      <svg width="18" height="16" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        {acceptedRequests.includes(request.id) ? (
-                          <path 
-                            d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
-                            fill="#ea384c" 
-                            stroke="#ea384c"
-                            strokeWidth="1.5"
-                          />
-                        ) : (
-                          <>
+                      {acceptedRequests.includes(request.id) ? (
+                        <>
+                          <MessageCircle className="h-4 w-4" />
+                          Message {request.name}
+                        </>
+                      ) : (
+                        <>
+                          <svg width="18" height="16" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path 
                               d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
                               fill="#ea384c" 
@@ -103,10 +102,10 @@ const ConnectionRequests = () => {
                               stroke="#94a3b8"
                               strokeWidth="1.5"
                             />
-                          </>
-                        )}
-                      </svg>
-                      {acceptedRequests.includes(request.id) ? request.name : 'Ally Back'}
+                          </svg>
+                          Ally Back
+                        </>
+                      )}
                     </div>
                   </Button>
                 </div>
