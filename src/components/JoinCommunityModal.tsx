@@ -140,14 +140,14 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
             Join Our Community
           </DialogTitle>
           <DialogDescription>
-            Connect with other moms, share experiences, and find support.
+            Connect with other mumz, share experiences, and find support.
           </DialogDescription>
         </DialogHeader>
 
         {step === 'options' && (
           <div className="grid gap-4 py-4">
             <p className="text-center text-muted-foreground mb-4">
-              Join our community of supportive moms:
+              Join our community of supportive mumz:
             </p>
             
             <Card 
