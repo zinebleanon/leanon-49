@@ -138,13 +138,6 @@ const MumzSave = () => {
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
                   <span className="text-gradient">Mumz Save, Sell & Buy</span>
-                  <br />
-                  <span className="text-2xl md:text-3xl text-muted-foreground mt-4 block font-playfair">
-                    Everything you need
-                  </span>
-                  <span className="text-2xl md:text-3xl text-muted-foreground block font-playfair">
-                    from exclusive UAE discounts to decluttering unused kids gear.
-                  </span>
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8 font-playfair">
                   Discover exclusive deals on top UAE brands for your family and connect with other moms to declutter your home by selling unused children's items.
@@ -491,4 +484,3 @@ const MumzSave = () => {
 };
 
 export default MumzSave;
-
