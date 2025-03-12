@@ -22,6 +22,20 @@ interface Kid {
   gender: string;
 }
 
+// Data for neighborhood and nationality dropdowns
+const neighborhoods = [
+  "Dubai Marina", "JLT", "Downtown Dubai", "Palm Jumeirah", "Arabian Ranches",
+  "Emirates Hills", "Mirdif", "Dubailand", "Silicon Oasis", "Business Bay",
+  "Al Barsha", "Deira", "Bur Dubai", "The Springs", "The Meadows", "The Greens",
+  "Jumeirah", "Umm Suqeim", "Discovery Gardens", "International City"
+];
+
+const nationalities = [
+  "Emirati", "Indian", "Pakistani", "British", "American", "Egyptian", "Filipino",
+  "Lebanese", "Jordanian", "South African", "Australian", "Canadian", "French",
+  "German", "Italian", "Chinese", "Japanese", "Russian", "Turkish", "Iranian"
+];
+
 const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) => {
   const [step, setStep] = useState<'options' | 'form' | 'success'>('options');
   const [formData, setFormData] = useState({
@@ -75,6 +89,10 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -275,26 +293,40 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
             
             <div className="grid gap-2">
               <Label htmlFor="neighborhood">Neighborhood</Label>
-              <Input 
-                id="neighborhood" 
-                name="neighborhood" 
+              <Select 
                 value={formData.neighborhood} 
-                onChange={handleInputChange} 
-                placeholder="e.g., Dubai Marina, JLT, etc." 
-                required 
-              />
+                onValueChange={(value) => handleSelectChange('neighborhood', value)}
+              >
+                <SelectTrigger id="neighborhood">
+                  <SelectValue placeholder="Select your neighborhood" />
+                </SelectTrigger>
+                <SelectContent>
+                  {neighborhoods.map((neighborhood) => (
+                    <SelectItem key={neighborhood} value={neighborhood}>
+                      {neighborhood}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="grid gap-2">
               <Label htmlFor="nationality">Nationality</Label>
-              <Input 
-                id="nationality" 
-                name="nationality" 
+              <Select 
                 value={formData.nationality} 
-                onChange={handleInputChange} 
-                placeholder="e.g., Emirati, British, Indian, etc." 
-                required 
-              />
+                onValueChange={(value) => handleSelectChange('nationality', value)}
+              >
+                <SelectTrigger id="nationality">
+                  <SelectValue placeholder="Select your nationality" />
+                </SelectTrigger>
+                <SelectContent>
+                  {nationalities.map((nationality) => (
+                    <SelectItem key={nationality} value={nationality}>
+                      {nationality}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
             <div className="grid gap-2">
@@ -363,4 +395,3 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
 };
 
 export default JoinCommunityModal;
-
