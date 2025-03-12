@@ -146,12 +146,12 @@ const MumzSave = () => {
               </div>
               
               <div className="relative">
-                <div className="aspect-square max-w-md mx-auto rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 p-1">
+                <div className="aspect-square max-w-sm mx-auto rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 p-1">
                   <div className="h-full w-full rounded-3xl bg-white/90 backdrop-blur-sm flex items-center justify-center p-8">
                     {activeTab === 'deals' ? (
-                      <PercentCircle className="h-24 w-24 text-primary/70" />
+                      <PercentCircle className="h-16 w-16 text-primary/70" />
                     ) : (
-                      <ShoppingBag className="h-24 w-24 text-primary/70" />
+                      <ShoppingBag className="h-16 w-16 text-primary/70" />
                     )}
                   </div>
                 </div>
