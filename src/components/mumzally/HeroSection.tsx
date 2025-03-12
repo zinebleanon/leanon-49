@@ -2,8 +2,15 @@
 import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
+  const scrollToFilters = () => {
+    const filterSection = document.getElementById('filter-section');
+    if (filterSection) {
+      filterSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="py-28 md:py-20 px-4 md:px-8">
+    <section className="py-16 md:py-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
@@ -15,7 +22,11 @@ const HeroSection = () => {
               age and gender, nationality, and work status for meaningful friendships.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button size="lg" className="rounded-full w-full sm:w-auto">
+              <Button 
+                size="lg" 
+                className="rounded-full w-full sm:w-auto"
+                onClick={scrollToFilters}
+              >
                 Find Your Allies
               </Button>
               <Button 

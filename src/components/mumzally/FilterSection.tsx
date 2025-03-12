@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Filter, Search, UserCircle, BabyIcon, MapPin, Flag, Briefcase } from 'lucide-react';
@@ -17,7 +16,7 @@ const FilterSection = () => {
   ];
   
   return (
-    <section className="py-6 md:py-8 px-4 md:px-8 bg-secondary/30">
+    <section id="filter-section" className="py-6 md:py-8 px-4 md:px-8 bg-secondary/30">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-wrap justify-between items-center mb-4 md:mb-6 gap-2">
           <h2 className="text-xl md:text-2xl font-semibold">Filter Allies</h2>
