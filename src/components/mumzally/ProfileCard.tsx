@@ -99,8 +99,15 @@ const ProfileCard = ({
           className="w-full mt-4 rounded-full"
           onClick={() => onHeartClick(id)}
         >
-          <Heart className="mr-2 h-4 w-4" />
-          Become Allies
+          <svg width="20" height="34" viewBox="0 0 40 68" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+            <path 
+              d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
+              fill="#e2e8f0" 
+              stroke="#94a3b8"
+              strokeWidth="1.5"
+            />
+          </svg>
+          Let's try to Ally?
         </Button>
       </CardContent>
     </Card>
