@@ -24,7 +24,7 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
   const handleHeartClick = (id: number) => {
     toast({
       title: "Connection Request Sent",
-      description: "You've sent a request to become MumzAllies!",
+      description: "You've sent a request to become MumzAllies with someone in your neighborhood!",
     });
     
     onHeartClick(id);
@@ -34,7 +34,7 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
     <section className="py-8 md:py-12 px-4 md:px-8 bg-secondary/20">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl md:text-3xl font-semibold text-center mb-6 md:mb-12">
-          Potential Allies For You
+          Potential Allies In Your Neighborhood
         </h2>
         
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

@@ -35,7 +35,7 @@ const MumzAlly = () => {
       nationality: 'Lebanese',
       workStatus: 'Full-time',
       interests: ['Cooking', 'Desert Safari', 'Art'],
-      bio: 'Working mum of two looking for weekend playdate buddies in Dubai!',
+      bio: 'Working mum in Dubai Marina looking for weekend playdate buddies!',
       compatibility: 85
     },
     {
@@ -47,7 +47,7 @@ const MumzAlly = () => {
       nationality: 'British Expat',
       workStatus: 'Full-time',
       interests: ['Yoga', 'Reading', 'Beach Days'],
-      bio: 'First-time mum looking to connect with other mumz in the UAE.',
+      bio: 'Dubai Marina resident looking to connect with nearby mumz.',
       compatibility: 92
     },
     {
@@ -59,7 +59,7 @@ const MumzAlly = () => {
       nationality: 'Chinese Expat',
       workStatus: 'Full-time',
       interests: ['Swimming', 'Music', 'Mall Trips'],
-      bio: 'Proud mum of two boys who need playmates with lots of energy!',
+      bio: 'Living in Dubai Marina with two energetic boys who need playmates!',
       compatibility: 78
     }
   ];
