@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { UserCircle, MapPin, CalendarCheck, Heart } from "lucide-react";
+import { UserCircle, MapPin, MessageCircle, Heart } from "lucide-react";
 
 const steps = [
   {
@@ -21,9 +21,9 @@ const steps = [
     description: "Connect with mumz in your neighborhood who share similar interests."
   },
   {
-    icon: <CalendarCheck className="w-6 h-6 text-primary" />,
-    title: "Schedule Meetups",
-    description: "Arrange playdates, coffee meetups, or join local activities together."
+    icon: <MessageCircle className="w-6 h-6 text-primary" />,
+    title: "It Starts With a Chat",
+    description: "Begin by messaging other mumz who seem like a good match for your family."
   },
   {
     icon: <Heart className="w-6 h-6 text-primary" />,
