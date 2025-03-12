@@ -50,7 +50,7 @@ const Navbar = () => {
           className="text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-2"
         >
           <Heart className="text-primary" size={24} fill="currentColor" />
-          <span>MumzAllies</span>
+          <span>MumzAlly</span>
         </Link>
         
         <div className="hidden md:flex items-center space-x-8">
