@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -44,12 +45,12 @@ const MumzSave = () => {
 
   const handleGetDeal = () => {
     toast({
-      title: "Redirecting to MumzAlly",
-      description: "Going to the subscription page...",
+      title: "Subscription Required",
+      description: "Redirecting to MumzAlly subscription page...",
     });
-    // Redirect to the MumzAlly page
+    // Redirect to the MumzAlly page with subscription section focus
     setTimeout(() => {
-      navigate('/ally');
+      navigate('/ally?subscribe=true');
     }, 1000);
   };
 
