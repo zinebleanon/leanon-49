@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -126,7 +127,7 @@ const MumzSave = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-                  <span className="text-gradient">Mumz Save, Sell & Buy</span>
+                  <span className="text-black">Mumz Save, Sell & Buy</span>
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8 font-playfair">
                   Discover exclusive deals on top UAE brands for your family and connect with other moms to declutter your home by selling unused children's items.
