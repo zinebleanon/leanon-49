@@ -72,7 +72,7 @@ const MumzAlly = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="pt-24 pb-16">
+      <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection />
         <FilterSection />
         <MatchingVisualization />
