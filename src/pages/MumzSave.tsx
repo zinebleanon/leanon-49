@@ -302,9 +302,6 @@ const MumzSave = () => {
                       </div>
                       <h3 className="text-xl font-medium mb-2 font-playfair">{deal.title}</h3>
                       <div className="flex items-center gap-3 mb-4">
-                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                          {deal.discount} OFF
-                        </Badge>
                         <div className="flex items-center">
                           <span className="text-muted-foreground line-through text-sm mr-2">
                             {deal.originalPrice}
