@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -209,19 +208,19 @@ const MumzSave = () => {
                 <ul className="space-y-4 mb-6 font-sans">
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
-                    <span>Exclusive premium deals (up to 50% off)</span>
+                    <span>Exclusive deals on brands Mumz love (up to 50% off)</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
-                    <span>Early access to limited-time offers</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <Check className="h-5 w-5 text-green-500" />
-                    <span>Featured marketplace listings</span>
+                    <span>Access to marketplace listing features</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
                     <span>Members-only events and giveaways</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="h-5 w-5 text-green-500" />
+                    <span>Early access to special offers</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-green-500" />
