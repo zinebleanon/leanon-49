@@ -138,10 +138,13 @@ const MumzSave = () => {
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">
                   <span className="text-gradient">Mumz Save, Sell & Buy</span>
+                  <br />
+                  <span className="text-2xl md:text-3xl text-muted-foreground mt-4 block">
+                    Everything you need - from exclusive discounts to a thriving marketplace.
+                  </span>
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8">
-                  Discover exclusive deals on top brands for your family and connect with other moms to buy and sell items. 
-                  Everything you need - from exclusive discounts to a thriving marketplace.
+                  Discover exclusive deals on top brands for your family and connect with other moms to buy and sell items.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button 
