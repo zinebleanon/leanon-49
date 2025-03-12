@@ -6,6 +6,7 @@ import HeroSection from '@/components/mumzally/HeroSection';
 import FilterSection from '@/components/mumzally/FilterSection';
 import MatchingVisualization from '@/components/mumzally/MatchingVisualization';
 import ProfilesSection from '@/components/mumzally/ProfilesSection';
+import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
 import LoadingScreen from '@/components/mumzally/LoadingScreen';
 
 const MumzAlly = () => {
@@ -74,6 +75,7 @@ const MumzAlly = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection />
+        <ConnectionRequests />
         <FilterSection />
         <MatchingVisualization />
         <ProfilesSection profiles={mumProfiles} onHeartClick={handleHeartClick} />
