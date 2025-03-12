@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
-import { Heart, Users, Mail, Sparkles, Coffee, Check, Plus, Minus } from 'lucide-react';
+import { Heart, Mail, Check, Plus, Minus } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -22,7 +21,6 @@ interface Kid {
   gender: string;
 }
 
-// Data for neighborhood and nationality dropdowns
 const neighborhoods = [
   "Dubai Marina", "JLT", "Downtown Dubai", "Palm Jumeirah", "Arabian Ranches",
   "Emirates Hills", "Mirdif", "Dubailand", "Silicon Oasis", "Business Bay",
@@ -53,7 +51,6 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
     if (!formData.name || !formData.email || !formData.neighborhood || !formData.nationality) {
       toast({
         title: "Missing information",
@@ -63,7 +60,6 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
       return;
     }
 
-    // Check if kids information is complete
     const isKidsInfoComplete = kids.every(kid => kid.age && kid.gender);
     if (!isKidsInfoComplete) {
       toast({
@@ -74,16 +70,13 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
       return;
     }
     
-    // In a real app, you'd send this data to your backend
     console.log('Form submitted:', { ...formData, kids });
     
-    // Show success message
     toast({
       title: "Welcome to MumzAlly!",
       description: "Thanks for joining our community! We'll be in touch soon.",
     });
     
-    // Move to success step
     setStep('success');
   };
 
@@ -133,7 +126,6 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
-      // Reset state when closing
       setTimeout(resetModal, 300);
     }
     onOpenChange(open);
@@ -155,61 +147,23 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
         {step === 'options' && (
           <div className="grid gap-4 py-4">
             <p className="text-center text-muted-foreground mb-4">
-              Choose how you'd like to join our community:
+              Join our community of supportive moms:
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card 
-                className="cursor-pointer hover:border-primary transition-all"
-                onClick={() => setStep('form')}
-              >
-                <CardContent className="p-4 flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 mt-3">
-                    <Mail className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Join via Subscription</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Complete a simple form to join our community
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card className="cursor-pointer hover:border-primary transition-all">
-                <CardContent className="p-4 flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 mt-3">
-                    <Users className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Find Local Events</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Meet mumz in your area at our community gatherings
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="cursor-pointer hover:border-primary transition-all">
-                <CardContent className="p-4 flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 mt-3">
-                    <Coffee className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Coffee Meetups</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Join informal coffee sessions with mumz near you
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="cursor-pointer hover:border-primary transition-all">
-                <CardContent className="p-4 flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 mt-3">
-                    <Sparkles className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold mb-2">Online Workshops</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Attend virtual sessions on parenting topics
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <Card 
+              className="cursor-pointer hover:border-primary transition-all"
+              onClick={() => setStep('form')}
+            >
+              <CardContent className="p-4 flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 mt-3">
+                  <Mail className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2">Join via Subscription</h3>
+                <p className="text-sm text-muted-foreground">
+                  Complete a simple form to join our community
+                </p>
+              </CardContent>
+            </Card>
           </div>
         )}
 
