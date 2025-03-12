@@ -11,22 +11,22 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "Sign Up",
-      description: "Complete our quick registration form with your details and interests."
+      description: "Complete our subscription form with your details, children information, and neighborhood."
     },
     {
       icon: <Users className="h-6 w-6 text-primary" />,
       title: "Connect",
-      description: "Get matched with moms in your area based on your preferences."
+      description: "Get matched with moms in your neighborhood based on your children's age and interests."
     },
     {
       icon: <MapPin className="h-6 w-6 text-primary" />,
       title: "Meet Up",
-      description: "Join local events, playdates, or online discussions with your new allies."
+      description: "Join local events, playdates, or coffee meetups with nearby moms in your community."
     },
     {
       icon: <Calendar className="h-6 w-6 text-primary" />,
       title: "Stay Engaged",
-      description: "Participate in regular activities and build lasting friendships."
+      description: "Participate in regular activities and build lasting friendships with other moms."
     }
   ];
 
@@ -38,7 +38,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
             How to Join <span className="text-gradient">Our Community</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Becoming part of our supportive network of moms is easy. Follow these simple steps to connect with other moms just like you.
+            Becoming part of our supportive network of moms is easy. Follow these simple steps to connect with other moms in your neighborhood.
           </p>
         </div>
 
