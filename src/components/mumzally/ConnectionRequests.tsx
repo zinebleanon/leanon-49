@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from "@/hooks/use-toast";
+import { useState } from 'react';
 
 interface ConnectionRequest {
   id: number;
@@ -13,7 +14,6 @@ interface ConnectionRequest {
 }
 
 const ConnectionRequests = () => {
-  // This would typically come from your backend
   const requests: ConnectionRequest[] = [
     {
       id: 1,
@@ -31,7 +31,10 @@ const ConnectionRequests = () => {
     }
   ];
 
+  const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
+
   const handleAccept = (id: number, name: string) => {
+    setAcceptedRequests(prev => [...prev, id]);
     toast({
       title: "Ally Connection Made!",
       description: `You've made a new MumzAlly with ${name}!`,
@@ -79,22 +82,31 @@ const ConnectionRequests = () => {
                   >
                     <div className="flex items-center gap-2">
                       <svg width="18" height="16" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        {/* Left half of heart - filled in red */}
-                        <path 
-                          d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
-                          fill="#ea384c" 
-                          stroke="#ea384c"
-                          strokeWidth="1.5"
-                        />
-                        {/* Right half of heart - outlined */}
-                        <path 
-                          d="M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
-                          fill="#e2e8f0" 
-                          stroke="#94a3b8"
-                          strokeWidth="1.5"
-                        />
+                        {acceptedRequests.includes(request.id) ? (
+                          <path 
+                            d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
+                            fill="#ea384c" 
+                            stroke="#ea384c"
+                            strokeWidth="1.5"
+                          />
+                        ) : (
+                          <>
+                            <path 
+                              d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
+                              fill="#ea384c" 
+                              stroke="#ea384c"
+                              strokeWidth="1.5"
+                            />
+                            <path 
+                              d="M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
+                              fill="#e2e8f0" 
+                              stroke="#94a3b8"
+                              strokeWidth="1.5"
+                            />
+                          </>
+                        )}
                       </svg>
-                      Ally Back
+                      {acceptedRequests.includes(request.id) ? request.name : 'Ally Back'}
                     </div>
                   </Button>
                 </div>
