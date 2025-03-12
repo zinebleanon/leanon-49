@@ -40,6 +40,13 @@ const MumzSave = () => {
     });
   };
 
+  const handleGetDeal = () => {
+    toast({
+      title: "Redirecting to Payment",
+      description: "Processing your deal purchase...",
+    });
+  };
+
   const handleJoinButtonClick = () => {
     setIsJoinModalOpen(true);
   };
@@ -309,7 +316,12 @@ const MumzSave = () => {
                           <span className="font-semibold">{deal.salePrice}</span>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="w-full rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                        onClick={handleGetDeal}
+                      >
                         <Gift className="mr-2 h-4 w-4" />
                         Get Deal
                       </Button>
