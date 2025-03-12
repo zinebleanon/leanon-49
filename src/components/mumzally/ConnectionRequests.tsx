@@ -32,23 +32,23 @@ const ConnectionRequests = () => {
     }
   ];
 
-  const handleAccept = (id: number) => {
+  const handleAccept = (id: number, name: string) => {
     toast({
-      title: "Connection Accepted",
-      description: "You've made a new MumzAlly!",
+      title: "Ally Connection Made!",
+      description: `You've made a new MumzAlly with ${name}!`,
     });
   };
 
   const handleDecline = (id: number) => {
     toast({
-      description: "Connection request declined",
+      description: "Ally request declined",
     });
   };
 
   return (
     <section className="py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6">Connection Requests</h2>
+        <h2 className="text-2xl font-semibold mb-6">Ally Requests</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden">
@@ -87,20 +87,26 @@ const ConnectionRequests = () => {
                     </Badge>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    {request.name} wants to Ally with you
+                  </p>
                   <Button 
                     variant="default" 
-                    className="flex-1"
-                    onClick={() => handleAccept(request.id)}
+                    className="ml-auto"
+                    onClick={() => handleAccept(request.id, request.name)}
                   >
-                    Accept
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="flex-1"
-                    onClick={() => handleDecline(request.id)}
-                  >
-                    Decline
+                    <div className="flex items-center gap-2">
+                      <svg width="18" height="16" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path 
+                          d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
+                          fill="#ffffff" 
+                          stroke="#ffffff"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                      Ally Back
+                    </div>
                   </Button>
                 </div>
               </CardContent>
