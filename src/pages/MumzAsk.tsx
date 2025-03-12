@@ -359,8 +359,8 @@ const MumzAsk = () => {
       <Navbar />
       
       <main className="pt-24 pb-16">
-        {/* Hero Section */}
-        <section className="py-16 md:py-24 px-6 md:px-8">
+        {/* Hero Section - reduced bottom padding from py-16 to py-12 */}
+        <section className="py-12 md:py-16 px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -371,7 +371,7 @@ const MumzAsk = () => {
               </p>
             </div>
             
-            {/* Filter Categories (moved above search bar) */}
+            {/* Filter Categories */}
             <div className="flex flex-wrap gap-3 justify-center mb-8">
               {questionCategories.map((category) => (
                 <Button 
@@ -387,7 +387,7 @@ const MumzAsk = () => {
               ))}
             </div>
             
-            <div className="flex flex-col items-center gap-4 max-w-2xl mx-auto mb-16">
+            <div className="flex flex-col items-center gap-4 max-w-2xl mx-auto mb-8">
               <div className="relative w-full">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                   <Search className="h-5 w-5 text-muted-foreground" />
@@ -439,8 +439,8 @@ const MumzAsk = () => {
           </div>
         )}
         
-        {/* Recent Questions Section */}
-        <section className="py-16 px-6 md:px-8 bg-secondary/30">
+        {/* Recent Questions Section - changed py-16 to py-10 and removed top padding */}
+        <section className="pt-4 pb-10 px-6 md:px-8 bg-secondary/30">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-semibold">Recent Questions</h2>
