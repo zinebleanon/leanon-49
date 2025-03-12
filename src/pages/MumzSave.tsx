@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -141,7 +140,10 @@ const MumzSave = () => {
                   <span className="text-gradient">Mumz Save, Sell & Buy</span>
                   <br />
                   <span className="text-2xl md:text-3xl text-muted-foreground mt-4 block font-sans">
-                    Everything you need - from exclusive discounts to a thriving marketplace.
+                    Everything you need
+                  </span>
+                  <span className="text-2xl md:text-3xl text-muted-foreground block font-sans">
+                    from exclusive discounts to a thriving marketplace.
                   </span>
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8 font-sans">
