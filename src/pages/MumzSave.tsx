@@ -144,11 +144,11 @@ const MumzSave = () => {
                     Everything you need
                   </span>
                   <span className="text-2xl md:text-3xl text-muted-foreground block font-sans">
-                    from exclusive discounts to a thriving marketplace.
+                    from exclusive UAE discounts to decluttering unused kids gear.
                   </span>
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8 font-sans">
-                  Discover exclusive deals on top brands across the UAE for your family and connect with other moms to buy and sell items.
+                  Discover exclusive deals on top UAE brands for your family and connect with other moms to declutter your home by selling unused children's items.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button 
@@ -457,7 +457,7 @@ const MumzSave = () => {
                   </div>
                   <h3 className="text-xl font-medium mb-4 font-playfair">List Your Items</h3>
                   <p className="text-muted-foreground font-sans">
-                    Take photos, set your price, and create listings for items your family no longer needs. Reach moms across all seven emirates.
+                    Take photos, set your price, and create listings for unused kids gear your family has outgrown. Reach moms across all seven emirates.
                   </p>
                 </div>
                 
@@ -475,9 +475,9 @@ const MumzSave = () => {
                   <div className="bg-primary/10 rounded-full p-4 w-20 h-20 flex items-center justify-center mx-auto mb-6">
                     <DollarSign className="h-10 w-10 text-primary" />
                   </div>
-                  <h3 className="text-xl font-medium mb-4 font-playfair">Save & Earn</h3>
+                  <h3 className="text-xl font-medium mb-4 font-playfair">Save & Declutter</h3>
                   <p className="text-muted-foreground font-sans">
-                    Save dirhams on things you need and earn money from things you don't need anymore, all while meeting local moms.
+                    Save dirhams on things you need and declutter your UAE home by selling unused kids gear, all while connecting with local moms.
                   </p>
                 </div>
               </div>
