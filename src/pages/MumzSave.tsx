@@ -23,7 +23,7 @@ import JoinCommunityModal from '@/components/JoinCommunityModal';
 
 const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('deals'); // 'deals' or 'marketplace'
+  const [activeTab, setActiveTab] = useState('deals');
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const navigate = useNavigate();
   
@@ -45,11 +45,10 @@ const MumzSave = () => {
   const handleGetDeal = () => {
     toast({
       title: "Subscription Required",
-      description: "Redirecting to MumzAlly subscription page...",
+      description: "Redirecting to subscription payment...",
     });
-    // Redirect to the MumzAlly page with subscription section focus
     setTimeout(() => {
-      navigate('/ally?subscribe=true');
+      navigate('/ally/subscribe');
     }, 1000);
   };
 
@@ -58,12 +57,10 @@ const MumzSave = () => {
   };
 
   const handleBrowseDeals = () => {
-    // Scroll to the Featured Deals section
     const dealsSection = document.querySelector('#featured-deals');
     if (dealsSection) {
       dealsSection.scrollIntoView({ behavior: 'smooth' });
     }
-    // Set active tab to deals
     setActiveTab('deals');
   };
 
