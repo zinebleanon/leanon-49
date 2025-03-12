@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import { 
   Bookmark, 
   Tag, 
@@ -24,6 +25,7 @@ const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('deals'); // 'deals' or 'marketplace'
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,9 +44,13 @@ const MumzSave = () => {
 
   const handleGetDeal = () => {
     toast({
-      title: "Redirecting to Payment",
-      description: "Processing your deal purchase...",
+      title: "Redirecting to MumzAlly",
+      description: "Going to the subscription page...",
     });
+    // Redirect to the MumzAlly page
+    setTimeout(() => {
+      navigate('/ally');
+    }, 1000);
   };
 
   const handleJoinButtonClick = () => {
