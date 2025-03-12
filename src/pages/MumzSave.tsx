@@ -23,7 +23,6 @@ const MumzSave = () => {
   const [activeTab, setActiveTab] = useState('deals'); // 'deals' or 'marketplace'
   
   useEffect(() => {
-    // Simulate loading state for smooth intro
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -32,7 +31,6 @@ const MumzSave = () => {
   }, []);
   
   const handleSubscribe = () => {
-    // This would connect to a payment processor in a real implementation
     toast({
       title: "Redirecting to Payment",
       description: "Setting up your premium subscription...",
@@ -116,7 +114,6 @@ const MumzSave = () => {
       <Navbar />
       
       <main className="pt-24 pb-16">
-        {/* Hero Section */}
         <section className="py-12 md:py-20 px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -165,7 +162,6 @@ const MumzSave = () => {
           </div>
         </section>
 
-        {/* Subscription Section */}
         <section className="py-16 px-6 md:px-8 bg-secondary/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
@@ -251,7 +247,6 @@ const MumzSave = () => {
           </div>
         </section>
         
-        {/* Categories Section */}
         <section className="py-8 px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-semibold mb-6 font-playfair">
@@ -275,7 +270,6 @@ const MumzSave = () => {
           </div>
         </section>
         
-        {/* Featured Content Section */}
         <section className="py-16 px-6 md:px-8 bg-accent/30">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-8">
@@ -289,8 +283,8 @@ const MumzSave = () => {
               {activeTab === 'deals' ? (
                 featuredDeals.map((deal, index) => (
                   <Card key={index} className="overflow-hidden warm-card hover:shadow-md transition-all group">
-                    <div className="aspect-video bg-primary/10 flex items-center justify-center">
-                      <ShoppingBag className="h-16 w-16 text-primary/40" />
+                    <div className="aspect-[4/3] bg-primary/10 flex items-center justify-center">
+                      <ShoppingBag className="h-12 w-12 text-primary/40" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
@@ -321,8 +315,8 @@ const MumzSave = () => {
               ) : (
                 featuredItems.map((item, index) => (
                   <Card key={index} className="overflow-hidden warm-card hover:shadow-md transition-all group">
-                    <div className="aspect-video bg-primary/10 flex items-center justify-center">
-                      <Package className="h-16 w-16 text-primary/40" />
+                    <div className="aspect-[4/3] bg-primary/10 flex items-center justify-center">
+                      <Package className="h-12 w-12 text-primary/40" />
                     </div>
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
@@ -347,7 +341,6 @@ const MumzSave = () => {
           </div>
         </section>
         
-        {/* Additional Section - Based on Active Tab */}
         {activeTab === 'deals' ? (
           <section className="py-16 px-6 md:px-8">
             <div className="max-w-7xl mx-auto">
