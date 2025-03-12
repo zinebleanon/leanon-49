@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -57,7 +56,17 @@ const MumzSave = () => {
   const handleJoinButtonClick = () => {
     setIsJoinModalOpen(true);
   };
-  
+
+  const handleBrowseDeals = () => {
+    // Scroll to the Featured Deals section
+    const dealsSection = document.querySelector('#featured-deals');
+    if (dealsSection) {
+      dealsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Set active tab to deals
+    setActiveTab('deals');
+  };
+
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
@@ -149,7 +158,7 @@ const MumzSave = () => {
                   <Button 
                     size="lg" 
                     className={`rounded-full ${activeTab === 'deals' ? 'bg-primary' : 'bg-primary/70'}`}
-                    onClick={() => setActiveTab('deals')}
+                    onClick={handleBrowseDeals}
                   >
                     <PercentCircle className="mr-2 h-4 w-4" />
                     Browse Deals
@@ -294,7 +303,7 @@ const MumzSave = () => {
         <section className="py-16 px-6 md:px-8 bg-accent/30">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-semibold font-playfair">
+              <h2 id="featured-deals" className="text-3xl font-semibold font-playfair">
                 {activeTab === 'deals' ? 'Featured Deals' : 'Featured Items'}
               </h2>
               <Button variant="ghost" className="rounded-full">View All</Button>
