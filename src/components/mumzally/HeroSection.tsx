@@ -1,5 +1,6 @@
 
 import { Button } from '@/components/ui/button';
+import HowItWorksModal from './HowItWorksModal';
 
 const HeroSection = () => {
   const scrollToFilters = () => {
@@ -28,13 +29,7 @@ const HeroSection = () => {
             >
               Find Your Allies
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="rounded-full w-full sm:w-auto mt-3 sm:mt-0"
-            >
-              How It Works
-            </Button>
+            <HowItWorksModal />
           </div>
         </div>
       </div>
