@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -113,7 +114,7 @@ const MumzAsk = () => {
     {
       id: 3,
       question: "Looking for postpartum recovery tips after C-section",
-      detail: "I had a C-section two weeks ago and I'm struggling with the recovery. Any tips from moms who've been through this? Particularly interested in how to manage pain and take care of the incision site.",
+      detail: "I had a C-section two weeks ago and I'm struggling with the recovery. Any tips from mumz who've been through this? Particularly interested in how to manage pain and take care of the incision site.",
       askedBy: "Jessica K.",
       askedAt: "1 week ago",
       answers: 32,
@@ -174,7 +175,7 @@ const MumzAsk = () => {
                 Get Answers with <span className="text-gradient">Mumz Ask</span>
               </h1>
               <p className="text-lg text-muted-foreground">
-                Ask questions, get advice, and learn from experienced moms.
+                Ask questions, get advice, and learn from experienced mumz.
               </p>
             </div>
             
@@ -374,7 +375,7 @@ const MumzAsk = () => {
                 </div>
                 <h3 className="text-xl font-medium mb-4">Community Approved</h3>
                 <p className="text-muted-foreground">
-                  Wisdom from thousands of moms who have been there and done that.
+                  Wisdom from thousands of mumz who have been there and done that.
                 </p>
               </div>
               

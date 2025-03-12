@@ -22,7 +22,7 @@ const Footer = () => {
               Mumz Ally
             </h3>
             <ul className="space-y-3">
-              {['Mom Groups', 'Events', 'Meetups', 'Support Circles', 'Mentorship'].map((item) => (
+              {['Mumz Groups', 'Events', 'Meetups', 'Support Circles', 'Mentorship'].map((item) => (
                 <li key={item}>
                   <a href="#" className="text-muted-foreground hover:text-foreground transition-colors animated-underline">
                     {item}
