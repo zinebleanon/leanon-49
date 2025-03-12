@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
 import { 
   Bookmark, 
   Tag, 
@@ -23,7 +21,6 @@ import {
 const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('deals'); // 'deals' or 'marketplace'
-  const [email, setEmail] = useState('');
   
   useEffect(() => {
     // Simulate loading state for smooth intro
@@ -34,25 +31,12 @@ const MumzSave = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      toast({
-        title: "Email Required",
-        description: "Please enter your email to subscribe",
-        variant: "destructive",
-      });
-      return;
-    }
-    
+  const handleSubscribe = () => {
     // This would connect to a payment processor in a real implementation
     toast({
-      title: "Subscription Initialized",
-      description: "We'll redirect you to payment shortly",
+      title: "Redirecting to Payment",
+      description: "Setting up your premium subscription...",
     });
-    
-    // Reset email field
-    setEmail('');
   };
   
   if (isLoading) {
@@ -218,7 +202,7 @@ const MumzSave = () => {
                   </li>
                 </ul>
                 
-                <Button className="w-full warm-button" size="lg">
+                <Button onClick={handleSubscribe} className="w-full warm-button" size="lg">
                   <CreditCard className="mr-2 h-4 w-4" />
                   Subscribe Now
                 </Button>
@@ -249,21 +233,19 @@ const MumzSave = () => {
                   </div>
                 </div>
                 
-                <form onSubmit={handleSubscribe} className="warm-card rounded-lg p-6">
-                  <h4 className="text-lg font-medium mb-4 font-playfair">Get Started Today</h4>
-                  <div className="flex gap-3">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="flex-1"
-                    />
-                    <Button type="submit" className="warm-button">
-                      Subscribe
-                    </Button>
+                <div className="warm-card rounded-lg p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <CreditCard className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-medium mb-2 font-playfair">Get Started Today</h4>
+                      <Button onClick={handleSubscribe} className="warm-button">
+                        Continue to Payment
+                      </Button>
+                    </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
@@ -492,4 +474,3 @@ const MumzSave = () => {
 };
 
 export default MumzSave;
-
