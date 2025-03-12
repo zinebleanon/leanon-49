@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import HowToJoinSection from '@/components/HowToJoinSection';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -17,10 +18,12 @@ import {
   Check,
   CreditCard
 } from 'lucide-react';
+import JoinCommunityModal from '@/components/JoinCommunityModal';
 
 const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('deals'); // 'deals' or 'marketplace'
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -35,6 +38,10 @@ const MumzSave = () => {
       title: "Redirecting to Payment",
       description: "Setting up your premium subscription...",
     });
+  };
+
+  const handleJoinButtonClick = () => {
+    setIsJoinModalOpen(true);
   };
   
   if (isLoading) {
@@ -459,9 +466,16 @@ const MumzSave = () => {
             </div>
           </section>
         )}
+        
+        <HowToJoinSection onJoinClick={handleJoinButtonClick} />
       </main>
       
       <Footer />
+      
+      <JoinCommunityModal
+        isOpen={isJoinModalOpen}
+        onOpenChange={setIsJoinModalOpen}
+      />
     </div>
   );
 };

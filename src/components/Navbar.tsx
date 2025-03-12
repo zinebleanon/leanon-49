@@ -4,10 +4,12 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Users, HelpCircle, Bookmark, Heart } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import JoinCommunityModal from './JoinCommunityModal';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const location = useLocation();
   
   useEffect(() => {
@@ -36,6 +38,13 @@ const Navbar = () => {
     { name: 'Mumz Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Mumz Save', icon: <Bookmark className="h-4 w-4" />, path: '/save' },
   ];
+
+  const handleJoinButtonClick = () => {
+    setIsJoinModalOpen(true);
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
   
   return (
     <header
@@ -75,6 +84,7 @@ const Navbar = () => {
             className={cn(
               "transition-all duration-300 rounded-full",
             )}
+            onClick={handleJoinButtonClick}
           >
             Join Us
           </Button>
@@ -124,6 +134,7 @@ const Navbar = () => {
                 variant="warm"
                 className="w-full py-6 rounded-full animate-slide-up"
                 style={{ animationDelay: '0.2s' }}
+                onClick={handleJoinButtonClick}
               >
                 Join Us
               </Button>
@@ -131,6 +142,12 @@ const Navbar = () => {
           </nav>
         </div>
       )}
+
+      {/* Join Community Modal */}
+      <JoinCommunityModal
+        isOpen={isJoinModalOpen}
+        onOpenChange={setIsJoinModalOpen}
+      />
     </header>
   );
 };
