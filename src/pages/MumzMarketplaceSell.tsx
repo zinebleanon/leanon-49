@@ -37,7 +37,7 @@ const MumzMarketplaceSell = () => {
               </Link>
             </Button>
             <h1 className="text-3xl font-bold mb-2 font-playfair">
-              <span className="text-orange-500">Sell</span> <span className="text-black">on Mumz World Marketplace</span>
+              <span className="text-orange-500">Sell</span> <span className="text-black">on MumzAlly Marketplace</span>
             </h1>
             <p className="text-muted-foreground mb-2">
               List your gently used children's items for sale and connect with UAE moms looking for quality items.
