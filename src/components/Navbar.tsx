@@ -66,7 +66,7 @@ const Navbar = () => {
     { name: 'Mumz Ally', icon: <Heart className="h-4 w-4 text-[#ea384c]" fill="#ea384c" />, path: '/ally' },
     { name: 'Mumz Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { 
-      name: 'MumzSave', 
+      name: 'Mumz Save', 
       icon: <Bookmark className="h-4 w-4" />, 
       path: '/save',
       children: [

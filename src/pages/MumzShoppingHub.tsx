@@ -48,7 +48,7 @@ const MumzShoppingHub = () => {
         <div className="max-w-7xl mx-auto">
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2 font-playfair">
-              <span className="text-orange-500">MumzSave</span>
+              <span className="text-orange-500">Mumz Save</span>
             </h1>
             <p className="text-muted-foreground mb-6">
               Find amazing discounts and buy/sell children's items all in one place.
