@@ -40,7 +40,7 @@ const Navbar = () => {
   
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
-    { name: 'Mumz Ally', icon: <Users className="h-4 w-4" />, path: '/ally' },
+    { name: 'Mumz Ally', icon: <Heart className="h-4 w-4 text-[#ea384c]" fill="#ea384c" />, path: '/ally' },
     { name: 'Mumz Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Mumz Save', icon: <Bookmark className="h-4 w-4" />, path: '/save' },
     { name: 'Marketplace', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
