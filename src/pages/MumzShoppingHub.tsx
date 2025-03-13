@@ -65,6 +65,30 @@ const MumzShoppingHub = () => {
                   <span>Marketplace</span>
                 </TabsTrigger>
               </TabsList>
+              
+              <div className="mb-8">
+                {activeTab === 'save' && (
+                  <div className="p-4 bg-orange-50 rounded-lg border border-orange-100">
+                    <h3 className="text-lg font-medium mb-2 text-orange-700">About Discounts</h3>
+                    <p className="text-muted-foreground">
+                      Access exclusive discounts on top baby and children's brands across the UAE. 
+                      Premium members enjoy early access to deals and additional savings. 
+                      Browse by category or featured deals to find what you need at the best prices.
+                    </p>
+                  </div>
+                )}
+                
+                {activeTab === 'marketplace' && (
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                    <h3 className="text-lg font-medium mb-2 text-blue-700">About Marketplace</h3>
+                    <p className="text-muted-foreground">
+                      Buy and sell gently used or new children's items directly from other parents in the UAE. 
+                      Find high-quality items at great prices or sell items your children have outgrown. 
+                      All transactions are secure and handled through our trusted platform.
+                    </p>
+                  </div>
+                )}
+              </div>
             </Tabs>
           </div>
           
