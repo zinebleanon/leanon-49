@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Filter, Search, UserCircle, BabyIcon, MapPin, Flag, Briefcase, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
@@ -10,7 +10,11 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const FilterSection = () => {
+interface FilterSectionProps {
+  onFiltersChange?: (filters: Record<string, any>) => void;
+}
+
+const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
   
@@ -31,6 +35,13 @@ const FilterSection = () => {
   const locations = ['Dubai Marina', 'Palm Jumeirah', 'Downtown Dubai', 'JBR', 'Arabian Ranches'];
   const nationalities = ['UAE', 'Lebanese', 'British Expat', 'Indian Expat', 'American Expat', 'Chinese Expat', 'Other'];
   const workStatuses = ['Full-time', 'Part-time', 'Stay-at-home', 'Freelancer', 'Business Owner'];
+  
+  useEffect(() => {
+    // Call the onFiltersChange callback when activeFilters changes
+    if (onFiltersChange) {
+      onFiltersChange(activeFilters);
+    }
+  }, [activeFilters, onFiltersChange]);
   
   const handleFilterSelect = (filterId: string) => {
     setActiveFilter(filterId);
