@@ -12,11 +12,9 @@ import PremiumSection from '@/components/mumzsave/PremiumSection';
 import CategorySection from '@/components/mumzsave/CategorySection';
 import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
 import TestimonialSection from '@/components/mumzsave/TestimonialSection';
-import MarketplaceInfoSection from '@/components/mumzsave/MarketplaceInfoSection';
 
 const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('deals');
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const navigate = useNavigate();
   
@@ -54,7 +52,6 @@ const MumzSave = () => {
     if (dealsSection) {
       dealsSection.scrollIntoView({ behavior: 'smooth' });
     }
-    setActiveTab('deals');
   };
 
   if (isLoading) {
@@ -64,11 +61,6 @@ const MumzSave = () => {
   const dealCategories = [
     "Baby Gear", "Clothing", "Toys", "Feeding", "Diapers", 
     "Health", "Maternity", "Books", "Home", "Services"
-  ];
-  
-  const marketplaceCategories = [
-    "Baby Clothes", "Toys", "Strollers", "Car Seats", "Feeding", 
-    "Books", "Home", "Maternity", "Furniture", "Electronics"
   ];
   
   const featuredDeals = [
@@ -101,61 +93,31 @@ const MumzSave = () => {
     }
   ];
   
-  const featuredItems = [
-    {
-      title: "Cybex Stroller (Like New)",
-      seller: "Emma's Shop in Dubai Marina",
-      price: "900 AED",
-      condition: "Barely Used",
-      image: "walker"
-    },
-    {
-      title: "Plan Toys Wooden Set",
-      seller: "Natural Kids Al Ain",
-      price: "149 AED",
-      condition: "New",
-      image: "toys"
-    },
-    {
-      title: "Baby Clothes Bundle (0-3m)",
-      seller: "Second Life Sharjah",
-      price: "120 AED",
-      condition: "Good",
-      image: "clothes"
-    }
-  ];
-  
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="pt-24 pb-16">
         <HeroSection 
-          activeTab={activeTab} 
-          setActiveTab={setActiveTab}
           handleBrowseDeals={handleBrowseDeals}
         />
 
         <PremiumSection handleSubscribe={handleSubscribe} />
         
         <CategorySection 
-          activeTab={activeTab}
+          activeTab="deals"
           dealCategories={dealCategories}
-          marketplaceCategories={marketplaceCategories}
+          marketplaceCategories={[]}
         />
         
         <FeaturedDealsSection 
-          activeTab={activeTab}
+          activeTab="deals"
           featuredDeals={featuredDeals}
-          featuredItems={featuredItems}
+          featuredItems={[]}
           handleGetDeal={handleGetDeal}
         />
         
-        {activeTab === 'deals' ? (
-          <TestimonialSection />
-        ) : (
-          <MarketplaceInfoSection />
-        )}
+        <TestimonialSection />
         
         <HowToJoinSection onJoinClick={handleJoinButtonClick} />
       </main>

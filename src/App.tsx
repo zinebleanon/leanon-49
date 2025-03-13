@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import MumzAlly from "./pages/MumzAlly";
 import MumzAsk from "./pages/MumzAsk";
 import MumzSave from "./pages/MumzSave";
+import MumzMarketplace from "./pages/MumzMarketplace";
 import MumzAllySubscribe from "./pages/MumzAllySubscribe";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/ally/subscribe" element={<MumzAllySubscribe />} />
           <Route path="/ask" element={<MumzAsk />} />
           <Route path="/save" element={<MumzSave />} />
+          <Route path="/marketplace" element={<MumzMarketplace />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

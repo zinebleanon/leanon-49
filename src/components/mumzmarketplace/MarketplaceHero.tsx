@@ -1,43 +1,34 @@
 
 import { Button } from '@/components/ui/button';
-import { PercentCircle, ShoppingBag } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ShoppingBag, Package } from 'lucide-react';
 
-interface HeroSectionProps {
-  handleBrowseDeals: () => void;
-}
-
-const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
+const MarketplaceHero = () => {
   return (
     <section className="py-12 md:py-20 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-              <span className="text-orange-500">Mumz</span> <span className="text-black">Save</span>
+              <span className="text-orange-500">Mumz</span> <span className="text-black">World Marketplace</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 font-playfair">
-              Discover exclusive deals on top UAE brands for your family. Premium members get early access to the best offers and special discounts.
+              Buy and sell gently used children's items across the UAE. Connect with other moms to declutter your home and find quality items at a fraction of retail prices.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
                 className="rounded-full bg-primary"
-                onClick={handleBrowseDeals}
               >
-                <PercentCircle className="mr-2 h-4 w-4" />
-                Browse Deals
+                <ShoppingBag className="mr-2 h-4 w-4" />
+                Browse Items
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="rounded-full"
-                asChild
               >
-                <Link to="/marketplace">
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Mumz World Marketplace
-                </Link>
+                <Package className="mr-2 h-4 w-4" />
+                Start Selling
               </Button>
             </div>
           </div>
@@ -47,4 +38,4 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
   );
 };
 
-export default HeroSection;
+export default MarketplaceHero;
