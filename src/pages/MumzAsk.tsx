@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import ReactionBar, { Reaction } from '@/components/mumzask/ReactionBar';
 import CommentSection, { Comment } from '@/components/mumzask/CommentSection';
@@ -25,9 +25,12 @@ import {
   Clock,
   ChevronRight,
   CheckCircle,
-  X
+  X,
+  Filter,
+  SlidersHorizontal
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 // Adding interfaces for better type checking
 interface Answer {
@@ -59,6 +62,8 @@ const MumzAsk = () => {
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const [showAskForm, setShowAskForm] = useState(false);
   const [recentQuestions, setRecentQuestions] = useState<QuestionData[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'unanswered'>('newest');
   const { toast } = useToast();
   
   useEffect(() => {
@@ -353,6 +358,35 @@ const MumzAsk = () => {
       })
     );
   };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, this would trigger an API call
+    toast({
+      title: "Search initiated",
+      description: `Searching for: ${searchQuery}`,
+    });
+  };
+
+  const filteredQuestions = recentQuestions
+    .filter(item => !selectedCategory || item.category === selectedCategory)
+    .filter(item => !searchQuery || 
+      item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.detail.toLowerCase().includes(searchQuery.toLowerCase()));
+  
+  // Sort questions based on sortBy state
+  const sortedQuestions = [...filteredQuestions].sort((a, b) => {
+    switch (sortBy) {
+      case 'popular':
+        return (b.answers || 0) - (a.answers || 0);
+      case 'unanswered':
+        return (a.answers || 0) - (b.answers || 0);
+      case 'newest':
+      default:
+        // This is simplified, in a real app we would convert timestamps properly
+        return 0; // Default to the original order
+    }
+  });
   
   return (
     <div className="min-h-screen bg-background">
@@ -371,45 +405,115 @@ const MumzAsk = () => {
               </p>
             </div>
             
-            {/* Filter Categories */}
-            <div className="flex flex-wrap gap-3 justify-center mb-8">
-              {questionCategories.map((category) => (
-                <Button 
-                  key={category.name} 
-                  variant={selectedCategory === category.name ? "default" : "outline"} 
-                  size="sm" 
-                  className="rounded-full flex items-center"
-                  onClick={() => handleCategoryClick(category.name)}
-                >
-                  {category.icon}
-                  {category.name}
-                </Button>
-              ))}
-            </div>
-            
+            {/* Ask Question and Search Section */}
             <div className="flex flex-col items-center gap-4 max-w-2xl mx-auto mb-8">
-              <div className="relative w-full">
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <input
-                  type="search"
-                  placeholder="Search for questions or topics..."
-                  className="w-full py-4 pl-12 pr-4 rounded-full border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <Button className="absolute right-1 top-1 rounded-full">
-                  Search
-                </Button>
-              </div>
-              
               <Button 
                 size="lg" 
-                className="rounded-full mt-2 w-full sm:w-auto"
+                className="rounded-full w-full sm:w-auto"
                 onClick={handleAskQuestion}
               >
                 <HelpCircle className="mr-2 h-4 w-4" />
                 Ask Mumz
               </Button>
+              
+              <form onSubmit={handleSearch} className="w-full">
+                <div className="relative w-full">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <Input
+                    type="search"
+                    placeholder="Search for questions or topics..."
+                    className="w-full py-4 pl-12 pr-4 rounded-full border border-input focus:ring-2 focus:ring-primary"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Button 
+                    type="submit"
+                    className="absolute right-1 top-1 rounded-full"
+                  >
+                    Search
+                  </Button>
+                </div>
+              </form>
+            </div>
+            
+            {/* Filter Categories */}
+            <div className="bg-secondary/10 rounded-lg p-4 max-w-5xl mx-auto mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-medium flex items-center">
+                  <SlidersHorizontal className="h-4 w-4 mr-2" />
+                  Filters
+                </h3>
+                
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" size="sm" className="rounded-full flex items-center gap-1">
+                      <Filter className="h-3 w-3" />
+                      Sort by: {sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-48 p-0">
+                    <div className="p-2">
+                      <Button 
+                        variant={sortBy === 'newest' ? 'default' : 'ghost'} 
+                        size="sm" 
+                        className="w-full justify-start mb-1"
+                        onClick={() => setSortBy('newest')}
+                      >
+                        Newest first
+                      </Button>
+                      <Button 
+                        variant={sortBy === 'popular' ? 'default' : 'ghost'} 
+                        size="sm" 
+                        className="w-full justify-start mb-1"
+                        onClick={() => setSortBy('popular')}
+                      >
+                        Most answered
+                      </Button>
+                      <Button 
+                        variant={sortBy === 'unanswered' ? 'default' : 'ghost'} 
+                        size="sm" 
+                        className="w-full justify-start"
+                        onClick={() => setSortBy('unanswered')}
+                      >
+                        Unanswered
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {questionCategories.map((category) => (
+                  <Button 
+                    key={category.name} 
+                    variant={selectedCategory === category.name ? "default" : "outline"} 
+                    size="sm" 
+                    className="rounded-full flex items-center"
+                    onClick={() => handleCategoryClick(category.name)}
+                  >
+                    {category.icon}
+                    {category.name}
+                  </Button>
+                ))}
+              </div>
+              
+              {selectedCategory && (
+                <div className="mt-3 flex items-center">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1 px-3 py-1">
+                    {selectedCategory}
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-4 w-4 p-0 ml-1" 
+                      onClick={() => setSelectedCategory(null)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -443,37 +547,127 @@ const MumzAsk = () => {
         <section className="pt-4 pb-10 px-6 md:px-8 bg-secondary/30">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-semibold">Recent Questions</h2>
-              <Button variant="ghost" className="rounded-full">View All</Button>
+              <h2 className="text-3xl font-semibold">
+                {searchQuery ? 'Search Results' : 'Recent Questions'}
+              </h2>
+              <Badge variant="outline" className="px-3 py-1">
+                {sortedQuestions.length} {sortedQuestions.length === 1 ? 'result' : 'results'} found
+              </Badge>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              {recentQuestions
-                .filter(item => !selectedCategory || item.category === selectedCategory)
-                .map((item) => (
-                <Card 
-                  key={item.id} 
-                  className={`p-6 bg-white/50 backdrop-blur-sm border-white/20 hover:shadow-md transition-all ${expandedQuestion === item.id ? 'md:col-span-2' : ''}`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="bg-orange-500/10 text-orange-700 border-orange-200">
-                      {item.category}
-                    </Badge>
-                    {expandedQuestion !== item.id && (
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground ml-auto">
-                        <MessageSquare className="h-3 w-3" />
-                        {item.answers} answers
-                      </span>
-                    )}
-                  </div>
-                  
-                  <h3 className="text-xl font-medium mb-3">{item.question}</h3>
-                  
-                  {expandedQuestion === item.id ? (
-                    <div className="space-y-6">
-                      <div className="bg-background/50 p-4 rounded-lg">
-                        <p className="text-sm text-muted-foreground mb-4">{item.detail}</p>
-                        <div className="flex items-center justify-between text-xs">
+            {sortedQuestions.length > 0 ? (
+              <div className="grid md:grid-cols-2 gap-6">
+                {sortedQuestions.map((item) => (
+                  <Card 
+                    key={item.id} 
+                    className={`p-6 bg-white/50 backdrop-blur-sm border-white/20 hover:shadow-md transition-all ${expandedQuestion === item.id ? 'md:col-span-2' : ''}`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="outline" className="bg-orange-500/10 text-orange-700 border-orange-200">
+                        {item.category}
+                      </Badge>
+                      {expandedQuestion !== item.id && (
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground ml-auto">
+                          <MessageSquare className="h-3 w-3" />
+                          {item.answers} answers
+                        </span>
+                      )}
+                    </div>
+                    
+                    <h3 className="text-xl font-medium mb-3">{item.question}</h3>
+                    
+                    {expandedQuestion === item.id ? (
+                      <div className="space-y-6">
+                        <div className="bg-background/50 p-4 rounded-lg">
+                          <p className="text-sm text-muted-foreground mb-4">{item.detail}</p>
+                          <div className="flex items-center justify-between text-xs">
+                            <div className="flex items-center gap-2">
+                              <div className="bg-primary/10 rounded-full w-6 h-6 flex items-center justify-center">
+                                <User className="h-3 w-3 text-primary" />
+                              </div>
+                              <span>{item.askedBy}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>{item.askedAt}</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Emoji Reactions */}
+                        <ReactionBar 
+                          initialReactions={item.reactions}
+                          onReact={(type) => handleReaction(item.id, type)}
+                          showComments={item.showComments}
+                          commentCount={item.comments?.length || 0}
+                          onToggleComments={() => toggleComments(item.id)}
+                        />
+                        
+                        {/* Comment Section */}
+                        {item.showComments && (
+                          <div className="mt-4 pt-4 border-t">
+                            <CommentSection 
+                              comments={item.comments || []}
+                              onAddComment={(text) => handleAddComment(item.id, text)}
+                              onLike={(commentId) => handleLikeComment(item.id, commentId)}
+                              onDislike={(commentId) => handleDislikeComment(item.id, commentId)}
+                            />
+                          </div>
+                        )}
+                        
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2">
+                            <MessageSquare className="h-4 w-4 text-primary" />
+                            <h4 className="font-medium">Answers ({item.answers})</h4>
+                          </div>
+                          
+                          {item.answersData.map((answer) => (
+                            <div key={answer.id} className="bg-white p-4 rounded-lg shadow-sm">
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center">
+                                  <User className="h-4 w-4 text-primary" />
+                                </div>
+                                <div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-medium text-sm">{answer.answeredBy}</span>
+                                    {answer.isExpert && (
+                                      <Badge variant="outline" className="bg-blue-500/10 text-blue-700 border-blue-200 text-xs">
+                                        <CheckCircle className="h-3 w-3 mr-1" /> Expert
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <span className="text-xs text-muted-foreground">{answer.time}</span>
+                                </div>
+                              </div>
+                              
+                              <p className="text-sm mb-3">{answer.text}</p>
+                              
+                              <div className="flex justify-between items-center">
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  className="text-xs flex items-center gap-1"
+                                  onClick={() => handleUpvote(item.id, answer.id)}
+                                >
+                                  <ThumbsUp className="h-3 w-3" />
+                                  Helpful ({answer.upvotes})
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <Button 
+                          variant="outline" 
+                          className="w-full"
+                          onClick={() => toggleExpandQuestion(item.id)}
+                        >
+                          Show Less
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                           <div className="flex items-center gap-2">
                             <div className="bg-primary/10 rounded-full w-6 h-6 flex items-center justify-center">
                               <User className="h-3 w-3 text-primary" />
@@ -485,116 +679,39 @@ const MumzAsk = () => {
                             <span>{item.askedAt}</span>
                           </div>
                         </div>
-                      </div>
-                      
-                      {/* Emoji Reactions */}
-                      <ReactionBar 
-                        initialReactions={item.reactions}
-                        onReact={(type) => handleReaction(item.id, type)}
-                        showComments={item.showComments}
-                        commentCount={item.comments?.length || 0}
-                        onToggleComments={() => toggleComments(item.id)}
-                      />
-                      
-                      {/* Comment Section */}
-                      {item.showComments && (
-                        <div className="mt-4 pt-4 border-t">
-                          <CommentSection 
-                            comments={item.comments || []}
-                            onAddComment={(text) => handleAddComment(item.id, text)}
-                            onLike={(commentId) => handleLikeComment(item.id, commentId)}
-                            onDislike={(commentId) => handleDislikeComment(item.id, commentId)}
+                        
+                        {/* Emoji Reactions - Compact View */}
+                        <div className="mb-4">
+                          <ReactionBar 
+                            initialReactions={item.reactions}
+                            onReact={(type) => handleReaction(item.id, type)}
+                            commentCount={item.comments?.length || 0}
                           />
                         </div>
-                      )}
-                      
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2">
-                          <MessageSquare className="h-4 w-4 text-primary" />
-                          <h4 className="font-medium">Answers ({item.answers})</h4>
-                        </div>
                         
-                        {item.answersData.map((answer) => (
-                          <div key={answer.id} className="bg-white p-4 rounded-lg shadow-sm">
-                            <div className="flex items-center gap-2 mb-3">
-                              <div className="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center">
-                                <User className="h-4 w-4 text-primary" />
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-medium text-sm">{answer.answeredBy}</span>
-                                  {answer.isExpert && (
-                                    <Badge variant="outline" className="bg-blue-500/10 text-blue-700 border-blue-200 text-xs">
-                                      <CheckCircle className="h-3 w-3 mr-1" /> Expert
-                                    </Badge>
-                                  )}
-                                </div>
-                                <span className="text-xs text-muted-foreground">{answer.time}</span>
-                              </div>
-                            </div>
-                            
-                            <p className="text-sm mb-3">{answer.text}</p>
-                            
-                            <div className="flex justify-between items-center">
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="text-xs flex items-center gap-1"
-                                onClick={() => handleUpvote(item.id, answer.id)}
-                              >
-                                <ThumbsUp className="h-3 w-3" />
-                                Helpful ({answer.upvotes})
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <Button 
-                        variant="outline" 
-                        className="w-full"
-                        onClick={() => toggleExpandQuestion(item.id)}
-                      >
-                        Show Less
-                      </Button>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                        <div className="flex items-center gap-2">
-                          <div className="bg-primary/10 rounded-full w-6 h-6 flex items-center justify-center">
-                            <User className="h-3 w-3 text-primary" />
-                          </div>
-                          <span>{item.askedBy}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          <span>{item.askedAt}</span>
-                        </div>
-                      </div>
-                      
-                      {/* Emoji Reactions - Compact View */}
-                      <div className="mb-4">
-                        <ReactionBar 
-                          initialReactions={item.reactions}
-                          onReact={(type) => handleReaction(item.id, type)}
-                          commentCount={item.comments?.length || 0}
-                        />
-                      </div>
-                      
-                      <Button 
-                        variant="outline" 
-                        className="w-full flex items-center justify-center gap-2"
-                        onClick={() => toggleExpandQuestion(item.id)}
-                      >
-                        Show Answers
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </>
-                  )}
-                </Card>
-              ))}
-            </div>
+                        <Button 
+                          variant="outline" 
+                          className="w-full flex items-center justify-center gap-2"
+                          onClick={() => toggleExpandQuestion(item.id)}
+                        >
+                          Show Answers
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-background rounded-lg shadow-sm">
+                <h3 className="text-xl font-medium mb-2">No matching questions found</h3>
+                <p className="text-muted-foreground">
+                  {searchQuery 
+                    ? "Try adjusting your search terms or filters"
+                    : "Try selecting a different category or clearing filters"}
+                </p>
+              </div>
+            )}
           </div>
         </section>
         
