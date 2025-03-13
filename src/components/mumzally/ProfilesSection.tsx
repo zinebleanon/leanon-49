@@ -19,9 +19,10 @@ interface MumProfile {
 interface ProfilesSectionProps {
   profiles: MumProfile[];
   onHeartClick: (id: number) => void;
+  onMessageClick?: (id: number, name: string) => void;
 }
 
-const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
+const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSectionProps) => {
   const handleHeartClick = (id: number) => {
     toast({
       title: "Connection Request Sent",
@@ -35,7 +36,7 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
     <section className="py-8 md:py-12 px-4 md:px-8 bg-gradient-to-b from-secondary/30 to-background/90">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Mums Near You</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Allies</h2>
           <Badge variant="outline" className="px-3 py-1">
             {profiles.length} {profiles.length === 1 ? 'result' : 'results'} found
           </Badge>
@@ -48,6 +49,7 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
                 key={profile.id}
                 {...profile}
                 onHeartClick={handleHeartClick}
+                onMessageClick={onMessageClick}
               />
             ))}
           </div>

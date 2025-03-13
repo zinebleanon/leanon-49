@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,10 +8,22 @@ import ProfilesSection from '@/components/mumzally/ProfilesSection';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
 import LoadingScreen from '@/components/mumzally/LoadingScreen';
 import { toast } from "@/hooks/use-toast";
+import MessageForm from '@/components/mumzally/MessageForm';
 
 const MumzAlly = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState<Record<string, any>>({});
+  const [selectedMum, setSelectedMum] = useState<{id: number, name: string} | null>(null);
+  const [isMessageFormOpen, setIsMessageFormOpen] = useState(false);
+  
+  // Current user profile data (would normally come from authentication)
+  const currentUserProfile = {
+    location: 'Dubai Marina',
+    kids: [{age: 3, gender: 'Girl'}],
+    workStatus: 'Part-time',
+    interests: ['Yoga', 'Reading', 'Beach Days'],
+    nationality: 'British Expat'
+  };
   
   useEffect(() => {
     // Simulate loading state for smooth intro
@@ -27,6 +40,11 @@ const MumzAlly = () => {
       title: "Connection Request Sent",
       description: "You've sent a request to connect with another mum in your area!",
     });
+  };
+  
+  const handleMessageClick = (id: number, name: string) => {
+    setSelectedMum({id, name});
+    setIsMessageFormOpen(true);
   };
   
   // Comprehensive list of mum profiles with various attributes for filtering
@@ -105,6 +123,55 @@ const MumzAlly = () => {
     }
   ];
   
+  // Calculate automatic compatibility scores based on profile matching
+  const calculateCompatibilityScore = (profile) => {
+    let score = 0;
+    
+    // Location match (highest priority) - up to 40 points
+    if (profile.location === currentUserProfile.location) {
+      score += 40;
+    } else if (['Dubai Marina', 'JBR'].includes(profile.location) && 
+               ['Dubai Marina', 'JBR'].includes(currentUserProfile.location)) {
+      // Nearby neighborhoods
+      score += 30;
+    }
+    
+    // Kids age similarity (second priority) - up to 30 points
+    const kidAgeMatches = profile.kids.some(profileKid => 
+      currentUserProfile.kids.some(userKid => 
+        Math.abs(profileKid.age - userKid.age) <= 2
+      )
+    );
+    
+    if (kidAgeMatches) {
+      score += 30;
+    }
+    
+    // Work status match - up to 10 points
+    if (profile.workStatus === currentUserProfile.workStatus) {
+      score += 10;
+    }
+    
+    // Interests match - up to 15 points
+    const sharedInterests = profile.interests.filter(interest => 
+      currentUserProfile.interests.includes(interest)
+    );
+    score += Math.min(sharedInterests.length * 5, 15);
+    
+    // Nationality - 5 points
+    if (profile.nationality === currentUserProfile.nationality) {
+      score += 5;
+    }
+    
+    return score;
+  };
+  
+  // Automatically rank profiles by compatibility before filters
+  const rankedProfiles = [...allMumProfiles].map(profile => ({
+    ...profile,
+    compatibility: calculateCompatibilityScore(profile)
+  })).sort((a, b) => b.compatibility - a.compatibility);
+  
   // Apply filters to profiles
   const applyFilters = (profiles, activeFilters) => {
     return profiles.filter(profile => {
@@ -159,8 +226,8 @@ const MumzAlly = () => {
   
   // Get filtered profiles
   const filteredProfiles = Object.keys(filters).length > 0 
-    ? applyFilters(allMumProfiles, filters)
-    : allMumProfiles;
+    ? applyFilters(rankedProfiles, filters)
+    : rankedProfiles;
   
   if (isLoading) {
     return <LoadingScreen />;
@@ -172,13 +239,22 @@ const MumzAlly = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection />
-        <ConnectionRequests />
+        <ConnectionRequests onMessageClick={handleMessageClick} />
         <FilterSection onFiltersChange={setFilters} />
         <ProfilesSection 
           profiles={filteredProfiles} 
-          onHeartClick={handleHeartClick} 
+          onHeartClick={handleHeartClick}
+          onMessageClick={handleMessageClick}
         />
       </main>
+      
+      {selectedMum && (
+        <MessageForm 
+          open={isMessageFormOpen} 
+          onOpenChange={setIsMessageFormOpen} 
+          recipient={selectedMum} 
+        />
+      )}
       
       <Footer />
     </div>
