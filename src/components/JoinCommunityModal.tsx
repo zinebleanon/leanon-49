@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,9 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
-import { Heart, Mail, Check, Plus, Minus } from 'lucide-react';
+import { Heart, Mail, Check, Plus, Minus, Calendar } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface JoinCommunityModalProps {
   isOpen: boolean;
@@ -17,7 +22,7 @@ interface JoinCommunityModalProps {
 
 interface Kid {
   id: string;
-  age: string;
+  birthDate: Date | undefined;
   gender: string;
 }
 
@@ -39,19 +44,20 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    birthDate: undefined as Date | undefined,
     neighborhood: '',
     nationality: '',
     workStatus: 'stay-home',
     interests: '',
   });
   const [kids, setKids] = useState<Kid[]>([
-    { id: '1', age: '', gender: '' }
+    { id: '1', birthDate: undefined, gender: '' }
   ]);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.neighborhood || !formData.nationality) {
+    if (!formData.name || !formData.email || !formData.birthDate || !formData.neighborhood || !formData.nationality) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields.",
@@ -60,11 +66,11 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
       return;
     }
 
-    const isKidsInfoComplete = kids.every(kid => kid.age && kid.gender);
+    const isKidsInfoComplete = kids.every(kid => kid.birthDate && kid.gender);
     if (!isKidsInfoComplete) {
       toast({
         title: "Missing kids information",
-        description: "Please provide age and gender for each child.",
+        description: "Please provide birth date and gender for each child.",
         variant: "destructive"
       });
       return;
@@ -85,6 +91,10 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleDateChange = (date: Date | undefined) => {
+    setFormData(prev => ({ ...prev, birthDate: date }));
+  };
+
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -94,7 +104,7 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
   };
 
   const addKid = () => {
-    setKids(prev => [...prev, { id: Date.now().toString(), age: '', gender: '' }]);
+    setKids(prev => [...prev, { id: Date.now().toString(), birthDate: undefined, gender: '' }]);
   };
 
   const removeKid = (idToRemove: string) => {
@@ -103,10 +113,18 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
     }
   };
 
-  const updateKid = (id: string, field: 'age' | 'gender', value: string) => {
+  const updateKidGender = (id: string, value: string) => {
     setKids(prev => 
       prev.map(kid => 
-        kid.id === id ? { ...kid, [field]: value } : kid
+        kid.id === id ? { ...kid, gender: value } : kid
+      )
+    );
+  };
+
+  const updateKidBirthDate = (id: string, date: Date | undefined) => {
+    setKids(prev => 
+      prev.map(kid => 
+        kid.id === id ? { ...kid, birthDate: date } : kid
       )
     );
   };
@@ -116,12 +134,13 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
     setFormData({
       name: '',
       email: '',
+      birthDate: undefined,
       neighborhood: '',
       nationality: '',
       workStatus: 'stay-home',
       interests: '',
     });
-    setKids([{ id: '1', age: '', gender: '' }]);
+    setKids([{ id: '1', birthDate: undefined, gender: '' }]);
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -193,22 +212,69 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
                 required 
               />
             </div>
+
+            <div className="grid gap-2">
+              <Label>Birth Date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.birthDate && "text-muted-foreground"
+                    )}
+                  >
+                    <Calendar className="mr-2 h-4 w-4" />
+                    {formData.birthDate ? format(formData.birthDate, "PPP") : <span>Select your birth date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <CalendarComponent
+                    mode="single"
+                    selected={formData.birthDate}
+                    onSelect={handleDateChange}
+                    initialFocus
+                    disabled={(date) => date > new Date() || date < new Date("1940-01-01")}
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
             
             <div className="space-y-2">
               <Label>Children Information</Label>
               {kids.map((kid, index) => (
                 <div key={kid.id} className="grid grid-cols-12 gap-2 items-end pt-2 first:pt-0">
                   <div className="col-span-5">
-                    <Input 
-                      value={kid.age}
-                      onChange={(e) => updateKid(kid.id, 'age', e.target.value)}
-                      placeholder="Age"
-                    />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !kid.birthDate && "text-muted-foreground"
+                          )}
+                        >
+                          <Calendar className="mr-2 h-4 w-4" />
+                          {kid.birthDate ? format(kid.birthDate, "PPP") : <span>Birth date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <CalendarComponent
+                          mode="single"
+                          selected={kid.birthDate}
+                          onSelect={(date) => updateKidBirthDate(kid.id, date)}
+                          initialFocus
+                          disabled={(date) => date > new Date()}
+                          className="pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                   <div className="col-span-5">
                     <Select 
                       value={kid.gender} 
-                      onValueChange={(value) => updateKid(kid.id, 'gender', value)}
+                      onValueChange={(value) => updateKidGender(kid.id, value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Gender" />
