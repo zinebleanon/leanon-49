@@ -3,14 +3,13 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HowToJoinSection from '@/components/HowToJoinSection';
-import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceHero from '@/components/mumzmarketplace/MarketplaceHero';
 import MarketplaceInfoSection from '@/components/mumzsave/MarketplaceInfoSection';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
+import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -59,6 +58,13 @@ const MumzMarketplace = () => {
       price: "120 AED",
       condition: "Good",
       image: "clothes"
+    },
+    {
+      title: "Avent Baby Bottles (Set of 4)",
+      seller: "Mom's Corner Abu Dhabi",
+      price: "85 AED",
+      condition: "Like New",
+      image: "walker"
     }
   ];
   
@@ -75,12 +81,12 @@ const MumzMarketplace = () => {
           marketplaceCategories={marketplaceCategories}
         />
         
-        <FeaturedDealsSection 
-          activeTab="marketplace"
-          featuredDeals={[]}
-          featuredItems={featuredItems}
-          handleGetDeal={() => {}}
-        />
+        <section className="py-10 px-6">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
+            <MarketplaceItemsGrid items={featuredItems} />
+          </div>
+        </section>
         
         <MarketplaceInfoSection />
         
