@@ -1,10 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
 import FilterSection from '@/components/mumzally/FilterSection';
-import MatchingVisualization from '@/components/mumzally/MatchingVisualization';
 import ProfilesSection from '@/components/mumzally/ProfilesSection';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
 import LoadingScreen from '@/components/mumzally/LoadingScreen';
@@ -176,7 +174,6 @@ const MumzAlly = () => {
         <HeroSection />
         <ConnectionRequests />
         <FilterSection onFiltersChange={setFilters} />
-        <MatchingVisualization />
         <ProfilesSection 
           profiles={filteredProfiles} 
           onHeartClick={handleHeartClick} 

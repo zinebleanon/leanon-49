@@ -32,10 +32,10 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
   };
   
   return (
-    <section className="py-8 md:py-12 px-4 md:px-8 bg-secondary/20">
+    <section className="py-8 md:py-12 px-4 md:px-8 bg-gradient-to-b from-secondary/30 to-background/90">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl md:text-2xl font-semibold">Matching Profiles</h2>
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Mums Near You</h2>
           <Badge variant="outline" className="px-3 py-1">
             {profiles.length} {profiles.length === 1 ? 'result' : 'results'} found
           </Badge>
