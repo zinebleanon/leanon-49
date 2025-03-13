@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -239,7 +238,7 @@ const MumzAlly = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection />
-        <ConnectionRequests onMessageClick={handleMessageClick} />
+        <ConnectionRequests />
         <FilterSection onFiltersChange={setFilters} />
         <ProfilesSection 
           profiles={filteredProfiles} 

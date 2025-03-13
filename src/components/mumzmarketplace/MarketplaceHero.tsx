@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, Package } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const MarketplaceHero = () => {
   return (
@@ -26,9 +27,12 @@ const MarketplaceHero = () => {
                 variant="outline" 
                 size="lg" 
                 className="rounded-full"
+                asChild
               >
-                <Package className="mr-2 h-4 w-4" />
-                Start Selling
+                <Link to="/marketplace/sell">
+                  <Package className="mr-2 h-4 w-4" />
+                  Start Selling
+                </Link>
               </Button>
             </div>
           </div>
