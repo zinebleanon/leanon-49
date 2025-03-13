@@ -28,7 +28,7 @@ const App = () => (
           <Route path="/ally/subscribe" element={<MumzAllySubscribe />} />
           <Route path="/ask" element={<MumzAsk />} />
           
-          {/* MumzSave Shopping Hub Routes */}
+          {/* MumzSave Routes */}
           <Route path="/" element={<MumzShoppingHub />}>
             <Route path="save" element={<MumzSave />} />
             <Route path="marketplace" element={<MumzMarketplace />} />

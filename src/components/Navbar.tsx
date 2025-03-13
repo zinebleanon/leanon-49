@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -65,11 +66,11 @@ const Navbar = () => {
     { name: 'Mumz Ally', icon: <Heart className="h-4 w-4 text-[#ea384c]" fill="#ea384c" />, path: '/ally' },
     { name: 'Mumz Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { 
-      name: 'Shopping Hub', 
-      icon: <ShoppingBag className="h-4 w-4" />, 
+      name: 'MumzSave', 
+      icon: <Bookmark className="h-4 w-4" />, 
       path: '/save',
       children: [
-        { name: 'MumzSave', icon: <Bookmark className="h-4 w-4" />, path: '/save' },
+        { name: 'Discounts', icon: <Bookmark className="h-4 w-4" />, path: '/save' },
         { name: 'Marketplace', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' }
       ]
     },
