@@ -1,35 +1,52 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Users, HelpCircle, Bookmark, Heart, Home, ShoppingBag } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const location = useLocation();
+  const isMobile = useIsMobile();
   
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 10);
   }, []);
   
   useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+  
+  useEffect(() => {
     if (isMobileMenuOpen) {
+      // Prevent background scrolling on iOS
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
     } else {
-      document.body.style.overflow = 'auto';
+      // Restore scrolling
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
     };
   }, [isMobileMenuOpen]);
 
@@ -51,6 +68,10 @@ const Navbar = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
+  };
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(prev => !prev);
   };
   
   return (
@@ -97,8 +118,11 @@ const Navbar = () => {
         
         <button 
           className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={toggleMobileMenu}
           aria-label="Toggle menu"
+          role="button"
+          tabIndex={0}
+          style={{ WebkitTapHighlightColor: 'transparent' }} // Removes tap highlight color on iOS
         >
           <div className={cn("flex flex-col space-y-1 transition-all", isMobileMenuOpen ? "relative" : "")}>
             <span className={cn(
@@ -125,8 +149,9 @@ const Navbar = () => {
             ? "opacity-100 pointer-events-auto translate-y-0" 
             : "opacity-0 pointer-events-none translate-y-[-20px]"
         )}
+        aria-hidden={!isMobileMenuOpen}
       >
-        <nav className="h-full flex flex-col px-4">
+        <nav className="h-full flex flex-col px-4 overflow-auto -webkit-overflow-scrolling-touch">
           <div className="flex flex-col space-y-2 py-6">
             {navItems.map((item, index) => (
               <Link
@@ -139,7 +164,8 @@ const Navbar = () => {
                     : "text-foreground/80"
                 )}
                 style={{
-                  animationDelay: `${index * 0.05}s`
+                  animationDelay: `${index * 0.05}s`,
+                  WebkitTapHighlightColor: 'transparent' // Removes tap highlight color on iOS
                 }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -153,7 +179,10 @@ const Navbar = () => {
             <Button
               variant="warm"
               className="w-full py-5 rounded-full animate-slide-up"
-              style={{ animationDelay: '0.2s' }}
+              style={{ 
+                animationDelay: '0.2s',
+                WebkitTapHighlightColor: 'transparent' // Removes tap highlight color on iOS
+              }}
               onClick={handleJoinButtonClick}
             >
               Join Us

@@ -4,6 +4,7 @@
   margin: 0 auto;
   text-align: center;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS */
 }
 
 .logo {
@@ -48,4 +49,36 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+/* iOS-specific fixes */
+/* Prevent rubber-band scrolling effect */
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  height: 100%;
+}
+
+/* Fix for iOS input zooming */
+input, select, textarea {
+  font-size: 16px; /* Prevents zoom on focus in iOS */
+}
+
+/* Fix for iOS button styling */
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Fix for glass effect on iOS */
+.glass {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.glass-dark {
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
 }
