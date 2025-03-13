@@ -3,7 +3,7 @@ import ProfileCard, { Kid } from './ProfileCard';
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 
-interface MumzProfile {
+export interface MumzProfile {
   id: number;
   name: string;
   age: number;
