@@ -48,7 +48,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ask',
       title: 'Mumz Ask', 
-      description: 'Community of mumz supporting each other questions, doubt and needs genuinely without judgment.',
+      description: 'Community of Mumz supporting each other, share your questions, doubts and needs and the community will answer genuinely without judgement.',
       icon: <HelpCircle className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-amber-100 to-amber-50',
       path: '/ask'
