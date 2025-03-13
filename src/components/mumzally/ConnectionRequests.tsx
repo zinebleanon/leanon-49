@@ -1,9 +1,11 @@
+
 import { UserCircle, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from "@/hooks/use-toast";
 import { useState } from 'react';
+import MessageForm from './MessageForm';
 
 interface ConnectionRequest {
   id: number;
@@ -32,6 +34,8 @@ const ConnectionRequests = () => {
   ];
 
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
+  const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
 
   const handleAccept = (id: number, name: string) => {
     setAcceptedRequests(prev => [...prev, id]);
@@ -39,6 +43,11 @@ const ConnectionRequests = () => {
       title: "Ally Connection Made!",
       description: `You've made a new MumzAlly with ${name}!`,
     });
+  };
+
+  const handleMessageClick = (id: number, name: string) => {
+    setSelectedRecipient({ id, name });
+    setMessageDialogOpen(true);
   };
 
   const handleDecline = (id: number) => {
@@ -78,7 +87,11 @@ const ConnectionRequests = () => {
                   <Button 
                     variant="default" 
                     className="ml-auto"
-                    onClick={() => handleAccept(request.id, request.name)}
+                    onClick={() => 
+                      acceptedRequests.includes(request.id) 
+                        ? handleMessageClick(request.id, request.name)
+                        : handleAccept(request.id, request.name)
+                    }
                   >
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
@@ -120,6 +133,14 @@ const ConnectionRequests = () => {
           ))}
         </div>
       </div>
+      
+      {selectedRecipient && (
+        <MessageForm 
+          open={messageDialogOpen} 
+          onOpenChange={setMessageDialogOpen} 
+          recipient={selectedRecipient}
+        />
+      )}
     </section>
   );
 };
