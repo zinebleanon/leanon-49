@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Bookmark, Heart, Home } from 'lucide-react';
+import { Users, HelpCircle, Bookmark, Heart, Home, ShoppingBag } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 
@@ -32,12 +32,18 @@ const Navbar = () => {
       document.body.style.overflow = 'auto';
     };
   }, [isMobileMenuOpen]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
   
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
     { name: 'Mumz Ally', icon: <Users className="h-4 w-4" />, path: '/ally' },
     { name: 'Mumz Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Mumz Save', icon: <Bookmark className="h-4 w-4" />, path: '/save' },
+    { name: 'Marketplace', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
   ];
 
   const handleJoinButtonClick = () => {
@@ -90,57 +96,71 @@ const Navbar = () => {
         </div>
         
         <button 
-          className="md:hidden flex items-center"
+          className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          <div className="flex flex-col space-y-1">
-            <span className={`block w-5 h-0.5 bg-current transform transition-transform ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-            <span className={`block w-5 h-0.5 bg-current transition-opacity ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-            <span className={`block w-5 h-0.5 bg-current transform transition-transform ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+          <div className={cn("flex flex-col space-y-1 transition-all", isMobileMenuOpen ? "relative" : "")}>
+            <span className={cn(
+              "block w-5 h-0.5 bg-current transform transition-transform duration-300",
+              isMobileMenuOpen ? "rotate-45 translate-y-1.5 absolute" : ""
+            )}></span>
+            <span className={cn(
+              "block w-5 h-0.5 bg-current transition-opacity duration-300", 
+              isMobileMenuOpen ? "opacity-0" : "opacity-100"
+            )}></span>
+            <span className={cn(
+              "block w-5 h-0.5 bg-current transform transition-transform duration-300",
+              isMobileMenuOpen ? "-rotate-45 -translate-y-1.5 absolute" : ""
+            )}></span>
           </div>
         </button>
       </div>
       
       {/* Mobile menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 glass-dark pt-16 animate-fade-in">
-          <nav className="h-full flex flex-col px-4">
-            <div className="flex flex-col space-y-4 py-6">
-              {navItems.map((item, index) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className={cn(
-                    "text-base font-medium py-2 flex items-center gap-3 animate-slide-up rounded-full px-4",
-                    location.pathname === item.path
-                      ? "bg-primary/10 text-primary"
-                      : "text-foreground/80"
-                  )}
-                  style={{
-                    animationDelay: `${index * 0.05}s`
-                  }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.icon}
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-            
-            <div className="mt-auto pb-8">
-              <Button
-                variant="warm"
-                className="w-full py-5 rounded-full animate-slide-up"
-                style={{ animationDelay: '0.2s' }}
-                onClick={handleJoinButtonClick}
+      <div 
+        className={cn(
+          "md:hidden fixed inset-0 z-40 glass-dark pt-16 transition-all duration-300",
+          isMobileMenuOpen 
+            ? "opacity-100 pointer-events-auto translate-y-0" 
+            : "opacity-0 pointer-events-none translate-y-[-20px]"
+        )}
+      >
+        <nav className="h-full flex flex-col px-4">
+          <div className="flex flex-col space-y-2 py-6">
+            {navItems.map((item, index) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={cn(
+                  "text-base font-medium py-2 flex items-center gap-3 animate-slide-up rounded-full px-4",
+                  location.pathname === item.path
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground/80"
+                )}
+                style={{
+                  animationDelay: `${index * 0.05}s`
+                }}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                Join Us
-              </Button>
-            </div>
-          </nav>
-        </div>
-      )}
+                {item.icon}
+                {item.name}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="mt-auto pb-8">
+            <Button
+              variant="warm"
+              className="w-full py-5 rounded-full animate-slide-up"
+              style={{ animationDelay: '0.2s' }}
+              onClick={handleJoinButtonClick}
+            >
+              Join Us
+            </Button>
+          </div>
+        </nav>
+      </div>
 
       {/* Join Community Modal */}
       <JoinCommunityModal
