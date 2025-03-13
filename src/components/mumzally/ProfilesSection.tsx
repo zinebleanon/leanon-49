@@ -33,15 +33,22 @@ const ProfilesSection = ({ profiles, onHeartClick }: ProfilesSectionProps) => {
   return (
     <section className="py-8 md:py-12 px-4 md:px-8 bg-secondary/20">
       <div className="max-w-7xl mx-auto">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {profiles.map((profile) => (
-            <ProfileCard 
-              key={profile.id}
-              {...profile}
-              onHeartClick={handleHeartClick}
-            />
-          ))}
-        </div>
+        {profiles.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {profiles.map((profile) => (
+              <ProfileCard 
+                key={profile.id}
+                {...profile}
+                onHeartClick={handleHeartClick}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-medium mb-2">No matching profiles found</h3>
+            <p className="text-muted-foreground">Try adjusting your filters to see more results</p>
+          </div>
+        )}
       </div>
     </section>
   );
