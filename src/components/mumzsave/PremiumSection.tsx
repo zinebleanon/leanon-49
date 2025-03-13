@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, CreditCard, Star, Tag } from 'lucide-react';
+import { Check, CreditCard } from 'lucide-react';
 
 interface PremiumSectionProps {
   handleSubscribe: () => void;
@@ -52,42 +52,16 @@ const PremiumSection = ({ handleSubscribe }: PremiumSectionProps) => {
             </Button>
           </Card>
           
-          <div className="space-y-6">
-            <div className="warm-card rounded-lg p-6">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Star className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-medium font-playfair">Featured Listings</h4>
-                  <p className="text-muted-foreground font-playfair">Get your items seen first with priority placement in search results</p>
-                </div>
+          <div className="warm-card rounded-lg p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <CreditCard className="h-6 w-6 text-primary" />
               </div>
-            </div>
-            
-            <div className="warm-card rounded-lg p-6">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Tag className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-medium font-playfair">Featured Listings</h4>
-                  <p className="text-muted-foreground font-playfair">Get your items seen first in the UAE marketplace</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="warm-card rounded-lg p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-medium mb-2 font-playfair">Get Started Today</h4>
-                  <Button onClick={handleSubscribe} className="warm-button">
-                    Continue to Payment
-                  </Button>
-                </div>
+              <div>
+                <h4 className="text-lg font-medium mb-2 font-playfair">Get Started Today</h4>
+                <Button onClick={handleSubscribe} className="warm-button">
+                  Continue to Payment
+                </Button>
               </div>
             </div>
           </div>
