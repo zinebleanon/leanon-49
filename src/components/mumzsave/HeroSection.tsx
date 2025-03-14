@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { PercentCircle, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
