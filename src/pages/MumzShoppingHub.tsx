@@ -47,10 +47,6 @@ const MumzShoppingHub = () => {
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold mb-6 font-playfair">
-              <span className="text-orange-500">Mumz Save</span>
-            </h1>
-            
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <TabsList className="w-full max-w-md grid grid-cols-2 mb-6">
                 <TabsTrigger value="save" className="flex items-center gap-2">
