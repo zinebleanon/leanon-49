@@ -72,13 +72,24 @@ const Hero = ({ onJoinClick }: HeroProps) => {
         <div className="text-center mb-8 md:mb-12">
           <h1 
             className={cn(
-              "text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 font-playfair",
+              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 font-playfair",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            Motherhood together feels <span className="text-gradient">less alone</span>
+            <span className="text-gradient">Mumz need Mumz</span>
           </h1>
+          
+          <p 
+            className={cn(
+              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-4 md:mb-6 font-playfair",
+              textStyles,
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            )}
+            style={{ transitionDelay: '200ms' }}
+          >
+            Motherhood together feels <span className="text-gradient">less alone</span>
+          </p>
           
           <p 
             className={cn(
@@ -86,9 +97,9 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
-            style={{ transitionDelay: '200ms' }}
+            style={{ transitionDelay: '300ms' }}
           >
-            Mumz need Mumz. Join us.
+            Join our community
           </p>
           
           <div className={cn(
@@ -96,7 +107,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             textStyles,
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
-          style={{ transitionDelay: '300ms' }}>
+          style={{ transitionDelay: '400ms' }}>
             <Button 
               variant="warm" 
               size="lg" 
