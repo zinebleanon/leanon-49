@@ -56,7 +56,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'save',
       title: 'Mumz Save', 
-      description: 'Discover exclusive discount on your favorite brands.\n\nDiscover a Mumz Market place where you can buy and sell second hand items related to motherhood world.',
+      description: 'Discover exclusive discount on your favorite brands.\n\nDiscover a Mumz Market place where you can buy and sell second hand items around motherhood.',
       icon: <Bookmark className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
       path: '/save'
