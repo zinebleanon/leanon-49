@@ -56,7 +56,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'save',
       title: 'Mumz Save', 
-      description: 'Discover exclusive discount on your favorite brands. Items to sell and buy around Mumz World.',
+      description: 'Discover exclusive discount on your favorite brands.\n\nDiscover a Mumz Market place where you can buy and sell second hand items related to motherhood world.',
       icon: <Bookmark className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
       path: '/save'
@@ -125,7 +125,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
                 </div>
                 
                 <h3 className="text-lg md:text-xl font-medium mb-1 md:mb-2 font-playfair">{feature.title}</h3>
-                <p className="text-sm md:text-base text-muted-foreground">{feature.description}</p>
+                <p className="text-sm md:text-base text-muted-foreground whitespace-pre-line">{feature.description}</p>
               </div>
             </Link>
           ))}
