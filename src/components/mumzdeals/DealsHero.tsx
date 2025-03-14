@@ -1,27 +1,27 @@
 
 import { Button } from '@/components/ui/button';
-import { ShoppingBag, Package } from 'lucide-react';
+import { PercentCircle, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const MarketplaceHero = () => {
+const DealsHero = () => {
   return (
     <section className="py-12 md:py-20 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-              <span className="text-black">Mumz</span> <span className="text-orange-500">Marketplace</span>
+              <span className="text-black">Mumz</span> <span className="text-orange-500">Deals</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 font-playfair">
-              Buy and sell gently used children's items across the UAE. Connect with other moms to declutter your home and find quality items at a fraction of retail prices.
+              Discover exclusive discounts and special offers for parents across the UAE. Save on everything from baby gear to children's clothing and more.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
                 className="rounded-full bg-primary"
               >
-                <ShoppingBag className="mr-2 h-4 w-4" />
-                Browse Items
+                <PercentCircle className="mr-2 h-4 w-4" />
+                Featured Deals
               </Button>
               <Button 
                 variant="outline" 
@@ -29,9 +29,9 @@ const MarketplaceHero = () => {
                 className="rounded-full"
                 asChild
               >
-                <Link to="/marketplace/sell">
-                  <Package className="mr-2 h-4 w-4" />
-                  Start Selling
+                <Link to="/marketplace">
+                  <ShoppingBag className="mr-2 h-4 w-4" />
+                  Mumz Marketplace
                 </Link>
               </Button>
             </div>
@@ -42,4 +42,4 @@ const MarketplaceHero = () => {
   );
 };
 
-export default MarketplaceHero;
+export default DealsHero;

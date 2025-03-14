@@ -6,14 +6,13 @@ import HowToJoinSection from '@/components/HowToJoinSection';
 import { useNavigate, Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
-import MarketplaceHero from '@/components/mumzmarketplace/MarketplaceHero';
-import MarketplaceInfoSection from '@/components/mumzsave/MarketplaceInfoSection';
+import DealsHero from '@/components/mumzdeals/DealsHero';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
-import { Button } from '@/components/ui/button';
+import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
 import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-const MumzMarketplace = () => {
+const MumzDeals = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -30,43 +29,47 @@ const MumzMarketplace = () => {
     setIsJoinModalOpen(true);
   };
 
+  const handleGetDeal = () => {
+    // Direct access to deals without subscription
+    window.open('#', '_blank');
+  };
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
   
-  const marketplaceCategories = [
-    "Baby Clothes", "Toys", "Strollers", "Car Seats", "Feeding", 
-    "Books", "Home", "Maternity", "Furniture", "Electronics"
+  const dealCategories = [
+    "Baby Gear", "Clothing", "Toys", "Feeding", "Diapers", 
+    "Health", "Maternity", "Books", "Home", "Services"
   ];
   
-  const featuredItems = [
+  const featuredDeals = [
     {
-      title: "Cybex Stroller (Like New)",
-      seller: "Emma's Shop in Dubai Marina",
-      price: "900 AED",
-      condition: "Barely Used",
-      image: "walker"
+      title: "30% Off Babyzen YOYO Stroller",
+      brand: "Mumzworld",
+      discount: "30%",
+      originalPrice: "2,499 AED",
+      salePrice: "1,749 AED",
+      image: "stroller",
+      isExclusive: true
     },
     {
-      title: "Plan Toys Wooden Set",
-      seller: "Natural Kids Al Ain",
-      price: "149 AED",
-      condition: "New",
-      image: "toys"
+      title: "Buy One Get One Free Baby Clothes",
+      brand: "Mothercare",
+      discount: "50%",
+      originalPrice: "199 AED",
+      salePrice: "99 AED",
+      image: "clothes",
+      isExclusive: false
     },
     {
-      title: "Baby Clothes Bundle (0-3m)",
-      seller: "Second Life Sharjah",
-      price: "120 AED",
-      condition: "Good",
-      image: "clothes"
-    },
-    {
-      title: "Avent Baby Bottles (Set of 4)",
-      seller: "Mom's Corner Abu Dhabi",
-      price: "85 AED",
-      condition: "Like New",
-      image: "walker"
+      title: "Nanit Pro Baby Monitor Bundle",
+      brand: "FirstCry",
+      discount: "25%",
+      originalPrice: "999 AED",
+      salePrice: "749 AED",
+      image: "monitor",
+      isExclusive: true
     }
   ];
   
@@ -84,22 +87,20 @@ const MumzMarketplace = () => {
           </Button>
         </div>
         
-        <MarketplaceHero />
+        <DealsHero />
         
         <CategorySection 
-          activeTab="marketplace"
-          dealCategories={[]}
-          marketplaceCategories={marketplaceCategories}
+          activeTab="deals"
+          dealCategories={dealCategories}
+          marketplaceCategories={[]}
         />
         
-        <section className="py-10 px-6">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
-            <MarketplaceItemsGrid items={featuredItems} />
-          </div>
-        </section>
-        
-        <MarketplaceInfoSection />
+        <FeaturedDealsSection 
+          activeTab="deals"
+          featuredDeals={featuredDeals}
+          featuredItems={[]}
+          handleGetDeal={handleGetDeal}
+        />
         
         <HowToJoinSection onJoinClick={handleJoinButtonClick} />
       </main>
@@ -114,4 +115,4 @@ const MumzMarketplace = () => {
   );
 };
 
-export default MumzMarketplace;
+export default MumzDeals;

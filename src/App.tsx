@@ -12,6 +12,7 @@ import MumzMarketplace from "./pages/MumzMarketplace";
 import MumzMarketplaceSell from "./pages/MumzMarketplaceSell";
 import MumzAllySubscribe from "./pages/MumzAllySubscribe";
 import MumzShoppingHub from "./pages/MumzShoppingHub";
+import MumzDeals from "./pages/MumzDeals";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/" element={<MumzShoppingHub />}>
             <Route path="save" element={<MumzSave />} />
             <Route path="marketplace" element={<MumzMarketplace />} />
+            <Route path="deals" element={<MumzDeals />} />
           </Route>
           <Route path="/marketplace/sell" element={<MumzMarketplaceSell />} />
           

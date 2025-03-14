@@ -21,10 +21,12 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           <Button 
             size="lg" 
             className="rounded-full bg-primary"
-            onClick={handleBrowseDeals}
+            asChild
           >
-            <PercentCircle className="mr-2 h-4 w-4" />
-            Mumz Deals
+            <Link to="/deals">
+              <PercentCircle className="mr-2 h-4 w-4" />
+              Mumz Deals
+            </Link>
           </Button>
           <Button 
             variant="outline" 
@@ -34,7 +36,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           >
             <Link to="/marketplace">
               <ShoppingBag className="mr-2 h-4 w-4" />
-              Mumz Market place
+              Mumz Marketplace
             </Link>
           </Button>
         </div>
