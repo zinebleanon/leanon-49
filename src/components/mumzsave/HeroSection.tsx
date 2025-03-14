@@ -17,7 +17,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
               <span className="text-orange-500">Mumz</span> <span className="text-black">Save</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 font-playfair">
-              Discover exclusive deals on top UAE brands for your family. Premium members get early access to the best offers and special discounts.
+              Discover exclusive deals on top UAE brands for your family.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
