@@ -40,7 +40,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ally',
       title: 'Mumz Ally', 
-      description: 'Find your lifetime Allies in Motherhood.',
+      description: 'Find your lifetime Allies to navigate motherhood ups and downs together.',
       icon: <Users className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-orange-100 to-orange-50',
       path: '/ally'
@@ -82,28 +82,17 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           
           <p 
             className={cn(
-              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-4 md:mb-6 font-playfair",
+              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-6 md:mb-8 font-playfair",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
             style={{ transitionDelay: '200ms' }}
           >
-            Motherhood together feels <span className="text-gradient">less alone</span>
-          </p>
-          
-          <p 
-            className={cn(
-              "text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 md:mb-8",
-              textStyles,
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            )}
-            style={{ transitionDelay: '300ms' }}
-          >
-            Join our community
+            Motherhood together feels <span className="font-bold text-gradient">less alone</span>
           </p>
           
           <div className={cn(
-            "flex flex-col sm:flex-row justify-center gap-3 mb-8 md:mb-12",
+            "flex justify-center gap-3 mb-8 md:mb-12",
             textStyles,
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
@@ -111,17 +100,10 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             <Button 
               variant="warm" 
               size="lg" 
-              className="rounded-full px-6 w-full sm:w-auto"
+              className="rounded-full px-6"
               onClick={onJoinClick}
             >
               <Heart className="mr-2 h-4 w-4" fill="currentColor" /> Join Our Community
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="rounded-full px-6 w-full sm:w-auto mt-3 sm:mt-0"
-            >
-              Learn More
             </Button>
           </div>
         </div>
