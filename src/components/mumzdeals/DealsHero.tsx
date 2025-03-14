@@ -1,7 +1,5 @@
 
-import { Button } from '@/components/ui/button';
-import { PercentCircle, ShoppingBag } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { PercentCircle } from 'lucide-react';
 
 const DealsHero = () => {
   return (
@@ -15,26 +13,6 @@ const DealsHero = () => {
             <p className="text-lg text-muted-foreground mb-8 font-playfair">
               Discover exclusive discounts and special offers for parents across the UAE. Save on everything from baby gear to children's clothing and more.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                className="rounded-full bg-primary"
-              >
-                <PercentCircle className="mr-2 h-4 w-4" />
-                Featured Deals
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="rounded-full"
-                asChild
-              >
-                <Link to="/marketplace">
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Mumz Marketplace
-                </Link>
-              </Button>
-            </div>
           </div>
         </div>
       </div>
