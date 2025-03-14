@@ -9,37 +9,32 @@ interface HeroSectionProps {
 
 const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
   return (
-    <section className="py-12 md:py-20 px-6 md:px-8">
+    <section className="py-8 md:py-12 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-              <span className="text-orange-500">Mumz</span> <span className="text-black">Save</span>
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 font-playfair">
-              Discover exclusive deals on top UAE brands for your family.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                className="rounded-full bg-primary"
-                onClick={handleBrowseDeals}
-              >
-                <PercentCircle className="mr-2 h-4 w-4" />
-                Browse Deals
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="rounded-full"
-                asChild
-              >
-                <Link to="/marketplace">
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Mumz World Marketplace
-                </Link>
-              </Button>
-            </div>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 font-playfair">
+            <span className="text-orange-500">Mumz</span> <span className="text-black">Save</span>
+          </h1>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button 
+              size="lg" 
+              className="rounded-full bg-primary"
+              onClick={handleBrowseDeals}
+            >
+              <PercentCircle className="mr-2 h-4 w-4" />
+              Mumz Deals
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="rounded-full"
+              asChild
+            >
+              <Link to="/marketplace">
+                <ShoppingBag className="mr-2 h-4 w-4" />
+                Mumz Market place
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
