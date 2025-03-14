@@ -24,7 +24,7 @@ const MumzShoppingHub = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="pt-24 pb-16 px-4">
+      <main className="pt-16 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <Outlet />
         </div>
