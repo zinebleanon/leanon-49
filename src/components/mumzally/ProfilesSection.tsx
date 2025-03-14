@@ -14,6 +14,7 @@ export interface MumzProfile {
   interests: string[];
   bio: string;
   compatibility: number;
+  isFullyMatched?: boolean;
 }
 
 interface ProfilesSectionProps {
