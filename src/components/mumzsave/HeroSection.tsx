@@ -13,7 +13,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
-            <span className="text-orange-500">Mumz</span> <span className="text-black">Save</span>
+            <span className="text-gradient">Mumz Save</span>
           </h1>
         </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
