@@ -6,7 +6,6 @@ import HowToJoinSection from '@/components/HowToJoinSection';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import HeroSection from '@/components/mumzsave/HeroSection';
-import PremiumSection from '@/components/mumzsave/PremiumSection';
 import CategorySection from '@/components/mumzsave/CategorySection';
 import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
 import TestimonialSection from '@/components/mumzsave/TestimonialSection';
@@ -86,8 +85,6 @@ const MumzSave = () => {
         <HeroSection 
           handleBrowseDeals={handleBrowseDeals}
         />
-
-        <PremiumSection />
         
         <CategorySection 
           activeTab="deals"
