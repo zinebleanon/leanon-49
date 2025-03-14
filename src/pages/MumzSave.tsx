@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HowToJoinSection from '@/components/HowToJoinSection';
-import { toast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import HeroSection from '@/components/mumzsave/HeroSection';
@@ -16,7 +14,6 @@ import TestimonialSection from '@/components/mumzsave/TestimonialSection';
 const MumzSave = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const navigate = useNavigate();
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,22 +22,10 @@ const MumzSave = () => {
     
     return () => clearTimeout(timer);
   }, []);
-  
-  const handleSubscribe = () => {
-    toast({
-      title: "Redirecting to Payment",
-      description: "Setting up your premium subscription...",
-    });
-  };
 
   const handleGetDeal = () => {
-    toast({
-      title: "Subscription Required",
-      description: "Redirecting to subscription payment...",
-    });
-    setTimeout(() => {
-      navigate('/ally/subscribe');
-    }, 1000);
+    // Direct access to deals without subscription
+    window.open('#', '_blank');
   };
 
   const handleJoinButtonClick = () => {
@@ -102,7 +87,7 @@ const MumzSave = () => {
           handleBrowseDeals={handleBrowseDeals}
         />
 
-        <PremiumSection handleSubscribe={handleSubscribe} />
+        <PremiumSection />
         
         <CategorySection 
           activeTab="deals"
