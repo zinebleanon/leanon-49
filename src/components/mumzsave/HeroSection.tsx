@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { PercentCircle, ShoppingBag } from 'lucide-react';
+import { BookOpen, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HeroSectionProps {
@@ -13,7 +13,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
-            <span className="text-foreground">Find the best deals</span>{" "}
+            <span className="text-foreground">Find the best recommendations</span>{" "}
             <span className="text-primary">with Mumz Save</span>
           </h1>
         </div>
@@ -23,9 +23,9 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
             className="rounded-full bg-primary"
             asChild
           >
-            <Link to="/deals">
-              <PercentCircle className="mr-2 h-4 w-4" />
-              Mumz Deals
+            <Link to="/select">
+              <BookOpen className="mr-2 h-4 w-4" />
+              Mumz Select
             </Link>
           </Button>
           <Button 
