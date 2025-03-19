@@ -35,76 +35,112 @@ const MumzSelect = () => {
   
   // Sample article data
   const articles = {
-    toys: [
+    gear: [
       {
-        title: "Best Developmental Toys for Toddlers",
-        description: "Discover the top toys that help develop fine motor skills and cognitive abilities.",
-        author: "Sarah M.",
-        link: "https://example.com/toddler-toys",
-        discountCode: "MUMZTOYS20",
-        discountAmount: "20% off"
-      },
-      {
-        title: "Eco-Friendly Toys That Last",
-        description: "Sustainable toy options that are good for the planet and built to withstand playtime.",
-        author: "Jessica K.",
-        link: "https://example.com/eco-toys",
-        discountCode: "GREENTOY15",
-        discountAmount: "15% off"
-      }
-    ],
-    clothing: [
-      {
-        title: "Breathable Summer Clothes for Kids",
-        description: "Keep your little ones cool and comfortable with these breathable fabric options.",
-        author: "Aisha N.",
-        link: "https://example.com/summer-clothes",
-        discountCode: "SUMMER25",
+        title: "Essential Baby Gear for New Parents",
+        description: "The must-have gear items that make parenthood easier in the first year.",
+        author: "Nadia Q.",
+        link: "https://example.com/baby-gear",
+        discountCode: "MUMZGEAR25",
         discountAmount: "25% off"
       },
       {
-        title: "Growing with Your Child: Adjustable Clothing",
-        description: "Clothing that adapts to your child's growth spurts, saving money and reducing waste.",
-        author: "Maria L.",
-        link: "https://example.com/adjustable-clothes",
-        discountCode: "GROWWITHME",
-        discountAmount: "Buy 2 Get 1 Free"
+        title: "Travel-Friendly Gear for Families on the Go",
+        description: "Compact, lightweight gear options that make traveling with children stress-free.",
+        author: "Fatima R.",
+        link: "https://example.com/travel-gear",
+        discountCode: "TRAVELEASE",
+        discountAmount: "15% off"
       }
     ],
-    services: [
+    clothes: [
       {
-        title: "Best Kid-Friendly Restaurants in UAE",
-        description: "Family restaurants with play areas and healthy menu options for children.",
-        author: "Fatima H.",
-        link: "https://example.com/kid-restaurants",
-        discountCode: "FAMILYMEAL",
-        discountAmount: "Free kids meal with adult purchase"
+        title: "Sustainable Children's Clothing Brands",
+        description: "Eco-friendly clothing options that are gentle on your child's skin and the planet.",
+        author: "Aisha N.",
+        link: "https://example.com/sustainable-clothes",
+        discountCode: "ECOKIDS20",
+        discountAmount: "20% off"
       },
       {
-        title: "Top-Rated Babysitting Services",
-        description: "Reliable and experienced childcare options for when you need a break.",
+        title: "Season-Transitional Wardrobe Essentials",
+        description: "Versatile clothing pieces that work year-round in the UAE climate.",
         author: "Layla M.",
-        link: "https://example.com/babysitting",
-        discountCode: "FIRSTSIT",
-        discountAmount: "50% off first booking"
+        link: "https://example.com/transitional-wardrobe",
+        discountCode: "ALLYEAR15",
+        discountAmount: "15% off + free shipping"
       }
     ],
-    health: [
+    bedroom: [
       {
-        title: "Pediatric Dentists: Making Visits Fun",
-        description: "Dental practices specializing in making check-ups a positive experience for children.",
-        author: "Dr. Noor A.",
-        link: "https://example.com/dental-care",
-        discountCode: "HAPPYSMILE",
-        discountAmount: "Free first check-up"
+        title: "Creating a Montessori-Inspired Bedroom",
+        description: "How to design a bedroom that encourages independence and learning through play.",
+        author: "Sara T.",
+        link: "https://example.com/montessori-bedroom",
+        discountCode: "MONTESSORI10",
+        discountAmount: "10% off furniture"
       },
       {
-        title: "Natural Remedies for Common Childhood Ailments",
-        description: "Gentle, effective approaches to treating minor illnesses in children.",
-        author: "Dana S.",
-        link: "https://example.com/natural-remedies",
-        discountCode: "NATURAL10",
-        discountAmount: "10% off herbal products"
+        title: "Sleep Solutions for Every Age",
+        description: "Age-appropriate beds, mattresses, and sleep accessories for better rest.",
+        author: "Reem J.",
+        link: "https://example.com/sleep-solutions",
+        discountCode: "SWEETDREAMS",
+        discountAmount: "Buy a mattress, get sheets free"
+      }
+    ],
+    feeding: [
+      {
+        title: "Best BPA-Free Feeding Essentials",
+        description: "Safe, non-toxic feeding products from bottles to first utensils.",
+        author: "Dr. Hala M.",
+        link: "https://example.com/bpa-free",
+        discountCode: "SAFEFEED",
+        discountAmount: "25% off your first order"
+      },
+      {
+        title: "Meal Prep Made Easy for Busy Parents",
+        description: "Time-saving feeding products and storage solutions for homemade baby food.",
+        author: "Maya K.",
+        link: "https://example.com/meal-prep",
+        discountCode: "MEALPLAN",
+        discountAmount: "Free container with purchase"
+      }
+    ],
+    bath: [
+      {
+        title: "Gentle Bath Products for Sensitive Skin",
+        description: "Hypoallergenic bath essentials that protect your baby's delicate skin.",
+        author: "Dr. Noor A.",
+        link: "https://example.com/sensitive-skin",
+        discountCode: "GENTLEBATH",
+        discountAmount: "Buy 2 Get 1 Free"
+      },
+      {
+        title: "Bath Time Fun: Educational Toys that Make Bathing Enjoyable",
+        description: "Toys that turn bath time into learning time while keeping it fun.",
+        author: "Zainab L.",
+        link: "https://example.com/bath-toys",
+        discountCode: "SPLASHLEARN",
+        discountAmount: "20% off bath toy sets"
+      }
+    ],
+    safety: [
+      {
+        title: "Home Safety Essentials for Growing Families",
+        description: "Childproofing products that keep curious minds safe as they explore.",
+        author: "Leila S.",
+        link: "https://example.com/home-safety",
+        discountCode: "SAFEHOME",
+        discountAmount: "15% off safety bundles"
+      },
+      {
+        title: "Car Safety: Choosing the Right Car Seat",
+        description: "Expert guidance on selecting age-appropriate car seats and proper installation.",
+        author: "Omar H.",
+        link: "https://example.com/car-seats",
+        discountCode: "SAFERIDE",
+        discountAmount: "Free installation service"
       }
     ]
   };
@@ -151,28 +187,38 @@ const MumzSelect = () => {
         
         <section className="py-8 px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
-            <Tabs defaultValue="toys" className="w-full">
-              <TabsList className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-2">
-                <TabsTrigger value="toys">Toys & Games</TabsTrigger>
-                <TabsTrigger value="clothing">Clothing</TabsTrigger>
-                <TabsTrigger value="services">Services</TabsTrigger>
-                <TabsTrigger value="health">Health & Wellness</TabsTrigger>
+            <Tabs defaultValue="gear" className="w-full">
+              <TabsList className="mb-6 grid grid-cols-3 md:grid-cols-6 gap-2">
+                <TabsTrigger value="gear">Gear</TabsTrigger>
+                <TabsTrigger value="clothes">Clothes</TabsTrigger>
+                <TabsTrigger value="bedroom">Bedroom</TabsTrigger>
+                <TabsTrigger value="feeding">Feeding</TabsTrigger>
+                <TabsTrigger value="bath">Bath</TabsTrigger>
+                <TabsTrigger value="safety">Safety</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="toys">
-                {renderArticleCards('toys')}
+              <TabsContent value="gear">
+                {renderArticleCards('gear')}
               </TabsContent>
               
-              <TabsContent value="clothing">
-                {renderArticleCards('clothing')}
+              <TabsContent value="clothes">
+                {renderArticleCards('clothes')}
               </TabsContent>
               
-              <TabsContent value="services">
-                {renderArticleCards('services')}
+              <TabsContent value="bedroom">
+                {renderArticleCards('bedroom')}
               </TabsContent>
               
-              <TabsContent value="health">
-                {renderArticleCards('health')}
+              <TabsContent value="feeding">
+                {renderArticleCards('feeding')}
+              </TabsContent>
+              
+              <TabsContent value="bath">
+                {renderArticleCards('bath')}
+              </TabsContent>
+              
+              <TabsContent value="safety">
+                {renderArticleCards('safety')}
               </TabsContent>
             </Tabs>
           </div>
