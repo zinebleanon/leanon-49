@@ -102,7 +102,7 @@ const Navbar = () => {
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
         >
           <img 
-            src="/lovable-uploads/1d9135c7-232d-4e08-8e9c-1c4953d0b1db.png" 
+            src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
             alt="LeanOn Logo" 
             className="h-10 md:h-12 w-auto"
           />

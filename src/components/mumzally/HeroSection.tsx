@@ -14,6 +14,13 @@ const HeroSection = () => {
     <section className="py-16 md:py-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-2xl mx-auto">
+          <div className="mb-6 flex justify-center md:justify-start">
+            <img 
+              src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
+              alt="LeanOn Logo" 
+              className="h-16 md:h-20 w-auto"
+            />
+          </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
             Find <span className="text-gradient">Match with Moms & LeanOn</span> each other
           </h1>
