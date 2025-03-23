@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -55,7 +56,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'save',
       title: 'Deals', 
-      description: 'Discover exclusive discount on your favorite brands.',
+      description: 'LeanOn us to select brands & deals for your little ones.',
       icon: <Tag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
       path: '/save'
