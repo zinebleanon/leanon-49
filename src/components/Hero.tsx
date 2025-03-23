@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -48,7 +47,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ask',
       title: 'Ask', 
-      description: 'LeanOn the community to share their experiences & recommendations.',
+      description: 'LeanOn the community for experiences & recommendations.',
       icon: <HelpCircle className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-amber-100 to-amber-50',
       path: '/ask'
