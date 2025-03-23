@@ -24,7 +24,8 @@ export default {
 				serif: ['Raleway', 'serif'],
 				playfair: ['Raleway', 'serif'],
 				nunito: ['Nunito', 'sans-serif'],
-				raleway: ['Raleway', 'serif']
+				raleway: ['Raleway', 'serif'],
+				adlery: ['Adlery Pro', 'serif']
 			},
 			colors: {
 				'pastel-green': '#B8CEC2',

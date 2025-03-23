@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -149,7 +150,7 @@ const Navbar = () => {
             onClick={handleJoinButtonClick}
           >
             <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-            Join & LeanOn
+            Join & <span className="font-adlery">LeanOn</span>
           </Button>
         </div>
         
@@ -236,7 +237,7 @@ const Navbar = () => {
               onClick={handleJoinButtonClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join & LeanOn
+              Join & <span className="font-adlery">LeanOn</span>
             </Button>
           </div>
         </nav>

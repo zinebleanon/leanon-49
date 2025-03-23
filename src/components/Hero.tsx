@@ -42,7 +42,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ally',
       title: 'Find', 
-      description: 'Match with Moms in your neighborhood & LeanOn each other.',
+      description: 'Match with Moms in your neighborhood & <span class="font-adlery">LeanOn</span> each other.',
       icon: <BowIcon className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-orange-100 to-orange-50',
       path: '/ally'
@@ -50,7 +50,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ask',
       title: 'Ask', 
-      description: 'LeanOn the community for experiences & recommendations.',
+      description: '<span class="font-adlery">LeanOn</span> the community for experiences & recommendations.',
       icon: <HelpCircle className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-amber-100 to-amber-50',
       path: '/ask'
@@ -58,7 +58,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'save',
       title: 'Deals', 
-      description: 'LeanOn us to select brands & deals for you.',
+      description: '<span class="font-adlery">LeanOn</span> us to select brands & deals for you.',
       icon: <Tag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
       path: '/save'
@@ -66,7 +66,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'preloved',
       title: 'Preloved', 
-      description: 'LeanOn Trusted Moms to buy second hand Items.',
+      description: '<span class="font-adlery">LeanOn</span> Trusted Moms to buy second hand Items.',
       icon: <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-green-100 to-green-50',
       path: '/marketplace'
@@ -87,7 +87,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">Moms LeanOn Moms</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">Moms <span className="font-adlery">LeanOn</span> Moms</span>
           </h1>
           
           <p 
@@ -114,7 +114,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               onClick={onJoinClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join & LeanOn
+              Join & <span className="font-adlery">LeanOn</span>
             </Button>
 
             <HowItWorksDialog />
@@ -140,7 +140,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
                   <h3 className="text-lg md:text-xl font-medium font-playfair">{feature.title}</h3>
                 </div>
                 
-                <p className="text-sm md:text-base text-muted-foreground">{feature.description}</p>
+                <p className="text-sm md:text-base text-muted-foreground" dangerouslySetInnerHTML={{ __html: feature.description }}></p>
               </div>
             </Link>
           ))}

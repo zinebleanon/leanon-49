@@ -140,4 +140,8 @@
   .logo-container {
     @apply bg-white/90 p-2 rounded-lg shadow-sm border border-white/50;
   }
+  
+  .font-adlery {
+    font-family: 'Adlery Pro', serif;
+  }
 }

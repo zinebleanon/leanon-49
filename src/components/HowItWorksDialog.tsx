@@ -19,7 +19,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
   const howItWorksSteps = [
     {
       title: "Sign up",
-      description: "Create your profile & join the LeanOn community."
+      description: "Create your profile & join the <span class='font-adlery'>LeanOn</span> community."
     },
     {
       title: "Find & Connect",
@@ -49,7 +49,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
-            How <span className="text-gradient">LeanOn</span> Works
+            How <span className="font-adlery text-gradient">LeanOn</span> Works
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-6">
@@ -63,7 +63,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
               </div>
               <div>
                 <h3 className="font-semibold mb-1">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.description}</p>
+                <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: step.description }}></p>
               </div>
             </div>
           ))}
