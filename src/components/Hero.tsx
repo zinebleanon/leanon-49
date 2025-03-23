@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -38,7 +37,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
   }, []);
   
   const handleJoinClick = () => {
-    navigate('/ally/subscribe');
+    navigate('/sign-in');
   };
   
   const textStyles = "transition-all duration-700 ease-smooth";
@@ -141,7 +140,6 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           </div>
         </div>
         
-        {/* Add significant padding to push features down */}
         <div className="pt-32 md:pt-48 lg:pt-64"></div>
         
         <div className="grid gap-4 md:grid-cols-4 md:gap-6">

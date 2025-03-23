@@ -13,6 +13,7 @@ import MumzMarketplaceSell from "./pages/MumzMarketplaceSell";
 import MumzAllySubscribe from "./pages/MumzAllySubscribe";
 import MumzShoppingHub from "./pages/MumzShoppingHub";
 import MumzSelect from "./pages/MumzSelect";
+import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignIn />} />
           <Route path="/ally" element={<MumzAlly />} />
           <Route path="/ally/subscribe" element={<MumzAllySubscribe />} />
           <Route path="/ask" element={<MumzAsk />} />
