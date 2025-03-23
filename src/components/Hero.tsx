@@ -97,7 +97,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             )}
             style={{ transitionDelay: '200ms' }}
           >
-            Less alone in <span className="font-bold text-gradient">Motherhood</span>
+            To Feel <span className="font-bold text-gradient">Less Alone</span>
           </p>
           
           <div className={cn(
