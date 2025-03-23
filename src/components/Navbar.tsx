@@ -117,26 +117,35 @@ const Navbar = () => {
           </div>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-4 lg:space-x-8 bg-white rounded-full px-4 py-2 shadow-sm">
+        <div className="hidden md:flex items-center space-x-6 bg-white rounded-full px-6 py-3 shadow-sm">
           {navItems.map((item) => (
             <Link
               key={item.name}
               to={item.path}
               className={cn(
-                "text-sm font-medium flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-300",
+                "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative",
                 isPathActive(item.path)
-                  ? "bg-primary/10 text-primary"
-                  : "text-foreground/80 hover:text-foreground hover:bg-secondary"
+                  ? "text-primary" 
+                  : "text-foreground/70 hover:text-foreground"
               )}
             >
-              {item.icon}
-              {item.name}
+              <span className={cn(
+                "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
+                isPathActive(item.path) && "scale-100"
+              )}></span>
+              <span className="relative flex items-center gap-2">
+                {item.icon}
+                {item.name}
+              </span>
+              {isPathActive(item.path) && (
+                <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
+              )}
             </Link>
           ))}
           
           <Button
             variant="warm"
-            className="transition-all duration-300 rounded-full"
+            className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
             onClick={handleJoinButtonClick}
           >
             Join & LeanOn the Community
@@ -184,19 +193,33 @@ const Navbar = () => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "text-base font-medium py-2 flex items-center gap-3 animate-slide-up rounded-full px-4 bg-white/70 backdrop-blur-sm",
+                  "text-base font-medium py-3 flex items-center gap-3 animate-slide-up transition-all duration-300",
                   isPathActive(item.path)
-                    ? "bg-white text-primary"
-                    : "text-foreground/80"
+                    ? "text-primary bg-white shadow-md"
+                    : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm"
                 )}
                 style={{
+                  borderRadius: "1rem",
+                  padding: "0.75rem 1.25rem",
                   animationDelay: `${index * 0.05}s`,
                   WebkitTapHighlightColor: 'transparent'
                 }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {item.icon}
+                <span className={cn(
+                  "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",
+                  isPathActive(item.path) 
+                    ? "bg-primary/10 text-primary" 
+                    : "text-foreground/60"
+                )}>
+                  {item.icon}
+                </span>
                 {item.name}
+                {isPathActive(item.path) && (
+                  <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                    Active
+                  </span>
+                )}
               </Link>
             ))}
           </div>
@@ -204,7 +227,7 @@ const Navbar = () => {
           <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
             <Button
               variant="warm"
-              className="w-full py-5 rounded-full animate-slide-up"
+              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg"
               style={{ 
                 animationDelay: '0.2s',
                 WebkitTapHighlightColor: 'transparent'
