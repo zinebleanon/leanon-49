@@ -25,6 +25,11 @@ export default {
 				playfair: ['Playfair Display', 'serif']
 			},
 			colors: {
+				'pastel-green': '#B8CEC2',
+				'pastel-yellow': '#FFD9A7',
+				'pastel-orange': '#EBC8B4',
+				'pastel-pink': '#FDB3A4',
+				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
