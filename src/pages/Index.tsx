@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
-import ProductShowcase from '@/components/ProductShowcase';
 import Footer from '@/components/Footer';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 
@@ -37,7 +36,6 @@ const Index = () => {
       <Navbar />
       <Hero onJoinClick={handleOpenJoinModal} />
       <Features />
-      <ProductShowcase />
       <Footer />
       
       <JoinCommunityModal
