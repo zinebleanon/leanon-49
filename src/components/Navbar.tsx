@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -103,7 +104,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/1d9135c7-232d-4e08-8e9c-1c4953d0b1db.png" 
             alt="LeanOn Logo" 
-            className="h-8 md:h-10"
+            className="h-10 md:h-12 w-auto"
           />
         </Link>
         
