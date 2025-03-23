@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Users, Mail, MapPin, Calendar } from 'lucide-react';
+import { Mail, MapPin, Calendar } from 'lucide-react';
 import BowIcon from './ui/BowIcon';
 
 interface HowToJoinSectionProps {
@@ -15,7 +15,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
       description: "Complete our subscription form with your email to join our community."
     },
     {
-      icon: <Users className="h-5 w-5 md:h-6 md:w-6 text-primary" />,
+      icon: <BowIcon className="h-5 w-5 md:h-6 md:w-6 text-primary" />,
       title: "Connect",
       description: "Get matched with moms in your neighborhood based on your children's age and interests."
     },

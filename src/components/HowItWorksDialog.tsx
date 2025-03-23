@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Info } from 'lucide-react';
+import BowIcon from './ui/BowIcon';
 
 interface HowItWorksDialogProps {
   className?: string;
@@ -42,7 +42,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
           size="lg" 
           className={`rounded-full px-6 ${className}`}
         >
-          <Info className="mr-2 h-4 w-4" /> How It Works
+          <BowIcon className="mr-2 h-4 w-4" /> How It Works
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">

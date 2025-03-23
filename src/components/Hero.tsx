@@ -1,7 +1,8 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
+import { HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HowItWorksDialog from './HowItWorksDialog';
 import BowIcon from './ui/BowIcon';
@@ -42,7 +43,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
       id: 'ally',
       title: 'Find', 
       description: 'Match with Moms in your neighborhood & LeanOn each other.',
-      icon: <Users className="h-5 w-5 md:h-6 md:w-6" />,
+      icon: <BowIcon className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-orange-100 to-orange-50',
       path: '/ally'
     },
