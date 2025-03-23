@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -101,15 +100,20 @@ const Navbar = () => {
           to="/" 
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
         >
-          <img 
-            src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
-            alt="LeanOn Logo" 
-            className="h-12 w-auto md:h-16"
-            style={{ objectFit: 'contain' }}
-            onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
-              e.currentTarget.offsetWidth, "x", e.currentTarget.offsetHeight)}
-            onError={(e) => console.error("Error loading navbar logo:", e)}
-          />
+          <div style={{ height: '60px', display: 'flex', alignItems: 'center' }}>
+            <img 
+              src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
+              alt="LeanOn Logo" 
+              className="h-auto w-auto"
+              style={{ 
+                maxHeight: '60px',
+                objectFit: 'contain'
+              }}
+              onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
+                e.currentTarget.offsetWidth, "x", e.currentTarget.offsetHeight)}
+              onError={(e) => console.error("Error loading navbar logo:", e)}
+            />
+          </div>
         </Link>
         
         <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
