@@ -170,7 +170,7 @@ const Navbar = () => {
       
       <div 
         className={cn(
-          "md:hidden fixed inset-0 z-40 glass-dark pt-16 transition-all duration-300 shadow-lg bg-gradient-to-b from-pastel-green/90 to-pastel-yellow/90",
+          "md:hidden fixed inset-0 z-40 pt-16 transition-all duration-300 shadow-lg bg-pastel-green",
           isMobileMenuOpen 
             ? "opacity-100 pointer-events-auto translate-y-0" 
             : "opacity-0 pointer-events-none translate-y-[-20px]"
@@ -201,7 +201,7 @@ const Navbar = () => {
             ))}
           </div>
           
-          <div className="mt-auto pb-8">
+          <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
             <Button
               variant="warm"
               className="w-full py-5 rounded-full animate-slide-up"
