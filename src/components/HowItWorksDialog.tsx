@@ -15,7 +15,7 @@ interface HowItWorksDialogProps {
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "warm";
 }
 
-const HowItWorksDialog = ({ className, buttonVariant = "warm" }: HowItWorksDialogProps) => {
+const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDialogProps) => {
   const howItWorksSteps = [
     {
       title: "Sign up",
@@ -39,14 +39,14 @@ const HowItWorksDialog = ({ className, buttonVariant = "warm" }: HowItWorksDialo
     <Dialog>
       <DialogTrigger asChild>
         <Button 
-          variant={buttonVariant} 
+          variant="outline"
           size="lg" 
-          className={`rounded-full px-6 ${className}`}
+          className={`rounded-full px-6 border-pastel-yellow hover:bg-pastel-yellow/90 ${className}`}
         >
           <Info className="mr-2 h-4 w-4" /> How It Works
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg bg-pastel-yellow/20">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
             How <span className="font-adlery text-gradient">LeanOn</span> Works
