@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Bookmark, Heart } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HeroProps {
@@ -39,7 +39,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
   const features = [
     { 
       id: 'ally',
-      title: 'Mumz Ally', 
+      title: 'Find them', 
       description: 'Find your lifetime Allies to navigate motherhood ups and downs together.',
       icon: <Users className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-orange-100 to-orange-50',
@@ -47,7 +47,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     },
     { 
       id: 'ask',
-      title: 'Mumz Ask', 
+      title: 'Ask them', 
       description: 'Community of Mumz supporting each other, share your questions, doubts and needs and the community will answer genuinely without judgement.',
       icon: <HelpCircle className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-amber-100 to-amber-50',
@@ -55,11 +55,19 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     },
     { 
       id: 'save',
-      title: 'Mumz Save', 
-      description: 'Discover exclusive discount on your favorite brands.\n\nDiscover a Mumz Market place where you can buy and sell second hand items around motherhood.',
-      icon: <Bookmark className="h-5 w-5 md:h-6 md:w-6" />,
+      title: 'Moms deals', 
+      description: 'Discover exclusive discount on your favorite brands.',
+      icon: <Tag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
       path: '/save'
+    },
+    { 
+      id: 'preloved',
+      title: 'Moms Preloved', 
+      description: 'Discover a Mumz Market place where you can buy and sell second hand items around motherhood.',
+      icon: <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />,
+      color: 'from-green-100 to-green-50',
+      path: '/marketplace'
     }
   ];
   
@@ -108,7 +116,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           </div>
         </div>
         
-        <div className="grid gap-4 md:grid-cols-3 md:gap-6">
+        <div className="grid gap-4 md:grid-cols-4 md:gap-6">
           {features.map((feature) => (
             <Link 
               key={feature.id}
@@ -125,7 +133,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
                 </div>
                 
                 <h3 className="text-lg md:text-xl font-medium mb-1 md:mb-2 font-playfair">{feature.title}</h3>
-                <p className="text-sm md:text-base text-muted-foreground whitespace-pre-line">{feature.description}</p>
+                <p className="text-sm md:text-base text-muted-foreground">{feature.description}</p>
               </div>
             </Link>
           ))}

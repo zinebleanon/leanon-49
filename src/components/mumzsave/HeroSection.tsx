@@ -28,7 +28,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           </div>
           <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
             <Tag className="h-8 w-8 text-primary mx-auto mb-2" />
-            <h3 className="font-medium">Moms Picks</h3>
+            <h3 className="font-medium">Moms Deals</h3>
           </div>
           <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
             <ShoppingBag className="h-8 w-8 text-primary mx-auto mb-2" />
