@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { Heart, Users, Mail, MapPin, Calendar } from 'lucide-react';
+import { Users, Mail, MapPin, Calendar } from 'lucide-react';
+import BowIcon from './ui/BowIcon';
 
 interface HowToJoinSectionProps {
   onJoinClick: () => void;
@@ -64,7 +65,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
             size="lg"
             className="rounded-full px-6 w-full sm:w-auto"
           >
-            <Heart className="mr-2 h-4 w-4" fill="currentColor" />
+            <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
             Join & LeanOn
           </Button>
         </div>

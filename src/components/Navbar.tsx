@@ -1,11 +1,11 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home, Heart } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
+import BowIcon from './ui/BowIcon';
 import { 
   NavigationMenu,
   NavigationMenuItem,
@@ -148,7 +148,7 @@ const Navbar = () => {
             className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
             onClick={handleJoinButtonClick}
           >
-            <Heart className="mr-2 h-4 w-4" fill="currentColor" />
+            <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
             Join & LeanOn
           </Button>
         </div>
@@ -235,7 +235,7 @@ const Navbar = () => {
               }}
               onClick={handleJoinButtonClick}
             >
-              <Heart className="mr-2 h-4 w-4" fill="currentColor" />
+              <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
               Join & LeanOn
             </Button>
           </div>
