@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -109,7 +110,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             <Button 
               variant="ghost" 
               size="lg" 
-              className="rounded-full px-6 border border-pastel-yellow/50 hover:bg-pastel-yellow active:bg-pastel-yellow/80 transition-colors"
+              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
               onClick={onJoinClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
