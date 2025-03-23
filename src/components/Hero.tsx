@@ -40,7 +40,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ally',
       title: 'Find', 
-      description: 'Match with Moms & LeanOn each other to navigate motherhood ups and downs together.',
+      description: 'Match with Moms & LeanOn each other.',
       icon: <Users className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-orange-100 to-orange-50',
       path: '/ally'
