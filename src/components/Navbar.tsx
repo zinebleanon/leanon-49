@@ -170,7 +170,7 @@ const Navbar = () => {
       
       <div 
         className={cn(
-          "md:hidden fixed inset-0 z-40 bg-white pt-16 transition-all duration-300 shadow-lg",
+          "md:hidden fixed inset-0 z-40 glass-dark pt-16 transition-all duration-300 shadow-lg bg-gradient-to-b from-pastel-green/90 to-pastel-yellow/90",
           isMobileMenuOpen 
             ? "opacity-100 pointer-events-auto translate-y-0" 
             : "opacity-0 pointer-events-none translate-y-[-20px]"
@@ -184,9 +184,9 @@ const Navbar = () => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "text-base font-medium py-2 flex items-center gap-3 animate-slide-up rounded-full px-4",
+                  "text-base font-medium py-2 flex items-center gap-3 animate-slide-up rounded-full px-4 bg-white/70 backdrop-blur-sm",
                   isPathActive(item.path)
-                    ? "bg-primary/10 text-primary"
+                    ? "bg-white text-primary"
                     : "text-foreground/80"
                 )}
                 style={{
