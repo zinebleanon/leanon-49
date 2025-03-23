@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -66,6 +65,7 @@ const Navbar = () => {
     { name: 'Find them', icon: <Users className="h-4 w-4" />, path: '/ally' },
     { name: 'Ask them', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Moms deals', icon: <Tag className="h-4 w-4" />, path: '/save' },
+    { name: 'Moms Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
   ];
 
   const handleJoinButtonClick = () => {
@@ -82,7 +82,10 @@ const Navbar = () => {
   const isPathActive = (path: string) => {
     if (path === '/save') {
       return location.pathname === path || 
-             location.pathname === '/marketplace' || 
+             location.pathname.startsWith('/select/');
+    }
+    if (path === '/marketplace') {
+      return location.pathname === path || 
              location.pathname.startsWith('/marketplace/');
     }
     return location.pathname === path;
