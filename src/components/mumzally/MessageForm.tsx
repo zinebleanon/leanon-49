@@ -53,7 +53,7 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Message to {recipient.name}</DialogTitle>
           <DialogDescription>
-            Send a message to start a conversation with your new MumzAlly
+            Send a message to start a conversation with your new LeanOn Ally
           </DialogDescription>
         </DialogHeader>
         

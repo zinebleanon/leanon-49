@@ -41,7 +41,7 @@ const ConnectionRequests = () => {
     setAcceptedRequests(prev => [...prev, id]);
     toast({
       title: "Ally Connection Made!",
-      description: `You've made a new MumzAlly with ${name}!`,
+      description: `You've made a new LeanOn Ally with ${name}!`,
     });
   };
 

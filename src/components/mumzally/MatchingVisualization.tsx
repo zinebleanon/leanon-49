@@ -20,7 +20,7 @@ const MatchingVisualization = () => {
       
       // Show Ally match notification
       toast({
-        title: "You Are MumzAllies!",
+        title: "You Are LeanOn Allies!",
         description: "You've made a new connection with Jessica",
       });
       
@@ -38,7 +38,7 @@ const MatchingVisualization = () => {
     <section className="py-12 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-semibold text-center mb-4">
-          How to Find Your MumzAllies
+          How to Find Your LeanOn Allies
         </h2>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
           Connect with other mumz who share similar interests, parenting styles, and life stages in the UAE to build your support network.
@@ -96,7 +96,7 @@ const MatchingVisualization = () => {
               </div>
               
               {(userHeartActive && jessicaHeartActive) && (
-                <p className="text-primary font-medium mt-2 whitespace-nowrap">You Are MumzAllies!</p>
+                <p className="text-primary font-medium mt-2 whitespace-nowrap">You Are LeanOn Allies!</p>
               )}
             </div>
           </div>

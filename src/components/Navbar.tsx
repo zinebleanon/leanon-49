@@ -105,7 +105,7 @@ const Navbar = () => {
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
         >
           <Heart className="text-[#ea384c] h-5 w-5 md:h-6 md:w-6" fill="#ea384c" />
-          <span>MumzAlly</span>
+          <span>LeanOn</span>
         </Link>
         
         <div className="hidden md:flex items-center space-x-4 lg:space-x-8">

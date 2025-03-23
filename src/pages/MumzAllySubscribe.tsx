@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -33,7 +34,7 @@ const MumzAllySubscribe = () => {
       setIsProcessing(false);
       toast({
         title: "Payment Successful",
-        description: "Welcome to Mumz Save Premium! You now have access to all exclusive deals.",
+        description: "Welcome to LeanOn Premium! You now have access to all exclusive deals.",
       });
       navigate('/save');
     }, 1500);
@@ -55,13 +56,13 @@ const MumzAllySubscribe = () => {
             onClick={handleBackToSave}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Mumz Save
+            Back to LeanOn Save
           </Button>
           
           <div className="text-center mb-10">
             <Badge className="mb-2" variant="outline">Premium Access</Badge>
             <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
-              Mumz Save Premium Subscription
+              LeanOn Premium Subscription
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-playfair">
               Get exclusive access to the best deals for moms and kids across the UAE for just 20 AED per month.
@@ -90,7 +91,7 @@ const MumzAllySubscribe = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-5 w-5 text-green-500" />
-                  <span>Priority placement in Mumz Marketplace</span>
+                  <span>Priority placement in LeanOn Marketplace</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Check className="h-5 w-5 text-green-500" />

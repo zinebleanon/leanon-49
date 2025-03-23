@@ -27,7 +27,7 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
   const handleHeartClick = (id: number) => {
     toast({
       title: "Connection Request Sent",
-      description: "You've sent a request to become MumzAllies with someone in your neighborhood!",
+      description: "You've sent a request to become LeanOn Allies with someone in your neighborhood!",
     });
     
     onHeartClick(id);

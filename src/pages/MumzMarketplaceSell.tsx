@@ -37,7 +37,7 @@ const MumzMarketplaceSell = () => {
               </Link>
             </Button>
             <h1 className="text-3xl font-bold mb-2 font-playfair">
-              <span className="text-orange-500">Sell</span> <span className="text-black">on MumzAlly Marketplace</span>
+              <span className="text-orange-500">Sell</span> <span className="text-black">on LeanOn Marketplace</span>
             </h1>
             <p className="text-muted-foreground mb-2">
               List your gently used children's items for sale and connect with UAE moms looking for quality items.
@@ -45,7 +45,7 @@ const MumzMarketplaceSell = () => {
             <div className="bg-orange-50 p-4 rounded-lg mb-8 flex items-start gap-3">
               <MessageCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
               <p className="text-sm">
-                <span className="font-medium">MumzAlly Integration:</span> Buyers will be able to message you directly about your items through our secure messaging system. Connect with other moms in your community while selling your items!
+                <span className="font-medium">LeanOn Integration:</span> Buyers will be able to message you directly about your items through our secure messaging system. Connect with other moms in your community while selling your items!
               </p>
             </div>
           </div>
