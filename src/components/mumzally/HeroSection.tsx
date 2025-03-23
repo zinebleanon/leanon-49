@@ -58,7 +58,19 @@ const HeroSection = () => {
             </div>
           </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
-            Find <span className="text-gradient">Match with Moms & LeanOn</span> each other
+            Find <span className="text-gradient">Match with Moms & 
+              <span className="inline-flex items-center align-middle mx-1">
+                <img 
+                  src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
+                  alt="LeanOn" 
+                  className="h-8 md:h-10 inline"
+                  style={{ 
+                    maxWidth: '100px',
+                    objectFit: 'contain'
+                  }}
+                />
+              </span>
+            </span> each other
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8">
             Less alone in Motherhood. Connect with mumz based on your age, neighborhood, children's 
