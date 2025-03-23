@@ -10,6 +10,8 @@ const HeroSection = () => {
     }
   };
 
+  console.log("Rendering HeroSection with logo path:", "/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png");
+
   return (
     <section className="py-16 md:py-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +20,13 @@ const HeroSection = () => {
             <img 
               src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
               alt="LeanOn Logo" 
-              className="h-[300px] md:h-[400px] w-auto object-contain"
+              className="w-[500px] max-w-full h-auto"
+              onError={(e) => {
+                console.error("Error loading image:", e);
+                e.currentTarget.style.border = "1px solid red";
+                e.currentTarget.style.padding = "10px";
+                e.currentTarget.alt = "Image failed to load";
+              }}
             />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
