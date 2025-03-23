@@ -32,6 +32,7 @@ export default {
 				'pastel-yellow': '#FFD9A7',
 				'pastel-orange': '#EBC8B4',
 				'pastel-pink': '#FDB3A4',
+				'pantone-yellow': '#FFD700',
 				
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
