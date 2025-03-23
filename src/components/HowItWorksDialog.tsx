@@ -39,9 +39,9 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
     <Dialog>
       <DialogTrigger asChild>
         <Button 
-          variant="outline"
+          variant={buttonVariant}
           size="lg" 
-          className={`rounded-full px-6 border-pastel-yellow hover:bg-pastel-yellow/90 ${className}`}
+          className={`rounded-full px-6 border border-pastel-yellow/50 hover:bg-pastel-yellow active:bg-pastel-yellow/80 transition-colors ${className}`}
         >
           <Info className="mr-2 h-4 w-4" /> How It Works
         </Button>

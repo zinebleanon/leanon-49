@@ -108,16 +108,16 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           )}
           style={{ transitionDelay: '400ms' }}>
             <Button 
-              variant="warm" 
+              variant="ghost" 
               size="lg" 
-              className="rounded-full px-6"
+              className="rounded-full px-6 border border-pastel-yellow/50 hover:bg-pastel-yellow active:bg-pastel-yellow/80 transition-colors"
               onClick={onJoinClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
 
-            <HowItWorksDialog />
+            <HowItWorksDialog buttonVariant="ghost" />
           </div>
         </div>
         
