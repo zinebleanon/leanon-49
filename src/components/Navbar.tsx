@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -62,10 +63,10 @@ const Navbar = () => {
   
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
-    { name: 'Find them', icon: <Users className="h-4 w-4" />, path: '/ally' },
-    { name: 'Ask them', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
-    { name: 'Moms deals', icon: <Tag className="h-4 w-4" />, path: '/save' },
-    { name: 'Moms Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
+    { name: 'Find', icon: <Users className="h-4 w-4" />, path: '/ally' },
+    { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
+    { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/save' },
+    { name: 'Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
   ];
 
   const handleJoinButtonClick = () => {

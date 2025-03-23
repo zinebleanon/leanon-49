@@ -39,7 +39,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
   const features = [
     { 
       id: 'ally',
-      title: 'Find them', 
+      title: 'Find', 
       description: 'Find your lifetime Allies to navigate motherhood ups and downs together.',
       icon: <Users className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-orange-100 to-orange-50',
@@ -47,7 +47,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     },
     { 
       id: 'ask',
-      title: 'Ask them', 
+      title: 'Ask', 
       description: 'Community of Mumz supporting each other, share your questions, doubts and needs and the community will answer genuinely without judgement.',
       icon: <HelpCircle className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-amber-100 to-amber-50',
@@ -55,7 +55,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     },
     { 
       id: 'save',
-      title: 'Moms deals', 
+      title: 'Deals', 
       description: 'Discover exclusive discount on your favorite brands.',
       icon: <Tag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
@@ -63,7 +63,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     },
     { 
       id: 'preloved',
-      title: 'Moms Preloved', 
+      title: 'Preloved', 
       description: 'Discover a Mumz Market place where you can buy and sell second hand items around motherhood.',
       icon: <ShoppingBag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-green-100 to-green-50',
