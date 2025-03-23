@@ -15,7 +15,7 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-2xl mx-auto">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
-            Match with <span className="text-gradient">Moms & LeanOn</span> Each Other
+            Find <span className="text-gradient">Match with Moms & LeanOn</span> each other
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8">
             Less alone in Motherhood. Connect with mumz based on your age, neighborhood, children's 
