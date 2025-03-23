@@ -79,14 +79,6 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
-          <div className="flex justify-center mb-4">
-            <img 
-              src="/lovable-uploads/1d9135c7-232d-4e08-8e9c-1c4953d0b1db.png" 
-              alt="LeanOn Logo" 
-              className="h-16 md:h-24 w-auto"
-            />
-          </div>
-          
           <h1 
             className={cn(
               "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 font-playfair",
@@ -120,11 +112,6 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               className="rounded-full px-6"
               onClick={onJoinClick}
             >
-              <img 
-                src="/lovable-uploads/1d9135c7-232d-4e08-8e9c-1c4953d0b1db.png" 
-                alt="LeanOn Logo" 
-                className="mr-2 h-6 w-auto" 
-              /> 
               Join & LeanOn the Community
             </Button>
 
