@@ -56,7 +56,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'save',
       title: 'Deals', 
-      description: 'LeanOn us to select brands & deals for your little ones.',
+      description: 'LeanOn us to select brands & deals for you.',
       icon: <Tag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-yellow-100 to-yellow-50',
       path: '/save'
