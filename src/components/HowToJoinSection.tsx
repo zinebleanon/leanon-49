@@ -65,7 +65,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
             className="rounded-full px-6 w-full sm:w-auto"
           >
             <Heart className="mr-2 h-4 w-4" fill="currentColor" />
-            Join & Lean On the Community
+            Join & LeanOn the Community
           </Button>
         </div>
       </div>

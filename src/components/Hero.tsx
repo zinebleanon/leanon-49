@@ -111,7 +111,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               className="rounded-full px-6"
               onClick={onJoinClick}
             >
-              <Heart className="mr-2 h-4 w-4" fill="currentColor" /> Join & Lean On the Community
+              <Heart className="mr-2 h-4 w-4" fill="currentColor" /> Join & LeanOn the Community
             </Button>
           </div>
         </div>
