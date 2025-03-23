@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -100,13 +101,13 @@ const Navbar = () => {
           to="/" 
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
         >
-          <div style={{ height: '60px', display: 'flex', alignItems: 'center' }}>
+          <div style={{ height: '80px', display: 'flex', alignItems: 'center' }}>
             <img 
               src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
               alt="LeanOn Logo" 
               className="h-auto w-auto"
               style={{ 
-                maxHeight: '60px',
+                maxHeight: '80px',
                 objectFit: 'contain'
               }}
               onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
