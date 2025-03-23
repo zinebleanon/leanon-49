@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import HowItWorksDialog from './HowItWorksDialog';
 import BowIcon from './ui/BowIcon';
 
@@ -14,6 +14,7 @@ interface HeroProps {
 const Hero = ({ onJoinClick }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
   
   useEffect(() => {
     setIsVisible(true);
@@ -35,6 +36,10 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     window.addEventListener('scroll', handleParallax);
     return () => window.removeEventListener('scroll', handleParallax);
   }, []);
+  
+  const handleJoinClick = () => {
+    navigate('/ally/subscribe');
+  };
   
   const textStyles = "transition-all duration-700 ease-smooth";
   
@@ -126,7 +131,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               variant="ghost" 
               size="lg" 
               className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
-              onClick={onJoinClick}
+              onClick={handleJoinClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>

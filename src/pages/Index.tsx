@@ -4,11 +4,9 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import Footer from '@/components/Footer';
-import JoinCommunityModal from '@/components/JoinCommunityModal';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   
   useEffect(() => {
     // Simulate loading state for smooth intro
@@ -18,10 +16,6 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
-  
-  const handleOpenJoinModal = () => {
-    setIsJoinModalOpen(true);
-  };
   
   if (isLoading) {
     return (
@@ -34,14 +28,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Hero onJoinClick={handleOpenJoinModal} />
+      <Hero onJoinClick={() => {}} />
       <Features />
       <Footer />
-      
-      <JoinCommunityModal
-        isOpen={isJoinModalOpen}
-        onOpenChange={setIsJoinModalOpen}
-      />
     </div>
   );
 };
