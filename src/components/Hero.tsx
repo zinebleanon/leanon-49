@@ -92,7 +92,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           
           <p 
             className={cn(
-              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-6 md:mb-8 font-playfair",
+              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-2 font-playfair",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
@@ -100,6 +100,21 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           >
             To Feel <span className="font-bold text-[#FFD9A7]">Less Alone</span>
           </p>
+          
+          <div 
+            className={cn(
+              "flex justify-center mb-6",
+              textStyles,
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            )}
+            style={{ transitionDelay: '300ms' }}
+          >
+            <img
+              src="/lovable-uploads/f13b9daf-130a-4b25-971f-a1ae0385f800.png"
+              alt="Moms supporting each other"
+              className="w-48 md:w-56 lg:w-64 h-auto mx-auto"
+            />
+          </div>
           
           <div className={cn(
             "flex flex-col sm:flex-row justify-center gap-3 mb-8 md:mb-12",
