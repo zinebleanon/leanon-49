@@ -115,11 +115,11 @@
   }
   
   .warm-card {
-    @apply bg-gradient-to-br from-pastel-yellow/50 to-pastel-orange/50 border border-pastel-yellow/30 shadow-sm hover:shadow-md transition-all duration-300;
+    @apply bg-pastel-yellow/50 border border-pastel-yellow/30 shadow-sm hover:shadow-md transition-all duration-300;
   }
   
   .warm-button {
-    @apply bg-gradient-to-r from-pastel-green to-pastel-yellow hover:from-pastel-green/90 hover:to-pastel-yellow/90 text-foreground transition-all duration-300;
+    @apply bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground transition-all duration-300;
   }
   
   .curved-decoration {
