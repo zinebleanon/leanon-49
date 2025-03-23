@@ -136,6 +136,9 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           </div>
         </div>
         
+        {/* Add significant padding to push features down */}
+        <div className="pt-32 md:pt-48 lg:pt-64"></div>
+        
         <div className="grid gap-4 md:grid-cols-4 md:gap-6">
           {features.map((feature) => (
             <Link 
