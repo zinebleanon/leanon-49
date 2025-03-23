@@ -2,8 +2,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Heart } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Heart, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 interface HeroProps {
   onJoinClick: () => void;
@@ -70,6 +71,25 @@ const Hero = ({ onJoinClick }: HeroProps) => {
       path: '/marketplace'
     }
   ];
+
+  const howItWorksSteps = [
+    {
+      title: "Connect with Moms",
+      description: "Find and match with other moms in your neighborhood based on shared interests and children's ages."
+    },
+    {
+      title: "Share Experiences",
+      description: "Ask questions, share recommendations, and learn from other moms' experiences."
+    },
+    {
+      title: "Access Deals & Resources",
+      description: "Get exclusive access to curated deals, preloved items, and helpful parenting resources."
+    },
+    {
+      title: "Build Your Support Network",
+      description: "Create meaningful connections to make motherhood less isolating and more fulfilling."
+    }
+  ];
   
   return (
     <section 
@@ -100,7 +120,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           </p>
           
           <div className={cn(
-            "flex justify-center gap-3 mb-8 md:mb-12",
+            "flex flex-col sm:flex-row justify-center gap-3 mb-8 md:mb-12",
             textStyles,
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
@@ -113,6 +133,41 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             >
               <Heart className="mr-2 h-4 w-4" fill="currentColor" /> Join & LeanOn the Community
             </Button>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="rounded-full px-6"
+                >
+                  <Info className="mr-2 h-4 w-4" /> How It Works
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl text-center mb-6">
+                    How <span className="text-gradient">Moms LeanOn</span> Works
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-6">
+                  {howItWorksSteps.map((step, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-4 p-4 rounded-lg bg-secondary/30"
+                    >
+                      <div className="shrink-0 bg-primary/10 rounded-full p-2 w-8 h-8 flex items-center justify-center">
+                        <span className="font-medium text-primary">{index + 1}</span>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1">{step.title}</h3>
+                        <p className="text-sm text-muted-foreground">{step.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         
