@@ -18,7 +18,7 @@ const HeroSection = () => {
             <img 
               src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
               alt="LeanOn Logo" 
-              className="h-24 md:h-32 w-auto"
+              className="h-[144px] md:h-[192px] w-auto"
             />
           </div>
           <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
