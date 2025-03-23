@@ -131,11 +131,13 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               )}
             >
               <div className="flex flex-col h-full">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 md:mb-4">
-                  {feature.icon}
+                <div className="flex items-center gap-3 mb-3 md:mb-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg md:text-xl font-medium font-playfair">{feature.title}</h3>
                 </div>
                 
-                <h3 className="text-lg md:text-xl font-medium mb-1 md:mb-2 font-playfair">{feature.title}</h3>
                 <p className="text-sm md:text-base text-muted-foreground">{feature.description}</p>
               </div>
             </Link>

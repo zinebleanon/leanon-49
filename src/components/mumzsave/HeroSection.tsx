@@ -18,21 +18,29 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           </h1>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
-            <Users className="h-8 w-8 text-primary mx-auto mb-2" />
-            <h3 className="font-medium">Find</h3>
+          <div className="p-4 bg-white/50 rounded-lg shadow-sm">
+            <div className="flex items-center gap-3">
+              <Users className="h-8 w-8 text-primary" />
+              <h3 className="font-medium">Find</h3>
+            </div>
           </div>
-          <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
-            <MessageCircle className="h-8 w-8 text-primary mx-auto mb-2" />
-            <h3 className="font-medium">Ask</h3>
+          <div className="p-4 bg-white/50 rounded-lg shadow-sm">
+            <div className="flex items-center gap-3">
+              <MessageCircle className="h-8 w-8 text-primary" />
+              <h3 className="font-medium">Ask</h3>
+            </div>
           </div>
-          <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
-            <Tag className="h-8 w-8 text-primary mx-auto mb-2" />
-            <h3 className="font-medium">Deals</h3>
+          <div className="p-4 bg-white/50 rounded-lg shadow-sm">
+            <div className="flex items-center gap-3">
+              <Tag className="h-8 w-8 text-primary" />
+              <h3 className="font-medium">Deals</h3>
+            </div>
           </div>
-          <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
-            <ShoppingBag className="h-8 w-8 text-primary mx-auto mb-2" />
-            <h3 className="font-medium">Preloved</h3>
+          <div className="p-4 bg-white/50 rounded-lg shadow-sm">
+            <div className="flex items-center gap-3">
+              <ShoppingBag className="h-8 w-8 text-primary" />
+              <h3 className="font-medium">Preloved</h3>
+            </div>
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
