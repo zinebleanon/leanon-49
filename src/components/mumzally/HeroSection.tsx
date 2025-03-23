@@ -32,7 +32,7 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <div className="mb-8 flex justify-center md:justify-start">
-            <div className="w-full" style={{ minHeight: '180px' }}>
+            <div className="w-full" style={{ minHeight: '720px' }}>
               <img 
                 src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
                 alt="LeanOn Logo" 
@@ -40,7 +40,7 @@ const HeroSection = () => {
                 style={{ 
                   maxWidth: '100%', 
                   width: 'auto',
-                  height: '180px',
+                  height: '720px',
                   objectFit: 'contain'
                 }}
                 onLoad={(e) => {
