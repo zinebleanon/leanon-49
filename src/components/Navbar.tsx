@@ -107,7 +107,7 @@ const Navbar = () => {
               alt="LeanOn Logo" 
               className="h-auto w-auto"
               style={{ 
-                maxHeight: '100%',
+                maxHeight: '100px',
                 objectFit: 'contain'
               }}
               onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
