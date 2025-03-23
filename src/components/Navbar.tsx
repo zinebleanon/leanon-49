@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -130,7 +129,7 @@ const Navbar = () => {
             className="transition-all duration-300 rounded-full"
             onClick={handleJoinButtonClick}
           >
-            Join Us
+            Join & Lean On the Community
           </Button>
         </div>
         
@@ -202,7 +201,7 @@ const Navbar = () => {
               }}
               onClick={handleJoinButtonClick}
             >
-              Join Us
+              Join & Lean On the Community
             </Button>
           </div>
         </nav>
