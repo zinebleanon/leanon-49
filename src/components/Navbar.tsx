@@ -104,7 +104,8 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
             alt="LeanOn Logo" 
-            className="h-12 w-auto md:h-16"
+            className="h-16 w-auto md:h-20"
+            style={{ objectFit: 'contain' }}
             onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
               e.currentTarget.offsetWidth, "x", e.currentTarget.offsetHeight)}
             onError={(e) => console.error("Error loading navbar logo:", e)}

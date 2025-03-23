@@ -9,14 +9,15 @@
     <meta name="author" content="Lovable" />
     <meta property="og:image" content="/og-image.png" />
     <link rel="icon" href="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" type="image/png" />
+    <link rel="preload" href="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" as="image" />
     <script>
       console.log("Checking if logo file exists:", "/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png");
       
       // Debug image loading
       window.addEventListener('DOMContentLoaded', () => {
         const img = new Image();
-        img.onload = () => console.log("Logo image loaded successfully");
-        img.onerror = () => console.error("Logo image failed to load");
+        img.onload = () => console.log("Logo image loaded successfully in HTML preload");
+        img.onerror = () => console.error("Logo image failed to load in HTML preload");
         img.src = "/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png";
       });
     </script>

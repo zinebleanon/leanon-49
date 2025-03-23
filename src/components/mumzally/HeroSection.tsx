@@ -30,14 +30,19 @@ const HeroSection = () => {
   return (
     <section className="py-16 md:py-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center md:text-left md:max-w-2xl mx-auto">
+        <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <div className="mb-8 flex justify-center md:justify-start">
-            <div className="w-full max-w-[500px]" style={{ minHeight: '150px' }}>
+            <div className="w-full" style={{ minHeight: '180px' }}>
               <img 
                 src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
                 alt="LeanOn Logo" 
-                className="w-full h-auto"
-                style={{ maxWidth: '100%', width: '500px' }}
+                className="w-auto h-auto mx-auto md:mx-0"
+                style={{ 
+                  maxWidth: '100%', 
+                  width: 'auto',
+                  height: '180px',
+                  objectFit: 'contain'
+                }}
                 onLoad={(e) => {
                   console.log("Image loaded in component, dimensions:", 
                     e.currentTarget.naturalWidth, "x", e.currentTarget.naturalHeight,
