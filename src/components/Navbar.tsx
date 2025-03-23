@@ -1,18 +1,14 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Heart, Home } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 
@@ -104,8 +100,11 @@ const Navbar = () => {
           to="/" 
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
         >
-          <Heart className="text-[#ea384c] h-5 w-5 md:h-6 md:w-6" fill="#ea384c" />
-          <span>LeanOn</span>
+          <img 
+            src="/lovable-uploads/1d9135c7-232d-4e08-8e9c-1c4953d0b1db.png" 
+            alt="LeanOn Logo" 
+            className="h-8 md:h-10"
+          />
         </Link>
         
         <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
