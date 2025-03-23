@@ -99,15 +99,15 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link 
           to="/" 
-          className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center gap-1 md:gap-2"
+          className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center"
         >
-          <div style={{ height: '100px', display: 'flex', alignItems: 'center' }}>
+          <div className="flex items-center h-12 md:h-14">
             <img 
               src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
               alt="LeanOn Logo" 
               className="h-auto w-auto"
               style={{ 
-                maxHeight: '100px',
+                maxHeight: '100%',
                 objectFit: 'contain'
               }}
               onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
