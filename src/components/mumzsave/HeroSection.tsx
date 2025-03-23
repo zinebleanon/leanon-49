@@ -20,7 +20,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
             <Users className="h-8 w-8 text-primary mx-auto mb-2" />
-            <h3 className="font-medium">Find</h3>
+            <h3 className="font-medium">Match with Moms</h3>
           </div>
           <div className="text-center p-4 bg-white/50 rounded-lg shadow-sm">
             <MessageCircle className="h-8 w-8 text-primary mx-auto mb-2" />
