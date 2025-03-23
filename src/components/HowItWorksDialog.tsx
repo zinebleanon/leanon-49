@@ -15,7 +15,7 @@ interface HowItWorksDialogProps {
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "warm";
 }
 
-const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDialogProps) => {
+const HowItWorksDialog = ({ className, buttonVariant = "warm" }: HowItWorksDialogProps) => {
   const howItWorksSteps = [
     {
       title: "Sign up",
