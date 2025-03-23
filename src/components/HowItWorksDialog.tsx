@@ -18,7 +18,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
   const howItWorksSteps = [
     {
       title: "Sign up",
-      description: "Create your profile and join the community of supportive moms."
+      description: "Create your profile & join the LeanOn community."
     },
     {
       title: "Find & Connect",
