@@ -129,7 +129,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               className={cn(
                 "relative p-4 md:p-6 rounded-lg bg-gradient-to-br border shadow-sm",
                 feature.color,
-                "hover:shadow-md transition-all group"
+                "hover:shadow-md transition-all group border-[#FFF8E7]"
               )}
             >
               <div className="flex flex-col h-full">
