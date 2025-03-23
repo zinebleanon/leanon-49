@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -103,7 +104,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
             alt="LeanOn Logo" 
-            className="h-64 w-auto md:h-80"
+            className="h-12 w-auto md:h-16"
             style={{ objectFit: 'contain' }}
             onLoad={(e) => console.log("Navbar logo loaded, dimensions:", 
               e.currentTarget.offsetWidth, "x", e.currentTarget.offsetHeight)}
