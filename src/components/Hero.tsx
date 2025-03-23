@@ -92,7 +92,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           
           <p 
             className={cn(
-              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-2 font-playfair",
+              "text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-0 font-playfair",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
@@ -103,7 +103,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
           
           <div 
             className={cn(
-              "flex justify-center mb-6",
+              "flex justify-center mt-1",
               textStyles,
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
