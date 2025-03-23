@@ -20,9 +20,11 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-				serif: ['Playfair Display', 'serif'],
-				playfair: ['Playfair Display', 'serif']
+				sans: ['Nunito', 'sans-serif'],
+				serif: ['Raleway', 'serif'],
+				playfair: ['Raleway', 'serif'],
+				nunito: ['Nunito', 'sans-serif'],
+				raleway: ['Raleway', 'serif']
 			},
 			colors: {
 				'pastel-green': '#B8CEC2',
