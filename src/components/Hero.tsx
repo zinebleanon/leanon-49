@@ -112,7 +112,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             <img
               src="/lovable-uploads/f13b9daf-130a-4b25-971f-a1ae0385f800.png"
               alt="Moms supporting each other"
-              className="w-48 md:w-56 lg:w-64 h-auto mx-auto"
+              className="w-64 md:w-80 lg:w-96 h-auto mx-auto"
             />
           </div>
           
