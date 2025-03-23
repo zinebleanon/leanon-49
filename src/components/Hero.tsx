@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HowItWorksDialog from './HowItWorksDialog';
 
@@ -112,7 +112,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               className="rounded-full px-6"
               onClick={onJoinClick}
             >
-              Join & LeanOn the Community
+              Join & LeanOn
             </Button>
 
             <HowItWorksDialog />

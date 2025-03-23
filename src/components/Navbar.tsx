@@ -148,7 +148,7 @@ const Navbar = () => {
             className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
             onClick={handleJoinButtonClick}
           >
-            Join & LeanOn the Community
+            Join & LeanOn
           </Button>
         </div>
         
@@ -234,7 +234,7 @@ const Navbar = () => {
               }}
               onClick={handleJoinButtonClick}
             >
-              Join & LeanOn the Community
+              Join & LeanOn
             </Button>
           </div>
         </nav>
