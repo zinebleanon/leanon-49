@@ -85,7 +85,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">Mumz need Mumz</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">Moms Need Moms to LeanOn</span>
           </h1>
           
           <p 
