@@ -48,7 +48,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
-            How <span className="text-gradient">Moms LeanOn</span> Works
+            How <span className="text-gradient">LeanOn</span> Works
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-6">
