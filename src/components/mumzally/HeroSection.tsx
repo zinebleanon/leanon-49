@@ -18,7 +18,7 @@ const HeroSection = () => {
             Find Your <span className="text-gradient">Mumz Ally</span>
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8">
-            Connect with mumz based on your age, neighborhood, children's 
+            Less alone in Motherhood. Connect with mumz based on your age, neighborhood, children's 
             age and gender, nationality, and work status for meaningful friendships.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">

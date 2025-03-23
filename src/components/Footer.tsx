@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="mb-12">
           <div className="text-2xl font-medium tracking-tight mb-4">MumzAlly</div>
           <p className="text-muted-foreground mb-4 max-w-xs">
-            Motherhood together feels less alone. Moms LeanOn Moms.
+            Less alone in Motherhood. Moms LeanOn Moms.
           </p>
         </div>
         
