@@ -17,20 +17,20 @@ interface HowItWorksDialogProps {
 const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDialogProps) => {
   const howItWorksSteps = [
     {
-      title: "Connect with Moms",
-      description: "Find and match with other moms in your neighborhood based on shared interests and children's ages."
+      title: "Sign up",
+      description: "Create your profile and join the community of supportive moms."
     },
     {
-      title: "Share Experiences",
-      description: "Ask questions, share recommendations, and learn from other moms' experiences."
+      title: "Find & Connect",
+      description: "Match with moms in your neighborhood based on shared interests and children's ages."
     },
     {
-      title: "Access Deals & Resources",
-      description: "Get exclusive access to curated deals, preloved items, and helpful parenting resources."
+      title: "Ask & Share",
+      description: "Exchange recommendations, experiences, and support with other moms."
     },
     {
-      title: "Build Your Support Network",
-      description: "Create meaningful connections to make motherhood less isolating and more fulfilling."
+      title: "Access Deals & Preloved Market",
+      description: "Get exclusive deals and buy/sell preloved items from trusted moms."
     }
   ];
 
