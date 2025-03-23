@@ -13,8 +13,8 @@ const BowIcon = ({ className }: BowIconProps) => {
       alt="Bow" 
       className={className}
       style={{
-        width: '1em',
-        height: '1em',
+        width: '1.5em',
+        height: '1.5em',
         display: 'inline-block',
         verticalAlign: 'middle'
       }}
