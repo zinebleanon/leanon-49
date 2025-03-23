@@ -7,13 +7,6 @@ const Footer = () => {
   return (
     <footer className="py-12 px-6 md:px-8 border-t border-border/40">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-12">
-          <div className="text-2xl font-medium tracking-tight mb-4">LeanOn</div>
-          <p className="text-muted-foreground mb-4 max-w-xs">
-            Less alone in Motherhood. Moms LeanOn Moms.
-          </p>
-        </div>
-        
         <div className="flex flex-col md:flex-row md:items-center md:justify-between pt-8 border-t border-border/40">
           <p className="text-sm text-muted-foreground">
             © {currentYear} LeanOn. All rights reserved.
