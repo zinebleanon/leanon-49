@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -39,23 +38,15 @@ const SignIn = () => {
   const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
-    // For phone field, validate UAE format
     if (name === 'phone') {
-      let formattedValue = value.replace(/\D/g, ''); // Remove non-digits
+      let formattedValue = value.replace(/\D/g, '');
       
-      // If starting with 0, replace with 971
-      if (formattedValue.startsWith('0')) {
-        formattedValue = '971' + formattedValue.substring(1);
+      if (formattedValue.startsWith('971')) {
+        formattedValue = formattedValue.substring(3);
       }
       
-      // If not starting with 971, add it
-      if (!formattedValue.startsWith('971') && formattedValue.length > 0) {
-        formattedValue = '971' + formattedValue;
-      }
-      
-      // Limit to proper UAE number length (971 + 9 digits)
-      if (formattedValue.length > 12) {
-        formattedValue = formattedValue.substring(0, 12);
+      if (formattedValue.length > 9) {
+        formattedValue = formattedValue.substring(0, 9);
       }
       
       setSignUpData(prev => ({ ...prev, [name]: formattedValue }));
@@ -69,7 +60,6 @@ const SignIn = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate authentication process
     setTimeout(() => {
       setIsLoading(false);
       toast({
@@ -84,7 +74,6 @@ const SignIn = () => {
     e.preventDefault();
     
     if (signupStep === 1) {
-      // Validate form before proceeding
       if (signUpData.password !== signUpData.confirmPassword) {
         toast({
           title: "Passwords don't match",
@@ -94,8 +83,7 @@ const SignIn = () => {
         return;
       }
       
-      // Validate UAE phone number (should start with 971 and be 12 digits)
-      if (!signUpData.phone.startsWith('971') || signUpData.phone.length !== 12) {
+      if (signUpData.phone.length !== 9) {
         toast({
           title: "Invalid phone number",
           description: "Please enter a valid UAE phone number.",
@@ -106,17 +94,15 @@ const SignIn = () => {
       
       setIsLoading(true);
       
-      // Simulate sending OTP
       setTimeout(() => {
         setIsLoading(false);
         setSignupStep(2);
         toast({
           title: "Verification code sent",
-          description: `We've sent a code to ${formatPhoneDisplay(signUpData.phone)}`,
+          description: `We've sent a code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
         });
       }, 1500);
     } else if (signupStep === 2) {
-      // Verify OTP
       if (otpValue.length !== 6) {
         toast({
           title: "Invalid code",
@@ -128,7 +114,6 @@ const SignIn = () => {
       
       setIsLoading(true);
       
-      // Simulate OTP verification
       setTimeout(() => {
         setIsLoading(false);
         toast({
@@ -143,10 +128,14 @@ const SignIn = () => {
   const formatPhoneDisplay = (phone: string) => {
     if (!phone) return '';
     
-    // Format 971XXXXXXXXX as +971 XX XXX XXXX
-    if (phone.startsWith('971') && phone.length === 12) {
-      const remaining = phone.substring(3);
-      return `+971 ${remaining.substring(0, 2)} ${remaining.substring(2, 5)} ${remaining.substring(5)}`;
+    if (phone.length <= 9) {
+      if (phone.length <= 2) {
+        return phone;
+      } else if (phone.length <= 5) {
+        return `${phone.substring(0, 2)} ${phone.substring(2)}`;
+      } else {
+        return `${phone.substring(0, 2)} ${phone.substring(2, 5)} ${phone.substring(5)}`;
+      }
     }
     
     return phone;
@@ -155,7 +144,6 @@ const SignIn = () => {
   const resendOTP = () => {
     setIsLoading(true);
     
-    // Simulate resending OTP
     setTimeout(() => {
       setIsLoading(false);
       toast({
@@ -326,9 +314,10 @@ const SignIn = () => {
                         id="signup-phone"
                         name="phone"
                         type="tel"
-                        placeholder="Enter your UAE phone number"
+                        placeholder="XX XXX XXXX"
                         className="border-secondary/30 focus:border-secondary"
                         icon={<Phone className="h-4 w-4" />}
+                        prefix="+971"
                         value={formatPhoneDisplay(signUpData.phone)}
                         onChange={handleSignUpChange}
                         required
