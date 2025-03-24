@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, BabyBottle, ShoppingBag, UtensilsCrossed } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import HowItWorksDialog from '@/components/HowItWorksDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -27,7 +27,7 @@ const MumzAsk = () => {
   }, []);
   
   const categories = [
-    { name: 'Breastfeeding', icon: <BabyBottle className="h-4 w-4 mr-2" /> },
+    { name: 'Breastfeeding', icon: <Baby className="h-4 w-4 mr-2" /> },
     { name: 'Diversification', icon: <UtensilsCrossed className="h-4 w-4 mr-2" /> },
     { name: 'Shopping', icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
     { name: 'Parenting', icon: <MessageCircle className="h-4 w-4 mr-2" /> }
