@@ -32,18 +32,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   const [kid3AgeRange, setKid3AgeRange] = useState('all');
   const [kid3Gender, setKid3Gender] = useState('all');
   
-  // Fourth child
-  const [kid4AgeRange, setKid4AgeRange] = useState('all');
-  const [kid4Gender, setKid4Gender] = useState('all');
-  
-  // Fifth child
-  const [kid5AgeRange, setKid5AgeRange] = useState('all');
-  const [kid5Gender, setKid5Gender] = useState('all');
-  
-  // Sixth child
-  const [kid6AgeRange, setKid6AgeRange] = useState('all');
-  const [kid6Gender, setKid6Gender] = useState('all');
-  
   const [location, setLocation] = useState('all');
   const [nationality, setNationality] = useState('all');
   const [workStatus, setWorkStatus] = useState('all');
@@ -66,18 +54,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
         {
           ageRange: kid3AgeRange !== 'all' ? kid3AgeRange : null,
           gender: kid3Gender !== 'all' ? kid3Gender : null
-        },
-        {
-          ageRange: kid4AgeRange !== 'all' ? kid4AgeRange : null,
-          gender: kid4Gender !== 'all' ? kid4Gender : null
-        },
-        {
-          ageRange: kid5AgeRange !== 'all' ? kid5AgeRange : null,
-          gender: kid5Gender !== 'all' ? kid5Gender : null
-        },
-        {
-          ageRange: kid6AgeRange !== 'all' ? kid6AgeRange : null,
-          gender: kid6Gender !== 'all' ? kid6Gender : null
         }
       ],
       location: location !== 'all' ? location : null,
@@ -92,9 +68,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     if (activeFilters.kids[0].ageRange || activeFilters.kids[0].gender) count++;
     if (activeFilters.kids[1].ageRange || activeFilters.kids[1].gender) count++;
     if (activeFilters.kids[2].ageRange || activeFilters.kids[2].gender) count++;
-    if (activeFilters.kids[3].ageRange || activeFilters.kids[3].gender) count++;
-    if (activeFilters.kids[4].ageRange || activeFilters.kids[4].gender) count++;
-    if (activeFilters.kids[5].ageRange || activeFilters.kids[5].gender) count++;
     if (activeFilters.location) count++;
     if (activeFilters.nationality) count++;
     if (activeFilters.workStatus) count++;
@@ -103,7 +76,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     setActiveFiltersCount(count);
     
   }, [age, kid1AgeRange, kid1Gender, kid2AgeRange, kid2Gender, kid3AgeRange, kid3Gender, 
-      kid4AgeRange, kid4Gender, kid5AgeRange, kid5Gender, kid6AgeRange, kid6Gender, 
       location, nationality, workStatus, compatibilityThreshold]);
   
   const applyFilters = () => {
@@ -121,18 +93,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
         {
           ageRange: kid3AgeRange,
           gender: kid3Gender
-        },
-        {
-          ageRange: kid4AgeRange,
-          gender: kid4Gender
-        },
-        {
-          ageRange: kid5AgeRange,
-          gender: kid5Gender
-        },
-        {
-          ageRange: kid6AgeRange,
-          gender: kid6Gender
         }
       ],
       location,
@@ -160,12 +120,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     setKid2Gender('all');
     setKid3AgeRange('all');
     setKid3Gender('all');
-    setKid4AgeRange('all');
-    setKid4Gender('all');
-    setKid5AgeRange('all');
-    setKid5Gender('all');
-    setKid6AgeRange('all');
-    setKid6Gender('all');
     setLocation('all');
     setNationality('all');
     setWorkStatus('all');
@@ -359,132 +313,9 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                 </div>
               </div>
             </div>
-            
-            <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-              <h3 className="font-medium mb-3">Child 4</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="kid4AgeRange" className="block mb-2">Age</Label>
-                  <Select value={kid4AgeRange} onValueChange={setKid4AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="All Ages" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
-                      <ScrollArea className="h-[200px]">
-                        <SelectGroup>
-                          <SelectItem value="all">All Ages</SelectItem>
-                          {ageOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="kid4Gender" className="block mb-2">Gender</Label>
-                  <Select value={kid4Gender} onValueChange={setKid4Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="Any Gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Gender</SelectItem>
-                        <SelectItem value="Boy">Boy</SelectItem>
-                        <SelectItem value="Girl">Girl</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
           </div>
           
           <div className="space-y-4">
-            <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-              <h3 className="font-medium mb-3">Child 5</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="kid5AgeRange" className="block mb-2">Age</Label>
-                  <Select value={kid5AgeRange} onValueChange={setKid5AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="All Ages" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
-                      <ScrollArea className="h-[200px]">
-                        <SelectGroup>
-                          <SelectItem value="all">All Ages</SelectItem>
-                          {ageOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="kid5Gender" className="block mb-2">Gender</Label>
-                  <Select value={kid5Gender} onValueChange={setKid5Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="Any Gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Gender</SelectItem>
-                        <SelectItem value="Boy">Boy</SelectItem>
-                        <SelectItem value="Girl">Girl</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-            
-            <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-              <h3 className="font-medium mb-3">Child 6</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="kid6AgeRange" className="block mb-2">Age</Label>
-                  <Select value={kid6AgeRange} onValueChange={setKid6AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="All Ages" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
-                      <ScrollArea className="h-[200px]">
-                        <SelectGroup>
-                          <SelectItem value="all">All Ages</SelectItem>
-                          {ageOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="kid6Gender" className="block mb-2">Gender</Label>
-                  <Select value={kid6Gender} onValueChange={setKid6Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="Any Gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Gender</SelectItem>
-                        <SelectItem value="Boy">Boy</SelectItem>
-                        <SelectItem value="Girl">Girl</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-            
             <div>
               <Label htmlFor="location" className="block mb-2">Location</Label>
               <Select value={location} onValueChange={setLocation}>
