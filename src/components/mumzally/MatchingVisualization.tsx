@@ -35,7 +35,7 @@ const MatchingVisualization = () => {
   }, [userHeartActive, jessicaHeartActive]);
   
   return (
-    <section className="py-12 px-6 md:px-8">
+    <section className="py-12 px-6 md:px-8 bg-[#FFD9A7]">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-semibold text-center mb-4">
           How to Find Your LeanOn Allies

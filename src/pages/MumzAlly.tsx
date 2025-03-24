@@ -229,7 +229,7 @@ const MumzAlly = () => {
   }
   
   return (
-    <div className="min-h-screen bg-[#B8CEC2]/30">
+    <div className="min-h-screen bg-[#FFD9A7]/30">
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
