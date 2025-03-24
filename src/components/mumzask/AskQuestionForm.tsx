@@ -8,6 +8,7 @@ import {
   Send,
   AlertCircle
 } from 'lucide-react';
+import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 
 interface AskQuestionFormProps {
   categories: { name: string; icon: JSX.Element }[];
@@ -75,12 +76,12 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <h3 className="text-xl font-medium mb-4">Ask the Community</h3>
-        <p className="text-sm text-muted-foreground mb-6">
+      <DialogHeader>
+        <DialogTitle>Ask the Community</DialogTitle>
+        <DialogDescription>
           Your question will be reviewed by our admins before being published to the community.
-        </p>
-      </div>
+        </DialogDescription>
+      </DialogHeader>
       
       <div className="space-y-2">
         <label htmlFor="question-title" className="text-sm font-medium">
