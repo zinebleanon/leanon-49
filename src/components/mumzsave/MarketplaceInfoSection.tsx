@@ -12,7 +12,7 @@ const MarketplaceInfoSection = () => {
         
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center px-2">
-            <div className="bg-primary/10 rounded-full p-3 w-14 h-14 flex items-center justify-center mx-auto mb-3">
+            <div className="bg-[#FFD9A7] rounded-full p-3 w-14 h-14 flex items-center justify-center mx-auto mb-3">
               <Tag className="h-6 w-6 text-primary" />
             </div>
             <h3 className="text-base font-medium mb-1 font-playfair">List Items</h3>
@@ -22,7 +22,7 @@ const MarketplaceInfoSection = () => {
           </div>
           
           <div className="text-center px-2">
-            <div className="bg-primary/10 rounded-full p-3 w-14 h-14 flex items-center justify-center mx-auto mb-3">
+            <div className="bg-[#FFD9A7] rounded-full p-3 w-14 h-14 flex items-center justify-center mx-auto mb-3">
               <ShoppingBag className="h-6 w-6 text-primary" />
             </div>
             <h3 className="text-base font-medium mb-1 font-playfair">Shop & Browse</h3>
@@ -32,7 +32,7 @@ const MarketplaceInfoSection = () => {
           </div>
           
           <div className="text-center px-2">
-            <div className="bg-primary/10 rounded-full p-3 w-14 h-14 flex items-center justify-center mx-auto mb-3">
+            <div className="bg-[#FFD9A7] rounded-full p-3 w-14 h-14 flex items-center justify-center mx-auto mb-3">
               <DollarSign className="h-6 w-6 text-primary" />
             </div>
             <h3 className="text-base font-medium mb-1 font-playfair">Save & Declutter</h3>

@@ -46,7 +46,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
           {steps.map((step, index) => (
             <div key={index} className="relative p-4 md:p-6 rounded-lg bg-gradient-to-br from-orange-50 to-amber-50 border shadow-sm hover:shadow-md transition-all">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm md:text-base">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center text-white text-sm md:text-base">
                 {index + 1}
               </div>
               <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 md:mb-4 mt-3 md:mt-4">
