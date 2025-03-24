@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -179,7 +178,7 @@ const SignIn = () => {
       </Button>
       
       <div className="w-full max-w-md">
-        <div className="flex justify-center mb-2">
+        <div className="flex justify-center mb-1">
           <img 
             src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Decorative Bow" 
@@ -187,13 +186,13 @@ const SignIn = () => {
           />
         </div>
         
-        <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold mb-1 font-playfair">Welcome to LeanOn</h1>
-          <p className="text-gray-600">A community of supportive moms</p>
+        <div className="text-center mb-3">
+          <h1 className="text-2xl font-bold mb-0.5 font-playfair">Welcome to LeanOn</h1>
+          <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
         
         <Tabs defaultValue="signin" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 mb-6 bg-secondary/30">
+          <TabsList className="grid w-full grid-cols-2 mb-4 bg-secondary/30">
             <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
           </TabsList>
