@@ -192,11 +192,11 @@ const SignIn = () => {
               <form onSubmit={handleSignUp}>
                 <CardContent className="space-y-4 pt-6">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Name</Label>
+                    <Label htmlFor="signup-name">Full Name</Label>
                     <Input 
                       id="signup-name"
                       name="name"
-                      placeholder="Enter your name"
+                      placeholder="Enter your full name"
                       className="border-secondary/30 focus:border-secondary"
                       value={signUpData.name}
                       onChange={handleSignUpChange}
