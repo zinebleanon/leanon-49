@@ -140,7 +140,7 @@ const ProfileCard = ({
           >
             <div className="flex items-center justify-center">
               <BowRibbon 
-                className="w-12 h-8 mr-2 scale-[2.5]"
+                className="w-14 h-7 mr-2"
                 isActive={isFullyMatched && userHeartActive}
                 isLeftActive={!isFullyMatched && userHeartActive}
                 isRightActive={isFullyMatched && !userHeartActive}

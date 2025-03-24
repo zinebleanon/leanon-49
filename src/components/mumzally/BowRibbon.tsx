@@ -24,30 +24,36 @@ const BowRibbon = ({
   
   return (
     <div className={`relative flex items-center justify-center ${className}`}>
-      {/* Single ribbon with gradient fill */}
+      {/* New ribbon design based on the provided image */}
       <svg 
-        width="24" 
-        height="24" 
-        viewBox="0 0 350 162" 
+        viewBox="0 0 350 120" 
         stroke="#000000"
         strokeWidth="6"
         className="w-full h-full"
       >
-        {/* Left side of bow */}
-        <path d="M175.5 81.5C112.5 127 78.9999 156 27.9999 161C19.6665 161.333 2.89992 159.6 1.49995 152C-0.100022 143 42.3332 115.5 65.4999 102.5C94.4999 86.5 147 56.5 175.5 41" 
-          fill={leftActive ? color : "#e2e8f0"} />
-        <path d="M175.5 81.5C128.3 44.3 68.6665 1 40.4999 1C33.6665 1 22.7999 4.6 27.9999 13C34.4999 23.5 78.9999 46 97.9999 57C129 75.5 146.833 77.1667 175.5 88.5" 
-          fill={leftActive ? color : "#e2e8f0"} />
-        <path d="M175.5 81.5C124.7 72.7 72.8332 66.1667 40.9999 61.5C33.4999 60.3 16.7999 60.1 22.9999 68.5C30.9999 79.5 81.3332 80.1667 107 81.5C138.6 83.1 157.167 83.8333 175.5 88.5" 
-          fill={leftActive ? color : "#e2e8f0"} />
-          
-        {/* Right side of bow */}
-        <path d="M175.5 81.5C238.5 127 272 156 323 161C331.333 161.333 348.1 159.6 349.5 152C351.1 143 308.667 115.5 285.5 102.5C256.5 86.5 204 56.5 175.5 41" 
-          fill={rightActive ? color : "#e2e8f0"} />
-        <path d="M175.5 81.5C222.7 44.3 282.333 1 310.5 1C317.333 1 328.2 4.6 323 13C316.5 23.5 272 46 253 57C222 75.5 204.167 77.1667 175.5 88.5" 
-          fill={rightActive ? color : "#e2e8f0"} />
-        <path d="M175.5 81.5C226.3 72.7 278.167 66.1667 310 61.5C317.5 60.3 334.2 60.1 328 68.5C320 79.5 269.667 80.1667 244 81.5C212.4 83.1 193.833 83.8333 175.5 88.5" 
-          fill={rightActive ? color : "#e2e8f0"} />
+        {/* Left side of ribbon */}
+        <path 
+          d="M175 60 C130 80, 90 100, 40 95 C20 92, 10 85, 15 75 C20 65, 60 55, 175 60" 
+          fill={leftActive ? color : "#e2e8f0"} 
+          strokeLinecap="round"
+        />
+        <path 
+          d="M175 60 C140 40, 80 20, 35 25 C15 28, 5 35, 10 45 C15 55, 60 50, 175 60" 
+          fill={leftActive ? color : "#e2e8f0"} 
+          strokeLinecap="round"
+        />
+        
+        {/* Right side of ribbon */}
+        <path 
+          d="M175 60 C220 80, 260 100, 310 95 C330 92, 340 85, 335 75 C330 65, 290 55, 175 60" 
+          fill={rightActive ? color : "#e2e8f0"} 
+          strokeLinecap="round"
+        />
+        <path 
+          d="M175 60 C210 40, 270 20, 315 25 C335 28, 345 35, 340 45 C335 55, 290 50, 175 60" 
+          fill={rightActive ? color : "#e2e8f0"} 
+          strokeLinecap="round"
+        />
       </svg>
     </div>
   );
