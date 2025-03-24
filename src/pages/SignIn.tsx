@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -174,17 +175,20 @@ const SignIn = () => {
           alt="LeanOn Logo" 
           className="w-16 h-auto"
         />
+      </div>
+      
+      <div className="flex flex-col items-center mt-8">
         <Button 
           variant="ghost" 
           onClick={goBack} 
-          className="flex items-center mt-2 px-2"
+          className="flex items-center px-2"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           {signupStep === 2 ? "Back to Form" : "Back"}
         </Button>
       </div>
       
-      <div className="w-full max-w-md mt-28">
+      <div className="w-full max-w-md mt-16">
         <div className="text-center mb-0">
           <h1 className="text-2xl font-bold font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
