@@ -6,9 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
-import HowItWorksDialog from '@/components/HowItWorksDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const MumzAsk = () => {
@@ -72,7 +71,7 @@ const MumzAsk = () => {
                       size="lg" 
                       className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                     >
-                      Ask the Community
+                      <MessagesSquare className="mr-2 h-5 w-5" /> Ask the Community
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-lg">
@@ -163,7 +162,6 @@ const MumzAsk = () => {
                     </DialogContent>
                   </Dialog>
                 )}
-                <HowItWorksDialog buttonVariant="warm" />
               </div>
             </div>
           </div>
@@ -171,8 +169,8 @@ const MumzAsk = () => {
         
         <div className="flex justify-center bg-[#B8CEC2]">
           <img 
-            src="/lovable-uploads/f13b9daf-130a-4b25-971f-a1ae0385f800.png" 
-            alt="Moms asking questions" 
+            src="/lovable-uploads/929eee58-aa94-492d-be02-03e86a1248e2.png" 
+            alt="Moms community illustration" 
             className="max-w-full md:max-w-lg h-auto mx-auto"
           />
         </div>
