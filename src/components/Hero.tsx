@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -48,7 +47,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
       id: 'ally',
       title: 'Find', 
       description: 'Match with Moms in your neighborhood & <span class="font-adlery">LeanOn</span> each other.',
-      icon: <BowIcon className="h-5 w-5 md:h-6 md:w-6" />,
+      icon: <BowIcon className="h-6 w-6 md:h-7 md:w-7" />,
       color: 'from-[#FFF8E7] to-[#FFF8E7]/80',
       path: '/ally'
     },
@@ -133,7 +132,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
               onClick={handleJoinClick}
             >
-              <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
+              <BowIcon className="mr-2 h-5 w-5" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
 

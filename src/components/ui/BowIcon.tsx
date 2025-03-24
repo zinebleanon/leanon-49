@@ -12,8 +12,8 @@ const BowIcon = ({ className, fill = "#FFD9A7" }: BowIconProps) => {
       viewBox="0 0 350 120"
       className={className}
       style={{
-        width: '2.5em',
-        height: '2.5em',
+        width: '3em',
+        height: '3em',
         display: 'inline-block',
         verticalAlign: 'middle'
       }}
