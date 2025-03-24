@@ -19,19 +19,23 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
   const howItWorksSteps = [
     {
       title: "Sign up",
-      description: "Create your profile & join the <span class='font-adlery'>LeanOn</span> community."
+      description: "Create your profile & join the <span class='font-adlery'>LeanOn</span> community.",
+      bgColor: "bg-pastel-green/30"
     },
     {
       title: "Find & Connect",
-      description: "Match with moms in your neighborhood based on shared interests and children's ages."
+      description: "Match with moms in your neighborhood based on shared interests and children's ages.",
+      bgColor: "bg-pastel-yellow/30"
     },
     {
       title: "Ask & Share",
-      description: "Exchange recommendations, experiences, and support with other moms."
+      description: "Exchange recommendations, experiences, and support with other moms.",
+      bgColor: "bg-orange-200/50"
     },
     {
       title: "Access Deals & Preloved Market",
-      description: "Get exclusive deals and buy/sell preloved items from trusted moms."
+      description: "Get exclusive deals and buy/sell preloved items from trusted moms.",
+      bgColor: "bg-pink-100/50"
     }
   ];
 
@@ -46,7 +50,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
           <Info className="mr-2 h-4 w-4" /> How It Works
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg bg-pastel-yellow/20">
+      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
             How <span className="font-adlery text-gradient">LeanOn</span> Works
@@ -56,9 +60,9 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
           {howItWorksSteps.map((step, index) => (
             <div
               key={index}
-              className="flex items-start gap-4 p-4 rounded-lg bg-secondary/30"
+              className={`flex items-start gap-4 p-4 rounded-lg ${step.bgColor} border border-white/40 shadow-sm`}
             >
-              <div className="shrink-0 bg-primary/10 rounded-full p-2 w-8 h-8 flex items-center justify-center">
+              <div className="shrink-0 bg-white rounded-full p-2 w-8 h-8 flex items-center justify-center shadow-sm">
                 <span className="font-medium text-primary">{index + 1}</span>
               </div>
               <div>
