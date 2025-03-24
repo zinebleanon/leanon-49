@@ -130,7 +130,7 @@ const ProfileCard = ({
           >
             <div className="flex items-center gap-2">
               <BowRibbon 
-                className="w-16 h-10" 
+                className="w-12 h-8" 
                 isLeftActive={userHeartActive} 
                 isRightActive={!userHeartActive} 
               />
