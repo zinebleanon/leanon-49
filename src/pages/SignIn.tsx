@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -178,6 +179,14 @@ const SignIn = () => {
       </Button>
       
       <div className="w-full max-w-md">
+        <div className="flex justify-center mb-6">
+          <img 
+            src="/lovable-uploads/9af559f0-e7cd-43a3-a625-8c67793f989b.png" 
+            alt="Decorative Bow" 
+            className="h-24 w-auto"
+          />
+        </div>
+        
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold mb-1 font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600">A community of supportive moms</p>
