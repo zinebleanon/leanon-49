@@ -61,10 +61,24 @@ const MumzAsk = () => {
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
               <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-                  LeanOn <br /> <span className="font-adlery">&amp;</span> the Community
+                  LeanOn the Community
                 </span>
               </h1>
               <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="lg" 
+                      className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                    >
+                      Ask the Community
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-lg">
+                    <AskQuestionForm categories={categories} />
+                  </DialogContent>
+                </Dialog>
+                
                 {isMobile ? (
                   <Sheet>
                     <SheetTrigger asChild>
@@ -167,16 +181,6 @@ const MumzAsk = () => {
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground">
-                    Ask the Community
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-lg">
-                  <AskQuestionForm categories={categories} />
-                </DialogContent>
-              </Dialog>
             </div>
             
             <div className="space-y-4">
