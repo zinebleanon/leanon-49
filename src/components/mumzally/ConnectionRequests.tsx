@@ -58,7 +58,7 @@ const MatchRequests = () => {
   };
 
   return (
-    <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]/30">
+    <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -102,12 +102,12 @@ const MatchRequests = () => {
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
                         <>
-                          <BowRibbon isActive={true} className="w-14 h-8 mr-1" />
+                          <BowRibbon isActive={true} className="w-20 h-12 mr-1" />
                           Message {request.name}
                         </>
                       ) : (
                         <>
-                          <BowRibbon isRightActive={true} className="w-14 h-8 mr-1" />
+                          <BowRibbon isRightActive={true} className="w-20 h-12 mr-1" />
                           LeanBack
                         </>
                       )}

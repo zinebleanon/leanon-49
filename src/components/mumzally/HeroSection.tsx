@@ -4,7 +4,7 @@ import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
-import { ArrowLeft, Home } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface HeroSectionProps {
@@ -48,21 +48,11 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                   size="lg" 
                   className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                 >
-                  Find your Match Filter
+                  Filter to find your Matches
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#B8CEC2]/40 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
                 <DialogHeader className="relative">
-                  <DialogClose asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="absolute top-0 left-0 p-2 h-auto text-muted-foreground hover:text-foreground"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-1" />
-                      <span>Back</span>
-                    </Button>
-                  </DialogClose>
                   <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
                 </DialogHeader>
                 <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
