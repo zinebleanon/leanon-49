@@ -13,6 +13,7 @@ import BowIcon from '@/components/ui/BowIcon';
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("signin");
   
   const [signInData, setSignInData] = useState({
     email: '',
@@ -79,6 +80,10 @@ const SignIn = () => {
   const goBack = () => {
     navigate(-1);
   };
+
+  const switchToSignUp = () => {
+    setActiveTab("signup");
+  };
   
   return (
     <div className="min-h-screen bg-primary/20 flex flex-col items-center justify-center p-4">
@@ -104,7 +109,7 @@ const SignIn = () => {
           <p className="text-gray-600">A community of supportive moms</p>
         </div>
         
-        <Tabs defaultValue="signin" className="w-full">
+        <Tabs defaultValue="signin" className="w-full" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-6 bg-secondary/30">
             <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
@@ -114,7 +119,6 @@ const SignIn = () => {
             <Card className="border-secondary/20 shadow-md">
               <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
                 <CardTitle>Sign In</CardTitle>
-                <CardDescription>Enter your credentials to access your account</CardDescription>
               </CardHeader>
               <form onSubmit={handleSignIn}>
                 <CardContent className="space-y-4 pt-6">
@@ -162,7 +166,7 @@ const SignIn = () => {
                   </div>
                 </CardContent>
                 
-                <CardFooter className="bg-gradient-to-t from-secondary/20 to-transparent pt-4">
+                <CardFooter className="flex-col space-y-3 bg-gradient-to-t from-secondary/20 to-transparent pt-4">
                   <Button 
                     type="submit" 
                     className="w-full warm-button"
@@ -173,6 +177,9 @@ const SignIn = () => {
                     )}
                     Sign In
                   </Button>
+                  <p className="text-sm text-center text-muted-foreground">
+                    No account? <Button variant="link" onClick={switchToSignUp} className="p-0 h-auto">Sign up</Button>
+                  </p>
                 </CardFooter>
               </form>
             </Card>
@@ -182,7 +189,7 @@ const SignIn = () => {
             <Card className="border-secondary/20 shadow-md">
               <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
                 <CardTitle>Create an Account</CardTitle>
-                <CardDescription>Join our community of supportive mumz</CardDescription>
+                <CardDescription>Join our community of supportive moms</CardDescription>
               </CardHeader>
               <form onSubmit={handleSignUp}>
                 <CardContent className="space-y-4 pt-6">
