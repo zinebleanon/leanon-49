@@ -54,12 +54,12 @@ const MumzAsk = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-20 md:pt-24 pb-12 md:pb-16">
-        {/* Hero Section */}
-        <section className="py-8 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
+      <main className="pt-20 md:pt-24 pb-6 md:pb-10">
+        {/* Hero Section with reduced padding */}
+        <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-4 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   LeanOn the Community
                 </span>
@@ -90,9 +90,9 @@ const MumzAsk = () => {
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
-                      <div className="pt-6">
-                        <h3 className="text-xl font-medium mb-4">Filter by Category</h3>
-                        <div className="relative mb-5">
+                      <div className="pt-4">
+                        <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                        <div className="relative mb-4">
                           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <Search className="w-5 h-5 text-gray-500" />
                           </div>
@@ -104,7 +104,7 @@ const MumzAsk = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                           />
                         </div>
-                        <div className="flex flex-wrap gap-2 mb-8 max-h-[60vh] overflow-y-auto">
+                        <div className="flex flex-wrap gap-2 mb-6 max-h-[60vh] overflow-y-auto">
                           {categories.map((category) => (
                             <Button
                               key={category.name}
@@ -131,9 +131,9 @@ const MumzAsk = () => {
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
-                      <div className="pt-6">
-                        <h3 className="text-xl font-medium mb-4">Filter by Category</h3>
-                        <div className="relative mb-5">
+                      <div className="pt-4">
+                        <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                        <div className="relative mb-4">
                           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <Search className="w-5 h-5 text-gray-500" />
                           </div>
@@ -145,7 +145,7 @@ const MumzAsk = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                           />
                         </div>
-                        <div className="flex flex-wrap gap-2 mb-8 max-h-[40vh] overflow-y-auto">
+                        <div className="flex flex-wrap gap-2 mb-6 max-h-[40vh] overflow-y-auto">
                           {categories.map((category) => (
                             <Button
                               key={category.name}
@@ -167,18 +167,19 @@ const MumzAsk = () => {
           </div>
         </section>
         
+        {/* Enlarged image section with no padding */}
         <div className="flex justify-center bg-[#B8CEC2]">
           <img 
             src="/lovable-uploads/929eee58-aa94-492d-be02-03e86a1248e2.png" 
             alt="Moms community illustration" 
-            className="max-w-full md:max-w-lg h-auto mx-auto"
+            className="w-full md:max-w-4xl h-auto mx-auto"
           />
         </div>
         
-        {/* Questions Section */}
-        <section className="py-8 px-4">
+        {/* Questions Section with reduced padding */}
+        <section className="py-4 px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
             </div>
             
