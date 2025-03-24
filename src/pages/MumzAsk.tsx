@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import HowItWorksDialog from '@/components/HowItWorksDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -37,7 +37,8 @@ const MumzAsk = () => {
     { name: 'Shopping', icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
     { name: 'Schools & Nurseries', icon: <School className="h-4 w-4 mr-2" /> },
     { name: 'Nannies', icon: <User className="h-4 w-4 mr-2" /> },
-    { name: 'Entertainment & Birthday', icon: <CalendarDays className="h-4 w-4 mr-2" /> }
+    { name: 'Entertainment & Birthday', icon: <CalendarDays className="h-4 w-4 mr-2" /> },
+    { name: 'Others', icon: <HelpCircle className="h-4 w-4 mr-2" /> }
   ];
   
   const textStyles = "transition-all duration-700 ease-smooth";

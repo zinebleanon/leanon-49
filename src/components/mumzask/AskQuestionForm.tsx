@@ -28,7 +28,8 @@ const categoryKeywords: Record<string, string[]> = {
   'Shopping': ['gear', 'stroller', 'crib', 'car seat', 'clothes', 'toys', 'buy', 'purchase', 'recommend'],
   'Schools & Nurseries': ['preschool', 'daycare', 'school', 'nursery', 'education', 'learning', 'kindergarten'],
   'Nannies': ['nanny', 'babysitter', 'childcare', 'au pair', 'caregiver', 'sitter', 'childminder'],
-  'Entertainment & Birthday': ['party', 'activity', 'birthday', 'holiday', 'event', 'celebration', 'gift', 'present']
+  'Entertainment & Birthday': ['party', 'activity', 'birthday', 'holiday', 'event', 'celebration', 'gift', 'present'],
+  'Others': [] // Empty array for Others category - will catch any unmatched keywords
 };
 
 // Previously asked questions to suggest
@@ -48,6 +49,10 @@ const popularQuestions: Record<string, string[]> = {
   'Diversification': [
     'Recommendations for baby food introduction?',
     'When should I start introducing solid foods to my baby?'
+  ],
+  'Others': [
+    'What are some self-care tips for new moms?',
+    'How do you maintain a work-life balance as a parent?'
   ]
 };
 
@@ -74,12 +79,15 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       )
       .map(([category]) => category);
     
-    setSuggestedCategories([...new Set(suggestions)]);
+    // If no matches found, suggest "Others" category
+    const finalSuggestions = suggestions.length > 0 ? suggestions : ['Others'];
+    
+    setSuggestedCategories([...new Set(finalSuggestions)]);
     
     // Find related questions from popular questions
     const related = Object.entries(popularQuestions)
       .filter(([category]) => 
-        suggestions.includes(category) || (selectedCategory && category === selectedCategory)
+        finalSuggestions.includes(category) || (selectedCategory && category === selectedCategory)
       )
       .flatMap(([_, questions]) => questions)
       .filter(question => 
@@ -234,7 +242,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
                   type="button"
                   variant={selectedCategory === category ? "default" : "outline"}
                   size="sm"
-                  className="rounded-full bg-[#B8CEC2]/20 border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/30"
+                  className={`rounded-full ${selectedCategory === category ? 'bg-[#FFD9A7] text-foreground' : 'bg-[#B8CEC2]/20 border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/30'}`}
                   onClick={() => setSelectedCategory(category)}
                 >
                   {categories.find(c => c.name === category)?.icon}
@@ -252,7 +260,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
               type="button"
               variant={selectedCategory === category.name ? "default" : "outline"}
               size="sm"
-              className="rounded-full flex items-center"
+              className={`rounded-full flex items-center ${selectedCategory === category.name ? 'bg-[#FFD9A7] text-foreground' : 'bg-white/80 border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/30'}`}
               onClick={() => setSelectedCategory(category.name)}
             >
               {category.icon}
