@@ -1,11 +1,12 @@
 
-import { UserCircle, MessageCircle, Ribbon } from 'lucide-react';
+import { UserCircle, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from "@/hooks/use-toast";
 import { useState } from 'react';
 import MessageForm from './MessageForm';
+import BowRibbon from './BowRibbon';
 
 interface ConnectionRequest {
   id: number;
@@ -82,7 +83,7 @@ const MatchRequests = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    {request.name} wants to Match
+                    See {request.name}'s profile
                   </p>
                   <Button 
                     variant="default" 
@@ -96,33 +97,15 @@ const MatchRequests = () => {
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
                         <>
-                          <div className="relative w-5 h-5 flex items-center justify-center mr-1">
-                            <Ribbon 
-                              className="h-4 w-4" 
-                              fill="#ea384c" 
-                              stroke="#ea384c"
-                            />
-                            <Ribbon 
-                              className="h-4 w-4 absolute left-0 top-0 transform scale-x-[-1]" 
-                              fill="#ea384c" 
-                              stroke="#ea384c"
-                            />
+                          <div className="w-6 h-5 mr-1">
+                            <BowRibbon isActive={true} />
                           </div>
                           Message {request.name}
                         </>
                       ) : (
                         <>
-                          <div className="relative w-5 h-5 flex items-center justify-center mr-1">
-                            <Ribbon 
-                              className="h-4 w-4" 
-                              fill="#ea384c" 
-                              stroke="#ea384c"
-                            />
-                            <Ribbon 
-                              className="h-4 w-4 absolute left-0 top-0 transform scale-x-[-1]" 
-                              fill="#e2e8f0" 
-                              stroke="#94a3b8"
-                            />
+                          <div className="w-6 h-5 mr-1">
+                            <BowRibbon isRightActive={true} />
                           </div>
                           Match Back
                         </>

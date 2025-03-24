@@ -1,9 +1,10 @@
 
-import { UserCircle, BabyIcon, MapPin, Flag, Briefcase, MessageCircle, Ribbon } from 'lucide-react';
+import { UserCircle, BabyIcon, MapPin, Flag, Briefcase, MessageCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import BowRibbon from './BowRibbon';
 
 export interface Kid {
   age: number;
@@ -132,16 +133,10 @@ const ProfileCard = ({
             onClick={handleHeartClick}
           >
             <div className="flex items-center justify-center gap-2">
-              <div className="relative w-6 h-6 flex items-center justify-center">
-                <Ribbon 
-                  className="h-5 w-5"
-                  fill={userHeartActive ? "#ea384c" : "#e2e8f0"} 
-                  stroke={userHeartActive ? "#ea384c" : "#94a3b8"}
-                />
-                <Ribbon 
-                  className="h-5 w-5 absolute left-0 top-0 transform scale-x-[-1]"
-                  fill={isFullyMatched ? "#ea384c" : "#e2e8f0"} 
-                  stroke={isFullyMatched ? "#ea384c" : "#94a3b8"}
+              <div className="w-6 h-5 mr-1">
+                <BowRibbon 
+                  isLeftActive={userHeartActive}
+                  isRightActive={isFullyMatched}
                 />
               </div>
               {isFullyMatched ? "Match LeanOn!" : "LeanOn"}

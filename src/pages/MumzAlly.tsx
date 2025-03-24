@@ -1,9 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
-import FilterSection from '@/components/mumzally/FilterSection';
 import ProfilesSection from '@/components/mumzally/ProfilesSection';
 import MatchRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from "@/hooks/use-toast";
@@ -241,9 +239,8 @@ const MumzAlly = () => {
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
-        <HeroSection />
+        <HeroSection onFiltersChange={setFilters} />
         <MatchRequests />
-        <FilterSection onFiltersChange={setFilters} />
         <ProfilesSection 
           profiles={filteredProfiles} 
           onHeartClick={handleHeartClick}
