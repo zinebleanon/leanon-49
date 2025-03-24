@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Filter, ArrowLeft, Home } from 'lucide-react';
+import { Check, X, Filter, ArrowLeft } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -152,17 +151,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   return (
     <section className="py-6 px-4 bg-[#FFD9A7]/40" id="filter-section">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center mb-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/')} 
-            className="bg-white/80 shadow-sm hover:bg-white"
-          >
-            <Home className="h-4 w-4 mr-2" />
-            Main Menu
-          </Button>
-        </div>
-        
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             <h2 className="text-xl md:text-2xl font-semibold font-playfair">Filter Match</h2>
