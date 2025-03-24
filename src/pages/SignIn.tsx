@@ -168,18 +168,18 @@ const SignIn = () => {
   };
   
   return (
-    <div className="min-h-screen bg-primary/20 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-primary/20 flex flex-col items-center pt-0">
       <Button 
         variant="ghost" 
         onClick={goBack} 
-        className="absolute top-4 left-4 flex items-center"
+        className="absolute top-2 left-2 flex items-center"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
         {signupStep === 2 ? "Back to Form" : "Back"}
       </Button>
       
-      <div className="w-full max-w-md">
-        <div className="flex justify-center mb-0">
+      <div className="w-full max-w-md mt-0">
+        <div className="flex justify-center mb-0 mt-0">
           <img 
             src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Decorative Bow" 
@@ -187,13 +187,13 @@ const SignIn = () => {
           />
         </div>
         
-        <div className="text-center mb-2">
-          <h1 className="text-2xl font-bold mb-0 font-playfair">Welcome to LeanOn</h1>
+        <div className="text-center mb-0">
+          <h1 className="text-2xl font-bold font-playfair -mt-4">Welcome to LeanOn</h1>
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
         
-        <Tabs defaultValue="signin" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 mb-4 bg-secondary/30">
+        <Tabs defaultValue="signin" className="w-full mt-1" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-2 mb-2 bg-secondary/30">
             <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
           </TabsList>
