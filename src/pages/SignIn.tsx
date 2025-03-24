@@ -98,12 +98,17 @@ const SignIn = () => {
       
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
-          <div className="h-20 mb-4 flex justify-center">
-            <img 
-              src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
-              alt="LeanOn Logo" 
-              className="h-full" 
-            />
+          <div className="flex justify-center mb-4">
+            <div className="h-20 w-auto bg-white p-2 rounded-lg shadow-sm">
+              <img 
+                src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
+                alt="LeanOn Logo" 
+                className="h-full w-auto object-contain"
+                style={{ maxHeight: '100%', maxWidth: '100%' }}
+                onLoad={() => console.log("Logo loaded successfully in SignIn page")}
+                onError={(e) => console.error("Error loading logo in SignIn page:", e)}
+              />
+            </div>
           </div>
           <h1 className="text-2xl font-bold mb-1 font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600">A community of supportive moms</p>
