@@ -131,7 +131,7 @@ const SignIn = () => {
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signInData.email}
                         onChange={handleSignInChange}
                         required
@@ -157,7 +157,7 @@ const SignIn = () => {
                         name="password"
                         type="password"
                         placeholder="Enter your password"
-                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signInData.password}
                         onChange={handleSignInChange}
                         required
@@ -198,7 +198,7 @@ const SignIn = () => {
                       id="signup-name"
                       name="name"
                       placeholder="Enter your full name"
-                      className="border-secondary/30 focus:border-secondary bg-white"
+                      className="border-secondary/30 focus:border-secondary"
                       value={signUpData.name}
                       onChange={handleSignUpChange}
                       required
@@ -214,7 +214,7 @@ const SignIn = () => {
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signUpData.email}
                         onChange={handleSignUpChange}
                         required
@@ -231,7 +231,7 @@ const SignIn = () => {
                         name="password"
                         type="password"
                         placeholder="Create a password"
-                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signUpData.password}
                         onChange={handleSignUpChange}
                         required
@@ -246,7 +246,7 @@ const SignIn = () => {
                       name="confirmPassword"
                       type="password"
                       placeholder="Confirm your password"
-                      className="border-secondary/30 focus:border-secondary bg-white"
+                      className="border-secondary/30 focus:border-secondary"
                       value={signUpData.confirmPassword}
                       onChange={handleSignUpChange}
                       required
