@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -130,7 +131,7 @@ const SignIn = () => {
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
+                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
                         value={signInData.email}
                         onChange={handleSignInChange}
                         required
@@ -156,7 +157,7 @@ const SignIn = () => {
                         name="password"
                         type="password"
                         placeholder="Enter your password"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
+                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
                         value={signInData.password}
                         onChange={handleSignInChange}
                         required
@@ -197,7 +198,7 @@ const SignIn = () => {
                       id="signup-name"
                       name="name"
                       placeholder="Enter your full name"
-                      className="border-secondary/30 focus:border-secondary"
+                      className="border-secondary/30 focus:border-secondary bg-white"
                       value={signUpData.name}
                       onChange={handleSignUpChange}
                       required
@@ -213,7 +214,7 @@ const SignIn = () => {
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
+                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
                         value={signUpData.email}
                         onChange={handleSignUpChange}
                         required
@@ -230,7 +231,7 @@ const SignIn = () => {
                         name="password"
                         type="password"
                         placeholder="Create a password"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
+                        className="pl-10 border-secondary/30 focus:border-secondary bg-white"
                         value={signUpData.password}
                         onChange={handleSignUpChange}
                         required
@@ -245,7 +246,7 @@ const SignIn = () => {
                       name="confirmPassword"
                       type="password"
                       placeholder="Confirm your password"
-                      className="border-secondary/30 focus:border-secondary"
+                      className="border-secondary/30 focus:border-secondary bg-white"
                       value={signUpData.confirmPassword}
                       onChange={handleSignUpChange}
                       required
