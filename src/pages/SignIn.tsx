@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -170,21 +169,19 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-primary/20 flex flex-col items-center pt-0 relative">
       <div className="absolute top-4 left-4">
-        <div className="flex items-center mb-1">
-          <Button 
-            variant="ghost" 
-            onClick={goBack} 
-            className="flex items-center px-2 mr-2"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            {signupStep === 2 ? "Back to Form" : "Back"}
-          </Button>
-        </div>
         <img 
           src="/lovable-uploads/cff1d041-e202-4a39-8f31-c3fea11a1405.png" 
           alt="LeanOn Logo" 
           className="w-16 h-auto"
         />
+        <Button 
+          variant="ghost" 
+          onClick={goBack} 
+          className="flex items-center mt-2 px-2"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          {signupStep === 2 ? "Back to Form" : "Back"}
+        </Button>
       </div>
       
       <div className="w-full max-w-md mt-28">
