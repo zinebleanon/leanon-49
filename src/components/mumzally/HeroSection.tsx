@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { ArrowLeft } from 'lucide-react';
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -39,6 +40,19 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#FFF8E7] via-[#FFD9A7]/30 to-[#B8CEC2]/20 border-[#FFD9A7]/50">
+                <DialogHeader className="relative">
+                  <DialogClose asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="absolute top-0 left-0 p-2 h-auto text-muted-foreground hover:text-foreground"
+                    >
+                      <ArrowLeft className="h-4 w-4 mr-1" />
+                      <span>Back</span>
+                    </Button>
+                  </DialogClose>
+                  <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
+                </DialogHeader>
                 <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
               </DialogContent>
             </Dialog>

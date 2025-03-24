@@ -1,11 +1,11 @@
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import { SendIcon } from "lucide-react";
+import { SendIcon, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import BowRibbon from './BowRibbon';
 
@@ -51,8 +51,18 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#B8CEC2]/30 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+        <DialogHeader className="relative">
+          <DialogClose asChild>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="absolute top-0 left-0 p-2 h-auto text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span>Back</span>
+            </Button>
+          </DialogClose>
+          <DialogTitle className="text-xl font-semibold flex items-center gap-2 pt-8">
             <BowRibbon className="w-8 h-6 scale-[2.5]" color="#FFD9A7" />
             Message to {recipient.name}
           </DialogTitle>
