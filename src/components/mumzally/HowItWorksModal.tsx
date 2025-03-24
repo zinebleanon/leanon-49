@@ -14,25 +14,25 @@ const steps = [
     icon: <UserCircle className="w-6 h-6 text-primary" />,
     title: "Create Your Profile",
     description: "Set up your profile with your interests, kids' details, and preferences.",
-    bgColor: "bg-pastel-green/30"
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
   },
   {
     icon: <MapPin className="w-6 h-6 text-primary" />,
     title: "Find Local Mumz",
     description: "Connect with mumz in your neighborhood who share similar interests.",
-    bgColor: "bg-pastel-yellow/30"
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
   },
   {
     icon: <MessageCircle className="w-6 h-6 text-primary" />,
     title: "It Starts With a Chat",
     description: "Begin by messaging other mumz who seem like a good match for your family.",
-    bgColor: "bg-orange-200/50"
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Ask background
   },
   {
     icon: <Heart className="w-6 h-6 text-primary" />,
     title: "Build Friendships",
     description: "Create lasting friendships with other mumz in your community.",
-    bgColor: "bg-pink-100/50"
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the community connection background
   }
 ];
 
@@ -62,7 +62,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`flex items-start gap-4 p-4 rounded-lg ${step.bgColor} border border-white/40 shadow-sm`}
+              className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
             >
               <div className="shrink-0 p-2 bg-background rounded-full shadow-sm">
                 {step.icon}

@@ -20,22 +20,22 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
     {
       title: "Sign up",
       description: "Create your profile & join the <span class='font-adlery'>LeanOn</span> community.",
-      bgColor: "bg-pastel-green/30"
+      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
     },
     {
       title: "Find & Connect",
       description: "Match with moms in your neighborhood based on shared interests and children's ages.",
-      bgColor: "bg-pastel-yellow/30"
+      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
     },
     {
       title: "Ask & Share",
       description: "Exchange recommendations, experiences, and support with other moms.",
-      bgColor: "bg-orange-200/50"
+      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Ask background
     },
     {
       title: "Access Deals & Preloved Market",
       description: "Get exclusive deals and buy/sell preloved items from trusted moms.",
-      bgColor: "bg-pink-100/50"
+      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Deals/Preloved background
     }
   ];
 
@@ -60,7 +60,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
           {howItWorksSteps.map((step, index) => (
             <div
               key={index}
-              className={`flex items-start gap-4 p-4 rounded-lg ${step.bgColor} border border-white/40 shadow-sm`}
+              className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
             >
               <div className="shrink-0 bg-white rounded-full p-2 w-8 h-8 flex items-center justify-center shadow-sm">
                 <span className="font-medium text-primary">{index + 1}</span>
