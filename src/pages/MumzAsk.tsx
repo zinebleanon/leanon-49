@@ -167,12 +167,12 @@ const MumzAsk = () => {
           </div>
         </section>
         
-        {/* Enlarged image section with no padding */}
-        <div className="flex justify-center bg-[#B8CEC2]">
+        {/* Enlarged image section with no padding - UPDATED WITH NEW IMAGE */}
+        <div className="flex justify-center bg-[#B8CEC2] px-4 md:px-8 py-6">
           <img 
-            src="/lovable-uploads/929eee58-aa94-492d-be02-03e86a1248e2.png" 
-            alt="Moms community illustration" 
-            className="w-full md:max-w-4xl h-auto mx-auto"
+            src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
+            alt="Diverse moms silhouettes illustration" 
+            className="w-full max-w-3xl h-auto mx-auto object-contain"
           />
         </div>
         
