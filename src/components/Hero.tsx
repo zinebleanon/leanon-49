@@ -136,7 +136,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
 
-            <HowItWorksDialog buttonVariant="ghost" />
+            <HowItWorksDialog buttonVariant="ghost" className="" />
           </div>
         </div>
         

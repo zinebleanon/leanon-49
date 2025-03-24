@@ -79,8 +79,8 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
               key={index}
               className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
             >
-              <div className="shrink-0 p-2 bg-background rounded-full shadow-sm">
-                {step.icon}
+              <div className="shrink-0 w-10 h-10 bg-pastel-yellow/50 rounded-full flex items-center justify-center shadow-sm">
+                <span className="font-medium text-foreground">{index + 1}</span>
               </div>
               <div>
                 <h3 className="font-semibold mb-1">{step.title}</h3>
