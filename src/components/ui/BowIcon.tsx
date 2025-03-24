@@ -4,16 +4,17 @@ import React from 'react';
 interface BowIconProps {
   className?: string;
   fill?: string;
+  size?: string;
 }
 
-const BowIcon = ({ className, fill = "#FFD9A7" }: BowIconProps) => {
+const BowIcon = ({ className, fill = "#FFD9A7", size = "3em" }: BowIconProps) => {
   return (
     <svg 
       viewBox="0 0 350 120"
       className={className}
       style={{
-        width: '3em',
-        height: '3em',
+        width: size,
+        height: size,
         display: 'inline-block',
         verticalAlign: 'middle'
       }}

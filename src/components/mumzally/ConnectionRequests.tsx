@@ -102,12 +102,12 @@ const MatchRequests = () => {
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
                         <>
-                          <BowRibbon isActive={true} className="w-24 h-16 mr-1" />
+                          <BowRibbon isActive={true} className="w-16 h-10 mr-1" />
                           Message {request.name}
                         </>
                       ) : (
                         <>
-                          <BowRibbon isRightActive={true} className="w-24 h-16 mr-1" />
+                          <BowRibbon isRightActive={true} className="w-16 h-10 mr-1" />
                           LeanBack
                         </>
                       )}

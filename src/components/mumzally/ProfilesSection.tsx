@@ -2,6 +2,7 @@
 import ProfileCard, { Kid } from './ProfileCard';
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from '@/components/ui/card';
 
 export interface MumzProfile {
   id: number;
@@ -34,7 +35,7 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
   };
   
   return (
-    <section className="py-8 md:py-12 px-4 md:px-8 bg-[#B8CEC2]/30">
+    <section className="py-8 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>

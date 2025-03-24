@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -13,11 +13,13 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
+import { Badge } from '@/components/ui/badge';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3); // Example unread count
   const location = useLocation();
   const isMobile = useIsMobile();
   
@@ -118,82 +120,87 @@ const Navbar = () => {
           </div>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={cn(
-                "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative",
-                isPathActive(item.path)
-                  ? "text-primary" 
-                  : "text-foreground/70 hover:text-foreground"
-              )}
-            >
-              <span className={cn(
-                "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
-                isPathActive(item.path) && "scale-100"
-              )}></span>
-              <span className="relative flex items-center gap-2">
-                {item.icon}
-                {item.name}
-              </span>
-              {isPathActive(item.path) && (
-                <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
-              )}
-            </Link>
-          ))}
-          
+        <div className="flex items-center gap-3 md:gap-4">
+          {/* Inbox Notifications - Visible on all screen sizes */}
           <Link
             to="/inbox"
             className={cn(
-              "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative bg-primary/10 rounded-full ml-2",
+              "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
               isPathActive('/inbox')
-                ? "text-primary shadow-sm" 
-                : "text-foreground/80 hover:text-foreground hover:bg-primary/5"
+                ? "bg-primary/10 text-primary" 
+                : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
             )}
           >
-            <Inbox className="h-4 w-4" />
-            Inbox
-            {isPathActive('/inbox') && (
-              <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
+            <Inbox className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
+                {unreadCount}
+              </span>
             )}
           </Link>
           
-          <Button
-            variant="warm"
-            className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg ml-2"
-            onClick={handleJoinButtonClick}
-          >
-            <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-            Join & <span className="font-adlery">LeanOn</span>
-          </Button>
-        </div>
-        
-        {/* Mobile menu button */}
-        <button 
-          className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
-          role="button"
-          tabIndex={0}
-          style={{ WebkitTapHighlightColor: 'transparent' }}
-        >
-          <div className={cn("flex flex-col space-y-1 transition-all", isMobileMenuOpen ? "relative" : "")}>
-            <span className={cn(
-              "block w-5 h-0.5 bg-current transform transition-transform duration-300",
-              isMobileMenuOpen ? "rotate-45 translate-y-1.5 absolute" : ""
-            )}></span>
-            <span className={cn(
-              "block w-5 h-0.5 bg-current transition-opacity duration-300", 
-              isMobileMenuOpen ? "opacity-0" : "opacity-100"
-            )}></span>
-            <span className={cn(
-              "block w-5 h-0.5 bg-current transform transition-transform duration-300",
-              isMobileMenuOpen ? "-rotate-45 -translate-y-1.5 absolute" : ""
-            )}></span>
+          {/* Desktop Navigation Menu */}
+          <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={cn(
+                  "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative",
+                  isPathActive(item.path)
+                    ? "text-primary" 
+                    : "text-foreground/70 hover:text-foreground"
+                )}
+              >
+                <span className={cn(
+                  "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
+                  isPathActive(item.path) && "scale-100"
+                )}></span>
+                <span className="relative flex items-center gap-2">
+                  {item.icon}
+                  {item.name}
+                </span>
+                {isPathActive(item.path) && (
+                  <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
+                )}
+              </Link>
+            ))}
+            
+            <Button
+              variant="warm"
+              className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg ml-2"
+              onClick={handleJoinButtonClick}
+            >
+              <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
+              Join & <span className="font-adlery">LeanOn</span>
+            </Button>
           </div>
-        </button>
+          
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+            role="button"
+            tabIndex={0}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
+          >
+            <div className={cn("flex flex-col space-y-1 transition-all", isMobileMenuOpen ? "relative" : "")}>
+              <span className={cn(
+                "block w-5 h-0.5 bg-current transform transition-transform duration-300",
+                isMobileMenuOpen ? "rotate-45 translate-y-1.5 absolute" : ""
+              )}></span>
+              <span className={cn(
+                "block w-5 h-0.5 bg-current transition-opacity duration-300", 
+                isMobileMenuOpen ? "opacity-0" : "opacity-100"
+              )}></span>
+              <span className={cn(
+                "block w-5 h-0.5 bg-current transform transition-transform duration-300",
+                isMobileMenuOpen ? "-rotate-45 -translate-y-1.5 absolute" : ""
+              )}></span>
+            </div>
+          </button>
+        </div>
       </div>
       
       {/* Mobile menu */}
@@ -267,12 +274,22 @@ const Navbar = () => {
                   : "text-foreground/60"
               )}>
                 <Inbox className="h-4 w-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
+                    {unreadCount}
+                  </span>
+                )}
               </span>
               Inbox
               {isPathActive('/inbox') && (
                 <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
                   Active
                 </span>
+              )}
+              {unreadCount > 0 && (
+                <Badge variant="destructive" className="ml-2">
+                  {unreadCount}
+                </Badge>
               )}
             </Link>
           </div>

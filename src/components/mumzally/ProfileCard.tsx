@@ -58,32 +58,27 @@ const ProfileCard = ({
 
   return (
     <Card className="overflow-hidden hover:shadow-md transition-all">
-      <div className="bg-gradient-to-r from-[#B8CEC2]/30 to-[#FFD9A7]/30 p-4">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
-              <UserCircle className="h-8 w-8 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-medium">
-                <Link to={`/ally/profile/${id}`} className="hover:underline">
-                  {name}
-                </Link>
-              </h3>
-              <p className="text-sm text-muted-foreground">{age}, {location}</p>
-            </div>
-          </div>
-          <Badge className="bg-primary/70 text-foreground font-bold border-primary/30">
-            {compatibility}% Match
-          </Badge>
-        </div>
-      </div>
-      
       <CardContent className="p-4">
-        <p className="text-sm mb-4">{bio}</p>
-        <p className="text-sm mb-4 italic text-muted-foreground">"{name} is a dedicated mom who loves spending quality time with her children while balancing her daily responsibilities."</p>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+            <UserCircle className="h-8 w-8 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-medium">
+              <Link to={`/ally/profile/${id}`} className="hover:underline">
+                {name}
+              </Link>
+            </h3>
+            <p className="text-sm text-muted-foreground">{age}, {location}</p>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <Badge className="bg-primary/70 text-foreground font-bold border-primary/30">
+              {compatibility}% Match
+            </Badge>
+          </div>
+        </div>
         
-        <div className="space-y-3">
+        <div className="space-y-3 mb-4">
           <div className="flex items-center gap-2">
             <BabyIcon className="h-4 w-4 text-amber-500" />
             <span className="text-sm">
@@ -112,7 +107,7 @@ const ProfileCard = ({
           </div>
         </div>
         
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mb-4">
           {interests.map((interest, i) => (
             <Badge key={i} variant="outline" className="bg-secondary/50">
               {interest}
@@ -120,32 +115,26 @@ const ProfileCard = ({
           ))}
         </div>
         
-        <div className="grid grid-cols-2 gap-2 mt-4">
-          {isFullyMatched && onMessageClick ? (
-            <Button 
-              variant="outline"
-              className="rounded-full"
-              onClick={handleMessageClick}
-            >
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Message
-            </Button>
-          ) : (
-            <div /> // Empty placeholder to maintain layout when message button is hidden
-          )}
-          
+        <div className="flex items-center justify-between">
           <Button 
-            className={`rounded-full ${isFullyMatched ? "col-span-1" : "col-span-2"}`}
+            variant="ghost" 
+            size="sm"
+            className="text-sm text-primary hover:text-primary/80 p-0 h-auto flex items-center gap-1"
+          >
+            See {name}'s profile
+          </Button>
+          <Button 
+            variant="default" 
+            className="ml-auto"
             onClick={handleHeartClick}
           >
-            <div className="flex items-center justify-center">
+            <div className="flex items-center gap-2">
               <BowRibbon 
-                className="w-28 h-16 mr-2"
-                isActive={isFullyMatched && userHeartActive}
-                isLeftActive={!isFullyMatched && userHeartActive}
-                isRightActive={isFullyMatched && !userHeartActive}
+                className="w-16 h-10" 
+                isLeftActive={userHeartActive} 
+                isRightActive={!userHeartActive} 
               />
-              {isFullyMatched ? "Match LeanOn!" : "LeanOn"}
+              LeanBack
             </div>
           </Button>
         </div>
