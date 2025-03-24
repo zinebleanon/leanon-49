@@ -8,7 +8,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { UserCircle, MapPin, MessageCircle, Heart, ArrowLeft } from "lucide-react";
+import { UserCircle, MapPin, MessageCircle, Heart, ArrowLeft, Info } from "lucide-react";
 
 const steps = [
   {
@@ -19,21 +19,21 @@ const steps = [
   },
   {
     icon: <MapPin className="w-6 h-6 text-primary" />,
-    title: "Find Local Mumz",
-    description: "Connect with mumz in your neighborhood who share similar interests.",
+    title: "Find Local Moms",
+    description: "Connect with moms in your neighborhood who share similar interests.",
     bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
   },
   {
     icon: <MessageCircle className="w-6 h-6 text-primary" />,
     title: "It Starts With a Chat",
-    description: "Begin by messaging other mumz who seem like a good match for your family.",
-    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Ask background
+    description: "Begin by messaging other moms who seem like a good match for your family.",
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
   },
   {
     icon: <Heart className="w-6 h-6 text-primary" />,
     title: "Build Friendships",
-    description: "Create lasting friendships with other mumz in your community.",
-    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the community connection background
+    description: "Create lasting friendships with other moms in your community.",
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
   }
 ];
 
@@ -50,7 +50,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
           size="lg" 
           className={`rounded-full w-full sm:w-auto mt-3 sm:mt-0 ${className}`}
         >
-          How It Works
+          <Info className="mr-2 h-4 w-4" /> How It Works
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
@@ -71,7 +71,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
           <div className="pt-8"></div>
           
           <DialogTitle className="text-2xl text-center mb-6">
-            How <span className="text-gradient">Mumz Ally</span> Works
+            How <span className="font-adlery text-gradient">LeanOn</span> Works
           </DialogTitle>
         </DialogHeader>
         

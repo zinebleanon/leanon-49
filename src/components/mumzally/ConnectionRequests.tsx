@@ -1,5 +1,5 @@
 
-import { UserCircle, MessageCircle } from 'lucide-react';
+import { UserCircle, MessageCircle, Ribbon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +15,7 @@ interface ConnectionRequest {
   compatibility: number;
 }
 
-const ConnectionRequests = () => {
+const MatchRequests = () => {
   const requests: ConnectionRequest[] = [
     {
       id: 1,
@@ -41,7 +41,7 @@ const ConnectionRequests = () => {
     setAcceptedRequests(prev => [...prev, id]);
     toast({
       title: "Match Connection Made!",
-      description: `You've made a new LeanOn Match with ${name}!`,
+      description: `You've made a new Match with ${name}!`,
     });
   };
 
@@ -59,7 +59,7 @@ const ConnectionRequests = () => {
   return (
     <section className="py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6">Moms Requests</h2>
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden">
@@ -96,32 +96,34 @@ const ConnectionRequests = () => {
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
                         <>
-                          <svg width="18" height="16" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path 
-                              d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
+                          <div className="relative w-5 h-5 flex items-center justify-center mr-1">
+                            <Ribbon 
+                              className="h-4 w-4" 
                               fill="#ea384c" 
                               stroke="#ea384c"
-                              strokeWidth="1.5"
                             />
-                          </svg>
+                            <Ribbon 
+                              className="h-4 w-4 absolute left-0 top-0 transform scale-x-[-1]" 
+                              fill="#ea384c" 
+                              stroke="#ea384c"
+                            />
+                          </div>
                           Message {request.name}
                         </>
                       ) : (
                         <>
-                          <svg width="18" height="16" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path 
-                              d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
+                          <div className="relative w-5 h-5 flex items-center justify-center mr-1">
+                            <Ribbon 
+                              className="h-4 w-4" 
                               fill="#ea384c" 
                               stroke="#ea384c"
-                              strokeWidth="1.5"
                             />
-                            <path 
-                              d="M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
+                            <Ribbon 
+                              className="h-4 w-4 absolute left-0 top-0 transform scale-x-[-1]" 
                               fill="#e2e8f0" 
                               stroke="#94a3b8"
-                              strokeWidth="1.5"
                             />
-                          </svg>
+                          </div>
                           Match Back
                         </>
                       )}
@@ -145,4 +147,4 @@ const ConnectionRequests = () => {
   );
 };
 
-export default ConnectionRequests;
+export default MatchRequests;

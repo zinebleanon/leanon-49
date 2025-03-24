@@ -1,5 +1,5 @@
 
-import { UserCircle, BabyIcon, MapPin, Flag, Briefcase, MessageCircle } from 'lucide-react';
+import { UserCircle, BabyIcon, MapPin, Flag, Briefcase, MessageCircle, Ribbon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -132,23 +132,19 @@ const ProfileCard = ({
             onClick={handleHeartClick}
           >
             <div className="flex items-center justify-center gap-2">
-              <svg width="24" height="24" viewBox="0 0 80 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Left half of heart */}
-                <path 
-                  d="M40,20 C40,11 35,4 28,1 C21,-2 14,2 10,6 C6,10 2,16 0,22 C13,40 27,56 40,68 Z" 
+              <div className="relative w-6 h-6 flex items-center justify-center">
+                <Ribbon 
+                  className="h-5 w-5"
                   fill={userHeartActive ? "#ea384c" : "#e2e8f0"} 
                   stroke={userHeartActive ? "#ea384c" : "#94a3b8"}
-                  strokeWidth="1.5"
                 />
-                {/* Right half of heart */}
-                <path 
-                  d="M40,20 C40,11 45,4 52,1 C59,-2 66,2 70,6 C74,10 78,16 80,22 C67,40 53,56 40,68 Z" 
+                <Ribbon 
+                  className="h-5 w-5 absolute left-0 top-0 transform scale-x-[-1]"
                   fill={isFullyMatched ? "#ea384c" : "#e2e8f0"} 
                   stroke={isFullyMatched ? "#ea384c" : "#94a3b8"}
-                  strokeWidth="1.5"
                 />
-              </svg>
-              {isFullyMatched ? "Ally Matched!" : "Ally"}
+              </div>
+              {isFullyMatched ? "Match LeanOn!" : "LeanOn"}
             </div>
           </Button>
         </div>

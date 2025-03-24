@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
 import FilterSection from '@/components/mumzally/FilterSection';
 import ProfilesSection from '@/components/mumzally/ProfilesSection';
-import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
+import MatchRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from "@/hooks/use-toast";
 import MessageForm from '@/components/mumzally/MessageForm';
 
@@ -35,8 +36,8 @@ const MumzAlly = () => {
   const handleHeartClick = (mumId: number) => {
     // Handle heart click logic
     toast({
-      title: "Connection Request Sent",
-      description: "You've sent a request to connect with another mum in your area!",
+      title: "Match Request Sent",
+      description: "You've sent a request to connect with another mom in your area!",
     });
   };
   
@@ -241,7 +242,7 @@ const MumzAlly = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection />
-        <ConnectionRequests />
+        <MatchRequests />
         <FilterSection onFiltersChange={setFilters} />
         <ProfilesSection 
           profiles={filteredProfiles} 
