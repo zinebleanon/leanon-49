@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Phone, Check } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
@@ -316,7 +316,6 @@ const SignIn = () => {
                         type="tel"
                         placeholder="XX XXX XXXX"
                         className="border-secondary/30 focus:border-secondary"
-                        icon={<Phone className="h-4 w-4" />}
                         prefix="+971"
                         value={formatPhoneDisplay(signUpData.phone)}
                         onChange={handleSignUpChange}
