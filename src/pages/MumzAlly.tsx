@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -234,6 +233,15 @@ const MumzAlly = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection onFiltersChange={setFilters} />
+        
+        <div className="py-8 md:py-10 flex justify-center bg-[#B8CEC2]">
+          <img 
+            src="/lovable-uploads/aad47488-6aaf-41bc-8d54-c6163b5cc62c.png" 
+            alt="Moms connecting" 
+            className="max-w-full md:max-w-lg h-auto mx-auto"
+          />
+        </div>
+        
         <MatchRequests />
         <ProfilesSection 
           profiles={filteredProfiles} 

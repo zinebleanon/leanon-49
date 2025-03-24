@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogDescription } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Home } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface HeroSectionProps {
@@ -16,7 +14,6 @@ interface HeroSectionProps {
 const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -28,16 +25,6 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   return (
     <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center mb-6">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/')} 
-            className="bg-white/80 shadow-sm hover:bg-white"
-          >
-            <Home className="h-4 w-4 mr-2" />
-            Main Menu
-          </Button>
-        </div>
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
