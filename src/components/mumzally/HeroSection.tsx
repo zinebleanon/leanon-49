@@ -23,7 +23,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const textStyles = "transition-all duration-700 ease-smooth";
 
   return (
-    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
+    <section className="py-8 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
