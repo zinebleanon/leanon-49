@@ -179,7 +179,7 @@ const SignIn = () => {
       </Button>
       
       <div className="w-full max-w-md">
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-2">
           <img 
             src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Decorative Bow" 
@@ -187,7 +187,7 @@ const SignIn = () => {
           />
         </div>
         
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           <h1 className="text-2xl font-bold mb-1 font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600">A community of supportive moms</p>
         </div>
