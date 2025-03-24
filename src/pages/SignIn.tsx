@@ -188,8 +188,8 @@ const SignIn = () => {
         </Button>
       </div>
       
-      <div className="w-full max-w-md mt-16">
-        <div className="text-center mb-0">
+      <div className="w-full max-w-md mt-28">
+        <div className="text-center mb-4">
           <h1 className="text-2xl font-bold font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
