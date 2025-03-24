@@ -28,9 +28,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <Hero onJoinClick={() => {}} />
-      <Features />
-      <Footer />
+      <div className="pt-16 md:pt-20">
+        <Hero onJoinClick={() => {}} />
+        <Features />
+        <Footer />
+      </div>
     </div>
   );
 };

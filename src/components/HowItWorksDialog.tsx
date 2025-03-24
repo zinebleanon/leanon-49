@@ -1,5 +1,5 @@
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,48 +7,46 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-} from '@/components/ui/dialog';
-import { Info, ArrowLeft } from 'lucide-react';
-import BowIcon from './ui/BowIcon';
+} from "@/components/ui/dialog";
+import { UserCircle, MapPin, MessageCircle, Heart, ArrowLeft } from "lucide-react";
 
-interface HowItWorksDialogProps {
-  className?: string;
-  buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "warm";
-}
+const howItWorksSteps = [
+  {
+    icon: <UserCircle className="w-6 h-6 text-primary" />,
+    title: "Create Your Profile",
+    description: "Set up your profile with your interests, kids' details, and preferences.",
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80"
+  },
+  {
+    icon: <MapPin className="w-6 h-6 text-primary" />,
+    title: "Find Local Mumz",
+    description: "Connect with mumz in your neighborhood who share similar interests.",
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80"
+  },
+  {
+    icon: <MessageCircle className="w-6 h-6 text-primary" />,
+    title: "Chat & Connect",
+    description: "Begin by messaging other mumz who seem like a good match for your family.",
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80"
+  },
+  {
+    icon: <Heart className="w-6 h-6 text-primary" />,
+    title: "Build Friendships",
+    description: "Create lasting friendships with other mumz in your community.",
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80"
+  }
+];
 
-const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDialogProps) => {
-  const howItWorksSteps = [
-    {
-      title: "Sign up",
-      description: "Create your profile & join the <span class='font-adlery'>LeanOn</span> community.",
-      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
-    },
-    {
-      title: "Find & Connect",
-      description: "Match with moms in your neighborhood based on shared interests and children's ages.",
-      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
-    },
-    {
-      title: "Ask & Share",
-      description: "Exchange recommendations, experiences, and support with other moms.",
-      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Ask background
-    },
-    {
-      title: "Access Deals & Preloved Market",
-      description: "Get exclusive deals and buy/sell preloved items from trusted moms.",
-      bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Deals/Preloved background
-    }
-  ];
-
+const HowItWorksDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button 
-          variant={buttonVariant}
+          variant="outline" 
           size="lg" 
-          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors ${className}`}
+          className="rounded-full w-full sm:w-auto"
         >
-          <Info className="mr-2 h-4 w-4" /> How It Works
+          How It Works
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
@@ -56,14 +54,14 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
           <Button 
             variant="ghost" 
             size="sm" 
-            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
+            className="absolute top-4 left-4 p-2 h-auto text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             <span>Back</span>
           </Button>
         </DialogClose>
         
-        <div className="pt-8"></div>
+        <div className="pt-16 md:pt-12"></div>
         
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
@@ -77,12 +75,12 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
               key={index}
               className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
             >
-              <div className="shrink-0 bg-white rounded-full p-2 w-8 h-8 flex items-center justify-center shadow-sm">
-                <span className="font-medium text-primary">{index + 1}</span>
+              <div className="shrink-0 p-2 bg-background rounded-full shadow-sm">
+                {step.icon}
               </div>
               <div>
                 <h3 className="font-semibold mb-1">{step.title}</h3>
-                <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: step.description }}></p>
+                <p className="text-sm text-muted-foreground">{step.description}</p>
               </div>
             </div>
           ))}
