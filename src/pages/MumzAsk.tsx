@@ -56,10 +56,10 @@ const MumzAsk = () => {
       
       <main className="pt-20 md:pt-24 pb-6 md:pb-10">
         {/* Hero Section with reduced padding */}
-        <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
+        <section className="py-3 md:py-5 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-3xl md:text-5xl font-bold mb-4 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-3 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   LeanOn the Community
                 </span>
@@ -167,8 +167,8 @@ const MumzAsk = () => {
           </div>
         </section>
         
-        {/* Enlarged image section with no padding - UPDATED WITH NEW IMAGE */}
-        <div className="flex justify-center bg-[#B8CEC2] px-4 md:px-8 py-6">
+        {/* Centered image section with minimal padding */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
           <img 
             src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
             alt="Diverse moms silhouettes illustration" 
@@ -176,18 +176,18 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Questions Section with reduced padding */}
-        <section className="py-4 px-4">
+        {/* Questions Section with reduced padding - removed margin gap */}
+        <section className="py-3 px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-3">
               <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-3">
               {/* Placeholder for question cards - you can replace this with your actual question components */}
-              <div className="p-6 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+              <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
                 <h3 className="font-semibold mb-2">How do I handle toddler tantrums in public?</h3>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-muted-foreground mb-3">
                   My 2-year-old has started having major meltdowns whenever we're grocery shopping. I'm at my wit's end!
                 </p>
                 <div className="flex justify-between items-center">
@@ -200,9 +200,9 @@ const MumzAsk = () => {
                 </div>
               </div>
               
-              <div className="p-6 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+              <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
                 <h3 className="font-semibold mb-2">Best breastfeeding positions for newborns?</h3>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-muted-foreground mb-3">
                   I'm a first-time mom struggling with breastfeeding my 2-week-old. Which positions work best for newborns?
                 </p>
                 <div className="flex justify-between items-center">
@@ -215,9 +215,9 @@ const MumzAsk = () => {
                 </div>
               </div>
               
-              <div className="p-6 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+              <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
                 <h3 className="font-semibold mb-2">Recommendations for baby food introduction?</h3>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-muted-foreground mb-3">
                   My baby is turning 6 months next week. Looking for tips on starting solid foods and what to try first.
                 </p>
                 <div className="flex justify-between items-center">
