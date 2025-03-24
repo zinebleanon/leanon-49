@@ -183,7 +183,7 @@ const SignIn = () => {
           <img 
             src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Decorative Bow" 
-            className="h-24 w-auto"
+            className="w-full max-w-md h-auto"
           />
         </div>
         
