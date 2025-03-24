@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -229,7 +230,11 @@ const MumzAlly = () => {
     : rankedProfiles;
   
   if (isLoading) {
-    return <LoadingScreen />;
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-background">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+      </div>
+    );
   }
   
   return (

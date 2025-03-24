@@ -168,7 +168,7 @@ const SignIn = () => {
   };
   
   return (
-    <div className="min-h-screen bg-primary/20 flex flex-col items-center pt-0 relative">
+    <div className="min-h-screen bg-background flex flex-col items-center pt-0 relative">
       <div className="absolute top-4 left-4">
         <img 
           src="/lovable-uploads/cff1d041-e202-4a39-8f31-c3fea11a1405.png" 
