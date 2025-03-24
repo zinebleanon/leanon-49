@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,6 +6,7 @@ import ProfilesSection from '@/components/mumzally/ProfilesSection';
 import MatchRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from "@/hooks/use-toast";
 import MessageForm from '@/components/mumzally/MessageForm';
+import { useNavigate } from 'react-router-dom';
 
 const MumzAlly = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +14,6 @@ const MumzAlly = () => {
   const [selectedMum, setSelectedMum] = useState<{id: number, name: string} | null>(null);
   const [isMessageFormOpen, setIsMessageFormOpen] = useState(false);
   
-  // Current user profile data (would normally come from authentication)
   const currentUserProfile = {
     location: 'Dubai Marina',
     kids: [{age: 3, gender: 'Girl'}],
@@ -23,8 +22,9 @@ const MumzAlly = () => {
     nationality: 'British Expat'
   };
   
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // Simulate loading state for smooth intro
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -33,7 +33,6 @@ const MumzAlly = () => {
   }, []);
   
   const handleHeartClick = (mumId: number) => {
-    // Handle heart click logic
     toast({
       title: "LeanOn Request Sent",
       description: "You've sent a request to connect with another mom in your area!",
@@ -45,7 +44,6 @@ const MumzAlly = () => {
     setIsMessageFormOpen(true);
   };
   
-  // Comprehensive list of mum profiles with various attributes for filtering
   const allMumProfiles = [
     {
       id: 1,
@@ -121,20 +119,16 @@ const MumzAlly = () => {
     }
   ];
   
-  // Calculate automatic compatibility scores based on profile matching
   const calculateCompatibilityScore = (profile) => {
     let score = 0;
     
-    // Location match (highest priority) - up to 40 points
     if (profile.location === currentUserProfile.location) {
       score += 40;
     } else if (['Dubai Marina', 'JBR'].includes(profile.location) && 
                ['Dubai Marina', 'JBR'].includes(currentUserProfile.location)) {
-      // Nearby neighborhoods
       score += 30;
     }
     
-    // Kids age similarity (second priority) - up to 30 points
     const kidAgeMatches = profile.kids.some(profileKid => 
       currentUserProfile.kids.some(userKid => 
         Math.abs(profileKid.age - userKid.age) <= 2
@@ -145,18 +139,15 @@ const MumzAlly = () => {
       score += 30;
     }
     
-    // Work status match - up to 10 points
     if (profile.workStatus === currentUserProfile.workStatus) {
       score += 10;
     }
     
-    // Interests match - up to 15 points
     const sharedInterests = profile.interests.filter(interest => 
       currentUserProfile.interests.includes(interest)
     );
     score += Math.min(sharedInterests.length * 5, 15);
     
-    // Nationality - 5 points
     if (profile.nationality === currentUserProfile.nationality) {
       score += 5;
     }
@@ -164,16 +155,13 @@ const MumzAlly = () => {
     return score;
   };
   
-  // Automatically rank profiles by compatibility before filters
   const rankedProfiles = [...allMumProfiles].map(profile => ({
     ...profile,
     compatibility: calculateCompatibilityScore(profile)
   })).sort((a, b) => b.compatibility - a.compatibility);
   
-  // Apply filters to profiles
   const applyFilters = (profiles, activeFilters) => {
     return profiles.filter(profile => {
-      // Check age filter
       if (activeFilters.age && activeFilters.age !== "all") {
         const ageRange = activeFilters.age.split('-');
         const minAge = parseInt(ageRange[0]);
@@ -181,19 +169,14 @@ const MumzAlly = () => {
         if (profile.age < minAge || profile.age > maxAge) return false;
       }
       
-      // Check kids filter - now handling multiple children
       if (activeFilters.kids && Array.isArray(activeFilters.kids)) {
-        // Go through each filter child
         for (const kidFilter of activeFilters.kids) {
-          // Skip if no filters set for this child
           if ((!kidFilter.ageRange || kidFilter.ageRange === "all") && 
               (!kidFilter.gender || kidFilter.gender === "all")) {
             continue;
           }
           
-          // Check if any of the profile's kids match this filter
           const hasMatchingKid = profile.kids.some(kid => {
-            // Check age range if specified
             if (kidFilter.ageRange && kidFilter.ageRange !== "all") {
               const ageRange = kidFilter.ageRange.split('-');
               const minAge = parseInt(ageRange[0]);
@@ -201,7 +184,6 @@ const MumzAlly = () => {
               if (kid.age < minAge || kid.age > maxAge) return false;
             }
             
-            // Check gender if specified
             if (kidFilter.gender && kidFilter.gender !== "all" && kid.gender !== kidFilter.gender) {
               return false;
             }
@@ -209,27 +191,22 @@ const MumzAlly = () => {
             return true;
           });
           
-          // If no kids match this filter criteria, exclude the profile
           if (!hasMatchingKid) return false;
         }
       }
       
-      // Check location filter
       if (activeFilters.location && activeFilters.location !== "all" && profile.location !== activeFilters.location) {
         return false;
       }
       
-      // Check nationality filter
       if (activeFilters.nationality && activeFilters.nationality !== "all" && profile.nationality !== activeFilters.nationality) {
         return false;
       }
       
-      // Check work status filter
       if (activeFilters.workStatus && activeFilters.workStatus !== "all" && profile.workStatus !== activeFilters.workStatus) {
         return false;
       }
       
-      // Check compatibility threshold
       if (activeFilters.compatibilityThreshold && profile.compatibility < activeFilters.compatibilityThreshold) {
         return false;
       }
@@ -238,7 +215,6 @@ const MumzAlly = () => {
     });
   };
   
-  // Get filtered profiles
   const filteredProfiles = Object.keys(filters).length > 0 
     ? applyFilters(rankedProfiles, filters)
     : rankedProfiles;

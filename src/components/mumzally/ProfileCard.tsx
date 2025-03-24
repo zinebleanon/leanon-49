@@ -133,14 +133,12 @@ const ProfileCard = ({
             className={`rounded-full ${isFullyMatched ? "col-span-1" : "col-span-2"}`}
             onClick={handleHeartClick}
           >
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-12 h-8 mr-1">
-                <BowRibbon 
-                  className="scale-[2]"
-                  isLeftActive={userHeartActive}
-                  isRightActive={isFullyMatched}
-                />
-              </div>
+            <div className="flex items-center justify-center">
+              <BowRibbon 
+                className="w-12 h-8 mr-2 scale-[2]"
+                isLeftActive={userHeartActive}
+                isRightActive={isFullyMatched}
+              />
               {isFullyMatched ? "Match LeanOn!" : "LeanOn"}
             </div>
           </Button>

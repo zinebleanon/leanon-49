@@ -1,8 +1,7 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -65,6 +64,7 @@ const Navbar = () => {
     { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/save' },
     { name: 'Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
+    { name: 'Inbox', icon: <Inbox className="h-4 w-4" />, path: '/inbox' },
   ];
 
   const handleJoinButtonClick = () => {

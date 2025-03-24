@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { SendIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import BowRibbon from './BowRibbon';
 
 interface MessageFormProps {
   open: boolean;
@@ -49,9 +50,12 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#FFF8E7] via-[#FFD9A7]/50 to-[#B8CEC2]/30">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Message to {recipient.name}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold flex items-center gap-2">
+            <BowRibbon className="w-8 h-6 scale-[1.5]" isActive={true} />
+            Message to {recipient.name}
+          </DialogTitle>
           <DialogDescription>
             Send a message to start a conversation with your new LeanOn Ally
           </DialogDescription>
@@ -68,7 +72,7 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
                   <FormControl>
                     <Textarea 
                       placeholder={`Hi ${recipient.name}! I'm excited to connect with you...`} 
-                      className="min-h-[120px]" 
+                      className="min-h-[120px] bg-white/80" 
                       {...field}
                     />
                   </FormControl>
@@ -78,7 +82,11 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
             />
             
             <div className="flex justify-end">
-              <Button disabled={isSending} type="submit">
+              <Button 
+                disabled={isSending} 
+                type="submit" 
+                className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground"
+              >
                 {isSending ? (
                   <>Sending...</>
                 ) : (
