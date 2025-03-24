@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogDescription } from '@/components/ui/dialog';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -15,6 +17,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     setIsVisible(true);
@@ -42,22 +45,41 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
             </span>
           </h1>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-            <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-              <DialogTrigger asChild>
-                <Button 
-                  size="lg" 
-                  className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                >
-                  Filter to find your Matches
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#B8CEC2]/40 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
-                <DialogHeader className="relative">
-                  <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
-                </DialogHeader>
-                <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
-              </DialogContent>
-            </Dialog>
+            {isMobile ? (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button 
+                    size="lg" 
+                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                  >
+                    Filter to find your Matches
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2]/30 rounded-t-xl">
+                  <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
+                </SheetContent>
+              </Sheet>
+            ) : (
+              <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    size="lg" 
+                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                  >
+                    Filter to find your Matches
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#B8CEC2]/40 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
+                  <DialogHeader className="relative">
+                    <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
+                    <DialogDescription className="text-center text-muted-foreground">
+                      Filter your preferences to find moms who match your needs
+                    </DialogDescription>
+                  </DialogHeader>
+                  <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+                </DialogContent>
+              </Dialog>
+            )}
             <HowItWorksModal />
           </div>
         </div>
