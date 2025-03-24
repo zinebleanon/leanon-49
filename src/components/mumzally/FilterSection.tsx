@@ -55,6 +55,20 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
       newFilters[category] = value;
     }
     
+    // If a filter is set to "all", remove it from active filters
+    if (value === "all") {
+      if (category === 'kids.ageRange' || category === 'kids.gender') {
+        if (newFilters.kids) {
+          delete newFilters.kids[category.split('.')[1]];
+          if (Object.keys(newFilters.kids).length === 0) {
+            delete newFilters.kids;
+          }
+        }
+      } else {
+        delete newFilters[category];
+      }
+    }
+    
     setActiveFilters(newFilters);
   };
   
@@ -88,14 +102,14 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
           <div className="space-y-2">
             <Label htmlFor="location">Location</Label>
             <Select
-              value={activeFilters.location || ""}
+              value={activeFilters.location || "all"}
               onValueChange={(value) => handleFilterChange('location', value)}
             >
               <SelectTrigger id="location">
                 <SelectValue placeholder="Select location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Location</SelectItem>
+                <SelectItem value="all">Any Location</SelectItem>
                 {locations.map((location) => (
                   <SelectItem key={location} value={location}>
                     {location}
@@ -108,14 +122,14 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
           <div className="space-y-2">
             <Label htmlFor="kids-age">Child Age Range</Label>
             <Select
-              value={activeFilters.kids?.ageRange || ""}
+              value={activeFilters.kids?.ageRange || "all"}
               onValueChange={(value) => handleFilterChange('kids.ageRange', value)}
             >
               <SelectTrigger id="kids-age">
                 <SelectValue placeholder="Select age range" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Age</SelectItem>
+                <SelectItem value="all">Any Age</SelectItem>
                 <SelectItem value="0-2">Infant (0-2 years)</SelectItem>
                 <SelectItem value="3-5">Preschool (3-5 years)</SelectItem>
                 <SelectItem value="6-9">Primary (6-9 years)</SelectItem>
@@ -128,14 +142,14 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
           <div className="space-y-2">
             <Label htmlFor="kids-gender">Child Gender</Label>
             <Select
-              value={activeFilters.kids?.gender || ""}
+              value={activeFilters.kids?.gender || "all"}
               onValueChange={(value) => handleFilterChange('kids.gender', value)}
             >
               <SelectTrigger id="kids-gender">
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Any Gender</SelectItem>
+                <SelectItem value="all">Any Gender</SelectItem>
                 <SelectItem value="Boy">Boy</SelectItem>
                 <SelectItem value="Girl">Girl</SelectItem>
               </SelectContent>
@@ -152,14 +166,14 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
                   <div className="space-y-2">
                     <Label htmlFor="age">Mom Age Range</Label>
                     <Select
-                      value={activeFilters.age || ""}
+                      value={activeFilters.age || "all"}
                       onValueChange={(value) => handleFilterChange('age', value)}
                     >
                       <SelectTrigger id="age">
                         <SelectValue placeholder="Select age range" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Any Age</SelectItem>
+                        <SelectItem value="all">Any Age</SelectItem>
                         <SelectItem value="20-29">20-29 years</SelectItem>
                         <SelectItem value="30-39">30-39 years</SelectItem>
                         <SelectItem value="40-49">40-49 years</SelectItem>
@@ -171,14 +185,14 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
                   <div className="space-y-2">
                     <Label htmlFor="nationality">Nationality</Label>
                     <Select
-                      value={activeFilters.nationality || ""}
+                      value={activeFilters.nationality || "all"}
                       onValueChange={(value) => handleFilterChange('nationality', value)}
                     >
                       <SelectTrigger id="nationality">
                         <SelectValue placeholder="Select nationality" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Any Nationality</SelectItem>
+                        <SelectItem value="all">Any Nationality</SelectItem>
                         {nationalities.map((nationality) => (
                           <SelectItem key={nationality} value={nationality}>
                             {nationality}
@@ -191,14 +205,14 @@ const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
                   <div className="space-y-2">
                     <Label htmlFor="work-status">Work Status</Label>
                     <Select
-                      value={activeFilters.workStatus || ""}
+                      value={activeFilters.workStatus || "all"}
                       onValueChange={(value) => handleFilterChange('workStatus', value)}
                     >
                       <SelectTrigger id="work-status">
                         <SelectValue placeholder="Select work status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Any Work Status</SelectItem>
+                        <SelectItem value="all">Any Work Status</SelectItem>
                         {workStatuses.map((status) => (
                           <SelectItem key={status} value={status}>
                             {status}

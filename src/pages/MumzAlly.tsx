@@ -174,7 +174,7 @@ const MumzAlly = () => {
   const applyFilters = (profiles, activeFilters) => {
     return profiles.filter(profile => {
       // Check age filter
-      if (activeFilters.age) {
+      if (activeFilters.age && activeFilters.age !== "all") {
         const ageRange = activeFilters.age.split('-');
         const minAge = parseInt(ageRange[0]);
         const maxAge = ageRange[1].includes('+') ? 100 : parseInt(ageRange[1]);
@@ -184,7 +184,7 @@ const MumzAlly = () => {
       // Check kids filter
       if (activeFilters.kids) {
         // Filter by kid age range
-        if (activeFilters.kids.ageRange) {
+        if (activeFilters.kids.ageRange && activeFilters.kids.ageRange !== "all") {
           const hasMatchingKid = profile.kids.some(kid => {
             const ageRange = activeFilters.kids.ageRange.split('-');
             const minAge = parseInt(ageRange[0]);
@@ -195,7 +195,7 @@ const MumzAlly = () => {
         }
         
         // Filter by kid gender
-        if (activeFilters.kids.gender) {
+        if (activeFilters.kids.gender && activeFilters.kids.gender !== "all") {
           const hasMatchingKid = profile.kids.some(kid => 
             kid.gender === activeFilters.kids.gender
           );
@@ -204,17 +204,17 @@ const MumzAlly = () => {
       }
       
       // Check location filter
-      if (activeFilters.location && profile.location !== activeFilters.location) {
+      if (activeFilters.location && activeFilters.location !== "all" && profile.location !== activeFilters.location) {
         return false;
       }
       
       // Check nationality filter
-      if (activeFilters.nationality && profile.nationality !== activeFilters.nationality) {
+      if (activeFilters.nationality && activeFilters.nationality !== "all" && profile.nationality !== activeFilters.nationality) {
         return false;
       }
       
       // Check work status filter
-      if (activeFilters.workStatus && profile.workStatus !== activeFilters.workStatus) {
+      if (activeFilters.workStatus && activeFilters.workStatus !== "all" && profile.workStatus !== activeFilters.workStatus) {
         return false;
       }
       
