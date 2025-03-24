@@ -8,17 +8,12 @@ import MatchRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from "@/hooks/use-toast";
 import MessageForm from '@/components/mumzally/MessageForm';
 import { useNavigate } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
-import { Filter } from 'lucide-react';
 
 const MumzAlly = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState<Record<string, any>>({});
   const [selectedMum, setSelectedMum] = useState<{id: number, name: string} | null>(null);
   const [isMessageFormOpen, setIsMessageFormOpen] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
-  const isMobile = useIsMobile();
   
   const currentUserProfile = {
     location: 'Dubai Marina',
@@ -238,28 +233,13 @@ const MumzAlly = () => {
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
-        <HeroSection 
-          onFiltersChange={setFilters} 
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-        />
+        <HeroSection onFiltersChange={setFilters} />
         <MatchRequests />
         <ProfilesSection 
           profiles={filteredProfiles} 
           onHeartClick={handleHeartClick}
           onMessageClick={handleMessageClick}
         />
-        
-        {isMobile && (
-          <div className="fixed bottom-6 right-6 z-10">
-            <Button 
-              onClick={() => setShowFilters(true)}
-              className="rounded-full h-14 w-14 bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 shadow-lg"
-            >
-              <Filter className="h-6 w-6" />
-            </Button>
-          </div>
-        )}
       </main>
       
       {selectedMum && (

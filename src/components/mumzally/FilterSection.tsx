@@ -6,19 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Filter, ArrowLeft, Home, ChevronDown } from 'lucide-react';
+import { Check, X, Filter, ArrowLeft, Home } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { 
-  Sheet,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 
 interface FilterSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -27,7 +18,6 @@ interface FilterSectionProps {
 
 const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const [age, setAge] = useState('all');
   
   // First child
@@ -149,181 +139,6 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     label: `${i} year${i !== 1 ? 's' : ''}`
   }));
   
-  // Filter category components
-  const MomsAgeFilter = () => (
-    <div className="mb-4">
-      <Label htmlFor="ageRange" className="block mb-2">Mother's Age</Label>
-      <Select value={age} onValueChange={setAge}>
-        <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
-          <SelectValue placeholder="All Ages" />
-        </SelectTrigger>
-        <SelectContent className="bg-white border-[#B8CEC2]/30">
-          <SelectGroup>
-            <SelectItem value="all">All Ages</SelectItem>
-            <SelectItem value="20-25">20-25 years</SelectItem>
-            <SelectItem value="26-30">26-30 years</SelectItem>
-            <SelectItem value="31-35">31-35 years</SelectItem>
-            <SelectItem value="36-40">36-40 years</SelectItem>
-            <SelectItem value="41+">41+ years</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-  
-  const ChildFilter = ({ childNum, ageRange, setAgeRange, gender, setGender }) => (
-    <div className="mb-4">
-      <div className="flex items-center justify-between mb-2">
-        <Label>Child {childNum}</Label>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="h-[60vh]">
-            <SheetHeader>
-              <SheetTitle>Child {childNum} Details</SheetTitle>
-            </SheetHeader>
-            <div className="grid gap-4 py-4">
-              <div>
-                <Label htmlFor={`kid${childNum}AgeRange`} className="block mb-2">Age</Label>
-                <Select value={ageRange} onValueChange={setAgeRange}>
-                  <SelectTrigger className="w-full bg-white/80">
-                    <SelectValue placeholder="All Ages" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white max-h-[200px]">
-                    <ScrollArea className="h-[200px]">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        {ageOptions.map(option => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </ScrollArea>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor={`kid${childNum}Gender`} className="block mb-2">Gender</Label>
-                <Select value={gender} onValueChange={setGender}>
-                  <SelectTrigger className="w-full bg-white/80">
-                    <SelectValue placeholder="Any Gender" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectGroup>
-                      <SelectItem value="all">Any Gender</SelectItem>
-                      <SelectItem value="Boy">Boy</SelectItem>
-                      <SelectItem value="Girl">Girl</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <SheetFooter>
-              <Button onClick={() => {}}>Done</Button>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
-      </div>
-      <div className="flex gap-2">
-        <Badge variant="outline" className={`px-2 py-1 ${ageRange !== 'all' ? 'bg-[#FFD9A7]/50' : 'bg-white/80'}`}>
-          {ageRange === 'all' ? 'Any Age' : `${ageRange} years`}
-        </Badge>
-        <Badge variant="outline" className={`px-2 py-1 ${gender !== 'all' ? 'bg-[#FFD9A7]/50' : 'bg-white/80'}`}>
-          {gender === 'all' ? 'Any Gender' : gender}
-        </Badge>
-      </div>
-    </div>
-  );
-  
-  const LocationFilter = () => (
-    <div className="mb-4">
-      <Label htmlFor="location" className="block mb-2">Location</Label>
-      <Select value={location} onValueChange={setLocation}>
-        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-          <SelectValue placeholder="Any Location" />
-        </SelectTrigger>
-        <SelectContent className="bg-white border-[#FFD9A7]/30">
-          <SelectGroup>
-            <SelectItem value="all">Any Location</SelectItem>
-            <SelectItem value="Dubai Marina">Dubai Marina</SelectItem>
-            <SelectItem value="Palm Jumeirah">Palm Jumeirah</SelectItem>
-            <SelectItem value="JBR">JBR</SelectItem>
-            <SelectItem value="Downtown Dubai">Downtown Dubai</SelectItem>
-            <SelectItem value="Arabian Ranches">Arabian Ranches</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-  
-  const NationalityFilter = () => (
-    <div className="mb-4">
-      <Label htmlFor="nationality" className="block mb-2">Nationality</Label>
-      <Select value={nationality} onValueChange={setNationality}>
-        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-          <SelectValue placeholder="Any Nationality" />
-        </SelectTrigger>
-        <SelectContent className="bg-white border-[#FFD9A7]/30">
-          <SelectGroup>
-            <SelectItem value="all">Any Nationality</SelectItem>
-            <SelectItem value="British Expat">British Expat</SelectItem>
-            <SelectItem value="American Expat">American Expat</SelectItem>
-            <SelectItem value="Chinese Expat">Chinese Expat</SelectItem>
-            <SelectItem value="Indian Expat">Indian Expat</SelectItem>
-            <SelectItem value="Lebanese">Lebanese</SelectItem>
-            <SelectItem value="UAE">UAE</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-  
-  const WorkStatusFilter = () => (
-    <div className="mb-4">
-      <Label htmlFor="workStatus" className="block mb-2">Profession</Label>
-      <Select value={workStatus} onValueChange={setWorkStatus}>
-        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-          <SelectValue placeholder="Any Profession" />
-        </SelectTrigger>
-        <SelectContent className="bg-white border-[#FFD9A7]/30">
-          <SelectGroup>
-            <SelectItem value="all">Any Profession</SelectItem>
-            <SelectItem value="Full-time">Full-time</SelectItem>
-            <SelectItem value="Part-time">Part-time</SelectItem>
-            <SelectItem value="Stay-at-home">Stay-at-home</SelectItem>
-            <SelectItem value="Freelancer">Freelancer</SelectItem>
-            <SelectItem value="Business Owner">Business Owner</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-  
-  const CompatibilityFilter = () => (
-    <div className="mb-6">
-      <div className="flex justify-between mb-2">
-        <Label>Minimum Compatibility</Label>
-        <span className="text-sm font-medium">{compatibilityThreshold}%</span>
-      </div>
-      <Slider
-        value={compatibilityThreshold}
-        onValueChange={setCompatibilityThreshold}
-        max={100}
-        step={5}
-        className="my-4"
-      />
-      <div className="flex justify-between text-sm text-muted-foreground">
-        <span>50%</span>
-        <span>75%</span>
-        <span>100%</span>
-      </div>
-    </div>
-  );
-  
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]/30" id="filter-section">
       <div className="max-w-7xl mx-auto">
@@ -355,292 +170,242 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Button>
         </div>
         
-        <div className="space-y-4">
-          {/* Mobile View: Use a consistent card style for all filters */}
-          {isMobile ? (
-            <>
-              <div className="bg-white rounded-lg shadow-sm p-4">
-                <MomsAgeFilter />
-                <ChildFilter 
-                  childNum={1} 
-                  ageRange={kid1AgeRange} 
-                  setAgeRange={setKid1AgeRange} 
-                  gender={kid1Gender} 
-                  setGender={setKid1Gender} 
-                />
-                <ChildFilter 
-                  childNum={2} 
-                  ageRange={kid2AgeRange} 
-                  setAgeRange={setKid2AgeRange} 
-                  gender={kid2Gender} 
-                  setGender={setKid2Gender} 
-                />
-                <ChildFilter 
-                  childNum={3} 
-                  ageRange={kid3AgeRange} 
-                  setAgeRange={setKid3AgeRange} 
-                  gender={kid3Gender} 
-                  setGender={setKid3Gender} 
-                />
-                <LocationFilter />
-                <NationalityFilter />
-                <WorkStatusFilter />
-                <CompatibilityFilter />
-              </div>
-              
-              <div className="sticky bottom-4 left-0 right-0 p-4 bg-white rounded-lg shadow-lg border border-[#FFD9A7]/30">
-                <Button 
-                  onClick={applyFilters} 
-                  className="w-full bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground"
-                >
-                  <Check className="h-4 w-4 mr-2" />
-                  Apply Filters
-                </Button>
-              </div>
-            </>
-          ) : (
-            // Desktop view: Use the original two-column layout
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="ageRange" className="block mb-2">Mother's Age</Label>
+              <Select value={age} onValueChange={setAge}>
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
+                  <SelectValue placeholder="All Ages" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
+                  <SelectGroup>
+                    <SelectItem value="all">All Ages</SelectItem>
+                    <SelectItem value="20-25">20-25 years</SelectItem>
+                    <SelectItem value="26-30">26-30 years</SelectItem>
+                    <SelectItem value="31-35">31-35 years</SelectItem>
+                    <SelectItem value="36-40">36-40 years</SelectItem>
+                    <SelectItem value="41+">41+ years</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
+              <h3 className="font-medium mb-3">Child 1</h3>
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="ageRange" className="block mb-2">Mother's Age</Label>
-                  <Select value={age} onValueChange={setAge}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
+                  <Label htmlFor="kid1AgeRange" className="block mb-2">Age</Label>
+                  <Select value={kid1AgeRange} onValueChange={setKid1AgeRange}>
+                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="20-25">20-25 years</SelectItem>
-                        <SelectItem value="26-30">26-30 years</SelectItem>
-                        <SelectItem value="31-35">31-35 years</SelectItem>
-                        <SelectItem value="36-40">36-40 years</SelectItem>
-                        <SelectItem value="41+">41+ years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
-                
-                <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-                  <h3 className="font-medium mb-3">Child 1</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="kid1AgeRange" className="block mb-2">Age</Label>
-                      <Select value={kid1AgeRange} onValueChange={setKid1AgeRange}>
-                        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                          <SelectValue placeholder="All Ages" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
-                          <ScrollArea className="h-[200px]">
-                            <SelectGroup>
-                              <SelectItem value="all">All Ages</SelectItem>
-                              {ageOptions.map(option => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="kid1Gender" className="block mb-2">Gender</Label>
-                      <Select value={kid1Gender} onValueChange={setKid1Gender}>
-                        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                          <SelectValue placeholder="Any Gender" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#FFD9A7]/30">
-                          <SelectGroup>
-                            <SelectItem value="all">Any Gender</SelectItem>
-                            <SelectItem value="Boy">Boy</SelectItem>
-                            <SelectItem value="Girl">Girl</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-                  <h3 className="font-medium mb-3">Child 2</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="kid2AgeRange" className="block mb-2">Age</Label>
-                      <Select value={kid2AgeRange} onValueChange={setKid2AgeRange}>
-                        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                          <SelectValue placeholder="All Ages" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
-                          <ScrollArea className="h-[200px]">
-                            <SelectGroup>
-                              <SelectItem value="all">All Ages</SelectItem>
-                              {ageOptions.map(option => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="kid2Gender" className="block mb-2">Gender</Label>
-                      <Select value={kid2Gender} onValueChange={setKid2Gender}>
-                        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                          <SelectValue placeholder="Any Gender" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#FFD9A7]/30">
-                          <SelectGroup>
-                            <SelectItem value="all">Any Gender</SelectItem>
-                            <SelectItem value="Boy">Boy</SelectItem>
-                            <SelectItem value="Girl">Girl</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-                  <h3 className="font-medium mb-3">Child 3</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="kid3AgeRange" className="block mb-2">Age</Label>
-                      <Select value={kid3AgeRange} onValueChange={setKid3AgeRange}>
-                        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                          <SelectValue placeholder="All Ages" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
-                          <ScrollArea className="h-[200px]">
-                            <SelectGroup>
-                              <SelectItem value="all">All Ages</SelectItem>
-                              {ageOptions.map(option => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </ScrollArea>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="kid3Gender" className="block mb-2">Gender</Label>
-                      <Select value={kid3Gender} onValueChange={setKid3Gender}>
-                        <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                          <SelectValue placeholder="Any Gender" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-[#FFD9A7]/30">
-                          <SelectGroup>
-                            <SelectItem value="all">Any Gender</SelectItem>
-                            <SelectItem value="Boy">Boy</SelectItem>
-                            <SelectItem value="Girl">Girl</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
                 <div>
-                  <Label htmlFor="location" className="block mb-2">Location</Label>
-                  <Select value={location} onValueChange={setLocation}>
+                  <Label htmlFor="kid1Gender" className="block mb-2">Gender</Label>
+                  <Select value={kid1Gender} onValueChange={setKid1Gender}>
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="Any Location" />
+                      <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border-[#FFD9A7]/30">
                       <SelectGroup>
-                        <SelectItem value="all">Any Location</SelectItem>
-                        <SelectItem value="Dubai Marina">Dubai Marina</SelectItem>
-                        <SelectItem value="Palm Jumeirah">Palm Jumeirah</SelectItem>
-                        <SelectItem value="JBR">JBR</SelectItem>
-                        <SelectItem value="Downtown Dubai">Downtown Dubai</SelectItem>
-                        <SelectItem value="Arabian Ranches">Arabian Ranches</SelectItem>
+                        <SelectItem value="all">Any Gender</SelectItem>
+                        <SelectItem value="Boy">Boy</SelectItem>
+                        <SelectItem value="Girl">Girl</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="nationality" className="block mb-2">Nationality</Label>
-                  <Select value={nationality} onValueChange={setNationality}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="Any Nationality" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Nationality</SelectItem>
-                        <SelectItem value="British Expat">British Expat</SelectItem>
-                        <SelectItem value="American Expat">American Expat</SelectItem>
-                        <SelectItem value="Chinese Expat">Chinese Expat</SelectItem>
-                        <SelectItem value="Indian Expat">Indian Expat</SelectItem>
-                        <SelectItem value="Lebanese">Lebanese</SelectItem>
-                        <SelectItem value="UAE">UAE</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="workStatus" className="block mb-2">Profession</Label>
-                  <Select value={workStatus} onValueChange={setWorkStatus}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
-                      <SelectValue placeholder="Any Profession" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Profession</SelectItem>
-                        <SelectItem value="Full-time">Full-time</SelectItem>
-                        <SelectItem value="Part-time">Part-time</SelectItem>
-                        <SelectItem value="Stay-at-home">Stay-at-home</SelectItem>
-                        <SelectItem value="Freelancer">Freelancer</SelectItem>
-                        <SelectItem value="Business Owner">Business Owner</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="mt-6 mb-8 p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
-                  <div className="flex justify-between mb-2">
-                    <Label>Minimum Compatibility</Label>
-                    <span className="text-sm font-medium">{compatibilityThreshold}%</span>
-                  </div>
-                  <Slider
-                    value={compatibilityThreshold}
-                    onValueChange={setCompatibilityThreshold}
-                    max={100}
-                    step={5}
-                    className="my-4"
-                  />
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>50%</span>
-                    <span>75%</span>
-                    <span>100%</span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-end gap-4 mt-4">
-                  {onClose && (
-                    <Button variant="outline" onClick={onClose} className="border-[#FFD9A7]/50 hover:bg-[#FFD9A7]/10">
-                      <ArrowLeft className="h-4 w-4 mr-2" />
-                      Back
-                    </Button>
-                  )}
-                  <Button 
-                    onClick={applyFilters} 
-                    className="min-w-[120px] bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground"
-                  >
-                    <Check className="h-4 w-4 mr-2" />
-                    Apply Filters
-                  </Button>
                 </div>
               </div>
             </div>
-          )}
+            
+            <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
+              <h3 className="font-medium mb-3">Child 2</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kid2AgeRange" className="block mb-2">Age</Label>
+                  <Select value={kid2AgeRange} onValueChange={setKid2AgeRange}>
+                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                      <SelectValue placeholder="All Ages" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="kid2Gender" className="block mb-2">Gender</Label>
+                  <Select value={kid2Gender} onValueChange={setKid2Gender}>
+                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                      <SelectValue placeholder="Any Gender" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                      <SelectGroup>
+                        <SelectItem value="all">Any Gender</SelectItem>
+                        <SelectItem value="Boy">Boy</SelectItem>
+                        <SelectItem value="Girl">Girl</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
+              <h3 className="font-medium mb-3">Child 3</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kid3AgeRange" className="block mb-2">Age</Label>
+                  <Select value={kid3AgeRange} onValueChange={setKid3AgeRange}>
+                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                      <SelectValue placeholder="All Ages" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="kid3Gender" className="block mb-2">Gender</Label>
+                  <Select value={kid3Gender} onValueChange={setKid3Gender}>
+                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                      <SelectValue placeholder="Any Gender" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                      <SelectGroup>
+                        <SelectItem value="all">Any Gender</SelectItem>
+                        <SelectItem value="Boy">Boy</SelectItem>
+                        <SelectItem value="Girl">Girl</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="location" className="block mb-2">Location</Label>
+              <Select value={location} onValueChange={setLocation}>
+                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                  <SelectValue placeholder="Any Location" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                  <SelectGroup>
+                    <SelectItem value="all">Any Location</SelectItem>
+                    <SelectItem value="Dubai Marina">Dubai Marina</SelectItem>
+                    <SelectItem value="Palm Jumeirah">Palm Jumeirah</SelectItem>
+                    <SelectItem value="JBR">JBR</SelectItem>
+                    <SelectItem value="Downtown Dubai">Downtown Dubai</SelectItem>
+                    <SelectItem value="Arabian Ranches">Arabian Ranches</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label htmlFor="nationality" className="block mb-2">Nationality</Label>
+              <Select value={nationality} onValueChange={setNationality}>
+                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                  <SelectValue placeholder="Any Nationality" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                  <SelectGroup>
+                    <SelectItem value="all">Any Nationality</SelectItem>
+                    <SelectItem value="British Expat">British Expat</SelectItem>
+                    <SelectItem value="American Expat">American Expat</SelectItem>
+                    <SelectItem value="Chinese Expat">Chinese Expat</SelectItem>
+                    <SelectItem value="Indian Expat">Indian Expat</SelectItem>
+                    <SelectItem value="Lebanese">Lebanese</SelectItem>
+                    <SelectItem value="UAE">UAE</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label htmlFor="workStatus" className="block mb-2">Profession</Label>
+              <Select value={workStatus} onValueChange={setWorkStatus}>
+                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                  <SelectValue placeholder="Any Profession" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                  <SelectGroup>
+                    <SelectItem value="all">Any Profession</SelectItem>
+                    <SelectItem value="Full-time">Full-time</SelectItem>
+                    <SelectItem value="Part-time">Part-time</SelectItem>
+                    <SelectItem value="Stay-at-home">Stay-at-home</SelectItem>
+                    <SelectItem value="Freelancer">Freelancer</SelectItem>
+                    <SelectItem value="Business Owner">Business Owner</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="mt-6 mb-8 p-4 bg-[#FFD9A7] rounded-lg border border-[#FFD9A7]/30">
+              <div className="flex justify-between mb-2">
+                <Label>Minimum Compatibility</Label>
+                <span className="text-sm font-medium">{compatibilityThreshold}%</span>
+              </div>
+              <Slider
+                value={compatibilityThreshold}
+                onValueChange={setCompatibilityThreshold}
+                max={100}
+                step={5}
+                className="my-4"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-end gap-4 mt-4">
+              {onClose && (
+                <Button variant="outline" onClick={onClose} className="border-[#FFD9A7]/50 hover:bg-[#FFD9A7]/10">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Button>
+              )}
+              <Button onClick={applyFilters} className="min-w-[120px] bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground">
+                <Check className="h-4 w-4 mr-2" />
+                Apply Filters
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,149 +1,68 @@
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  FilterIcon, 
-  X, 
-  MoveRight, 
-  RefreshCw, 
-  MessageCircle, 
-  Info 
-} from 'lucide-react';
-import FilterSection from './FilterSection';
 import HowItWorksModal from './HowItWorksModal';
-import { 
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetClose,
-} from "@/components/ui/sheet";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useEffect, useState } from 'react';
+import FilterSection from './FilterSection';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
-  showFilters?: boolean;
-  setShowFilters?: (show: boolean) => void;
 }
 
-const HeroSection = ({ 
-  onFiltersChange, 
-  showFilters = false, 
-  setShowFilters = () => {} 
-}: HeroSectionProps) => {
+const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
+  const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
-  };
-
-  const toggleHowItWorks = () => {
-    setIsHowItWorksOpen(!isHowItWorksOpen);
-  };
-
-  const closeFilter = () => {
-    setIsFilterOpen(false);
-    if (setShowFilters) {
-      setShowFilters(false);
-    }
-  };
-
-  // Effect to show the filter section when showFilters changes
-  // This is triggered by the floating button
-  if (showFilters && !isFilterOpen) {
-    setIsFilterOpen(true);
-  }
+  const textStyles = "transition-all duration-700 ease-smooth";
 
   return (
-    <>
-      <section className="py-8 px-4 md:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold font-playfair text-primary mb-2">
-                MumzAlly
-              </h1>
-              <p className="text-muted-foreground md:text-lg">
-                Connect with other moms in your area for support and friendship
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button 
-                variant="outline" 
-                onClick={toggleHowItWorks}
-                className="flex-1 md:flex-none"
-              >
-                <Info className="mr-2 h-4 w-4" />
-                How It Works
-              </Button>
-              
-              {!isMobile && (
+    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center mb-6">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/')} 
+            className="bg-white/80 shadow-sm hover:bg-white"
+          >
+            <Home className="h-4 w-4 mr-2" />
+            Main Menu
+          </Button>
+        </div>
+        <div className="text-center md:text-left md:max-w-3xl mx-auto">
+          <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
+              Match <br /> <span className="font-adlery">&amp;</span> LeanOn Moms
+            </span>
+          </h1>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+            <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+              <DialogTrigger asChild>
                 <Button 
-                  variant="outline" 
-                  onClick={toggleFilter}
-                  className="flex-1 md:flex-none"
+                  size="lg" 
+                  className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                 >
-                  <FilterIcon className="mr-2 h-4 w-4" />
-                  Filter Match
+                  Filter to find your Matches
                 </Button>
-              )}
-            </div>
-          </div>
-          
-          <div className="bg-[#B8CEC2]/20 p-4 md:p-6 rounded-lg shadow-sm mb-4">
-            <h2 className="text-xl font-semibold font-playfair mb-2">How MumzAlly Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-white rounded-full p-3 mb-4">
-                  <RefreshCw size={24} className="text-primary" />
-                </div>
-                <h3 className="font-medium mb-2">Match Algorithm</h3>
-                <p className="text-sm text-muted-foreground">
-                  We match you with other moms based on location, children's ages, and interests
-                </p>
-              </div>
-              
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-white rounded-full p-3 mb-4">
-                  <MessageCircle size={24} className="text-primary" />
-                </div>
-                <h3 className="font-medium mb-2">Connect & Chat</h3>
-                <p className="text-sm text-muted-foreground">
-                  Send connection requests and start chatting with potential mom friends
-                </p>
-              </div>
-              
-              <div className="flex flex-col items-center text-center">
-                <div className="bg-white rounded-full p-3 mb-4">
-                  <MoveRight size={24} className="text-primary" />
-                </div>
-                <h3 className="font-medium mb-2">Meet Up</h3>
-                <p className="text-sm text-muted-foreground">
-                  Arrange playdates, coffee meetups, or activities with your new mom friends
-                </p>
-              </div>
-            </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#B8CEC2]/40 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
+                <DialogHeader className="relative">
+                  <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
+                </DialogHeader>
+                <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+              </DialogContent>
+            </Dialog>
+            <HowItWorksModal />
           </div>
         </div>
-      </section>
-      
-      {isMobile ? (
-        <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-          <SheetContent side="bottom" className="h-[90vh] pt-6 overflow-auto">
-            <SheetHeader>
-              <SheetTitle>Filter Match</SheetTitle>
-              <FilterSection onFiltersChange={onFiltersChange} onClose={closeFilter} />
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
-      ) : (
-        isFilterOpen && <FilterSection onFiltersChange={onFiltersChange} onClose={closeFilter} />
-      )}
-      
-      <HowItWorksModal open={isHowItWorksOpen} onOpenChange={setIsHowItWorksOpen} />
-    </>
+      </div>
+    </section>
   );
 };
 
