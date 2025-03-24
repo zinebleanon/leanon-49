@@ -76,7 +76,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <h3 className="text-xl font-medium mb-4">Ask the Mumz Community</h3>
+        <h3 className="text-xl font-medium mb-4">Ask the Moms Community</h3>
         <p className="text-sm text-muted-foreground mb-6">
           Your question will be reviewed by our admins before being published to the community.
         </p>
@@ -154,7 +154,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
             Cancel
           </Button>
         )}
-        <Button type="submit" className="gap-2">
+        <Button type="submit" className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground gap-2">
           <Send className="h-4 w-4" />
           Submit Question
         </Button>
