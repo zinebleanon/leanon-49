@@ -105,14 +105,14 @@ const SignIn = () => {
         </div>
         
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6 bg-primary/10">
-            <TabsTrigger value="signin" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sign In</TabsTrigger>
-            <TabsTrigger value="signup" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 mb-6 bg-secondary/30">
+            <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
           </TabsList>
           
           <TabsContent value="signin">
-            <Card className="border-primary/10 shadow-md">
-              <CardHeader className="bg-gradient-to-b from-primary/5 to-transparent pb-4">
+            <Card className="border-secondary/20 shadow-md">
+              <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
                 <CardTitle>Sign In</CardTitle>
                 <CardDescription>Enter your credentials to access your account</CardDescription>
               </CardHeader>
@@ -127,7 +127,7 @@ const SignIn = () => {
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-primary/20 focus:border-primary"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signInData.email}
                         onChange={handleSignInChange}
                         required
@@ -153,7 +153,7 @@ const SignIn = () => {
                         name="password"
                         type="password"
                         placeholder="Enter your password"
-                        className="pl-10 border-primary/20 focus:border-primary"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signInData.password}
                         onChange={handleSignInChange}
                         required
@@ -162,10 +162,10 @@ const SignIn = () => {
                   </div>
                 </CardContent>
                 
-                <CardFooter className="bg-gradient-to-t from-primary/5 to-transparent pt-4">
+                <CardFooter className="bg-gradient-to-t from-secondary/20 to-transparent pt-4">
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary hover:bg-primary/90"
+                    className="w-full warm-button"
                     disabled={isLoading}
                   >
                     {isLoading && (
@@ -179,8 +179,8 @@ const SignIn = () => {
           </TabsContent>
           
           <TabsContent value="signup">
-            <Card className="border-primary/10 shadow-md">
-              <CardHeader className="bg-gradient-to-b from-primary/5 to-transparent pb-4">
+            <Card className="border-secondary/20 shadow-md">
+              <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
                 <CardTitle>Create an Account</CardTitle>
                 <CardDescription>Join our community of supportive mumz</CardDescription>
               </CardHeader>
@@ -192,7 +192,7 @@ const SignIn = () => {
                       id="signup-name"
                       name="name"
                       placeholder="Enter your name"
-                      className="border-primary/20 focus:border-primary"
+                      className="border-secondary/30 focus:border-secondary"
                       value={signUpData.name}
                       onChange={handleSignUpChange}
                       required
@@ -208,7 +208,7 @@ const SignIn = () => {
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-primary/20 focus:border-primary"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signUpData.email}
                         onChange={handleSignUpChange}
                         required
@@ -225,7 +225,7 @@ const SignIn = () => {
                         name="password"
                         type="password"
                         placeholder="Create a password"
-                        className="pl-10 border-primary/20 focus:border-primary"
+                        className="pl-10 border-secondary/30 focus:border-secondary"
                         value={signUpData.password}
                         onChange={handleSignUpChange}
                         required
@@ -240,7 +240,7 @@ const SignIn = () => {
                       name="confirmPassword"
                       type="password"
                       placeholder="Confirm your password"
-                      className="border-primary/20 focus:border-primary"
+                      className="border-secondary/30 focus:border-secondary"
                       value={signUpData.confirmPassword}
                       onChange={handleSignUpChange}
                       required
@@ -248,7 +248,7 @@ const SignIn = () => {
                   </div>
                 </CardContent>
                 
-                <CardFooter className="flex-col space-y-4 bg-gradient-to-t from-primary/5 to-transparent pt-4">
+                <CardFooter className="flex-col space-y-4 bg-gradient-to-t from-secondary/20 to-transparent pt-4">
                   <Button 
                     type="submit" 
                     className="w-full warm-button"
