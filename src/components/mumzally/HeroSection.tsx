@@ -26,7 +26,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const textStyles = "transition-all duration-700 ease-smooth";
 
   return (
-    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#FFD9A7]">
+    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center mb-6">
           <Button 
@@ -55,7 +55,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                     Filter to find your Matches
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="bottom" className="h-[90vh] bg-[#FFD9A7] rounded-t-xl">
+                <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
                   <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
                 </SheetContent>
               </Sheet>
@@ -69,7 +69,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                     Filter to find your Matches
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#FFD9A7] border-[#FFD9A7]/50">
+                <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#B8CEC2] border-[#B8CEC2]/50">
                   <DialogHeader className="relative">
                     <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
                     <DialogDescription className="text-center text-muted-foreground">

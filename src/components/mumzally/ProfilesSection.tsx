@@ -35,11 +35,11 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
   };
   
   return (
-    <section className="py-8 md:py-12 px-4 md:px-8 bg-[#FFD9A7]">
+    <section className="py-8 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>
-          <Badge variant="outline" className="px-3 py-1 bg-[#FFD9A7]/50 border-[#FFD9A7]">
+          <Badge variant="outline" className="px-3 py-1 bg-[#B8CEC2]/50 border-[#B8CEC2]">
             {profiles.length} {profiles.length === 1 ? 'result' : 'results'} found
           </Badge>
         </div>

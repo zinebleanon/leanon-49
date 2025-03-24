@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -150,13 +149,13 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   );
   
   return (
-    <section className="py-6 px-4 bg-[#FFD9A7]" id="filter-section">
+    <section className="py-6 px-4 bg-[#B8CEC2]" id="filter-section">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             <h2 className="text-xl md:text-2xl font-semibold font-playfair">Filter Match</h2>
             {activeFiltersCount > 0 && (
-              <Badge variant="outline" className="bg-[#FFD9A7]/50 px-2 py-1">
+              <Badge variant="outline" className="bg-[#B8CEC2]/50 px-2 py-1">
                 {activeFiltersCount}
               </Badge>
             )}
@@ -169,13 +168,13 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
         
         <div className="space-y-4 overflow-y-auto pb-16" style={{ maxHeight: isMobile ? 'calc(100vh - 240px)' : 'none' }}>
           {/* Mother's Age */}
-          <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
             {renderFilterItem("Mother's Age", (
               <Select value={age} onValueChange={setAge}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="All Ages" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">All Ages</SelectItem>
                     <SelectItem value="20-25">20-25 years</SelectItem>
@@ -193,16 +192,16 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           <div className="space-y-3">
             <h3 className="font-medium mb-1">Children</h3>
             {/* Child 1 */}
-            <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
               <h3 className="font-medium mb-3 text-sm">Child 1</h3>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="kid1AgeRange" className="block mb-2 text-xs">Age</Label>
                   <Select value={kid1AgeRange} onValueChange={setKid1AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
                       <ScrollArea className="h-[200px]">
                         <SelectGroup>
                           <SelectItem value="all">All Ages</SelectItem>
@@ -219,10 +218,10 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                 <div>
                   <Label htmlFor="kid1Gender" className="block mb-2 text-xs">Gender</Label>
                   <Select value={kid1Gender} onValueChange={setKid1Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">Any Gender</SelectItem>
                         <SelectItem value="Boy">Boy</SelectItem>
@@ -235,16 +234,16 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
             </Card>
             
             {/* Child 2 */}
-            <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
               <h3 className="font-medium mb-3 text-sm">Child 2</h3>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="kid2AgeRange" className="block mb-2 text-xs">Age</Label>
                   <Select value={kid2AgeRange} onValueChange={setKid2AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
                       <ScrollArea className="h-[200px]">
                         <SelectGroup>
                           <SelectItem value="all">All Ages</SelectItem>
@@ -261,10 +260,10 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                 <div>
                   <Label htmlFor="kid2Gender" className="block mb-2 text-xs">Gender</Label>
                   <Select value={kid2Gender} onValueChange={setKid2Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">Any Gender</SelectItem>
                         <SelectItem value="Boy">Boy</SelectItem>
@@ -277,16 +276,16 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
             </Card>
             
             {/* Child 3 */}
-            <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
               <h3 className="font-medium mb-3 text-sm">Child 3</h3>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="kid3AgeRange" className="block mb-2 text-xs">Age</Label>
                   <Select value={kid3AgeRange} onValueChange={setKid3AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
                       <ScrollArea className="h-[200px]">
                         <SelectGroup>
                           <SelectItem value="all">All Ages</SelectItem>
@@ -303,10 +302,10 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                 <div>
                   <Label htmlFor="kid3Gender" className="block mb-2 text-xs">Gender</Label>
                   <Select value={kid3Gender} onValueChange={setKid3Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">Any Gender</SelectItem>
                         <SelectItem value="Boy">Boy</SelectItem>
@@ -320,13 +319,13 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </div>
           
           {/* Location */}
-          <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
             {renderFilterItem("Location", (
               <Select value={location} onValueChange={setLocation}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Location" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">Any Location</SelectItem>
                     <SelectItem value="Dubai Marina">Dubai Marina</SelectItem>
@@ -341,13 +340,13 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Card>
           
           {/* Nationality */}
-          <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
             {renderFilterItem("Nationality", (
               <Select value={nationality} onValueChange={setNationality}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Nationality" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">Any Nationality</SelectItem>
                     <SelectItem value="British Expat">British Expat</SelectItem>
@@ -363,13 +362,13 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Card>
           
           {/* Profession */}
-          <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
             {renderFilterItem("Profession", (
               <Select value={workStatus} onValueChange={setWorkStatus}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Profession" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">Any Profession</SelectItem>
                     <SelectItem value="Full-time">Full-time</SelectItem>
@@ -384,7 +383,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Card>
           
           {/* Compatibility slider */}
-          <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
+          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
             <div className="flex justify-between mb-2">
               <Label>Minimum Compatibility</Label>
               <span className="text-sm font-medium">{compatibilityThreshold}%</span>
@@ -410,7 +409,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
             <Button 
               variant="outline" 
               onClick={onClose} 
-              className="border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground"
+              className="border-[#B8CEC2] bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -418,7 +417,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           )}
           <Button 
             onClick={applyFilters} 
-            className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground"
+            className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
           >
             <Check className="h-4 w-4 mr-2" />
             Apply Filters
@@ -430,3 +429,4 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
 };
 
 export default FilterSection;
+
