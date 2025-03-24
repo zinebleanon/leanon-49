@@ -1,12 +1,13 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Send,
-  AlertCircle
+  AlertCircle,
+  Tag
 } from 'lucide-react';
 import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 
@@ -15,16 +16,78 @@ interface AskQuestionFormProps {
   onClose?: () => void;
 }
 
+// Example questions for each category to match against
+const categoryKeywords: Record<string, string[]> = {
+  'Parenting': ['toddler', 'tantrum', 'discipline', 'child', 'behavior', 'parent', 'kids', 'children'],
+  'Pregnancy': ['pregnant', 'trimester', 'baby', 'birth', 'ultrasound', 'expecting', 'maternity', 'nausea'],
+  'Birth': ['labor', 'delivery', 'contractions', 'birth plan', 'midwife', 'water birth', 'c-section', 'epidural'],
+  'Postpartum': ['recovery', 'after birth', 'postpartum', 'depression', 'newborn', 'fourth trimester', 'healing'],
+  'Health': ['doctor', 'pediatrician', 'fever', 'sick', 'symptoms', 'medicine', 'vaccine', 'shots', 'health'],
+  'Diversification': ['solid food', 'introduce food', 'baby food', 'puree', 'feeding', 'blw', 'weaning'],
+  'Feeding & Breastfeeding': ['breastfeed', 'nursing', 'bottle', 'formula', 'latch', 'milk', 'pump', 'nipple'],
+  'Shopping': ['gear', 'stroller', 'crib', 'car seat', 'clothes', 'toys', 'buy', 'purchase', 'recommend'],
+  'Schools & Nurseries': ['preschool', 'daycare', 'school', 'nursery', 'education', 'learning', 'kindergarten'],
+  'Nannies': ['nanny', 'babysitter', 'childcare', 'au pair', 'caregiver', 'sitter', 'childminder'],
+  'Entertainment & Birthday': ['party', 'activity', 'birthday', 'holiday', 'event', 'celebration', 'gift', 'present']
+};
+
+// Previously asked questions to suggest
+const popularQuestions: Record<string, string[]> = {
+  'Parenting': [
+    'How do I handle toddler tantrums in public?',
+    'What are effective discipline strategies for a 3-year-old?'
+  ],
+  'Pregnancy': [
+    'What foods should I avoid during pregnancy?',
+    'How can I manage morning sickness in the first trimester?'
+  ],
+  'Feeding & Breastfeeding': [
+    'Best breastfeeding positions for newborns?',
+    'How do I know if my baby is getting enough milk?'
+  ],
+  'Diversification': [
+    'Recommendations for baby food introduction?',
+    'When should I start introducing solid foods to my baby?'
+  ]
+};
+
 const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [suggestedCategories, setSuggestedCategories] = useState<string[]>([]);
+  const [relatedQuestions, setRelatedQuestions] = useState<string[]>([]);
   const [errors, setErrors] = useState<{
     title?: string;
     details?: string;
     category?: string;
   }>({});
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Find suggested categories based on question title and details
+    const text = `${title} ${details}`.toLowerCase();
+    
+    const suggestions = Object.entries(categoryKeywords)
+      .filter(([_, keywords]) => 
+        keywords.some(keyword => text.includes(keyword.toLowerCase()))
+      )
+      .map(([category]) => category);
+    
+    setSuggestedCategories([...new Set(suggestions)]);
+    
+    // Find related questions from popular questions
+    const related = Object.entries(popularQuestions)
+      .filter(([category]) => 
+        suggestions.includes(category) || (selectedCategory && category === selectedCategory)
+      )
+      .flatMap(([_, questions]) => questions)
+      .filter(question => 
+        !title || question.toLowerCase().includes(title.toLowerCase())
+      );
+    
+    setRelatedQuestions([...new Set(related)]);
+  }, [title, details, selectedCategory]);
 
   const validateForm = () => {
     const newErrors: {
@@ -74,6 +137,18 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
     }
   };
 
+  const selectRelatedQuestion = (question: string) => {
+    setTitle(question);
+    
+    // Try to determine category based on the question
+    const category = Object.entries(popularQuestions)
+      .find(([_, questions]) => questions.includes(question))?.[0];
+    
+    if (category) {
+      setSelectedCategory(category);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <DialogHeader>
@@ -99,6 +174,29 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
             {errors.title}
           </p>
         )}
+        
+        {relatedQuestions.length > 0 && (
+          <div className="mt-2 space-y-2">
+            <p className="text-xs text-muted-foreground flex items-center gap-1">
+              <Tag className="h-3 w-3" />
+              Similar questions:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {relatedQuestions.map((question, i) => (
+                <Button
+                  key={i}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="text-xs text-left justify-start h-auto py-1 border-dashed border-gray-300"
+                  onClick={() => selectRelatedQuestion(question)}
+                >
+                  {question}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="space-y-2">
@@ -122,6 +220,31 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       
       <div className="space-y-2">
         <label className="text-sm font-medium">Category</label>
+        
+        {suggestedCategories.length > 0 && (
+          <div className="mb-3">
+            <p className="text-xs text-muted-foreground flex items-center gap-1 mb-2">
+              <Tag className="h-3 w-3" />
+              Suggested categories based on your question:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {suggestedCategories.map((category) => (
+                <Button
+                  key={category}
+                  type="button"
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  size="sm"
+                  className="rounded-full bg-[#B8CEC2]/20 border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/30"
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {categories.find(c => c.name === category)?.icon}
+                  {category}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+        
         <div className="flex flex-wrap gap-2 max-h-[200px] overflow-y-auto">
           {categories.map((category) => (
             <Button
