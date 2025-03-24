@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -169,30 +168,29 @@ const SignIn = () => {
   
   return (
     <div className="min-h-screen bg-primary/20 flex flex-col items-center pt-0 relative">
-      <Button 
-        variant="ghost" 
-        onClick={goBack} 
-        className="absolute top-2 left-2 flex items-center"
-      >
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        {signupStep === 2 ? "Back to Form" : "Back"}
-      </Button>
-      
       <div className="absolute top-4 left-4">
         <img 
           src="/lovable-uploads/cff1d041-e202-4a39-8f31-c3fea11a1405.png" 
           alt="LeanOn Logo" 
           className="w-16 h-auto"
         />
+        <Button 
+          variant="ghost" 
+          onClick={goBack} 
+          className="flex items-center mt-2 px-2"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          {signupStep === 2 ? "Back to Form" : "Back"}
+        </Button>
       </div>
       
-      <div className="w-full max-w-md mt-16">
+      <div className="w-full max-w-md mt-28">
         <div className="text-center mb-0">
           <h1 className="text-2xl font-bold font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
         
-        <Tabs defaultValue="signin" className="w-full mt-1" value={activeTab} onValueChange={setActiveTab}>
+        <Tabs defaultValue="signin" className="w-full mt-4" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-2 bg-secondary/30">
             <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
