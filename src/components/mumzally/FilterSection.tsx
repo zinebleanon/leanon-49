@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -149,7 +150,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   );
   
   return (
-    <section className="py-6 px-4 bg-[#FFD9A7]/40" id="filter-section">
+    <section className="py-6 px-4 bg-[#FFD9A7]" id="filter-section">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
