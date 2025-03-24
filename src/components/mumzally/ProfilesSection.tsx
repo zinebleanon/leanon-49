@@ -26,8 +26,8 @@ interface ProfilesSectionProps {
 const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSectionProps) => {
   const handleHeartClick = (id: number) => {
     toast({
-      title: "Connection Request Sent",
-      description: "You've sent a request to LeanOn Match with someone in your neighborhood!",
+      title: "LeanOn Request Sent",
+      description: "You've sent a request to LeanOn with someone in your neighborhood!",
     });
     
     onHeartClick(id);
@@ -38,7 +38,7 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>
-          <Badge variant="outline" className="px-3 py-1">
+          <Badge variant="outline" className="px-3 py-1 bg-[#FFD9A7]/50 border-[#FFD9A7]">
             {profiles.length} {profiles.length === 1 ? 'result' : 'results'} found
           </Badge>
         </div>

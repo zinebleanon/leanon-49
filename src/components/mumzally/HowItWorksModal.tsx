@@ -15,25 +15,25 @@ const steps = [
     icon: <UserCircle className="w-6 h-6 text-primary" />,
     title: "Create Your Profile",
     description: "Set up your profile with your interests, kids' details, and preferences.",
-    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
+    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
   },
   {
     icon: <MapPin className="w-6 h-6 text-primary" />,
     title: "Find Local Moms",
     description: "Connect with moms in your neighborhood who share similar interests.",
-    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
+    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
   },
   {
     icon: <MessageCircle className="w-6 h-6 text-primary" />,
     title: "It Starts With a Chat",
     description: "Begin by messaging other moms who seem like a good match for your family.",
-    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
+    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
   },
   {
     icon: <Heart className="w-6 h-6 text-primary" />,
     title: "Build Friendships",
     description: "Create lasting friendships with other moms in your community.",
-    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Match the Find/Ally background
+    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
   }
 ];
 
@@ -79,7 +79,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
+              className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFD9A7] shadow-sm`}
             >
               <div className="shrink-0 w-10 h-10 bg-[#FFD9A7] rounded-full flex items-center justify-center shadow-sm">
                 <span className="font-medium text-foreground">{index + 1}</span>

@@ -68,7 +68,7 @@ const ProfileCard = ({
               <p className="text-sm text-muted-foreground">{age}, {location}</p>
             </div>
           </div>
-          <Badge className="bg-primary/20 text-primary border-primary/10">
+          <Badge className="bg-primary/30 text-foreground border-primary/10 font-bold">
             {compatibility}% Match
           </Badge>
         </div>
@@ -76,6 +76,7 @@ const ProfileCard = ({
       
       <CardContent className="p-4">
         <p className="text-sm mb-4">{bio}</p>
+        <p className="text-sm mb-4 italic text-muted-foreground">"{name} is a dedicated mom who loves spending quality time with her children while balancing her daily responsibilities."</p>
         
         <div className="space-y-3">
           <div className="flex items-center gap-2">
@@ -102,7 +103,7 @@ const ProfileCard = ({
           
           <div className="flex items-center gap-2">
             <Briefcase className="h-4 w-4 text-amber-500" />
-            <span className="text-sm">{workStatus}</span>
+            <span className="text-sm">Profession: {workStatus}</span>
           </div>
         </div>
         
@@ -133,8 +134,9 @@ const ProfileCard = ({
             onClick={handleHeartClick}
           >
             <div className="flex items-center justify-center gap-2">
-              <div className="w-6 h-5 mr-1">
+              <div className="w-12 h-8 mr-1">
                 <BowRibbon 
+                  className="scale-[2]"
                   isLeftActive={userHeartActive}
                   isRightActive={isFullyMatched}
                 />

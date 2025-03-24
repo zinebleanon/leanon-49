@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -34,7 +35,7 @@ const MumzAlly = () => {
   const handleHeartClick = (mumId: number) => {
     // Handle heart click logic
     toast({
-      title: "Match Request Sent",
+      title: "LeanOn Request Sent",
       description: "You've sent a request to connect with another mom in your area!",
     });
   };
@@ -180,24 +181,35 @@ const MumzAlly = () => {
         if (profile.age < minAge || profile.age > maxAge) return false;
       }
       
-      // Check kids filter
-      if (activeFilters.kids) {
-        // Filter by kid age range
-        if (activeFilters.kids.ageRange && activeFilters.kids.ageRange !== "all") {
+      // Check kids filter - now handling multiple children
+      if (activeFilters.kids && Array.isArray(activeFilters.kids)) {
+        // Go through each filter child
+        for (const kidFilter of activeFilters.kids) {
+          // Skip if no filters set for this child
+          if ((!kidFilter.ageRange || kidFilter.ageRange === "all") && 
+              (!kidFilter.gender || kidFilter.gender === "all")) {
+            continue;
+          }
+          
+          // Check if any of the profile's kids match this filter
           const hasMatchingKid = profile.kids.some(kid => {
-            const ageRange = activeFilters.kids.ageRange.split('-');
-            const minAge = parseInt(ageRange[0]);
-            const maxAge = ageRange[1].includes('+') ? 100 : parseInt(ageRange[1]);
-            return kid.age >= minAge && kid.age <= maxAge;
+            // Check age range if specified
+            if (kidFilter.ageRange && kidFilter.ageRange !== "all") {
+              const ageRange = kidFilter.ageRange.split('-');
+              const minAge = parseInt(ageRange[0]);
+              const maxAge = ageRange[1].includes('+') ? 100 : parseInt(ageRange[1]);
+              if (kid.age < minAge || kid.age > maxAge) return false;
+            }
+            
+            // Check gender if specified
+            if (kidFilter.gender && kidFilter.gender !== "all" && kid.gender !== kidFilter.gender) {
+              return false;
+            }
+            
+            return true;
           });
-          if (!hasMatchingKid) return false;
-        }
-        
-        // Filter by kid gender
-        if (activeFilters.kids.gender && activeFilters.kids.gender !== "all") {
-          const hasMatchingKid = profile.kids.some(kid => 
-            kid.gender === activeFilters.kids.gender
-          );
+          
+          // If no kids match this filter criteria, exclude the profile
           if (!hasMatchingKid) return false;
         }
       }
@@ -214,6 +226,11 @@ const MumzAlly = () => {
       
       // Check work status filter
       if (activeFilters.workStatus && activeFilters.workStatus !== "all" && profile.workStatus !== activeFilters.workStatus) {
+        return false;
+      }
+      
+      // Check compatibility threshold
+      if (activeFilters.compatibilityThreshold && profile.compatibility < activeFilters.compatibilityThreshold) {
         return false;
       }
       

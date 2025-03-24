@@ -16,8 +16,19 @@ interface FilterSectionProps {
 
 const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   const [age, setAge] = useState('all');
-  const [kidsAgeRange, setKidsAgeRange] = useState('all');
-  const [kidsGender, setKidsGender] = useState('all');
+  
+  // First child
+  const [kid1AgeRange, setKid1AgeRange] = useState('all');
+  const [kid1Gender, setKid1Gender] = useState('all');
+  
+  // Second child
+  const [kid2AgeRange, setKid2AgeRange] = useState('all');
+  const [kid2Gender, setKid2Gender] = useState('all');
+  
+  // Third child
+  const [kid3AgeRange, setKid3AgeRange] = useState('all');
+  const [kid3Gender, setKid3Gender] = useState('all');
+  
   const [location, setLocation] = useState('all');
   const [nationality, setNationality] = useState('all');
   const [workStatus, setWorkStatus] = useState('all');
@@ -28,10 +39,20 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   useEffect(() => {
     const activeFilters = {
       age: age !== 'all' ? age : null,
-      kids: {
-        ageRange: kidsAgeRange !== 'all' ? kidsAgeRange : null,
-        gender: kidsGender !== 'all' ? kidsGender : null
-      },
+      kids: [
+        {
+          ageRange: kid1AgeRange !== 'all' ? kid1AgeRange : null,
+          gender: kid1Gender !== 'all' ? kid1Gender : null
+        },
+        {
+          ageRange: kid2AgeRange !== 'all' ? kid2AgeRange : null,
+          gender: kid2Gender !== 'all' ? kid2Gender : null
+        },
+        {
+          ageRange: kid3AgeRange !== 'all' ? kid3AgeRange : null,
+          gender: kid3Gender !== 'all' ? kid3Gender : null
+        }
+      ],
       location: location !== 'all' ? location : null,
       nationality: nationality !== 'all' ? nationality : null,
       workStatus: workStatus !== 'all' ? workStatus : null,
@@ -41,8 +62,9 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     // Count active filters
     let count = 0;
     if (activeFilters.age) count++;
-    if (activeFilters.kids.ageRange) count++;
-    if (activeFilters.kids.gender) count++;
+    if (activeFilters.kids[0].ageRange || activeFilters.kids[0].gender) count++;
+    if (activeFilters.kids[1].ageRange || activeFilters.kids[1].gender) count++;
+    if (activeFilters.kids[2].ageRange || activeFilters.kids[2].gender) count++;
     if (activeFilters.location) count++;
     if (activeFilters.nationality) count++;
     if (activeFilters.workStatus) count++;
@@ -50,15 +72,25 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     
     setActiveFiltersCount(count);
     
-  }, [age, kidsAgeRange, kidsGender, location, nationality, workStatus, compatibilityThreshold]);
+  }, [age, kid1AgeRange, kid1Gender, kid2AgeRange, kid2Gender, kid3AgeRange, kid3Gender, location, nationality, workStatus, compatibilityThreshold]);
   
   const applyFilters = () => {
     const filters = {
       age,
-      kids: {
-        ageRange: kidsAgeRange,
-        gender: kidsGender
-      },
+      kids: [
+        {
+          ageRange: kid1AgeRange,
+          gender: kid1Gender
+        },
+        {
+          ageRange: kid2AgeRange,
+          gender: kid2Gender
+        },
+        {
+          ageRange: kid3AgeRange,
+          gender: kid3Gender
+        }
+      ],
       location,
       nationality,
       workStatus,
@@ -78,8 +110,12 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   
   const resetFilters = () => {
     setAge('all');
-    setKidsAgeRange('all');
-    setKidsGender('all');
+    setKid1AgeRange('all');
+    setKid1Gender('all');
+    setKid2AgeRange('all');
+    setKid2Gender('all');
+    setKid3AgeRange('all');
+    setKid3Gender('all');
     setLocation('all');
     setNationality('all');
     setWorkStatus('all');
@@ -100,7 +136,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-semibold font-playfair">Filter Match</h2>
             {activeFiltersCount > 0 && (
-              <Badge variant="outline" className="bg-secondary/50 px-2 py-1">
+              <Badge variant="outline" className="bg-[#FFD9A7]/50 px-2 py-1">
                 {activeFiltersCount}
               </Badge>
             )}
@@ -111,7 +147,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Button>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
               <Label htmlFor="ageRange" className="block mb-2">Mother's Age</Label>
@@ -132,43 +168,125 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
               </Select>
             </div>
             
-            <div>
-              <Label htmlFor="kidsAgeRange" className="block mb-2">Children's Age</Label>
-              <Select value={kidsAgeRange} onValueChange={setKidsAgeRange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="All Ages" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="all">All Ages</SelectItem>
-                    <SelectItem value="0-1">0-1 years (Infant)</SelectItem>
-                    <SelectItem value="2-3">2-3 years (Toddler)</SelectItem>
-                    <SelectItem value="4-5">4-5 years (Preschool)</SelectItem>
-                    <SelectItem value="6-10">6-10 years (School age)</SelectItem>
-                    <SelectItem value="11+">11+ years (Pre-teen/teen)</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+            <div className="p-4 bg-[#B8CEC2]/10 rounded-lg border border-[#B8CEC2]/20">
+              <h3 className="font-medium mb-3">Child 1</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kid1AgeRange" className="block mb-2">Age</Label>
+                  <Select value={kid1AgeRange} onValueChange={setKid1AgeRange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="All Ages" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">All Ages</SelectItem>
+                        <SelectItem value="0-1">0-1 years</SelectItem>
+                        <SelectItem value="2-3">2-3 years</SelectItem>
+                        <SelectItem value="4-5">4-5 years</SelectItem>
+                        <SelectItem value="6-10">6-10 years</SelectItem>
+                        <SelectItem value="11+">11+ years</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="kid1Gender" className="block mb-2">Gender</Label>
+                  <Select value={kid1Gender} onValueChange={setKid1Gender}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Any Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">Any Gender</SelectItem>
+                        <SelectItem value="Boy">Boy</SelectItem>
+                        <SelectItem value="Girl">Girl</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-[#FFD9A7]/10 rounded-lg border border-[#FFD9A7]/20">
+              <h3 className="font-medium mb-3">Child 2</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kid2AgeRange" className="block mb-2">Age</Label>
+                  <Select value={kid2AgeRange} onValueChange={setKid2AgeRange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="All Ages" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">All Ages</SelectItem>
+                        <SelectItem value="0-1">0-1 years</SelectItem>
+                        <SelectItem value="2-3">2-3 years</SelectItem>
+                        <SelectItem value="4-5">4-5 years</SelectItem>
+                        <SelectItem value="6-10">6-10 years</SelectItem>
+                        <SelectItem value="11+">11+ years</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="kid2Gender" className="block mb-2">Gender</Label>
+                  <Select value={kid2Gender} onValueChange={setKid2Gender}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Any Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">Any Gender</SelectItem>
+                        <SelectItem value="Boy">Boy</SelectItem>
+                        <SelectItem value="Girl">Girl</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 bg-[#B8CEC2]/10 rounded-lg border border-[#B8CEC2]/20">
+              <h3 className="font-medium mb-3">Child 3</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="kid3AgeRange" className="block mb-2">Age</Label>
+                  <Select value={kid3AgeRange} onValueChange={setKid3AgeRange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="All Ages" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">All Ages</SelectItem>
+                        <SelectItem value="0-1">0-1 years</SelectItem>
+                        <SelectItem value="2-3">2-3 years</SelectItem>
+                        <SelectItem value="4-5">4-5 years</SelectItem>
+                        <SelectItem value="6-10">6-10 years</SelectItem>
+                        <SelectItem value="11+">11+ years</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="kid3Gender" className="block mb-2">Gender</Label>
+                  <Select value={kid3Gender} onValueChange={setKid3Gender}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Any Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">Any Gender</SelectItem>
+                        <SelectItem value="Boy">Boy</SelectItem>
+                        <SelectItem value="Girl">Girl</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
           </div>
           
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="kidsGender" className="block mb-2">Children's Gender</Label>
-              <Select value={kidsGender} onValueChange={setKidsGender}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Any Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="all">Any Gender</SelectItem>
-                    <SelectItem value="Boy">Boy</SelectItem>
-                    <SelectItem value="Girl">Girl</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            
             <div>
               <Label htmlFor="location" className="block mb-2">Location</Label>
               <Select value={location} onValueChange={setLocation}>
@@ -187,9 +305,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                 </SelectContent>
               </Select>
             </div>
-          </div>
-          
-          <div className="space-y-4">
+            
             <div>
               <Label htmlFor="nationality" className="block mb-2">Nationality</Label>
               <Select value={nationality} onValueChange={setNationality}>
@@ -211,14 +327,14 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
             </div>
             
             <div>
-              <Label htmlFor="workStatus" className="block mb-2">Work Status</Label>
+              <Label htmlFor="workStatus" className="block mb-2">Profession</Label>
               <Select value={workStatus} onValueChange={setWorkStatus}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Any Work Status" />
+                  <SelectValue placeholder="Any Profession" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="all">Any Work Status</SelectItem>
+                    <SelectItem value="all">Any Profession</SelectItem>
                     <SelectItem value="Full-time">Full-time</SelectItem>
                     <SelectItem value="Part-time">Part-time</SelectItem>
                     <SelectItem value="Stay-at-home">Stay-at-home</SelectItem>
@@ -228,39 +344,37 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                 </SelectContent>
               </Select>
             </div>
-          </div>
-        </div>
-        
-        <div className="mt-6 md:mt-8">
-          <div className="mb-8">
-            <div className="flex justify-between mb-2">
-              <Label>Minimum Compatibility</Label>
-              <span className="text-sm font-medium">{compatibilityThreshold}%</span>
+            
+            <div className="mt-6 mb-8 p-4 bg-[#FFD9A7]/10 rounded-lg border border-[#FFD9A7]/20">
+              <div className="flex justify-between mb-2">
+                <Label>Minimum Compatibility</Label>
+                <span className="text-sm font-medium">{compatibilityThreshold}%</span>
+              </div>
+              <Slider
+                value={compatibilityThreshold}
+                onValueChange={setCompatibilityThreshold}
+                max={100}
+                step={5}
+                className="my-4"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+              </div>
             </div>
-            <Slider
-              value={compatibilityThreshold}
-              onValueChange={setCompatibilityThreshold}
-              max={100}
-              step={5}
-              className="my-4"
-            />
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>50%</span>
-              <span>75%</span>
-              <span>100%</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-end gap-4 mt-4">
-            {onClose && (
-              <Button variant="outline" onClick={onClose}>
-                Cancel
+            
+            <div className="flex items-center justify-end gap-4 mt-4">
+              {onClose && (
+                <Button variant="outline" onClick={onClose}>
+                  Cancel
+                </Button>
+              )}
+              <Button onClick={applyFilters} className="min-w-[120px] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground">
+                <Check className="h-4 w-4 mr-2" />
+                Apply Filters
               </Button>
-            )}
-            <Button onClick={applyFilters} className="min-w-[120px]">
-              <Check className="h-4 w-4 mr-2" />
-              Apply Filters
-            </Button>
+            </div>
           </div>
         </div>
       </div>
