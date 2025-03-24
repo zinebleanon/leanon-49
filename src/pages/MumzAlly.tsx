@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -228,7 +229,7 @@ const MumzAlly = () => {
   }
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">

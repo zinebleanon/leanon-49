@@ -4,7 +4,7 @@ import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface HeroSectionProps {
@@ -28,12 +28,11 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
         <div className="flex items-center mb-6">
           <Button 
             variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground mr-4"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')} 
+            className="bg-white/80 shadow-sm hover:bg-white"
           >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            <span>Back</span>
+            <Home className="h-4 w-4 mr-2" />
+            Main Menu
           </Button>
         </div>
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
@@ -47,7 +46,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
               <DialogTrigger asChild>
                 <Button 
                   size="lg" 
-                  className="rounded-full px-6 border bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground active:opacity-95 transition-all"
+                  className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                 >
                   Find your Match Filter
                 </Button>
