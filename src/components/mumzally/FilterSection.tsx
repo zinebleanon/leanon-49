@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, X, Filter, ArrowLeft, Home } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface FilterSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -178,6 +179,12 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     });
   };
   
+  // Generate age options from 0 to 11
+  const ageOptions = Array.from({ length: 12 }, (_, i) => ({
+    value: i.toString(),
+    label: `${i} year${i !== 1 ? 's' : ''}`
+  }));
+  
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]/30" id="filter-section">
       <div className="max-w-7xl mx-auto">
@@ -239,15 +246,17 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-2">0-2 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="6-8">6-8 years</SelectItem>
-                        <SelectItem value="9-11">9-11 years</SelectItem>
-                        <SelectItem value="12-15">12-15 years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
@@ -278,15 +287,17 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-2">0-2 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="6-8">6-8 years</SelectItem>
-                        <SelectItem value="9-11">9-11 years</SelectItem>
-                        <SelectItem value="12-15">12-15 years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
@@ -317,15 +328,17 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-2">0-2 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="6-8">6-8 years</SelectItem>
-                        <SelectItem value="9-11">9-11 years</SelectItem>
-                        <SelectItem value="12-15">12-15 years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
@@ -356,15 +369,17 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-2">0-2 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="6-8">6-8 years</SelectItem>
-                        <SelectItem value="9-11">9-11 years</SelectItem>
-                        <SelectItem value="12-15">12-15 years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
@@ -397,15 +412,17 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-2">0-2 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="6-8">6-8 years</SelectItem>
-                        <SelectItem value="9-11">9-11 years</SelectItem>
-                        <SelectItem value="12-15">12-15 years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
@@ -436,15 +453,17 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-2">0-2 years</SelectItem>
-                        <SelectItem value="3-5">3-5 years</SelectItem>
-                        <SelectItem value="6-8">6-8 years</SelectItem>
-                        <SelectItem value="9-11">9-11 years</SelectItem>
-                        <SelectItem value="12-15">12-15 years</SelectItem>
-                      </SelectGroup>
+                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                      <ScrollArea className="h-[200px]">
+                        <SelectGroup>
+                          <SelectItem value="all">All Ages</SelectItem>
+                          {ageOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
