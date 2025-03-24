@@ -101,7 +101,7 @@ const SignIn = () => {
             />
           </div>
           <h1 className="text-2xl font-bold mb-1 font-playfair">Welcome to LeanOn</h1>
-          <p className="text-gray-600">Join our community of supportive mumz</p>
+          <p className="text-gray-600">A community of supportive mumz</p>
         </div>
         
         <Tabs defaultValue="signin" className="w-full">
