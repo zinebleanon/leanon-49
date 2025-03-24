@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -155,7 +156,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
             >
               <div className="flex flex-col h-full">
                 <div className="flex items-center gap-3 mb-3 md:mb-4">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-[#FFD9A7] rounded-full flex items-center justify-center">
                     {feature.icon}
                   </div>
                   <h3 className="text-lg md:text-xl font-medium font-playfair">{feature.title}</h3>
