@@ -52,11 +52,25 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
+        <DialogClose asChild>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            <span>Back</span>
+          </Button>
+        </DialogClose>
+        
+        <div className="pt-8"></div>
+        
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
             How <span className="font-adlery text-gradient">LeanOn</span> Works
           </DialogTitle>
         </DialogHeader>
+        
         <div className="grid gap-6">
           {howItWorksSteps.map((step, index) => (
             <div
@@ -73,16 +87,6 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
             </div>
           ))}
         </div>
-        <DialogClose asChild>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            <span>Back</span>
-          </Button>
-        </DialogClose>
       </DialogContent>
     </Dialog>
   );
