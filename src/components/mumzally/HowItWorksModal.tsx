@@ -54,20 +54,22 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
-        <DialogClose asChild>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            <span>Back</span>
-          </Button>
-        </DialogClose>
-        
-        <div className="pt-8"></div>
-        
-        <DialogHeader>
+        <DialogHeader className="relative">
+          <div className="flex items-center">
+            <DialogClose asChild>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="absolute top-0 left-0 p-2 h-auto text-muted-foreground hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                <span>Back</span>
+              </Button>
+            </DialogClose>
+          </div>
+          
+          <div className="pt-8"></div>
+          
           <DialogTitle className="text-2xl text-center mb-6">
             How <span className="text-gradient">Mumz Ally</span> Works
           </DialogTitle>
@@ -79,7 +81,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
               key={index}
               className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
             >
-              <div className="shrink-0 w-10 h-10 bg-pastel-yellow/50 rounded-full flex items-center justify-center shadow-sm">
+              <div className="shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center shadow-sm">
                 <span className="font-medium text-foreground">{index + 1}</span>
               </div>
               <div>
