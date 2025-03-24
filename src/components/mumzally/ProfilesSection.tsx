@@ -34,7 +34,7 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
   };
   
   return (
-    <section className="py-8 md:py-12 px-4 md:px-8 bg-background">
+    <section className="py-8 md:py-12 px-4 md:px-8 bg-[#FFD9A7]/30">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>

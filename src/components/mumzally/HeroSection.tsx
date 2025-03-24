@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
 import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -13,6 +14,7 @@ interface HeroSectionProps {
 const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     setIsVisible(true);
@@ -21,8 +23,19 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const textStyles = "transition-all duration-700 ease-smooth";
 
   return (
-    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]/60">
+    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
+        <div className="flex items-center mb-6">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground mr-4"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            <span>Back</span>
+          </Button>
+        </div>
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
