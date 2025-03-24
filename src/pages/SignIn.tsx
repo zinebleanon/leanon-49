@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -178,7 +177,7 @@ const SignIn = () => {
                     Sign In
                   </Button>
                   <p className="text-sm text-center text-muted-foreground">
-                    No account? <Button variant="link" onClick={switchToSignUp} className="p-0 h-auto">Sign up</Button>
+                    No account? <Button variant="link" onClick={switchToSignUp} className="p-0 h-auto text-emerald-700 hover:text-emerald-800 font-medium">Sign up</Button>
                   </p>
                 </CardFooter>
               </form>
