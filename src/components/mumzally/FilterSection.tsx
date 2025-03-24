@@ -130,7 +130,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   };
   
   return (
-    <section className="py-8 px-4 md:px-8" id="filter-section">
+    <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]/30" id="filter-section">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
@@ -367,7 +367,8 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
             <div className="flex items-center justify-end gap-4 mt-4">
               {onClose && (
                 <Button variant="outline" onClick={onClose} className="border-[#FFD9A7]/50 hover:bg-[#FFD9A7]/10">
-                  Cancel
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
                 </Button>
               )}
               <Button onClick={applyFilters} className="min-w-[120px] bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground">
