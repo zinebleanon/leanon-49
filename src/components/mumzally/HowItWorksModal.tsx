@@ -58,14 +58,14 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="absolute top-4 left-4 p-2 h-auto text-muted-foreground hover:text-foreground"
+            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             <span>Back</span>
           </Button>
         </DialogClose>
         
-        <div className="pt-16 md:pt-12"></div>
+        <div className="pt-8"></div>
         
         <DialogHeader>
           <DialogTitle className="text-2xl text-center mb-6">
