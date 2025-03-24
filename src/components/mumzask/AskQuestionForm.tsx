@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,7 +6,8 @@ import { useToast } from '@/hooks/use-toast';
 import { 
   Send,
   AlertCircle,
-  Tag
+  Tag,
+  ArrowLeft
 } from 'lucide-react';
 import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 
@@ -16,7 +16,6 @@ interface AskQuestionFormProps {
   onClose?: () => void;
 }
 
-// Example questions for each category to match against
 const categoryKeywords: Record<string, string[]> = {
   'Parenting': ['toddler', 'tantrum', 'discipline', 'child', 'behavior', 'parent', 'kids', 'children'],
   'Pregnancy': ['pregnant', 'trimester', 'baby', 'birth', 'ultrasound', 'expecting', 'maternity', 'nausea'],
@@ -32,7 +31,6 @@ const categoryKeywords: Record<string, string[]> = {
   'Others': [] // Empty array for Others category - will catch any unmatched keywords
 };
 
-// Previously asked questions to suggest
 const popularQuestions: Record<string, string[]> = {
   'Parenting': [
     'How do I handle toddler tantrums in public?',
@@ -70,7 +68,6 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Find suggested categories based on question title and details
     const text = `${title} ${details}`.toLowerCase();
     
     const suggestions = Object.entries(categoryKeywords)
@@ -79,12 +76,10 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       )
       .map(([category]) => category);
     
-    // If no matches found, suggest "Others" category
     const finalSuggestions = suggestions.length > 0 ? suggestions : ['Others'];
     
     setSuggestedCategories([...new Set(finalSuggestions)]);
     
-    // Find related questions from popular questions
     const related = Object.entries(popularQuestions)
       .filter(([category]) => 
         finalSuggestions.includes(category) || (selectedCategory && category === selectedCategory)
@@ -133,12 +128,10 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
         description: "Your question has been sent for review and will be published once approved by an admin.",
       });
       
-      // Reset form
       setTitle('');
       setDetails('');
       setSelectedCategory('');
       
-      // Close modal if onClose is provided
       if (onClose) {
         onClose();
       }
@@ -148,7 +141,6 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const selectRelatedQuestion = (question: string) => {
     setTitle(question);
     
-    // Try to determine category based on the question
     const category = Object.entries(popularQuestions)
       .find(([_, questions]) => questions.includes(question))?.[0];
     
@@ -159,7 +151,21 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <DialogHeader>
+      <DialogHeader className="relative">
+        <div className="absolute left-0 top-0">
+          {onClose && (
+            <Button 
+              type="button" 
+              variant="ghost" 
+              size="icon"
+              onClick={onClose}
+              className="h-8 w-8"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="sr-only">Back</span>
+            </Button>
+          )}
+        </div>
         <DialogTitle>Ask the Community</DialogTitle>
         <DialogDescription>
           Your question will be reviewed by our admins before being published to the community.
