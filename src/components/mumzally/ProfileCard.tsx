@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import BowRibbon from './BowRibbon';
+import { Link } from 'react-router-dom';
 
 export interface Kid {
   age: number;
@@ -64,11 +65,15 @@ const ProfileCard = ({
               <UserCircle className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h3 className="font-medium">{name}</h3>
+              <h3 className="font-medium">
+                <Link to={`/ally/profile/${id}`} className="hover:underline">
+                  {name}
+                </Link>
+              </h3>
               <p className="text-sm text-muted-foreground">{age}, {location}</p>
             </div>
           </div>
-          <Badge className="bg-primary/50 text-foreground font-bold border-primary/30">
+          <Badge className="bg-primary/70 text-foreground font-bold border-primary/30">
             {compatibility}% Match
           </Badge>
         </div>
@@ -135,9 +140,10 @@ const ProfileCard = ({
           >
             <div className="flex items-center justify-center">
               <BowRibbon 
-                className="w-12 h-8 mr-2 scale-[2]"
-                isLeftActive={userHeartActive}
-                isRightActive={isFullyMatched}
+                className="w-12 h-8 mr-2 scale-[2.5]"
+                isActive={isFullyMatched && userHeartActive}
+                isLeftActive={!isFullyMatched && userHeartActive}
+                isRightActive={isFullyMatched && !userHeartActive}
               />
               {isFullyMatched ? "Match LeanOn!" : "LeanOn"}
             </div>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -64,7 +65,6 @@ const Navbar = () => {
     { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/save' },
     { name: 'Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
-    { name: 'Inbox', icon: <Inbox className="h-4 w-4" />, path: '/inbox' },
   ];
 
   const handleJoinButtonClick = () => {
@@ -118,7 +118,7 @@ const Navbar = () => {
           </div>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-6 bg-white rounded-full px-6 py-3 shadow-sm">
+        <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -144,9 +144,25 @@ const Navbar = () => {
             </Link>
           ))}
           
+          <Link
+            to="/inbox"
+            className={cn(
+              "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative bg-primary/10 rounded-full ml-2",
+              isPathActive('/inbox')
+                ? "text-primary shadow-sm" 
+                : "text-foreground/80 hover:text-foreground hover:bg-primary/5"
+            )}
+          >
+            <Inbox className="h-4 w-4" />
+            Inbox
+            {isPathActive('/inbox') && (
+              <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
+            )}
+          </Link>
+          
           <Button
             variant="warm"
-            className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
+            className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg ml-2"
             onClick={handleJoinButtonClick}
           >
             <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
@@ -154,6 +170,7 @@ const Navbar = () => {
           </Button>
         </div>
         
+        {/* Mobile menu button */}
         <button 
           className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
           onClick={toggleMobileMenu}
@@ -179,6 +196,7 @@ const Navbar = () => {
         </button>
       </div>
       
+      {/* Mobile menu */}
       <div 
         className={cn(
           "md:hidden fixed inset-0 z-40 pt-16 transition-all duration-300 shadow-lg bg-pastel-green",
@@ -224,6 +242,39 @@ const Navbar = () => {
                 )}
               </Link>
             ))}
+            
+            {/* Inbox in mobile menu */}
+            <Link
+              to="/inbox"
+              className={cn(
+                "text-base font-medium py-3 flex items-center gap-3 animate-slide-up transition-all duration-300",
+                isPathActive('/inbox')
+                  ? "text-primary bg-white shadow-md"
+                  : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm"
+              )}
+              style={{
+                borderRadius: "1rem",
+                padding: "0.75rem 1.25rem",
+                animationDelay: `${navItems.length * 0.05}s`,
+                WebkitTapHighlightColor: 'transparent'
+              }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <span className={cn(
+                "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",
+                isPathActive('/inbox') 
+                  ? "bg-primary/10 text-primary" 
+                  : "text-foreground/60"
+              )}>
+                <Inbox className="h-4 w-4" />
+              </span>
+              Inbox
+              {isPathActive('/inbox') && (
+                <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                  Active
+                </span>
+              )}
+            </Link>
           </div>
           
           <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">

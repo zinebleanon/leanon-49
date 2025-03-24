@@ -53,7 +53,7 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
       <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#FFF8E7] via-[#FFD9A7]/50 to-[#B8CEC2]/30">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-            <BowRibbon className="w-8 h-6 scale-[1.5]" isActive={true} />
+            <BowRibbon className="w-8 h-6 scale-[2.5]" isActive={true} />
             Message to {recipient.name}
           </DialogTitle>
           <DialogDescription>
@@ -85,7 +85,8 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
               <Button 
                 disabled={isSending} 
                 type="submit" 
-                className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground"
+                variant="warm"
+                className="text-foreground"
               >
                 {isSending ? (
                   <>Sending...</>
