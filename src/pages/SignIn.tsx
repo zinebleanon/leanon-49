@@ -168,7 +168,7 @@ const SignIn = () => {
   };
   
   return (
-    <div className="min-h-screen bg-primary/20 flex flex-col items-center pt-0">
+    <div className="min-h-screen bg-primary/20 flex flex-col items-center pt-0 relative">
       <Button 
         variant="ghost" 
         onClick={goBack} 
@@ -178,17 +178,17 @@ const SignIn = () => {
         {signupStep === 2 ? "Back to Form" : "Back"}
       </Button>
       
-      <div className="w-full max-w-md mt-0">
-        <div className="flex justify-center mb-0 mt-0">
-          <img 
-            src="/lovable-uploads/cff1d041-e202-4a39-8f31-c3fea11a1405.png" 
-            alt="Decorative Bow" 
-            className="w-1/4 max-w-[100px] h-auto mx-auto"
-          />
-        </div>
-        
+      <div className="absolute top-4 left-4">
+        <img 
+          src="/lovable-uploads/cff1d041-e202-4a39-8f31-c3fea11a1405.png" 
+          alt="LeanOn Logo" 
+          className="w-16 h-auto"
+        />
+      </div>
+      
+      <div className="w-full max-w-md mt-16">
         <div className="text-center mb-0">
-          <h1 className="text-2xl font-bold font-playfair -mt-4">Welcome to LeanOn</h1>
+          <h1 className="text-2xl font-bold font-playfair">Welcome to LeanOn</h1>
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
         
