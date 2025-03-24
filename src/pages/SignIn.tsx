@@ -177,7 +177,7 @@ const SignIn = () => {
         />
       </div>
       
-      <div className="flex flex-col items-center mt-8">
+      <div className="absolute top-8 right-4">
         <Button 
           variant="ghost" 
           onClick={goBack} 
