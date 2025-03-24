@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -321,7 +322,6 @@ const SignIn = () => {
                         onChange={handleSignUpChange}
                         required
                       />
-                      <p className="text-xs text-muted-foreground">Format: +971 XX XXX XXXX</p>
                     </div>
                     
                     <div className="space-y-2">
