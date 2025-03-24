@@ -68,7 +68,7 @@ const ProfileCard = ({
               <p className="text-sm text-muted-foreground">{age}, {location}</p>
             </div>
           </div>
-          <Badge className="bg-primary/30 text-foreground border-primary/10 font-bold">
+          <Badge className="bg-primary/50 text-foreground font-bold border-primary/30">
             {compatibility}% Match
           </Badge>
         </div>

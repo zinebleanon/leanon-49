@@ -1,5 +1,5 @@
 
-import { UserCircle, MessageCircle } from 'lucide-react';
+import { UserCircle, MessageCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -76,15 +76,20 @@ const MatchRequests = () => {
                     </p>
                   </div>
                   <div className="ml-auto flex items-center gap-2">
-                    <Badge className="bg-primary/20 text-primary border-primary/10">
+                    <Badge className="bg-primary/50 text-foreground font-bold border-primary/30">
                       {request.compatibility}% Match
                     </Badge>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-muted-foreground">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="text-sm text-primary hover:text-primary/80 p-0 h-auto flex items-center gap-1"
+                  >
                     See {request.name}'s profile
-                  </p>
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Button>
                   <Button 
                     variant="default" 
                     className="ml-auto"
@@ -97,15 +102,15 @@ const MatchRequests = () => {
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
                         <>
-                          <div className="w-6 h-5 mr-1">
-                            <BowRibbon isActive={true} />
+                          <div className="w-12 h-8 mr-1">
+                            <BowRibbon isActive={true} className="scale-[2]" />
                           </div>
                           Message {request.name}
                         </>
                       ) : (
                         <>
-                          <div className="w-6 h-5 mr-1">
-                            <BowRibbon isRightActive={true} />
+                          <div className="w-12 h-8 mr-1">
+                            <BowRibbon isRightActive={true} className="scale-[2]" />
                           </div>
                           Match Back
                         </>

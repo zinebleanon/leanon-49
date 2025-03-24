@@ -15,25 +15,25 @@ const steps = [
     icon: <UserCircle className="w-6 h-6 text-primary" />,
     title: "Create Your Profile",
     description: "Set up your profile with your interests, kids' details, and preferences.",
-    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Changed to match index page
   },
   {
     icon: <MapPin className="w-6 h-6 text-primary" />,
     title: "Find Local Moms",
     description: "Connect with moms in your neighborhood who share similar interests.",
-    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Changed to match index page
   },
   {
     icon: <MessageCircle className="w-6 h-6 text-primary" />,
     title: "It Starts With a Chat",
     description: "Begin by messaging other moms who seem like a good match for your family.",
-    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Changed to match index page
   },
   {
     icon: <Heart className="w-6 h-6 text-primary" />,
     title: "Build Friendships",
     description: "Create lasting friendships with other moms in your community.",
-    bgColor: "from-primary/10 to-secondary/10" // Match the index page background
+    bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" // Changed to match index page
   }
 ];
 
@@ -53,7 +53,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
           <Info className="mr-2 h-4 w-4" /> How It Works
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
+      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-[#FFF8E7] to-[#FFD9A7]/20">
         <DialogHeader className="relative">
           <div className="flex items-center">
             <DialogClose asChild>
