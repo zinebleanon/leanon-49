@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Filter } from 'lucide-react';
+import { Check, X, Filter, ArrowLeft } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
 interface FilterSectionProps {
@@ -180,11 +180,11 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-1">0-1 years</SelectItem>
-                        <SelectItem value="2-3">2-3 years</SelectItem>
-                        <SelectItem value="4-5">4-5 years</SelectItem>
-                        <SelectItem value="6-10">6-10 years</SelectItem>
-                        <SelectItem value="11+">11+ years</SelectItem>
+                        <SelectItem value="0-2">0-2 years</SelectItem>
+                        <SelectItem value="3-5">3-5 years</SelectItem>
+                        <SelectItem value="6-8">6-8 years</SelectItem>
+                        <SelectItem value="9-11">9-11 years</SelectItem>
+                        <SelectItem value="12-15">12-15 years</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -219,11 +219,11 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectContent className="bg-white border-[#FFD9A7]/30">
                       <SelectGroup>
                         <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-1">0-1 years</SelectItem>
-                        <SelectItem value="2-3">2-3 years</SelectItem>
-                        <SelectItem value="4-5">4-5 years</SelectItem>
-                        <SelectItem value="6-10">6-10 years</SelectItem>
-                        <SelectItem value="11+">11+ years</SelectItem>
+                        <SelectItem value="0-2">0-2 years</SelectItem>
+                        <SelectItem value="3-5">3-5 years</SelectItem>
+                        <SelectItem value="6-8">6-8 years</SelectItem>
+                        <SelectItem value="9-11">9-11 years</SelectItem>
+                        <SelectItem value="12-15">12-15 years</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -258,11 +258,11 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
                     <SelectContent className="bg-white border-[#FDB3A4]/30">
                       <SelectGroup>
                         <SelectItem value="all">All Ages</SelectItem>
-                        <SelectItem value="0-1">0-1 years</SelectItem>
-                        <SelectItem value="2-3">2-3 years</SelectItem>
-                        <SelectItem value="4-5">4-5 years</SelectItem>
-                        <SelectItem value="6-10">6-10 years</SelectItem>
-                        <SelectItem value="11+">11+ years</SelectItem>
+                        <SelectItem value="0-2">0-2 years</SelectItem>
+                        <SelectItem value="3-5">3-5 years</SelectItem>
+                        <SelectItem value="6-8">6-8 years</SelectItem>
+                        <SelectItem value="9-11">9-11 years</SelectItem>
+                        <SelectItem value="12-15">12-15 years</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

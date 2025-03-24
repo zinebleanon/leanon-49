@@ -50,7 +50,7 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#B8CEC2]/30 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
+      <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#B8CEC2]/40 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
         <DialogHeader className="relative">
           <DialogClose asChild>
             <Button 

@@ -58,7 +58,7 @@ const ProfileCard = ({
 
   return (
     <Card className="overflow-hidden hover:shadow-md transition-all">
-      <div className="bg-gradient-to-r from-primary/10 to-amber-400/10 p-4">
+      <div className="bg-gradient-to-r from-[#B8CEC2]/30 to-[#FFD9A7]/30 p-4">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">

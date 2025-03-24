@@ -21,7 +21,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const textStyles = "transition-all duration-700 ease-smooth";
 
   return (
-    <section className="py-16 md:py-12 px-4 md:px-8">
+    <section className="py-16 md:py-12 px-4 md:px-8 bg-[#B8CEC2]/60">
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
@@ -39,7 +39,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                   Find your Match Filter
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#FFF8E7] via-[#FFD9A7]/30 to-[#B8CEC2]/20 border-[#FFD9A7]/50">
+              <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#B8CEC2]/40 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
                 <DialogHeader className="relative">
                   <DialogClose asChild>
                     <Button 

@@ -58,7 +58,7 @@ const MatchRequests = () => {
   };
 
   return (
-    <section className="py-8 px-4 md:px-8">
+    <section className="py-8 px-4 md:px-8 bg-[#FFD9A7]/30">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
