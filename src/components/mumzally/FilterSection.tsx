@@ -150,7 +150,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
   );
   
   return (
-    <section className="py-6 px-4 bg-[#B8CEC2]/30" id="filter-section">
+    <section className="py-6 px-4 bg-[#FFD9A7]/40" id="filter-section">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center mb-4">
           <Button 
@@ -178,15 +178,15 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Button>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-y-auto pb-16" style={{ maxHeight: isMobile ? 'calc(100vh - 240px)' : 'none' }}>
           {/* Mother's Age */}
           <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
             {renderFilterItem("Mother's Age", (
               <Select value={age} onValueChange={setAge}>
-                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
                   <SelectValue placeholder="All Ages" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#B8CEC2]/30">
+                <SelectContent className="bg-white border-[#FFD9A7]/30">
                   <SelectGroup>
                     <SelectItem value="all">All Ages</SelectItem>
                     <SelectItem value="20-25">20-25 years</SelectItem>
@@ -201,7 +201,8 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Card>
           
           {/* Children */}
-          <div className="grid grid-cols-1 gap-3">
+          <div className="space-y-3">
+            <h3 className="font-medium mb-1">Children</h3>
             {/* Child 1 */}
             <Card className="p-3 bg-white/90 border-[#FFD9A7]/30 shadow-sm">
               <h3 className="font-medium mb-3 text-sm">Child 1</h3>
@@ -420,7 +421,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
             <Button 
               variant="outline" 
               onClick={onClose} 
-              className="border-[#FFD9A7]/50 hover:bg-[#FFD9A7]/10"
+              className="border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -428,7 +429,7 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           )}
           <Button 
             onClick={applyFilters} 
-            className="bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground"
+            className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground"
           >
             <Check className="h-4 w-4 mr-2" />
             Apply Filters
