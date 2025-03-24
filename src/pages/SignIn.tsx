@@ -7,13 +7,16 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Phone, Check } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("signin");
+  const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification
+  const [otpValue, setOtpValue] = useState("");
   
   const [signInData, setSignInData] = useState({
     email: '',
@@ -23,6 +26,7 @@ const SignIn = () => {
   const [signUpData, setSignUpData] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
   });
@@ -34,6 +38,30 @@ const SignIn = () => {
   
   const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
+    // For phone field, validate UAE format
+    if (name === 'phone') {
+      let formattedValue = value.replace(/\D/g, ''); // Remove non-digits
+      
+      // If starting with 0, replace with 971
+      if (formattedValue.startsWith('0')) {
+        formattedValue = '971' + formattedValue.substring(1);
+      }
+      
+      // If not starting with 971, add it
+      if (!formattedValue.startsWith('971') && formattedValue.length > 0) {
+        formattedValue = '971' + formattedValue;
+      }
+      
+      // Limit to proper UAE number length (971 + 9 digits)
+      if (formattedValue.length > 12) {
+        formattedValue = formattedValue.substring(0, 12);
+      }
+      
+      setSignUpData(prev => ({ ...prev, [name]: formattedValue }));
+      return;
+    }
+    
     setSignUpData(prev => ({ ...prev, [name]: value }));
   };
   
@@ -52,32 +80,97 @@ const SignIn = () => {
     }, 1500);
   };
   
-  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    if (signUpData.password !== signUpData.confirmPassword) {
-      setIsLoading(false);
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive",
-      });
-      return;
+    if (signupStep === 1) {
+      // Validate form before proceeding
+      if (signUpData.password !== signUpData.confirmPassword) {
+        toast({
+          title: "Passwords don't match",
+          description: "Please make sure your passwords match.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Validate UAE phone number (should start with 971 and be 12 digits)
+      if (!signUpData.phone.startsWith('971') || signUpData.phone.length !== 12) {
+        toast({
+          title: "Invalid phone number",
+          description: "Please enter a valid UAE phone number.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setIsLoading(true);
+      
+      // Simulate sending OTP
+      setTimeout(() => {
+        setIsLoading(false);
+        setSignupStep(2);
+        toast({
+          title: "Verification code sent",
+          description: `We've sent a code to ${formatPhoneDisplay(signUpData.phone)}`,
+        });
+      }, 1500);
+    } else if (signupStep === 2) {
+      // Verify OTP
+      if (otpValue.length !== 6) {
+        toast({
+          title: "Invalid code",
+          description: "Please enter the 6-digit verification code.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setIsLoading(true);
+      
+      // Simulate OTP verification
+      setTimeout(() => {
+        setIsLoading(false);
+        toast({
+          title: "Account created!",
+          description: "Your phone number has been verified and your account has been created successfully.",
+        });
+        navigate('/ally/subscribe');
+      }, 1500);
+    }
+  };
+  
+  const formatPhoneDisplay = (phone: string) => {
+    if (!phone) return '';
+    
+    // Format 971XXXXXXXXX as +971 XX XXX XXXX
+    if (phone.startsWith('971') && phone.length === 12) {
+      const remaining = phone.substring(3);
+      return `+971 ${remaining.substring(0, 2)} ${remaining.substring(2, 5)} ${remaining.substring(5)}`;
     }
     
-    // Simulate registration process
+    return phone;
+  };
+  
+  const resendOTP = () => {
+    setIsLoading(true);
+    
+    // Simulate resending OTP
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Account created!",
-        description: "Your account has been created successfully.",
+        title: "Code resent",
+        description: `We've sent a new verification code to ${formatPhoneDisplay(signUpData.phone)}`,
       });
-      navigate('/ally/subscribe');
-    }, 1500);
+    }, 1000);
   };
   
   const goBack = () => {
+    if (signupStep === 2) {
+      setSignupStep(1);
+      return;
+    }
+    
     navigate(-1);
   };
 
@@ -93,7 +186,7 @@ const SignIn = () => {
         className="absolute top-4 left-4 flex items-center"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back
+        {signupStep === 2 ? "Back to Form" : "Back"}
       </Button>
       
       <div className="w-full max-w-md">
@@ -129,19 +222,17 @@ const SignIn = () => {
                 <CardContent className="space-y-4 pt-6">
                   <div className="space-y-2">
                     <Label htmlFor="signin-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input 
-                        id="signin-email"
-                        name="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
-                        value={signInData.email}
-                        onChange={handleSignInChange}
-                        required
-                      />
-                    </div>
+                    <Input 
+                      id="signin-email"
+                      name="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      className="border-secondary/30 focus:border-secondary"
+                      icon={<Mail className="h-4 w-4" />}
+                      value={signInData.email}
+                      onChange={handleSignInChange}
+                      required
+                    />
                   </div>
                   
                   <div className="space-y-2">
@@ -155,19 +246,17 @@ const SignIn = () => {
                         Forgot password?
                       </Button>
                     </div>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input 
-                        id="signin-password"
-                        name="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
-                        value={signInData.password}
-                        onChange={handleSignInChange}
-                        required
-                      />
-                    </div>
+                    <Input 
+                      id="signin-password"
+                      name="password"
+                      type="password"
+                      placeholder="Enter your password"
+                      className="border-secondary/30 focus:border-secondary"
+                      icon={<Lock className="h-4 w-4" />}
+                      value={signInData.password}
+                      onChange={handleSignInChange}
+                      required
+                    />
                   </div>
                 </CardContent>
                 
@@ -193,71 +282,122 @@ const SignIn = () => {
           <TabsContent value="signup">
             <Card className="border-secondary/20 shadow-md">
               <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
-                <CardTitle>Create an Account</CardTitle>
+                <CardTitle>{signupStep === 1 ? "Create an Account" : "Verify Your Phone"}</CardTitle>
+                {signupStep === 2 && (
+                  <CardDescription>
+                    Enter the 6-digit code sent to {formatPhoneDisplay(signUpData.phone)}
+                  </CardDescription>
+                )}
               </CardHeader>
-              <form onSubmit={handleSignUp}>
-                <CardContent className="space-y-4 pt-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <Input 
-                      id="signup-name"
-                      name="name"
-                      placeholder="Enter your full name"
-                      className="border-secondary/30 focus:border-secondary"
-                      value={signUpData.name}
-                      onChange={handleSignUpChange}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <form onSubmit={handleSignUpSubmit}>
+                {signupStep === 1 ? (
+                  <CardContent className="space-y-4 pt-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-name">Full Name</Label>
+                      <Input 
+                        id="signup-name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        className="border-secondary/30 focus:border-secondary"
+                        value={signUpData.name}
+                        onChange={handleSignUpChange}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email">Email</Label>
                       <Input 
                         id="signup-email"
                         name="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
+                        className="border-secondary/30 focus:border-secondary"
+                        icon={<Mail className="h-4 w-4" />}
                         value={signUpData.email}
                         onChange={handleSignUpChange}
                         required
                       />
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-phone">Phone Number (UAE only)</Label>
+                      <Input 
+                        id="signup-phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="Enter your UAE phone number"
+                        className="border-secondary/30 focus:border-secondary"
+                        icon={<Phone className="h-4 w-4" />}
+                        value={formatPhoneDisplay(signUpData.phone)}
+                        onChange={handleSignUpChange}
+                        required
+                      />
+                      <p className="text-xs text-muted-foreground">Format: +971 XX XXX XXXX</p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Password</Label>
                       <Input 
                         id="signup-password"
                         name="password"
                         type="password"
                         placeholder="Create a password"
-                        className="pl-10 border-secondary/30 focus:border-secondary"
+                        className="border-secondary/30 focus:border-secondary"
+                        icon={<Lock className="h-4 w-4" />}
                         value={signUpData.password}
                         onChange={handleSignUpChange}
                         required
                       />
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-confirm-password">Confirm Password</Label>
-                    <Input 
-                      id="signup-confirm-password"
-                      name="confirmPassword"
-                      type="password"
-                      placeholder="Confirm your password"
-                      className="border-secondary/30 focus:border-secondary"
-                      value={signUpData.confirmPassword}
-                      onChange={handleSignUpChange}
-                      required
-                    />
-                  </div>
-                </CardContent>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-confirm-password">Confirm Password</Label>
+                      <Input 
+                        id="signup-confirm-password"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm your password"
+                        className="border-secondary/30 focus:border-secondary"
+                        value={signUpData.confirmPassword}
+                        onChange={handleSignUpChange}
+                        required
+                      />
+                    </div>
+                  </CardContent>
+                ) : (
+                  <CardContent className="space-y-6 pt-6">
+                    <div className="flex justify-center">
+                      <InputOTP 
+                        maxLength={6} 
+                        value={otpValue} 
+                        onChange={setOtpValue}
+                        className="gap-2"
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} className="h-12 w-12 text-lg" />
+                          <InputOTPSlot index={1} className="h-12 w-12 text-lg" />
+                          <InputOTPSlot index={2} className="h-12 w-12 text-lg" />
+                          <InputOTPSlot index={3} className="h-12 w-12 text-lg" />
+                          <InputOTPSlot index={4} className="h-12 w-12 text-lg" />
+                          <InputOTPSlot index={5} className="h-12 w-12 text-lg" />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Button 
+                        variant="link" 
+                        type="button" 
+                        onClick={resendOTP}
+                        disabled={isLoading}
+                        className="text-muted-foreground text-sm"
+                      >
+                        Didn't receive a code? Resend
+                      </Button>
+                    </div>
+                  </CardContent>
+                )}
                 
                 <CardFooter className="flex-col space-y-4 bg-gradient-to-t from-secondary/20 to-transparent pt-4">
                   <Button 
@@ -268,13 +408,24 @@ const SignIn = () => {
                     {isLoading && (
                       <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></div>
                     )}
-                    <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-                    Join & <span className="font-adlery">LeanOn</span>
+                    {signupStep === 1 ? (
+                      <>
+                        <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
+                        Continue
+                      </>
+                    ) : (
+                      <>
+                        <Check className="mr-2 h-4 w-4" />
+                        Verify & Join
+                      </>
+                    )}
                   </Button>
                   
-                  <p className="text-xs text-center text-muted-foreground">
-                    By signing up, you agree to our Terms of Service and Privacy Policy
-                  </p>
+                  {signupStep === 1 && (
+                    <p className="text-xs text-center text-muted-foreground">
+                      By signing up, you agree to our Terms of Service and Privacy Policy
+                    </p>
+                  )}
                 </CardFooter>
               </form>
             </Card>
