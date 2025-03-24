@@ -76,7 +76,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <h3 className="text-xl font-medium mb-4">Ask the Moms Community</h3>
+        <h3 className="text-xl font-medium mb-4">Ask the Community</h3>
         <p className="text-sm text-muted-foreground mb-6">
           Your question will be reviewed by our admins before being published to the community.
         </p>
@@ -121,7 +121,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       
       <div className="space-y-2">
         <label className="text-sm font-medium">Category</label>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 max-h-[200px] overflow-y-auto">
           {categories.map((category) => (
             <Button
               key={category.name}

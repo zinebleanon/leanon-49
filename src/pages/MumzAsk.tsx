@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import HowItWorksDialog from '@/components/HowItWorksDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -27,10 +27,17 @@ const MumzAsk = () => {
   }, []);
   
   const categories = [
-    { name: 'Breastfeeding', icon: <Baby className="h-4 w-4 mr-2" /> },
+    { name: 'Parenting', icon: <Users className="h-4 w-4 mr-2" /> },
+    { name: 'Pregnancy', icon: <Heart className="h-4 w-4 mr-2" /> },
+    { name: 'Birth', icon: <Activity className="h-4 w-4 mr-2" /> },
+    { name: 'Postpartum', icon: <User className="h-4 w-4 mr-2" /> },
+    { name: 'Health', icon: <Activity className="h-4 w-4 mr-2" /> },
     { name: 'Diversification', icon: <UtensilsCrossed className="h-4 w-4 mr-2" /> },
+    { name: 'Feeding & Breastfeeding', icon: <Baby className="h-4 w-4 mr-2" /> },
     { name: 'Shopping', icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
-    { name: 'Parenting', icon: <MessageCircle className="h-4 w-4 mr-2" /> }
+    { name: 'Schools & Nurseries', icon: <School className="h-4 w-4 mr-2" /> },
+    { name: 'Nannies', icon: <User className="h-4 w-4 mr-2" /> },
+    { name: 'Entertainment & Birthday', icon: <CalendarDays className="h-4 w-4 mr-2" /> }
   ];
   
   const textStyles = "transition-all duration-700 ease-smooth";
@@ -65,13 +72,25 @@ const MumzAsk = () => {
                         size="lg" 
                         className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                       >
-                        <Filter className="mr-2 h-4 w-4" /> Filter Questions
+                        <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
                       <div className="pt-6">
                         <h3 className="text-xl font-medium mb-4">Filter by Category</h3>
-                        <div className="flex flex-wrap gap-2 mb-8">
+                        <div className="relative mb-5">
+                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <Search className="w-5 h-5 text-gray-500" />
+                          </div>
+                          <Input 
+                            type="search" 
+                            className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
+                            placeholder="Enter keywords to narrow your search..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                          />
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-8 max-h-[60vh] overflow-y-auto">
                           {categories.map((category) => (
                             <Button
                               key={category.name}
@@ -94,13 +113,25 @@ const MumzAsk = () => {
                         size="lg" 
                         className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                       >
-                        <Filter className="mr-2 h-4 w-4" /> Filter Questions
+                        <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
                       <div className="pt-6">
                         <h3 className="text-xl font-medium mb-4">Filter by Category</h3>
-                        <div className="flex flex-wrap gap-2 mb-8">
+                        <div className="relative mb-5">
+                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <Search className="w-5 h-5 text-gray-500" />
+                          </div>
+                          <Input 
+                            type="search" 
+                            className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
+                            placeholder="Enter keywords to narrow your search..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                          />
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-8 max-h-[40vh] overflow-y-auto">
                           {categories.map((category) => (
                             <Button
                               key={category.name}
@@ -131,47 +162,15 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Search Section */}
-        <section className="bg-[#B8CEC2]/20 py-8 px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <Search className="w-5 h-5 text-gray-500" />
-              </div>
-              <Input 
-                type="search" 
-                className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
-                placeholder="Search questions from other moms..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {categories.map((category) => (
-                <Button
-                  key={category.name}
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                >
-                  {category.icon}
-                  {category.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </section>
-        
         {/* Questions Section */}
         <section className="py-8 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold font-playfair">Ask Moms</h2>
+              <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground">
-                    Ask a Question
+                    Ask the Community
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-lg">
