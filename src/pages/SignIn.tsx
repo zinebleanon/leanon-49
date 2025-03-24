@@ -181,7 +181,7 @@ const SignIn = () => {
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-6">
           <img 
-            src="/lovable-uploads/9af559f0-e7cd-43a3-a625-8c67793f989b.png" 
+            src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Decorative Bow" 
             className="h-24 w-auto"
           />
