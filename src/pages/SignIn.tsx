@@ -188,7 +188,6 @@ const SignIn = () => {
             <Card className="border-secondary/20 shadow-md">
               <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
                 <CardTitle>Create an Account</CardTitle>
-                <CardDescription>Join our community of supportive moms</CardDescription>
               </CardHeader>
               <form onSubmit={handleSignUp}>
                 <CardContent className="space-y-4 pt-6">
