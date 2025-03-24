@@ -6,8 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
-import { Info } from 'lucide-react';
+import { Info, ArrowLeft } from 'lucide-react';
 import BowIcon from './ui/BowIcon';
 
 interface HowItWorksDialogProps {
@@ -72,6 +73,16 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
             </div>
           ))}
         </div>
+        <DialogClose asChild>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            <span>Back</span>
+          </Button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );

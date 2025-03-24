@@ -6,8 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
-import { UserCircle, MapPin, MessageCircle, Heart } from "lucide-react";
+import { UserCircle, MapPin, MessageCircle, Heart, ArrowLeft } from "lucide-react";
 
 const steps = [
   {
@@ -74,6 +75,16 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
             </div>
           ))}
         </div>
+        <DialogClose asChild>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-2 left-2 p-2 h-auto text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            <span>Back</span>
+          </Button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );
