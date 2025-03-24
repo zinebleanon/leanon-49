@@ -27,17 +27,17 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
   const handleHeartClick = (id: number) => {
     toast({
       title: "Connection Request Sent",
-      description: "You've sent a request to become LeanOn Allies with someone in your neighborhood!",
+      description: "You've sent a request to become LeanOn Match with someone in your neighborhood!",
     });
     
     onHeartClick(id);
   };
   
   return (
-    <section className="py-8 md:py-12 px-4 md:px-8 bg-gradient-to-b from-secondary/30 to-background/90">
+    <section className="py-8 md:py-12 px-4 md:px-8 bg-gradient-to-b from-[#FFD9A7]/30 to-background/90">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Allies</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>
           <Badge variant="outline" className="px-3 py-1">
             {profiles.length} {profiles.length === 1 ? 'result' : 'results'} found
           </Badge>

@@ -1,289 +1,234 @@
 
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Filter, Search, UserCircle, BabyIcon, MapPin, Flag, Briefcase, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Slider } from '@/components/ui/slider';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Slider } from '@/components/ui/slider';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 interface FilterSectionProps {
-  onFiltersChange?: (filters: Record<string, any>) => void;
+  onFiltersChange: (filters: Record<string, any>) => void;
 }
 
 const FilterSection = ({ onFiltersChange }: FilterSectionProps) => {
-  const [activeFilter, setActiveFilter] = useState('all');
   const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
+  const [isExpanded, setIsExpanded] = useState(false);
   
-  // Define filter options for each category
-  const filters = [
-    { id: 'all', label: 'All' },
-    { id: 'age', label: 'Your Age', icon: <UserCircle className="h-4 w-4" /> },
-    { id: 'kids', label: 'Kids Age/Gender', icon: <BabyIcon className="h-4 w-4" /> },
-    { id: 'location', label: 'Neighborhood', icon: <MapPin className="h-4 w-4" /> },
-    { id: 'nationality', label: 'Nationality', icon: <Flag className="h-4 w-4" /> },
-    { id: 'work', label: 'Work Status', icon: <Briefcase className="h-4 w-4" /> },
+  const locations = [
+    "Dubai Marina", "JBR", "Palm Jumeirah", "Downtown Dubai", 
+    "Arabian Ranches", "Emirates Hills", "Jumeirah"
   ];
   
-  // Define filter options for each category
-  const ageRanges = ['20-25', '26-30', '31-35', '36-40', '41+'];
-  const kidAgeRanges = ['0-1', '2-3', '4-5', '6-8', '9-12', '13+'];
-  const kidGenders = ['Boy', 'Girl'];
-  const locations = ['Dubai Marina', 'Palm Jumeirah', 'Downtown Dubai', 'JBR', 'Arabian Ranches'];
-  const nationalities = ['UAE', 'Lebanese', 'British Expat', 'Indian Expat', 'American Expat', 'Chinese Expat', 'Other'];
-  const workStatuses = ['Full-time', 'Part-time', 'Stay-at-home', 'Freelancer', 'Business Owner'];
+  const nationalities = [
+    "UAE", "British Expat", "American Expat", "Lebanese", 
+    "Indian Expat", "Chinese Expat", "South African"
+  ];
   
-  useEffect(() => {
-    // Call the onFiltersChange callback when activeFilters changes
-    if (onFiltersChange) {
-      onFiltersChange(activeFilters);
-    }
-  }, [activeFilters, onFiltersChange]);
+  const workStatuses = [
+    "Full-time", "Part-time", "Stay-at-home", "Freelancer", "Business Owner"
+  ];
   
-  const handleFilterSelect = (filterId: string) => {
-    setActiveFilter(filterId);
-  };
-  
-  const applyFilter = (category: string, value: any) => {
-    setActiveFilters(prev => ({
-      ...prev,
-      [category]: value
-    }));
-  };
-  
-  const removeFilter = (category: string) => {
+  const handleFilterChange = (category: string, value: any) => {
     const newFilters = { ...activeFilters };
-    delete newFilters[category];
+    
+    if (category === 'kids.ageRange' || category === 'kids.gender') {
+      newFilters.kids = { ...newFilters.kids };
+      
+      if (category === 'kids.ageRange') {
+        newFilters.kids.ageRange = value;
+      } else if (category === 'kids.gender') {
+        newFilters.kids.gender = value;
+      }
+    } else {
+      newFilters[category] = value;
+    }
+    
     setActiveFilters(newFilters);
   };
   
-  const clearAllFilters = () => {
+  const clearFilters = () => {
     setActiveFilters({});
-    setActiveFilter('all');
   };
   
-  // Render filter tags for active filters
-  const renderFilterTags = () => {
-    return Object.entries(activeFilters).map(([category, value]) => {
-      let displayValue = value;
-      
-      if (Array.isArray(value)) {
-        displayValue = value.join(', ');
-      } else if (typeof value === 'object' && value !== null) {
-        if ('ageRange' in value && 'gender' in value) {
-          const ageRanges = Array.isArray(value.ageRange) ? value.ageRange.join(', ') : value.ageRange;
-          const genders = Array.isArray(value.gender) ? value.gender.join(', ') : value.gender;
-          displayValue = `${ageRanges} | ${genders}`;
-        } else {
-          displayValue = JSON.stringify(value);
-        }
-      }
-      
-      return (
-        <Button 
-          key={category} 
-          variant="secondary" 
-          size="sm" 
-          className="rounded-full text-xs flex items-center gap-1 mr-2 mb-2"
-          onClick={() => removeFilter(category)}
-        >
-          {category}: {displayValue}
-          <X className="h-3 w-3" />
-        </Button>
-      );
-    });
-  };
-  
-  // Render appropriate filter options based on active filter
-  const renderFilterOptions = () => {
-    switch (activeFilter) {
-      case 'age':
-        return (
-          <div className="p-4">
-            <h3 className="font-medium mb-3">Select Your Age Range</h3>
-            <div className="space-y-2">
-              {ageRanges.map(range => (
-                <div key={range} className="flex items-center">
-                  <Checkbox 
-                    id={`age-${range}`} 
-                    checked={activeFilters.age === range}
-                    onCheckedChange={() => applyFilter('age', range)}
-                  />
-                  <label htmlFor={`age-${range}`} className="ml-2 text-sm">{range}</label>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-        
-      case 'kids':
-        return (
-          <div className="p-4">
-            <Tabs defaultValue="age">
-              <TabsList className="w-full mb-4">
-                <TabsTrigger value="age" className="flex-1">Age Range</TabsTrigger>
-                <TabsTrigger value="gender" className="flex-1">Gender</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="age" className="space-y-2">
-                <h3 className="font-medium mb-3">Select Kids Age Range</h3>
-                {kidAgeRanges.map(range => (
-                  <div key={range} className="flex items-center">
-                    <Checkbox 
-                      id={`kid-age-${range}`}
-                      checked={activeFilters.kids?.ageRange === range}
-                      onCheckedChange={() => {
-                        const currentKids = activeFilters.kids || {};
-                        applyFilter('kids', {
-                          ...currentKids,
-                          ageRange: range
-                        });
-                      }}
-                    />
-                    <label htmlFor={`kid-age-${range}`} className="ml-2 text-sm">{range} years</label>
-                  </div>
-                ))}
-              </TabsContent>
-              
-              <TabsContent value="gender" className="space-y-2">
-                <h3 className="font-medium mb-3">Select Kids Gender</h3>
-                <RadioGroup 
-                  value={activeFilters.kids?.gender || ""}
-                  onValueChange={(value) => {
-                    const currentKids = activeFilters.kids || {};
-                    applyFilter('kids', {
-                      ...currentKids,
-                      gender: value
-                    });
-                  }}
-                >
-                  {kidGenders.map(gender => (
-                    <div key={gender} className="flex items-center space-x-2">
-                      <RadioGroupItem value={gender} id={`gender-${gender}`} />
-                      <Label htmlFor={`gender-${gender}`}>{gender}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </TabsContent>
-            </Tabs>
-          </div>
-        );
-        
-      case 'location':
-        return (
-          <div className="p-4">
-            <h3 className="font-medium mb-3">Select Neighborhood</h3>
-            <div className="space-y-2">
-              {locations.map(location => (
-                <div key={location} className="flex items-center">
-                  <Checkbox 
-                    id={`location-${location}`}
-                    checked={activeFilters.location === location}
-                    onCheckedChange={() => applyFilter('location', location)}
-                  />
-                  <label htmlFor={`location-${location}`} className="ml-2 text-sm">{location}</label>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-        
-      case 'nationality':
-        return (
-          <div className="p-4">
-            <h3 className="font-medium mb-3">Select Nationality</h3>
-            <div className="space-y-2">
-              {nationalities.map(nationality => (
-                <div key={nationality} className="flex items-center">
-                  <Checkbox 
-                    id={`nationality-${nationality}`}
-                    checked={activeFilters.nationality === nationality}
-                    onCheckedChange={() => applyFilter('nationality', nationality)}
-                  />
-                  <label htmlFor={`nationality-${nationality}`} className="ml-2 text-sm">{nationality}</label>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-        
-      case 'work':
-        return (
-          <div className="p-4">
-            <h3 className="font-medium mb-3">Select Work Status</h3>
-            <div className="space-y-2">
-              {workStatuses.map(status => (
-                <div key={status} className="flex items-center">
-                  <Checkbox 
-                    id={`work-${status}`}
-                    checked={activeFilters.workStatus === status}
-                    onCheckedChange={() => applyFilter('workStatus', status)}
-                  />
-                  <label htmlFor={`work-${status}`} className="ml-2 text-sm">{status}</label>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-        
-      default:
-        return null;
-    }
-  };
+  // Pass filters up to parent whenever they change
+  useEffect(() => {
+    onFiltersChange(activeFilters);
+  }, [activeFilters, onFiltersChange]);
   
   return (
-    <section id="filter-section" className="py-6 md:py-8 px-4 md:px-8 bg-secondary/30">
+    <section id="filter-section" className="py-8 px-4 md:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-wrap justify-between items-center mb-4 md:mb-6 gap-2">
-          <h2 className="text-xl md:text-2xl font-semibold">Filter Allies</h2>
-          {Object.keys(activeFilters).length > 0 && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-xs md:text-sm"
-              onClick={clearAllFilters}
-            >
-              Clear All Filters
-            </Button>
-          )}
-        </div>
-        
-        <div className="flex flex-wrap gap-2 mb-6 md:mb-8">
-          {filters.map((filter) => (
-            <Popover key={filter.id}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={activeFilter === filter.id ? "default" : "outline"}
-                  size="sm"
-                  className="rounded-full text-xs md:text-sm py-1 h-8 md:h-9"
-                  onClick={() => handleFilterSelect(filter.id)}
-                >
-                  {filter.icon && <span className="mr-1 md:mr-2">{filter.icon}</span>}
-                  {filter.label}
-                </Button>
-              </PopoverTrigger>
-              {filter.id !== 'all' && (
-                <PopoverContent 
-                  className="w-72 p-0" 
-                  align="start"
-                >
-                  {renderFilterOptions()}
-                </PopoverContent>
-              )}
-            </Popover>
-          ))}
-        </div>
-        
-        {Object.keys(activeFilters).length > 0 && (
-          <div className="flex flex-wrap mb-4">
-            <div className="flex flex-wrap">
-              {renderFilterTags()}
-            </div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-semibold font-playfair">Filter Match</h2>
+            <p className="text-muted-foreground">Find the perfect match for you and your children</p>
           </div>
+          <Button 
+            variant="outline" 
+            className="mt-2 md:mt-0"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? "Hide Filters" : "Show All Filters"}
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <Select
+              value={activeFilters.location || ""}
+              onValueChange={(value) => handleFilterChange('location', value)}
+            >
+              <SelectTrigger id="location">
+                <SelectValue placeholder="Select location" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Any Location</SelectItem>
+                {locations.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="kids-age">Child Age Range</Label>
+            <Select
+              value={activeFilters.kids?.ageRange || ""}
+              onValueChange={(value) => handleFilterChange('kids.ageRange', value)}
+            >
+              <SelectTrigger id="kids-age">
+                <SelectValue placeholder="Select age range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Any Age</SelectItem>
+                <SelectItem value="0-2">Infant (0-2 years)</SelectItem>
+                <SelectItem value="3-5">Preschool (3-5 years)</SelectItem>
+                <SelectItem value="6-9">Primary (6-9 years)</SelectItem>
+                <SelectItem value="10-12">Preteen (10-12 years)</SelectItem>
+                <SelectItem value="13+">Teenager (13+ years)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="kids-gender">Child Gender</Label>
+            <Select
+              value={activeFilters.kids?.gender || ""}
+              onValueChange={(value) => handleFilterChange('kids.gender', value)}
+            >
+              <SelectTrigger id="kids-gender">
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Any Gender</SelectItem>
+                <SelectItem value="Boy">Boy</SelectItem>
+                <SelectItem value="Girl">Girl</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        
+        {isExpanded && (
+          <Accordion type="single" collapsible className="mb-4">
+            <AccordionItem value="advanced-filters">
+              <AccordionTrigger>Advanced Filters</AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="age">Mom Age Range</Label>
+                    <Select
+                      value={activeFilters.age || ""}
+                      onValueChange={(value) => handleFilterChange('age', value)}
+                    >
+                      <SelectTrigger id="age">
+                        <SelectValue placeholder="Select age range" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Any Age</SelectItem>
+                        <SelectItem value="20-29">20-29 years</SelectItem>
+                        <SelectItem value="30-39">30-39 years</SelectItem>
+                        <SelectItem value="40-49">40-49 years</SelectItem>
+                        <SelectItem value="50+">50+ years</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="nationality">Nationality</Label>
+                    <Select
+                      value={activeFilters.nationality || ""}
+                      onValueChange={(value) => handleFilterChange('nationality', value)}
+                    >
+                      <SelectTrigger id="nationality">
+                        <SelectValue placeholder="Select nationality" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Any Nationality</SelectItem>
+                        {nationalities.map((nationality) => (
+                          <SelectItem key={nationality} value={nationality}>
+                            {nationality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="work-status">Work Status</Label>
+                    <Select
+                      value={activeFilters.workStatus || ""}
+                      onValueChange={(value) => handleFilterChange('workStatus', value)}
+                    >
+                      <SelectTrigger id="work-status">
+                        <SelectValue placeholder="Select work status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Any Work Status</SelectItem>
+                        {workStatuses.map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {status}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         )}
+        
+        <div className="flex justify-between items-center">
+          <Button 
+            variant="outline" 
+            onClick={clearFilters}
+          >
+            Clear All Filters
+          </Button>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-muted-foreground">
+              {Object.keys(activeFilters).length === 0 
+                ? 'No active filters' 
+                : `${Object.keys(activeFilters).length} filter${Object.keys(activeFilters).length === 1 ? '' : 's'} applied`}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );

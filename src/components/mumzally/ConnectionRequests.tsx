@@ -40,8 +40,8 @@ const ConnectionRequests = () => {
   const handleAccept = (id: number, name: string) => {
     setAcceptedRequests(prev => [...prev, id]);
     toast({
-      title: "Ally Connection Made!",
-      description: `You've made a new LeanOn Ally with ${name}!`,
+      title: "Match Connection Made!",
+      description: `You've made a new LeanOn Match with ${name}!`,
     });
   };
 
@@ -52,20 +52,20 @@ const ConnectionRequests = () => {
 
   const handleDecline = (id: number) => {
     toast({
-      description: "Ally request declined",
+      description: "Match request declined",
     });
   };
 
   return (
     <section className="py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6">Ally Requests</h2>
+        <h2 className="text-2xl font-semibold mb-6">Moms Requests</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
                     <UserCircle className="h-8 w-8 text-primary" />
                   </div>
                   <div>
@@ -82,7 +82,7 @@ const ConnectionRequests = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    {request.name} wants to Ally
+                    {request.name} wants to Match
                   </p>
                   <Button 
                     variant="default" 
@@ -122,7 +122,7 @@ const ConnectionRequests = () => {
                               strokeWidth="1.5"
                             />
                           </svg>
-                          Ally Back
+                          Match Back
                         </>
                       )}
                     </div>
