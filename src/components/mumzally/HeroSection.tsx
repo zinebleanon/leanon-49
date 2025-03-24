@@ -33,12 +33,12 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
               <DialogTrigger asChild>
                 <Button 
                   size="lg" 
-                  className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+                  className="rounded-full px-6 border bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground active:opacity-95 transition-all"
                 >
                   Find your Match Filter
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl sm:max-w-4xl">
+              <DialogContent className="max-w-2xl sm:max-w-4xl bg-gradient-to-br from-[#FFF8E7] via-[#FFD9A7]/30 to-[#B8CEC2]/20 border-[#FFD9A7]/50">
                 <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
               </DialogContent>
             </Dialog>

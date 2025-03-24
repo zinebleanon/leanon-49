@@ -50,10 +50,10 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#FFF8E7] via-[#FFD9A7]/50 to-[#B8CEC2]/30">
+      <DialogContent className="sm:max-w-[500px] bg-gradient-to-br from-[#B8CEC2]/30 via-[#FFD9A7]/30 to-[#FDB3A4]/20 border-[#FFD9A7]/50">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-            <BowRibbon className="w-8 h-6 scale-[2.5]" isActive={true} />
+            <BowRibbon className="w-8 h-6 scale-[2.5]" color="#FFD9A7" />
             Message to {recipient.name}
           </DialogTitle>
           <DialogDescription>
@@ -72,7 +72,7 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
                   <FormControl>
                     <Textarea 
                       placeholder={`Hi ${recipient.name}! I'm excited to connect with you...`} 
-                      className="min-h-[120px] bg-white/80" 
+                      className="min-h-[120px] bg-white/80 border-[#B8CEC2]/30" 
                       {...field}
                     />
                   </FormControl>
@@ -85,8 +85,7 @@ const MessageForm = ({ open, onOpenChange, recipient }: MessageFormProps) => {
               <Button 
                 disabled={isSending} 
                 type="submit" 
-                variant="warm"
-                className="text-foreground"
+                className="bg-gradient-to-r from-[#B8CEC2] via-[#FFD9A7] to-[#FDB3A4] hover:opacity-90 text-foreground"
               >
                 {isSending ? (
                   <>Sending...</>
