@@ -1,21 +1,17 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from '@/hooks/use-toast';
-import { Bell, AlertTriangle } from 'lucide-react';
+import { Bell } from 'lucide-react';
 
 interface StatusUpdateReminderProps {
   itemName: string;
   createdDate: string;
-  isPending?: boolean;
 }
 
-export const StatusUpdateReminder = ({ itemName, createdDate, isPending = false }: StatusUpdateReminderProps) => {
+export const StatusUpdateReminder = ({ itemName, createdDate }: StatusUpdateReminderProps) => {
   const [lastReminded, setLastReminded] = useState<string | null>(null);
   
   useEffect(() => {
-    // If the item is pending approval, don't set up reminders yet
-    if (isPending) return;
-    
     // Check if it's time to remind the user
     const checkReminderStatus = () => {
       const now = new Date();
@@ -58,16 +54,7 @@ export const StatusUpdateReminder = ({ itemName, createdDate, isPending = false 
     const intervalId = setInterval(checkReminderStatus, 86400000); // 24 hours
     
     return () => clearInterval(intervalId);
-  }, [itemName, createdDate, lastReminded, isPending]);
+  }, [itemName, createdDate, lastReminded]);
   
-  if (isPending) {
-    return (
-      <div className="flex items-center justify-center bg-amber-50 text-amber-800 p-2 mb-3 rounded-md">
-        <AlertTriangle className="h-4 w-4 mr-2" />
-        <span className="text-sm">Pending admin approval</span>
-      </div>
-    );
-  }
-  
-  return null; // Non-visual component for approved items
+  return null; // This is a non-visual component
 };
