@@ -38,7 +38,7 @@ const MumzMarketplaceSell = () => {
             >
               <Link to="/marketplace">
                 <ArrowLeft className="h-4 w-4" />
-                Back to Marketplace
+                Back
               </Link>
             </Button>
           </div>
