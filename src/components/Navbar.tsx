@@ -1,7 +1,8 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, Lock, Info } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, Lock } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,18 +15,18 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import HowItWorksModal from './mumzally/HowItWorksModal';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(3); // Example unread count
   const location = useLocation();
   const isMobile = useIsMobile();
   const { toast } = useToast();
   
+  // Simulate checking if user is part of the community
+  // In a real app, this would come from your auth system
   const [isPartOfCommunity, setIsPartOfCommunity] = useState(false);
   
   const handleScroll = useCallback(() => {
@@ -79,13 +80,6 @@ const Navbar = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
-  };
-
-  const handleInfoButtonClick = () => {
-    toast({
-      title: "About LeanOn Community",
-      description: "Join our community to connect with other moms, ask questions, and get access to exclusive deals and resources.",
-    });
   };
   
   const toggleMobileMenu = () => {
@@ -148,6 +142,7 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-3 md:gap-4">
+          {/* Inbox Notifications - Visible on all screen sizes */}
           <Link
             to="/inbox"
             className={cn(
@@ -166,6 +161,7 @@ const Navbar = () => {
             )}
           </Link>
           
+          {/* Desktop Navigation Menu */}
           <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
             {navItems.map((item) => (
               <Link
@@ -206,20 +202,9 @@ const Navbar = () => {
               {isPartOfCommunity ? 'Account' : 'Join & '}
               {!isPartOfCommunity && <span className="font-adlery">LeanOn</span>}
             </Button>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-full border-primary/20 text-primary hover:bg-primary/5"
-              onClick={handleInfoButtonClick}
-            >
-              <Info className="mr-2 h-4 w-4" />
-              What's in there?
-            </Button>
-            
-            <HowItWorksModal className="ml-2" />
           </div>
           
+          {/* Mobile menu button */}
           <button 
             className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
             onClick={toggleMobileMenu}
@@ -246,6 +231,7 @@ const Navbar = () => {
         </div>
       </div>
       
+      {/* Mobile menu */}
       <div 
         className={cn(
           "md:hidden fixed inset-0 z-40 pt-16 transition-all duration-300 shadow-lg bg-pastel-green",
@@ -305,7 +291,7 @@ const Navbar = () => {
           <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
             <Button
               variant="warm"
-              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg mb-3"
+              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg"
               style={{ 
                 animationDelay: '0.2s',
                 WebkitTapHighlightColor: 'transparent'
@@ -316,24 +302,6 @@ const Navbar = () => {
               {isPartOfCommunity ? 'Account' : 'Join & '}
               {!isPartOfCommunity && <span className="font-adlery">LeanOn</span>}
             </Button>
-            
-            <Button
-              variant="outline"
-              className="w-full py-5 rounded-full animate-slide-up shadow-sm border-primary/20 text-primary hover:bg-primary/5 mb-3"
-              style={{ 
-                animationDelay: '0.25s',
-                WebkitTapHighlightColor: 'transparent'
-              }}
-              onClick={handleInfoButtonClick}
-            >
-              <Info className="mr-2 h-4 w-4" />
-              What's in there?
-            </Button>
-            
-            <HowItWorksModal 
-              className="w-full"
-              buttonVariant="outline"
-            />
           </div>
         </nav>
       </div>
