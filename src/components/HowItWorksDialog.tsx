@@ -8,7 +8,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
-import { Info, ArrowLeft } from 'lucide-react';
+import { Info } from 'lucide-react';
 import BowIcon from './ui/BowIcon';
 
 interface HowItWorksDialogProps {
@@ -53,21 +53,6 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
         <DialogHeader className="relative">
-          <div className="flex items-center">
-            <DialogClose asChild>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="absolute top-0 left-0 p-2 h-auto text-muted-foreground hover:text-foreground"
-              >
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                <span>Back</span>
-              </Button>
-            </DialogClose>
-          </div>
-          
-          <div className="pt-8"></div>
-          
           <DialogTitle className="text-2xl text-center mb-6">
             How <span className="font-adlery text-gradient">LeanOn</span> Works
           </DialogTitle>

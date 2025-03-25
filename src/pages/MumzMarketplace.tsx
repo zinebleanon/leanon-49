@@ -9,7 +9,7 @@ import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package, HelpCircle } from 'lucide-react';
+import { Search, Package } from 'lucide-react';
 import HowItWorksDialog from '@/components/HowItWorksDialog';
 
 const MumzMarketplace = () => {
@@ -77,7 +77,7 @@ const MumzMarketplace = () => {
       <Navbar />
       
       <main className="pt-16 md:pt-20 pb-6 md:pb-10">
-        {/* Hero Section with adjusted spacing */}
+        {/* Hero Section */}
         <section className="py-3 md:py-4 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
@@ -110,7 +110,7 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section with minimal padding */}
+        {/* Centered image section */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
           <img 
             src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
