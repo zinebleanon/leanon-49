@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Heart } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 import ContactSellerDialog from "./ContactSellerDialog";
 
 interface MarketplaceItemCardProps {
@@ -13,6 +14,7 @@ interface MarketplaceItemCardProps {
     price: string;
     condition: string;
     image?: string;
+    status?: string;
   };
 }
 
@@ -30,6 +32,18 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
     });
   };
   
+  const getStatusColor = (status?: string) => {
+    switch (status) {
+      case "sold":
+        return "bg-red-100 text-red-800";
+      case "reserved":
+        return "bg-yellow-100 text-yellow-800";
+      case "available":
+      default:
+        return "bg-green-100 text-green-800";
+    }
+  };
+  
   return (
     <>
       <Card className="overflow-hidden transition-all hover:shadow-md">
@@ -39,6 +53,13 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
             alt={item.title}
             className="object-cover w-full h-full"
           />
+          {item.status && (
+            <div className="absolute top-2 right-2">
+              <Badge className={`${getStatusColor(item.status)}`}>
+                {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+              </Badge>
+            </div>
+          )}
         </div>
         <CardContent className="p-4">
           <h3 className="font-semibold text-lg truncate">{item.title}</h3>
@@ -54,6 +75,7 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
             size="sm" 
             className="flex-1"
             onClick={() => setIsContactDialogOpen(true)}
+            disabled={item.status === "sold"}
           >
             <MessageCircle className="mr-2 h-4 w-4" />
             Contact
