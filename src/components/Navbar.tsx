@@ -249,49 +249,6 @@ const Navbar = () => {
                 )}
               </Link>
             ))}
-            
-            {/* Inbox in mobile menu */}
-            <Link
-              to="/inbox"
-              className={cn(
-                "text-base font-medium py-3 flex items-center gap-3 animate-slide-up transition-all duration-300",
-                isPathActive('/inbox')
-                  ? "text-primary bg-white shadow-md"
-                  : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm"
-              )}
-              style={{
-                borderRadius: "1rem",
-                padding: "0.75rem 1.25rem",
-                animationDelay: `${navItems.length * 0.05}s`,
-                WebkitTapHighlightColor: 'transparent'
-              }}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <span className={cn(
-                "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",
-                isPathActive('/inbox') 
-                  ? "bg-primary/10 text-primary" 
-                  : "text-foreground/60"
-              )}>
-                <Inbox className="h-4 w-4" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                    {unreadCount}
-                  </span>
-                )}
-              </span>
-              Inbox
-              {isPathActive('/inbox') && (
-                <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
-                  Active
-                </span>
-              )}
-              {unreadCount > 0 && (
-                <Badge variant="destructive" className="ml-2">
-                  {unreadCount}
-                </Badge>
-              )}
-            </Link>
           </div>
           
           <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
