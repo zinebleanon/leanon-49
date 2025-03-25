@@ -76,9 +76,9 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-20 md:pt-24 pb-6 md:pb-10">
-        {/* Hero Section with structure similar to other pages */}
-        <section className="py-3 md:py-5 px-4 md:px-8 bg-[#B8CEC2]">
+      <main className="pt-16 md:pt-20 pb-6 md:pb-10">
+        {/* Hero Section with adjusted spacing */}
+        <section className="py-3 md:py-4 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
               <h1 className={`text-3xl md:text-5xl font-bold mb-3 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
@@ -110,7 +110,7 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section with minimal padding - similar to MumzAsk */}
+        {/* Centered image section with minimal padding */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
           <img 
             src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
