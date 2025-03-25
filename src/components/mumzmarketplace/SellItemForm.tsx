@@ -1,15 +1,15 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { PackagePlus, Upload, Tag, BadgeDollarSign } from "lucide-react";
+import { PackagePlus, Upload, Tag, BadgeDollarSign, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -30,6 +30,11 @@ import {
   RadioGroup,
   RadioGroupItem
 } from "@/components/ui/radio-group";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 
 const formSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -56,6 +61,33 @@ const SellItemForm = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [itemsListedThisMonth, setItemsListedThisMonth] = useState(0);
+  const [isLimitReached, setIsLimitReached] = useState(false);
+  const MONTHLY_LISTING_LIMIT = 3;
+  
+  useEffect(() => {
+    // In a real application, this would fetch from a database
+    // For this demo, we'll use localStorage to persist between page refreshes
+    const checkListingLimit = () => {
+      const currentMonth = new Date().getMonth();
+      const storedMonth = localStorage.getItem('listingMonth');
+      const storedCount = localStorage.getItem('listingCount');
+      
+      if (storedMonth && parseInt(storedMonth) === currentMonth && storedCount) {
+        const count = parseInt(storedCount);
+        setItemsListedThisMonth(count);
+        setIsLimitReached(count >= MONTHLY_LISTING_LIMIT);
+      } else {
+        // Reset counter for new month
+        localStorage.setItem('listingMonth', currentMonth.toString());
+        localStorage.setItem('listingCount', '0');
+        setItemsListedThisMonth(0);
+        setIsLimitReached(false);
+      }
+    };
+    
+    checkListingLimit();
+  }, []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -73,13 +105,27 @@ const SellItemForm = () => {
   const priceType = form.watch("priceType");
 
   const onSubmit = async (data: FormValues) => {
+    if (isLimitReached) {
+      toast.error("Monthly listing limit reached", {
+        description: "You can only list up to 3 items per month.",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Simulate API submission
     setTimeout(() => {
       console.log("Submitted data:", { ...data, photos });
+      
+      // Update the listing count in localStorage
+      const newCount = itemsListedThisMonth + 1;
+      localStorage.setItem('listingCount', newCount.toString());
+      setItemsListedThisMonth(newCount);
+      setIsLimitReached(newCount >= MONTHLY_LISTING_LIMIT);
+      
       toast.success("Item listed successfully!", {
-        description: "Your item has been listed on the marketplace.",
+        description: `Your item has been listed on the marketplace. You have ${MONTHLY_LISTING_LIMIT - newCount} listings left this month.`,
       });
       setIsSubmitting(false);
       navigate("/marketplace");
@@ -105,6 +151,24 @@ const SellItemForm = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        {isLimitReached ? (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Monthly listing limit reached</AlertTitle>
+            <AlertDescription>
+              You can only list up to {MONTHLY_LISTING_LIMIT} items per month. Your limit will reset at the beginning of next month.
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <Alert className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Monthly listing limit</AlertTitle>
+            <AlertDescription>
+              You have used {itemsListedThisMonth} of your {MONTHLY_LISTING_LIMIT} available listings this month.
+            </AlertDescription>
+          </Alert>
+        )}
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -312,7 +376,7 @@ const SellItemForm = () => {
             <Button 
               type="submit" 
               className="w-full" 
-              disabled={isSubmitting}
+              disabled={isSubmitting || isLimitReached}
             >
               <Tag className="mr-2 h-4 w-4" />
               {isSubmitting ? "Publishing..." : "List Item for Sale"}
@@ -320,6 +384,13 @@ const SellItemForm = () => {
           </form>
         </Form>
       </CardContent>
+      {isLimitReached && (
+        <CardFooter className="bg-muted/50 border-t">
+          <p className="text-sm text-center w-full text-muted-foreground">
+            Your monthly listing limit has been reached. The limit will reset on the 1st of next month.
+          </p>
+        </CardFooter>
+      )}
     </Card>
   );
 };
