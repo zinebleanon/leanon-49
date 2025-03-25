@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -75,7 +75,13 @@ const MumzAsk = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-lg">
-                    <AskQuestionForm categories={categories} />
+                    <AskQuestionForm categories={categories} onClose={() => {
+                      // Find and click the DialogClose button programmatically
+                      const closeButton = document.querySelector('[aria-label="Close"]');
+                      if (closeButton instanceof HTMLElement) {
+                        closeButton.click();
+                      }
+                    }} />
                   </DialogContent>
                 </Dialog>
                 
