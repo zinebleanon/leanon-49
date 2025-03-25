@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,6 +33,8 @@ const SellItemForm = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
+  const [brand, setBrand] = useState('');
   const [condition, setCondition] = useState('');
   const [pricingType, setPricingType] = useState('paid');
   const [price, setPrice] = useState('');
@@ -43,6 +46,29 @@ const SellItemForm = () => {
   const [listedItems, setListedItems] = useState<any[]>([]);
   const [pendingApprovalItems, setPendingApprovalItems] = useState<any[]>([]);
   const [isAdminMode, setIsAdminMode] = useState(false);
+  
+  // Define subcategories for each main category
+  const subCategories: Record<string, string[]> = {
+    "baby-clothes": ["Newborn (0-3m)", "Infant (3-12m)", "Toddler (1-3y)", "Kids (3-8y)"],
+    "toys": ["Educational", "Outdoor", "Plush", "Building", "Puzzles"],
+    "strollers": ["Travel Systems", "Joggers", "Double Strollers", "Lightweight"],
+    "car-seats": ["Infant", "Convertible", "Booster", "All-in-One"],
+    "feeding": ["Bottles", "High Chairs", "Breast Pumps", "Baby Food Makers", "Utensils"],
+    "books": ["Board Books", "Picture Books", "Educational", "Activity Books"],
+    "home": ["Nursery Decor", "Bedding", "Bath", "Safety", "Air Purifiers"],
+    "maternity": ["Clothing", "Nursing", "Pregnancy Care", "Postpartum"],
+    "furniture": ["Cribs", "Bassinets", "Changing Tables", "Gliders", "Storage"],
+    "others": ["Diapering", "Health & Safety", "Carriers", "Travel Accessories"]
+  };
+  
+  // Popular brands
+  const popularBrands = [
+    "Chicco", "Avent", "Graco", "Fisher-Price", "Pampers", 
+    "Huggies", "Britax", "Medela", "Baby Einstein", "Munchkin",
+    "Cybex", "Bugaboo", "UPPAbaby", "Tommee Tippee", "Carters",
+    "Evenflo", "Skip Hop", "Gerber", "MAM", "Babybjorn",
+    "Other"
+  ];
   
   useEffect(() => {
     const currentMonth = new Date().getMonth();
@@ -70,6 +96,11 @@ const SellItemForm = () => {
     setIsAdminMode(isAdmin);
   }, []);
   
+  // Reset subcategory when category changes
+  useEffect(() => {
+    setSubCategory('');
+  }, [category]);
+  
   const handlePricingTypeChange = (value: string) => {
     setPricingType(value);
     if (value === 'free') {
@@ -93,7 +124,7 @@ const SellItemForm = () => {
       return;
     }
     
-    if (!title || !description || !category || !condition || (!isFreeItem && !price) || !location) {
+    if (!title || !description || !category || !subCategory || !brand || !condition || (!isFreeItem && !price) || !location) {
       toast({
         title: "Missing Information",
         description: "Please fill out all required fields.",
@@ -110,6 +141,8 @@ const SellItemForm = () => {
         title,
         description,
         category,
+        subCategory,
+        brand,
         condition,
         price: isFreeItem ? 'Free' : `${price} AED`,
         location,
@@ -138,6 +171,8 @@ const SellItemForm = () => {
       setTitle('');
       setDescription('');
       setCategory('');
+      setSubCategory('');
+      setBrand('');
       setCondition('');
       setPricingType('paid');
       setPrice('');
@@ -239,7 +274,11 @@ const SellItemForm = () => {
                     <div>
                       <h3 className="font-semibold">{item.title}</h3>
                       <p className="text-sm">{item.description.substring(0, 100)}...</p>
-                      <p className="text-sm text-muted-foreground mt-1">{item.price} • {item.condition} • {item.location}</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {item.price} • {item.condition} • {item.location}
+                        {item.brand && ` • ${item.brand}`}
+                        {item.subCategory && ` • ${item.subCategory}`}
+                      </p>
                     </div>
                     <div className="flex gap-2">
                       <Button 
@@ -336,6 +375,38 @@ const SellItemForm = () => {
                 </div>
               </div>
               
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {category && (
+                  <div>
+                    <Label htmlFor="subCategory">Sub-Category</Label>
+                    <Select onValueChange={setSubCategory} value={subCategory} required>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sub-category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {subCategories[category]?.map((subCat) => (
+                          <SelectItem key={subCat} value={subCat}>{subCat}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
+                <div>
+                  <Label htmlFor="brand">Brand</Label>
+                  <Select onValueChange={setBrand} value={brand} required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select brand" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {popularBrands.map((brandName) => (
+                        <SelectItem key={brandName} value={brandName}>{brandName}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
               <div className="space-y-4">
                 <Label>Pricing</Label>
                 <div className="flex items-center space-x-4">
@@ -405,7 +476,11 @@ const SellItemForm = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-semibold">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.price} • {item.condition}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {item.price} • {item.condition}
+                        {item.brand && ` • ${item.brand}`}
+                        {item.subCategory && ` • ${item.subCategory}`}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -428,7 +503,11 @@ const SellItemForm = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-semibold">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.price} • {item.condition}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {item.price} • {item.condition}
+                        {item.brand && ` • ${item.brand}`}
+                        {item.subCategory && ` • ${item.subCategory}`}
+                      </p>
                     </div>
                     <div>
                       <Select 
