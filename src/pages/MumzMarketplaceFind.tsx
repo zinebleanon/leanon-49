@@ -20,8 +20,8 @@ import {
 const MumzMarketplaceFind = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedBrand, setSelectedBrand] = useState('all');
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -102,10 +102,10 @@ const MumzMarketplaceFind = () => {
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.seller.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = selectedCategory === '' || 
+    const matchesCategory = selectedCategory === 'all' || 
       (item.title.toLowerCase().includes(selectedCategory.toLowerCase()));
     
-    const matchesBrand = selectedBrand === '' || 
+    const matchesBrand = selectedBrand === 'all' || 
       (item.brand?.toLowerCase() === selectedBrand.toLowerCase());
     
     return matchesSearch && matchesCategory && matchesBrand;
@@ -155,7 +155,7 @@ const MumzMarketplaceFind = () => {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="all">All Categories</SelectItem>
                     {marketplaceCategories.map((category) => (
                       <SelectItem key={category} value={category}>{category}</SelectItem>
                     ))}
@@ -170,7 +170,7 @@ const MumzMarketplaceFind = () => {
                     <SelectValue placeholder="Select brand" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Brands</SelectItem>
+                    <SelectItem value="all">All Brands</SelectItem>
                     {popularBrands.map((brand) => (
                       <SelectItem key={brand} value={brand}>{brand}</SelectItem>
                     ))}
@@ -189,8 +189,8 @@ const MumzMarketplaceFind = () => {
                 className="rounded-full border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground"
                 onClick={() => {
                   setSearchQuery('');
-                  setSelectedCategory('');
-                  setSelectedBrand('');
+                  setSelectedCategory('all');
+                  setSelectedBrand('all');
                 }}
               >
                 Clear Filters
