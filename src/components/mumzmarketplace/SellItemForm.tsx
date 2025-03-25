@@ -16,6 +16,17 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/hooks/use-toast';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
+import { 
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter
+} from '@/components/ui/sheet';
+import { Check, X, ShieldCheck } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const SellItemForm = () => {
   const navigate = useNavigate();
@@ -31,6 +42,8 @@ const SellItemForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [monthlyListingsCount, setMonthlyListingsCount] = useState(0);
   const [listedItems, setListedItems] = useState<any[]>([]);
+  const [pendingApprovalItems, setPendingApprovalItems] = useState<any[]>([]);
+  const [isAdminMode, setIsAdminMode] = useState(false);
   
   useEffect(() => {
     // Load monthly listings count from localStorage
@@ -50,8 +63,16 @@ const SellItemForm = () => {
     // Load previously listed items
     const items = localStorage.getItem('listedItems');
     if (items) {
-      setListedItems(JSON.parse(items));
+      const parsedItems = JSON.parse(items);
+      const approved = parsedItems.filter((item: any) => item.approved);
+      const pending = parsedItems.filter((item: any) => !item.approved);
+      setListedItems(approved);
+      setPendingApprovalItems(pending);
     }
+    
+    // For demo purposes: check if user is admin
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    setIsAdminMode(isAdmin);
   }, []);
   
   const handlePricingTypeChange = (value: string) => {
@@ -90,7 +111,7 @@ const SellItemForm = () => {
     
     // Simulate API call
     setTimeout(() => {
-      // Create new item
+      // Create new item (with pending approval status)
       const newItem = {
         id: Date.now().toString(),
         title,
@@ -100,31 +121,51 @@ const SellItemForm = () => {
         price: isFreeItem ? 'Free' : `${price} AED`,
         location,
         createdDate: new Date().toISOString(),
-        status: 'available'
+        status: 'available',
+        approved: false // New items are not approved by default
       };
+      
+      // Get all items and add the new one
+      const existingItems = localStorage.getItem('listedItems');
+      const allItems = existingItems ? JSON.parse(existingItems) : [];
+      const updatedItems = [...allItems, newItem];
+      
+      // Save all items back to localStorage
+      localStorage.setItem('listedItems', JSON.stringify(updatedItems));
+      
+      // Update pending items list 
+      setPendingApprovalItems([...pendingApprovalItems, newItem]);
       
       // Update monthly listings count
       const newCount = monthlyListingsCount + 1;
       localStorage.setItem('monthlyListingsCount', newCount.toString());
       setMonthlyListingsCount(newCount);
       
-      // Update listed items
-      const updatedItems = [...listedItems, newItem];
-      localStorage.setItem('listedItems', JSON.stringify(updatedItems));
-      setListedItems(updatedItems);
-      
       toast({
-        title: "Item Listed Successfully",
-        description: "Your item has been added to the marketplace."
+        title: "Item Submitted for Review",
+        description: "Your item has been submitted and is pending admin approval."
       });
       
+      // Reset form
+      setTitle('');
+      setDescription('');
+      setCategory('');
+      setCondition('');
+      setPricingType('paid');
+      setPrice('');
+      setLocation('');
+      setIsFreeItem(false);
+      
       setIsSubmitting(false);
-      navigate('/marketplace');
     }, 1500);
   };
   
   const handleStatusChange = (itemId: string, newStatus: string) => {
-    const updatedItems = listedItems.map(item => {
+    const allItems = localStorage.getItem('listedItems');
+    if (!allItems) return;
+    
+    const parsedItems = JSON.parse(allItems);
+    const updatedItems = parsedItems.map((item: any) => {
       if (item.id === itemId) {
         return { ...item, status: newStatus };
       }
@@ -132,7 +173,10 @@ const SellItemForm = () => {
     });
     
     localStorage.setItem('listedItems', JSON.stringify(updatedItems));
-    setListedItems(updatedItems);
+    
+    // Update approved items in the state
+    const updatedApproved = updatedItems.filter((item: any) => item.approved);
+    setListedItems(updatedApproved);
     
     toast({
       title: "Status Updated",
@@ -140,8 +184,104 @@ const SellItemForm = () => {
     });
   };
   
+  const handleApprovalAction = (itemId: string, isApproved: boolean) => {
+    const allItems = localStorage.getItem('listedItems');
+    if (!allItems) return;
+    
+    const parsedItems = JSON.parse(allItems);
+    const updatedItems = parsedItems.map((item: any) => {
+      if (item.id === itemId) {
+        return { ...item, approved: isApproved };
+      }
+      return item;
+    });
+    
+    localStorage.setItem('listedItems', JSON.stringify(updatedItems));
+    
+    // Update state based on approval status
+    const approvedItems = updatedItems.filter((item: any) => item.approved);
+    const pendingItems = updatedItems.filter((item: any) => !item.approved);
+    
+    setListedItems(approvedItems);
+    setPendingApprovalItems(pendingItems);
+    
+    toast({
+      title: isApproved ? "Item Approved" : "Item Rejected",
+      description: isApproved 
+        ? "The listing has been approved and is now visible in the marketplace."
+        : "The listing has been rejected and will not be visible in the marketplace."
+    });
+  };
+  
+  const toggleAdminMode = () => {
+    const newAdminStatus = !isAdminMode;
+    setIsAdminMode(newAdminStatus);
+    localStorage.setItem('isAdmin', newAdminStatus.toString());
+    
+    toast({
+      title: newAdminStatus ? "Admin Mode Activated" : "Admin Mode Deactivated",
+      description: newAdminStatus 
+        ? "You now have access to approve or reject listings." 
+        : "You no longer have admin privileges."
+    });
+  };
+  
   return (
     <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">List an Item</h1>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={toggleAdminMode}
+          className="flex items-center gap-1"
+        >
+          <ShieldCheck className="h-4 w-4" />
+          {isAdminMode ? "Exit Admin Mode" : "Admin Mode"}
+        </Button>
+      </div>
+      
+      {isAdminMode && pendingApprovalItems.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Pending Approval ({pendingApprovalItems.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pendingApprovalItems.map((item) => (
+                <div key={item.id} className="border p-4 rounded-md">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <p className="text-sm">{item.description.substring(0, 100)}...</p>
+                      <p className="text-sm text-muted-foreground mt-1">{item.price} • {item.condition} • {item.location}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="text-green-600"
+                        onClick={() => handleApprovalAction(item.id, true)}
+                      >
+                        <Check className="h-4 w-4 mr-1" /> Approve
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="text-red-600"
+                        onClick={() => handleApprovalAction(item.id, false)}
+                      >
+                        <X className="h-4 w-4 mr-1" /> Reject
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">List your Item</CardTitle>
@@ -175,7 +315,7 @@ const SellItemForm = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="category">Category</Label>
-                  <Select onValueChange={setCategory} required>
+                  <Select onValueChange={setCategory} value={category} required>
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
@@ -196,7 +336,7 @@ const SellItemForm = () => {
                 
                 <div>
                   <Label htmlFor="condition">Condition</Label>
-                  <Select onValueChange={setCondition} required>
+                  <Select onValueChange={setCondition} value={condition} required>
                     <SelectTrigger>
                       <SelectValue placeholder="Select condition" />
                     </SelectTrigger>
@@ -255,22 +395,50 @@ const SellItemForm = () => {
                 <p className="text-sm text-muted-foreground">
                   Monthly Listings: {monthlyListingsCount}/3
                 </p>
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting || monthlyListingsCount >= 3}
-                >
-                  {isSubmitting ? "Listing..." : "List Item"}
-                </Button>
+                <div className="space-x-2">
+                  <Badge variant="outline" className="bg-amber-50 text-amber-700">
+                    Requires Admin Approval
+                  </Badge>
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting || monthlyListingsCount >= 3}
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit for Review"}
+                  </Button>
+                </div>
               </div>
             </div>
           </form>
         </CardContent>
       </Card>
       
+      {pendingApprovalItems.length > 0 && !isAdminMode && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Pending Approval</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pendingApprovalItems.map((item) => (
+                <div key={item.id} className="border p-4 rounded-md">
+                  <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} isPending={true} />
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground">{item.price} • {item.condition}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      
       {listedItems.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Your Listed Items</CardTitle>
+            <CardTitle className="text-2xl">Your Approved Listings</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
