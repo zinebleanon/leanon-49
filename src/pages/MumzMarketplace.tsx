@@ -5,7 +5,6 @@ import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
-import CategorySection from '@/components/mumzsave/CategorySection';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
 import { Search, Package } from 'lucide-react';
@@ -27,11 +26,6 @@ const MumzMarketplace = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  
-  const marketplaceCategories = [
-    "Baby Clothes", "Toys", "Strollers", "Car Seats", "Feeding", 
-    "Books", "Home", "Maternity", "Furniture", "Others"
-  ];
   
   const featuredItems = [
     {
@@ -105,20 +99,14 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section */}
+        {/* Centered image section - replacing the existing image with new one */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
           <img 
-            src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
-            alt="Diverse moms silhouettes illustration" 
+            src="/lovable-uploads/bb4acf49-8869-49f7-9464-6e2f7d244c0e.png" 
+            alt="Baby nursery with wooden crib and toys" 
             className="w-full max-w-3xl h-auto mx-auto object-contain"
           />
         </div>
-        
-        <CategorySection 
-          activeTab="marketplace"
-          dealCategories={[]}
-          marketplaceCategories={marketplaceCategories}
-        />
         
         <section className="py-10 px-6">
           <div className="max-w-7xl mx-auto">
