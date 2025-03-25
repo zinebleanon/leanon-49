@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,7 +46,6 @@ const SellItemForm = () => {
   const [pendingApprovalItems, setPendingApprovalItems] = useState<any[]>([]);
   const [isAdminMode, setIsAdminMode] = useState(false);
   
-  // Define subcategories for each main category
   const subCategories: Record<string, string[]> = {
     "baby-clothes": ["Newborn (0-3m)", "Infant (3-12m)", "Toddler (1-3y)", "Kids (3-8y)"],
     "toys": ["Educational", "Outdoor", "Plush", "Building", "Puzzles"],
@@ -61,7 +59,6 @@ const SellItemForm = () => {
     "others": ["Diapering", "Health & Safety", "Carriers", "Travel Accessories"]
   };
   
-  // Popular brands
   const popularBrands = [
     "Chicco", "Avent", "Graco", "Fisher-Price", "Pampers", 
     "Huggies", "Britax", "Medela", "Baby Einstein", "Munchkin",
@@ -96,7 +93,6 @@ const SellItemForm = () => {
     setIsAdminMode(isAdmin);
   }, []);
   
-  // Reset subcategory when category changes
   useEffect(() => {
     setSubCategory('');
   }, [category]);
@@ -274,11 +270,14 @@ const SellItemForm = () => {
                     <div>
                       <h3 className="font-semibold">{item.title}</h3>
                       <p className="text-sm">{item.description.substring(0, 100)}...</p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {item.price} • {item.condition} • {item.location}
-                        {item.brand && ` • ${item.brand}`}
-                        {item.subCategory && ` • ${item.subCategory}`}
-                      </p>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        <Badge variant="outline">{item.category}</Badge>
+                        <Badge variant="outline">{item.subCategory}</Badge>
+                        <Badge variant="outline">{item.brand}</Badge>
+                        <Badge variant="outline">{item.condition}</Badge>
+                        <Badge variant="outline">{item.price}</Badge>
+                        <Badge variant="outline">{item.location}</Badge>
+                      </div>
                     </div>
                     <div className="flex gap-2">
                       <Button 
@@ -473,14 +472,14 @@ const SellItemForm = () => {
               {pendingApprovalItems.map((item) => (
                 <div key={item.id} className="border p-4 rounded-md">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} isPending={true} />
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {item.price} • {item.condition}
-                        {item.brand && ` • ${item.brand}`}
-                        {item.subCategory && ` • ${item.subCategory}`}
-                      </p>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <div className="flex flex-wrap gap-1">
+                      <Badge variant="outline">{item.price}</Badge>
+                      <Badge variant="outline">{item.condition}</Badge>
+                      <Badge variant="outline">{item.subCategory}</Badge>
+                      <Badge variant="outline">{item.brand}</Badge>
+                      <Badge variant="outline">{item.location}</Badge>
                     </div>
                   </div>
                 </div>
@@ -503,11 +502,13 @@ const SellItemForm = () => {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-semibold">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {item.price} • {item.condition}
-                        {item.brand && ` • ${item.brand}`}
-                        {item.subCategory && ` • ${item.subCategory}`}
-                      </p>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        <Badge variant="outline">{item.price}</Badge>
+                        <Badge variant="outline">{item.condition}</Badge>
+                        <Badge variant="outline">{item.subCategory}</Badge>
+                        <Badge variant="outline">{item.brand}</Badge>
+                        <Badge variant="outline">{item.location}</Badge>
+                      </div>
                     </div>
                     <div>
                       <Select 
