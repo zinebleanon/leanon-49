@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -36,7 +35,7 @@ const MumzMarketplace = () => {
   
   const marketplaceCategories = [
     "Baby Clothes", "Toys", "Strollers", "Car Seats", "Feeding", 
-    "Books", "Home", "Maternity", "Furniture", "Electronics"
+    "Books", "Home", "Maternity", "Furniture", "Others"
   ];
   
   const featuredItems = [

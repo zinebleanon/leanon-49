@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,14 +26,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  RadioGroup,
+  RadioGroupItem
+} from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
   description: z.string().min(10, "Description must be at least 10 characters"),
-  price: z.string().min(1, "Price is required"),
+  priceType: z.enum(["free", "paid"]),
+  price: z.string().optional(),
   category: z.string().min(1, "Category is required"),
   condition: z.string().min(1, "Condition is required"),
   location: z.string().min(1, "Location is required"),
+}).refine((data) => {
+  // If priceType is "paid", then price is required
+  if (data.priceType === "paid") {
+    return !!data.price;
+  }
+  return true;
+}, {
+  message: "Price is required for paid items",
+  path: ["price"],
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -47,12 +62,15 @@ const SellItemForm = () => {
     defaultValues: {
       title: "",
       description: "",
+      priceType: "paid",
       price: "",
       category: "",
       condition: "",
       location: "",
     },
   });
+
+  const priceType = form.watch("priceType");
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
@@ -124,7 +142,42 @@ const SellItemForm = () => {
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+              control={form.control}
+              name="priceType"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Pricing</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex space-x-4"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="free" />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          Free
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="paid" />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">
+                          Paid
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {priceType === "paid" && (
               <FormField
                 control={form.control}
                 name="price"
@@ -141,36 +194,36 @@ const SellItemForm = () => {
                   </FormItem>
                 )}
               />
+            )}
               
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="baby-clothes">Baby Clothes</SelectItem>
-                        <SelectItem value="toys">Toys</SelectItem>
-                        <SelectItem value="strollers">Strollers</SelectItem>
-                        <SelectItem value="car-seats">Car Seats</SelectItem>
-                        <SelectItem value="feeding">Feeding</SelectItem>
-                        <SelectItem value="books">Books</SelectItem>
-                        <SelectItem value="furniture">Furniture</SelectItem>
-                        <SelectItem value="maternity">Maternity</SelectItem>
-                        <SelectItem value="electronics">Electronics</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="baby-clothes">Baby Clothes</SelectItem>
+                      <SelectItem value="toys">Toys</SelectItem>
+                      <SelectItem value="strollers">Strollers</SelectItem>
+                      <SelectItem value="car-seats">Car Seats</SelectItem>
+                      <SelectItem value="feeding">Feeding</SelectItem>
+                      <SelectItem value="books">Books</SelectItem>
+                      <SelectItem value="furniture">Furniture</SelectItem>
+                      <SelectItem value="maternity">Maternity</SelectItem>
+                      <SelectItem value="others">Others</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
