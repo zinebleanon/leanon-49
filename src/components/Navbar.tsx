@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, Lock } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,6 +14,7 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,6 +23,11 @@ const Navbar = () => {
   const [unreadCount, setUnreadCount] = useState(3); // Example unread count
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { toast } = useToast();
+  
+  // Simulate checking if user is part of the community
+  // In a real app, this would come from your auth system
+  const [isPartOfCommunity, setIsPartOfCommunity] = useState(false);
   
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 10);
@@ -63,8 +69,8 @@ const Navbar = () => {
   
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
-    { name: 'Find', icon: <Users className="h-4 w-4" />, path: '/ally' },
-    { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
+    { name: 'Find', icon: <Users className="h-4 w-4" />, path: '/ally', requiresAccess: true },
+    { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask', requiresAccess: true },
     { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/brands' },
     { name: 'Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
   ];
@@ -91,6 +97,20 @@ const Navbar = () => {
              location.pathname.startsWith('/marketplace/');
     }
     return location.pathname === path;
+  };
+  
+  const handleRestrictedNavClick = (e: React.MouseEvent, requiresAccess: boolean) => {
+    if (requiresAccess && !isPartOfCommunity) {
+      e.preventDefault();
+      toast({
+        title: "Access Restricted",
+        description: "This feature is only available to community members. Please join to access.",
+        variant: "destructive"
+      });
+      setTimeout(() => {
+        setIsJoinModalOpen(true);
+      }, 500);
+    }
   };
   
   return (
@@ -131,9 +151,10 @@ const Navbar = () => {
                 ? "bg-primary/10 text-primary" 
                 : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
             )}
+            onClick={(e) => handleRestrictedNavClick(e, true)}
           >
             <Inbox className="h-5 w-5" />
-            {unreadCount > 0 && (
+            {unreadCount > 0 && isPartOfCommunity && (
               <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
                 {unreadCount}
               </span>
@@ -150,8 +171,10 @@ const Navbar = () => {
                   "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative",
                   isPathActive(item.path)
                     ? "text-primary" 
-                    : "text-foreground/70 hover:text-foreground"
+                    : "text-foreground/70 hover:text-foreground",
+                  item.requiresAccess && !isPartOfCommunity && "opacity-70"
                 )}
+                onClick={(e) => handleRestrictedNavClick(e, !!item.requiresAccess)}
               >
                 <span className={cn(
                   "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
@@ -160,6 +183,9 @@ const Navbar = () => {
                 <span className="relative flex items-center gap-2">
                   {item.icon}
                   {item.name}
+                  {item.requiresAccess && !isPartOfCommunity && (
+                    <Lock className="h-3 w-3 ml-1" />
+                  )}
                 </span>
                 {isPathActive(item.path) && (
                   <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
@@ -173,7 +199,8 @@ const Navbar = () => {
               onClick={handleJoinButtonClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join & <span className="font-adlery">LeanOn</span>
+              {isPartOfCommunity ? 'Account' : 'Join & '}
+              {!isPartOfCommunity && <span className="font-adlery">LeanOn</span>}
             </Button>
           </div>
           
@@ -224,7 +251,8 @@ const Navbar = () => {
                   "text-base font-medium py-3 flex items-center gap-3 animate-slide-up transition-all duration-300",
                   isPathActive(item.path)
                     ? "text-primary bg-white shadow-md"
-                    : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm"
+                    : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm",
+                  item.requiresAccess && !isPartOfCommunity && "opacity-70"
                 )}
                 style={{
                   borderRadius: "1rem",
@@ -232,7 +260,12 @@ const Navbar = () => {
                   animationDelay: `${index * 0.05}s`,
                   WebkitTapHighlightColor: 'transparent'
                 }}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  handleRestrictedNavClick(e, !!item.requiresAccess);
+                  if (!item.requiresAccess || isPartOfCommunity) {
+                    setIsMobileMenuOpen(false);
+                  }
+                }}
               >
                 <span className={cn(
                   "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",
@@ -243,6 +276,9 @@ const Navbar = () => {
                   {item.icon}
                 </span>
                 {item.name}
+                {item.requiresAccess && !isPartOfCommunity && (
+                  <Lock className="h-3 w-3 ml-1" />
+                )}
                 {isPathActive(item.path) && (
                   <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
                     Active
@@ -263,7 +299,8 @@ const Navbar = () => {
               onClick={handleJoinButtonClick}
             >
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join & <span className="font-adlery">LeanOn</span>
+              {isPartOfCommunity ? 'Account' : 'Join & '}
+              {!isPartOfCommunity && <span className="font-adlery">LeanOn</span>}
             </Button>
           </div>
         </nav>
@@ -272,6 +309,13 @@ const Navbar = () => {
       <JoinCommunityModal
         isOpen={isJoinModalOpen}
         onOpenChange={setIsJoinModalOpen}
+        onSuccess={() => {
+          setIsPartOfCommunity(true);
+          toast({
+            title: "Welcome to the community!",
+            description: "You now have access to all features.",
+          });
+        }}
       />
     </header>
   );

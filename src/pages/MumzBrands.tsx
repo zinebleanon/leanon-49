@@ -9,8 +9,9 @@ import BrandsHero from '@/components/mumzbrands/BrandsHero';
 import BrandFilterSection from '@/components/mumzbrands/BrandFilterSection';
 import BrandsGrid from '@/components/mumzbrands/BrandsGrid';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface Brand {
   id: string;
@@ -32,6 +33,11 @@ const MumzBrands = () => {
   const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
   const [brandCategory, setBrandCategory] = useState('All Categories');
   const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // Simulate checking if user is part of the community
+  // In a real app, this would come from your auth system
+  const [isPartOfCommunity, setIsPartOfCommunity] = useState(false);
   
   useEffect(() => {
     setIsVisible(true);
@@ -43,6 +49,10 @@ const MumzBrands = () => {
     return () => clearTimeout(timer);
   }, []);
   
+  const handleJoinButtonClick = () => {
+    setIsJoinModalOpen(true);
+  };
+
   const brands: Brand[] = [
     {
       id: '1',
@@ -135,6 +145,66 @@ const MumzBrands = () => {
   const dealCategories = ['Baby', 'Toddler', 'Kids', 'Mom', 'Home', 'Toys', 'Education'];
   const marketplaceCategories = ['Clothing', 'Strollers', 'Car Seats', 'Toys', 'Books'];
   
+  if (!isPartOfCommunity) {
+    return (
+      <div className="min-h-screen bg-[#B8CEC2]/30">
+        <Navbar />
+        
+        <main className="pt-12 md:pt-16 pb-6 md:pb-10">
+          {/* Hero Section */}
+          <BrandsHero />
+          
+          {/* Centered ribbon tag image - with reduced spacing */}
+          <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0">
+            <img 
+              src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
+              alt="Discount tag ribbon" 
+              className="w-full max-w-2xl h-auto mx-auto object-contain my-0"
+              loading="eager"
+            />
+          </div>
+          
+          {/* Restricted Access Section */}
+          <section className="py-16 px-6 text-center">
+            <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+              <div className="flex justify-center mb-4">
+                <div className="h-16 w-16 rounded-full bg-[#B8CEC2]/50 flex items-center justify-center">
+                  <Lock className="h-8 w-8 text-[#403E43]" />
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold mb-4 font-playfair">Join the Community</h2>
+              <p className="text-muted-foreground mb-6">
+                Access to exclusive brand discounts and deals is only available to community members.
+                Join our community to unlock these special benefits.
+              </p>
+              <Button 
+                size="lg" 
+                className="w-full rounded-full px-6 bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground"
+                onClick={handleJoinButtonClick}
+              >
+                Join the Community
+              </Button>
+            </div>
+          </section>
+        </main>
+        
+        <Footer />
+        
+        <JoinCommunityModal
+          isOpen={isJoinModalOpen}
+          onOpenChange={setIsJoinModalOpen}
+          onSuccess={() => {
+            setIsPartOfCommunity(true);
+            toast({
+              title: "Welcome to the community!",
+              description: "You now have access to exclusive brand discounts and deals.",
+            });
+          }}
+        />
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
@@ -176,6 +246,13 @@ const MumzBrands = () => {
       <JoinCommunityModal
         isOpen={isJoinModalOpen}
         onOpenChange={setIsJoinModalOpen}
+        onSuccess={() => {
+          setIsPartOfCommunity(true);
+          toast({
+            title: "Welcome to the community!",
+            description: "You now have access to exclusive brand discounts and deals.",
+          });
+        }}
       />
     </div>
   );
