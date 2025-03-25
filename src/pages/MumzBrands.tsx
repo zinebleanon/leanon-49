@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -34,9 +35,10 @@ const MumzBrands = () => {
   
   useEffect(() => {
     setIsVisible(true);
+    // Increase the loading time slightly to ensure all content is ready
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 800);
     
     return () => clearTimeout(timer);
   }, []);
@@ -138,15 +140,16 @@ const MumzBrands = () => {
       <Navbar />
       
       <main className="pt-12 md:pt-16 pb-6 md:pb-10">
-        {/* Hero Section - reduced padding */}
+        {/* Hero Section */}
         <BrandsHero />
         
-        {/* Centered image section - reduced padding */}
+        {/* Centered image section - with optimized size */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-1">
           <img 
             src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Premium brands" 
-            className="w-full max-w-3xl h-auto mx-auto object-contain"
+            className="w-full max-w-2xl h-auto mx-auto object-contain"
+            loading="eager"
           />
         </div>
         
