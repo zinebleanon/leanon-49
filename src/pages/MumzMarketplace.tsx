@@ -99,11 +99,11 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section - replacing the existing image with new one */}
+        {/* Centered image section - replacing with the new image */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
           <img 
-            src="/lovable-uploads/bb4acf49-8869-49f7-9464-6e2f7d244c0e.png" 
-            alt="Baby nursery with wooden crib and toys" 
+            src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
+            alt="Baby nursery with toys and furniture" 
             className="w-full max-w-3xl h-auto mx-auto object-contain"
           />
         </div>
