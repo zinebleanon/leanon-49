@@ -48,7 +48,7 @@ const CategorySection = ({ activeTab, dealCategories, marketplaceCategories }: C
               variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
               onClick={() => handleCategoryClick(category)}
-              className="rounded-full text-sm"
+              className="rounded-full text-sm bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 border-[#B8CEC2]/30"
             >
               {category}
             </Button>

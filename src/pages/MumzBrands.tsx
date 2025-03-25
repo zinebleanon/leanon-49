@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -8,6 +7,7 @@ import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import BrandsHero from '@/components/mumzbrands/BrandsHero';
 import BrandFilterSection from '@/components/mumzbrands/BrandFilterSection';
 import BrandsGrid from '@/components/mumzbrands/BrandsGrid';
+import CategorySection from '@/components/mumzsave/CategorySection';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -25,11 +25,21 @@ interface Brand {
 
 const MumzBrands = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [filteredBrands, setFilteredBrands] = useState<Brand[]>([]);
   const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
   const [brandCategory, setBrandCategory] = useState('All Categories');
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    setIsVisible(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   const brands: Brand[] = [
     {
@@ -101,14 +111,6 @@ const MumzBrands = () => {
   ];
   
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  useEffect(() => {
     // Filter brands based on selected category and type
     let filtered = [...brands];
     
@@ -127,31 +129,32 @@ const MumzBrands = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
+  const dealCategories = ['Baby', 'Toddler', 'Kids', 'Mom', 'Home', 'Toys', 'Education'];
+  const marketplaceCategories = ['Clothing', 'Strollers', 'Car Seats', 'Toys', 'Books'];
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 mb-4">
-          <Button variant="ghost" asChild className="mb-2">
-            <Link to="/save">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Mumz Save
-            </Link>
-          </Button>
-        </div>
-        
+      <main className="pt-12 md:pt-16 pb-6 md:pb-10">
+        {/* Hero Section - reduced padding */}
         <BrandsHero />
         
-        {/* Centered image section - similar to Marketplace */}
-        <div className="flex justify-center items-center bg-[#FFD9A7] px-4 md:px-8 py-1">
+        {/* Centered image section - reduced padding */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-1">
           <img 
             src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
             alt="Premium brands" 
             className="w-full max-w-3xl h-auto mx-auto object-contain"
           />
         </div>
+        
+        <CategorySection 
+          activeTab="deals"
+          dealCategories={dealCategories}
+          marketplaceCategories={marketplaceCategories}
+        />
         
         <BrandFilterSection 
           onCategoryChange={setBrandCategory}
