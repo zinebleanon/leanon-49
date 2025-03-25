@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Users, MessageCircle, Tag, ShoppingBag, BookOpen } from 'lucide-react';
+import { Users, MessageCircle, Tag, ShoppingBag, BookOpen, Store } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HeroSectionProps {
@@ -38,8 +38,8 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           </div>
           <div className="p-4 bg-white/50 rounded-lg shadow-sm">
             <div className="flex items-center gap-3">
-              <ShoppingBag className="h-8 w-8 text-primary bg-[#FFD9A7] p-1 rounded-full" />
-              <h3 className="font-medium">Preloved</h3>
+              <Store className="h-8 w-8 text-primary bg-[#FFD9A7] p-1 rounded-full" />
+              <h3 className="font-medium">Brands</h3>
             </div>
           </div>
         </div>
@@ -60,9 +60,9 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
             className="rounded-full"
             asChild
           >
-            <Link to="/marketplace">
-              <ShoppingBag className="mr-2 h-4 w-4" />
-              Mumz Marketplace
+            <Link to="/brands">
+              <Store className="mr-2 h-4 w-4" />
+              Partner Brands
             </Link>
           </Button>
         </div>
