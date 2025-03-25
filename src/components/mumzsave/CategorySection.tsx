@@ -27,9 +27,9 @@ const CategorySection = ({ activeTab, dealCategories, marketplaceCategories }: C
           
           <div className="flex space-x-2 mt-2 sm:mt-0">
             <Button variant="outline" size="sm" asChild className="text-sm">
-              <Link to="/deals">
+              <Link to="/brands">
                 <Tag className="mr-1 h-4 w-4" />
-                All Deals
+                All Brands
               </Link>
             </Button>
             <Button variant="outline" size="sm" asChild className="text-sm">

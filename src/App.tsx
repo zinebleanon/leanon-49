@@ -3,11 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import MumzAlly from "./pages/MumzAlly";
 import MumzAsk from "./pages/MumzAsk";
-import MumzSave from "./pages/MumzSave";
+import MumzBrands from "./pages/MumzBrands";
 import MumzMarketplace from "./pages/MumzMarketplace";
 import MumzMarketplaceSell from "./pages/MumzMarketplaceSell";
 import MumzMarketplaceFind from "./pages/MumzMarketplaceFind";
@@ -15,7 +15,6 @@ import MumzAllySubscribe from "./pages/MumzAllySubscribe";
 import MumzShoppingHub from "./pages/MumzShoppingHub";
 import MumzSelect from "./pages/MumzSelect";
 import MumzDeals from "./pages/MumzDeals";
-import MumzBrands from "./pages/MumzBrands";
 import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
 
@@ -37,7 +36,7 @@ const App = () => (
           
           {/* LeanOn Routes */}
           <Route path="/" element={<MumzShoppingHub />}>
-            <Route path="save" element={<MumzSave />} />
+            <Route path="save" element={<Navigate to="/brands" replace />} />
             <Route path="marketplace" element={<MumzMarketplace />} />
             <Route path="select" element={<MumzSelect />} />
           </Route>

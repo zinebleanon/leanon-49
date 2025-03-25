@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -65,7 +66,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
       description: '<span class="font-adlery">LeanOn</span> us to select brands & deals for you.',
       icon: <Tag className="h-5 w-5 md:h-6 md:w-6" />,
       color: 'from-[#FFF8E7] to-[#FFF8E7]/80',
-      path: '/save'
+      path: '/brands'
     },
     { 
       id: 'preloved',

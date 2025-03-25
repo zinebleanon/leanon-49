@@ -65,7 +65,7 @@ const Navbar = () => {
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
     { name: 'Find', icon: <Users className="h-4 w-4" />, path: '/ally' },
     { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
-    { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/save' },
+    { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/brands' },
     { name: 'Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
   ];
 
@@ -81,8 +81,9 @@ const Navbar = () => {
   };
   
   const isPathActive = (path: string) => {
-    if (path === '/save') {
+    if (path === '/brands') {
       return location.pathname === path || 
+             location.pathname === '/save' || 
              location.pathname.startsWith('/select/');
     }
     if (path === '/marketplace') {
