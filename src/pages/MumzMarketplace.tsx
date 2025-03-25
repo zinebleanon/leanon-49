@@ -1,7 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import HowToJoinSection from '@/components/HowToJoinSection';
 import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
@@ -9,7 +9,6 @@ import CategorySection from '@/components/mumzsave/CategorySection';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
 import { Search, Package } from 'lucide-react';
-import HowItWorksDialog from '@/components/HowItWorksDialog';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,10 +23,6 @@ const MumzMarketplace = () => {
     
     return () => clearTimeout(timer);
   }, []);
-
-  const handleJoinButtonClick = () => {
-    setIsJoinModalOpen(true);
-  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -89,8 +84,11 @@ const MumzMarketplace = () => {
                 <Button 
                   size="lg" 
                   className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                  asChild
                 >
-                  <Search className="mr-2 h-5 w-5" /> Find an Item
+                  <Link to="/marketplace/find">
+                    <Search className="mr-2 h-5 w-5" /> Find an Item
+                  </Link>
                 </Button>
                 
                 <Button 
@@ -102,8 +100,6 @@ const MumzMarketplace = () => {
                     <Package className="mr-2 h-5 w-5" /> List your Item
                   </Link>
                 </Button>
-                
-                <HowItWorksDialog buttonVariant="outline" />
               </div>
             </div>
           </div>
@@ -130,8 +126,6 @@ const MumzMarketplace = () => {
             <MarketplaceItemsGrid items={featuredItems} />
           </div>
         </section>
-        
-        <HowToJoinSection onJoinClick={handleJoinButtonClick} />
       </main>
       
       <Footer />

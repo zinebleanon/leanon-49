@@ -10,6 +10,7 @@ import MumzAsk from "./pages/MumzAsk";
 import MumzSave from "./pages/MumzSave";
 import MumzMarketplace from "./pages/MumzMarketplace";
 import MumzMarketplaceSell from "./pages/MumzMarketplaceSell";
+import MumzMarketplaceFind from "./pages/MumzMarketplaceFind";
 import MumzAllySubscribe from "./pages/MumzAllySubscribe";
 import MumzShoppingHub from "./pages/MumzShoppingHub";
 import MumzSelect from "./pages/MumzSelect";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="select" element={<MumzSelect />} />
           </Route>
           <Route path="/marketplace/sell" element={<MumzMarketplaceSell />} />
+          <Route path="/marketplace/find" element={<MumzMarketplaceFind />} />
           
           {/* Catch-all Route */}
           <Route path="*" element={<NotFound />} />
