@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import HowItWorksModal from './mumzally/HowItWorksModal';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,8 +26,6 @@ const Navbar = () => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
   
-  // Simulate checking if user is part of the community
-  // In a real app, this would come from your auth system
   const [isPartOfCommunity, setIsPartOfCommunity] = useState(false);
   
   const handleScroll = useCallback(() => {
@@ -149,7 +148,6 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-3 md:gap-4">
-          {/* Inbox Notifications - Visible on all screen sizes */}
           <Link
             to="/inbox"
             className={cn(
@@ -168,7 +166,6 @@ const Navbar = () => {
             )}
           </Link>
           
-          {/* Desktop Navigation Menu */}
           <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
             {navItems.map((item) => (
               <Link
@@ -219,9 +216,10 @@ const Navbar = () => {
               <Info className="mr-2 h-4 w-4" />
               What's in there?
             </Button>
+            
+            <HowItWorksModal className="ml-2" />
           </div>
           
-          {/* Mobile menu button */}
           <button 
             className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
             onClick={toggleMobileMenu}
@@ -248,7 +246,6 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Mobile menu */}
       <div 
         className={cn(
           "md:hidden fixed inset-0 z-40 pt-16 transition-all duration-300 shadow-lg bg-pastel-green",
@@ -322,7 +319,7 @@ const Navbar = () => {
             
             <Button
               variant="outline"
-              className="w-full py-5 rounded-full animate-slide-up shadow-sm border-primary/20 text-primary hover:bg-primary/5"
+              className="w-full py-5 rounded-full animate-slide-up shadow-sm border-primary/20 text-primary hover:bg-primary/5 mb-3"
               style={{ 
                 animationDelay: '0.25s',
                 WebkitTapHighlightColor: 'transparent'
@@ -332,6 +329,11 @@ const Navbar = () => {
               <Info className="mr-2 h-4 w-4" />
               What's in there?
             </Button>
+            
+            <HowItWorksModal 
+              className="w-full"
+              buttonVariant="outline"
+            />
           </div>
         </nav>
       </div>
