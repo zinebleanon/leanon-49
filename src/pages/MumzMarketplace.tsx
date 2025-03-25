@@ -3,22 +3,22 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HowToJoinSection from '@/components/HowToJoinSection';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
-import MarketplaceHero from '@/components/mumzmarketplace/MarketplaceHero';
-import MarketplaceInfoSection from '@/components/mumzsave/MarketplaceInfoSection';
 import CategorySection from '@/components/mumzsave/CategorySection';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { Search, Package, HelpCircle } from 'lucide-react';
+import HowItWorksDialog from '@/components/HowItWorksDialog';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const navigate = useNavigate();
   
   useEffect(() => {
+    setIsVisible(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -70,21 +70,54 @@ const MumzMarketplace = () => {
     }
   ];
   
+  const textStyles = "transition-all duration-700 ease-smooth";
+  
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 mb-8">
-          <Button variant="ghost" asChild className="mb-4">
-            <Link to="/save">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Mumz Save
-            </Link>
-          </Button>
-        </div>
+      <main className="pt-20 md:pt-24 pb-6 md:pb-10">
+        {/* Hero Section with structure similar to other pages */}
+        <section className="py-3 md:py-5 px-4 md:px-8 bg-[#B8CEC2]">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center md:text-left md:max-w-3xl mx-auto">
+              <h1 className={`text-3xl md:text-5xl font-bold mb-3 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
+                  Preloved Items from Moms to Moms
+                </span>
+              </h1>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                <Button 
+                  size="lg" 
+                  className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                >
+                  <Search className="mr-2 h-5 w-5" /> Find an Item
+                </Button>
+                
+                <Button 
+                  size="lg" 
+                  className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                  asChild
+                >
+                  <Link to="/marketplace/sell">
+                    <Package className="mr-2 h-5 w-5" /> List your Item
+                  </Link>
+                </Button>
+                
+                <HowItWorksDialog buttonVariant="outline" />
+              </div>
+            </div>
+          </div>
+        </section>
         
-        <MarketplaceHero />
+        {/* Centered image section with minimal padding - similar to MumzAsk */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
+          <img 
+            src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
+            alt="Diverse moms silhouettes illustration" 
+            className="w-full max-w-3xl h-auto mx-auto object-contain"
+          />
+        </div>
         
         <CategorySection 
           activeTab="marketplace"
@@ -98,8 +131,6 @@ const MumzMarketplace = () => {
             <MarketplaceItemsGrid items={featuredItems} />
           </div>
         </section>
-        
-        <MarketplaceInfoSection />
         
         <HowToJoinSection onJoinClick={handleJoinButtonClick} />
       </main>
