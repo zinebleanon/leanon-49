@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -46,7 +45,6 @@ const SellItemForm = () => {
   const [isAdminMode, setIsAdminMode] = useState(false);
   
   useEffect(() => {
-    // Load monthly listings count from localStorage
     const currentMonth = new Date().getMonth();
     const storedMonth = localStorage.getItem('listingsMonth');
     
@@ -54,13 +52,11 @@ const SellItemForm = () => {
       const count = localStorage.getItem('monthlyListingsCount');
       setMonthlyListingsCount(count ? parseInt(count) : 0);
     } else {
-      // Reset count for new month
       localStorage.setItem('listingsMonth', currentMonth.toString());
       localStorage.setItem('monthlyListingsCount', '0');
       setMonthlyListingsCount(0);
     }
     
-    // Load previously listed items
     const items = localStorage.getItem('listedItems');
     if (items) {
       const parsedItems = JSON.parse(items);
@@ -70,7 +66,6 @@ const SellItemForm = () => {
       setPendingApprovalItems(pending);
     }
     
-    // For demo purposes: check if user is admin
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     setIsAdminMode(isAdmin);
   }, []);
@@ -109,9 +104,7 @@ const SellItemForm = () => {
     
     setIsSubmitting(true);
     
-    // Simulate API call
     setTimeout(() => {
-      // Create new item (with pending approval status)
       const newItem = {
         id: Date.now().toString(),
         title,
@@ -122,21 +115,17 @@ const SellItemForm = () => {
         location,
         createdDate: new Date().toISOString(),
         status: 'available',
-        approved: false // New items are not approved by default
+        approved: false
       };
       
-      // Get all items and add the new one
       const existingItems = localStorage.getItem('listedItems');
       const allItems = existingItems ? JSON.parse(existingItems) : [];
       const updatedItems = [...allItems, newItem];
       
-      // Save all items back to localStorage
       localStorage.setItem('listedItems', JSON.stringify(updatedItems));
       
-      // Update pending items list 
       setPendingApprovalItems([...pendingApprovalItems, newItem]);
       
-      // Update monthly listings count
       const newCount = monthlyListingsCount + 1;
       localStorage.setItem('monthlyListingsCount', newCount.toString());
       setMonthlyListingsCount(newCount);
@@ -146,7 +135,6 @@ const SellItemForm = () => {
         description: "Your item has been submitted and is pending admin approval."
       });
       
-      // Reset form
       setTitle('');
       setDescription('');
       setCategory('');
@@ -174,7 +162,6 @@ const SellItemForm = () => {
     
     localStorage.setItem('listedItems', JSON.stringify(updatedItems));
     
-    // Update approved items in the state
     const updatedApproved = updatedItems.filter((item: any) => item.approved);
     setListedItems(updatedApproved);
     
@@ -198,7 +185,6 @@ const SellItemForm = () => {
     
     localStorage.setItem('listedItems', JSON.stringify(updatedItems));
     
-    // Update state based on approval status
     const approvedItems = updatedItems.filter((item: any) => item.approved);
     const pendingItems = updatedItems.filter((item: any) => !item.approved);
     
@@ -228,8 +214,7 @@ const SellItemForm = () => {
   
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">List an Item</h1>
+      <div className="flex justify-end">
         <Button 
           variant="outline" 
           size="sm" 
