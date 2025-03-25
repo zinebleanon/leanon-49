@@ -64,12 +64,12 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-16 md:pt-20 pb-6 md:pb-10">
-        {/* Hero Section */}
-        <section className="py-3 md:py-4 px-4 md:px-8 bg-[#B8CEC2]">
+      <main className="pt-12 md:pt-16 pb-6 md:pb-10">
+        {/* Hero Section - reduced padding */}
+        <section className="py-2 md:py-3 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-3xl md:text-5xl font-bold mb-3 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-2 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   Preloved Items<br />from Moms to Moms
                 </span>
@@ -99,8 +99,8 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section - replacing with the new image */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
+        {/* Centered image section - reduced padding */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-1">
           <img 
             src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
             alt="Baby nursery with toys and furniture" 
@@ -108,9 +108,9 @@ const MumzMarketplace = () => {
           />
         </div>
         
-        <section className="py-10 px-6">
+        <section className="py-6 px-6">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
+            <h2 className="text-2xl font-bold mb-4 font-playfair">Featured Items</h2>
             <MarketplaceItemsGrid items={featuredItems} />
           </div>
         </section>
