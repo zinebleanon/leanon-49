@@ -1,8 +1,7 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, Lock } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, Lock, Info } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -20,6 +19,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(3); // Example unread count
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -80,6 +80,13 @@ const Navbar = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
+  };
+
+  const handleInfoButtonClick = () => {
+    toast({
+      title: "About LeanOn Community",
+      description: "Join our community to connect with other moms, ask questions, and get access to exclusive deals and resources.",
+    });
   };
   
   const toggleMobileMenu = () => {
@@ -202,6 +209,16 @@ const Navbar = () => {
               {isPartOfCommunity ? 'Account' : 'Join & '}
               {!isPartOfCommunity && <span className="font-adlery">LeanOn</span>}
             </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full border-primary/20 text-primary hover:bg-primary/5"
+              onClick={handleInfoButtonClick}
+            >
+              <Info className="mr-2 h-4 w-4" />
+              What's in there?
+            </Button>
           </div>
           
           {/* Mobile menu button */}
@@ -291,7 +308,7 @@ const Navbar = () => {
           <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
             <Button
               variant="warm"
-              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg"
+              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg mb-3"
               style={{ 
                 animationDelay: '0.2s',
                 WebkitTapHighlightColor: 'transparent'
@@ -301,6 +318,19 @@ const Navbar = () => {
               <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
               {isPartOfCommunity ? 'Account' : 'Join & '}
               {!isPartOfCommunity && <span className="font-adlery">LeanOn</span>}
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="w-full py-5 rounded-full animate-slide-up shadow-sm border-primary/20 text-primary hover:bg-primary/5"
+              style={{ 
+                animationDelay: '0.25s',
+                WebkitTapHighlightColor: 'transparent'
+              }}
+              onClick={handleInfoButtonClick}
+            >
+              <Info className="mr-2 h-4 w-4" />
+              What's in there?
             </Button>
           </div>
         </nav>
