@@ -4,6 +4,13 @@ import { Tag, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BrandsHero = () => {
+  const scrollToCategories = () => {
+    const categoriesSection = document.getElementById('categories');
+    if (categoriesSection) {
+      categoriesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="py-2 md:py-3 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -13,6 +20,15 @@ const BrandsHero = () => {
               Brands You Know<br />& You Don't Know
             </span>
           </h1>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-4">
+            <Button 
+              size="lg" 
+              className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+              onClick={scrollToCategories}
+            >
+              <Tag className="mr-2 h-5 w-5" /> Unlock Your Discount Codes
+            </Button>
+          </div>
         </div>
       </div>
     </section>
