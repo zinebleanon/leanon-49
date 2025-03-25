@@ -395,17 +395,12 @@ const SellItemForm = () => {
                 <p className="text-sm text-muted-foreground">
                   Monthly Listings: {monthlyListingsCount}/3
                 </p>
-                <div className="space-x-2">
-                  <Badge variant="outline" className="bg-amber-50 text-amber-700">
-                    Requires Admin Approval
-                  </Badge>
-                  <Button 
-                    type="submit" 
-                    disabled={isSubmitting || monthlyListingsCount >= 3}
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit for Review"}
-                  </Button>
-                </div>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting || monthlyListingsCount >= 3}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit for Review"}
+                </Button>
               </div>
             </div>
           </form>

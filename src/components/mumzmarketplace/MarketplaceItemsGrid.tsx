@@ -8,6 +8,7 @@ interface MarketplaceItemsGridProps {
     price: string;
     condition: string;
     image?: string;
+    status?: string;
   }>;
 }
 
