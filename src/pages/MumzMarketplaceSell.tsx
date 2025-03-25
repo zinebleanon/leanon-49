@@ -4,9 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SellItemForm from '@/components/mumzmarketplace/SellItemForm';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 const MumzMarketplaceSell = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,12 +28,6 @@ const MumzMarketplaceSell = () => {
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6">
-            <Button variant="ghost" asChild className="mb-4">
-              <Link to="/marketplace">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Marketplace
-              </Link>
-            </Button>
             <h1 className="text-3xl font-bold mb-2 font-playfair">
               <span className="text-orange-500">Sell</span> <span className="text-black">on LeanOn Marketplace</span>
             </h1>
