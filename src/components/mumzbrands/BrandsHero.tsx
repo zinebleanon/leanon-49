@@ -12,15 +12,15 @@ const BrandsHero = () => {
   };
 
   return (
-    <section className="py-2 md:py-3 px-4 md:px-8 bg-[#B8CEC2]">
+    <section className="py-1 md:py-2 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-bold mb-2 font-playfair">
+          <h1 className="text-3xl md:text-5xl font-bold mb-1 font-playfair">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
               Brands You Know<br />& You Don't Know
             </span>
           </h1>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-4">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-2 mb-1">
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"

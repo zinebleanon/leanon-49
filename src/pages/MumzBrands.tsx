@@ -143,12 +143,12 @@ const MumzBrands = () => {
         {/* Hero Section */}
         <BrandsHero />
         
-        {/* Centered image section - with optimized size */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-1">
+        {/* Centered ribbon tag image - with reduced spacing */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0">
           <img 
-            src="/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png" 
-            alt="Premium brands" 
-            className="w-full max-w-2xl h-auto mx-auto object-contain"
+            src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
+            alt="Discount tag ribbon" 
+            className="w-full max-w-2xl h-auto mx-auto object-contain my-0"
             loading="eager"
           />
         </div>
