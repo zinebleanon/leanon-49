@@ -1,6 +1,5 @@
 
 import { Button } from '@/components/ui/button';
-import { Tag, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RibbonIcon from '@/components/ui/RibbonIcon';
 
@@ -27,7 +26,7 @@ const BrandsHero = () => {
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
               onClick={scrollToCategories}
             >
-              <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" /> Unlock Your Discount Codes
+              <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" size="1.5em" /> Unlock Your Discount Codes
             </Button>
           </div>
         </div>

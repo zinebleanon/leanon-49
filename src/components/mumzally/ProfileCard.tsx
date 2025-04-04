@@ -1,4 +1,3 @@
-
 import { UserCircle, BabyIcon, MapPin, Flag, Briefcase, MessageCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -133,6 +132,7 @@ const ProfileCard = ({
                 className="w-12 h-8" 
                 isLeftActive={userHeartActive} 
                 isRightActive={!userHeartActive} 
+                color="#FFD9A7"
               />
               LeanBack
             </div>

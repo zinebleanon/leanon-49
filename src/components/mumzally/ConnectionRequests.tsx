@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -102,12 +101,12 @@ const MatchRequests = () => {
                     <div className="flex items-center gap-2">
                       {acceptedRequests.includes(request.id) ? (
                         <>
-                          <BowRibbon isActive={true} className="w-12 h-8 mr-1" />
+                          <BowRibbon isActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
                           Message {request.name}
                         </>
                       ) : (
                         <>
-                          <BowRibbon isRightActive={true} className="w-12 h-8 mr-1" />
+                          <BowRibbon isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
                           LeanBack
                         </>
                       )}
