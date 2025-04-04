@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -44,7 +43,6 @@ const MumzAsk = () => {
   
   const neighborhoodCategories = [
     { name: 'Meetups', icon: <CalendarDays className="h-4 w-4 mr-2" /> },
-    { name: 'Events', icon: <Users className="h-4 w-4 mr-2" /> },
     { name: 'Help & Support', icon: <HeartHandshake className="h-4 w-4 mr-2" /> },
   ];
   
@@ -63,7 +61,6 @@ const MumzAsk = () => {
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-6 md:pb-10">
-        {/* Hero Section with reduced padding */}
         <section className="py-3 md:py-5 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
@@ -73,7 +70,6 @@ const MumzAsk = () => {
                 </span>
               </h1>
               
-              {/* Community Toggle Section - Above image */}
               <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-3 mb-4">
                 <Button 
                   variant={activeSection === 'general' ? 'default' : 'ghost'}
@@ -96,7 +92,6 @@ const MumzAsk = () => {
           </div>
         </section>
         
-        {/* Centered image section with minimal padding */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 pb-3">
           <img 
             src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
@@ -105,12 +100,10 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Action Buttons - Different for each tab - Below the image */}
         <div className="px-4 py-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col sm:flex-row gap-3 justify-center my-4">
               {activeSection === 'general' ? (
-                // General Community actions
                 <>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -123,7 +116,6 @@ const MumzAsk = () => {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-lg">
                       <AskQuestionForm categories={categories} onClose={() => {
-                        // Find and click the DialogClose button programmatically
                         const closeButton = document.querySelector('[aria-label="Close"]');
                         if (closeButton instanceof HTMLElement) {
                           closeButton.click();
@@ -217,7 +209,6 @@ const MumzAsk = () => {
                   )}
                 </>
               ) : (
-                // Neighborhood Community actions
                 <>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -230,7 +221,6 @@ const MumzAsk = () => {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-lg">
                       <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
-                        // Find and click the DialogClose button programmatically
                         const closeButton = document.querySelector('[aria-label="Close"]');
                         if (closeButton instanceof HTMLElement) {
                           closeButton.click();
@@ -304,7 +294,6 @@ const MumzAsk = () => {
           </div>
         </div>
         
-        {/* Questions Section / Neighborhood Community */}
         <section className="py-3 px-4">
           <div className="max-w-4xl mx-auto">
             {activeSection === 'general' ? (
@@ -314,7 +303,6 @@ const MumzAsk = () => {
                 </div>
                 
                 <div className="space-y-3">
-                  {/* Placeholder for question cards - you can replace this with your actual question components */}
                   <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
                     <h3 className="font-semibold mb-2">How do I handle toddler tantrums in public?</h3>
                     <p className="text-sm text-muted-foreground mb-3">

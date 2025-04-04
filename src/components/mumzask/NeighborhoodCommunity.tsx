@@ -11,10 +11,10 @@ import RibbonIcon from '@/components/ui/RibbonIcon';
 
 const NeighborhoodCommunity = () => {
   const { neighborhood, isLoading } = useUserInfo();
-  const [activeTab, setActiveTab] = useState<'meetups' | 'events' | 'help'>('meetups');
+  const [activeTab, setActiveTab] = useState<'meetups' | 'help'>('meetups');
   const { toast } = useToast();
   
-  // Mock data for meetups, events, and help requests
+  // Mock data for meetups and help requests
   const meetups = [
     {
       id: 1,
@@ -31,25 +31,6 @@ const NeighborhoodCommunity = () => {
       date: "Saturday, 4:00 PM",
       location: "Central Playground",
       attendees: 3
-    }
-  ];
-  
-  const events = [
-    {
-      id: 1,
-      title: "Family Fun Day",
-      organizer: "Community Center",
-      date: "Next Sunday, 11:00 AM",
-      location: "Community Center",
-      description: "Games, food, and activities for the whole family"
-    },
-    {
-      id: 2,
-      title: "Story Time for Kids",
-      organizer: "Local Library",
-      date: "Every Tuesday, 3:00 PM",
-      location: "Public Library",
-      description: "Interactive storytelling session for children under 5"
     }
   ];
   
@@ -100,15 +81,11 @@ const NeighborhoodCommunity = () => {
         </p>
       </div>
       
-      <Tabs defaultValue="meetups" className="mb-4" onValueChange={(value) => setActiveTab(value as 'meetups' | 'events' | 'help')}>
-        <TabsList className="grid grid-cols-3 mb-4">
+      <Tabs defaultValue="meetups" className="mb-4" onValueChange={(value) => setActiveTab(value as 'meetups' | 'help')}>
+        <TabsList className="grid grid-cols-2 mb-4">
           <TabsTrigger value="meetups" className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
             <span>Meet-ups</span>
-          </TabsTrigger>
-          <TabsTrigger value="events" className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" />
-            <span>Events</span>
           </TabsTrigger>
           <TabsTrigger value="help" className="flex items-center gap-1">
             <HeartHandshake className="h-4 w-4" />
@@ -139,35 +116,6 @@ const NeighborhoodCommunity = () => {
                     </Badge>
                     <Button size="sm" className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground">
                       Join Meetup
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="events" className="mt-0">
-          <div className="space-y-4">
-            {events.map(event => (
-              <Card key={event.id} className="overflow-hidden">
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-lg">{event.title}</h3>
-                  <div className="flex flex-col gap-1 mt-2">
-                    <p className="text-sm flex items-center gap-1">
-                      <UserCircle className="h-4 w-4" /> Organized by: {event.organizer}
-                    </p>
-                    <p className="text-sm flex items-center gap-1">
-                      <Calendar className="h-4 w-4" /> {event.date}
-                    </p>
-                    <p className="text-sm flex items-center gap-1">
-                      <MapPin className="h-4 w-4" /> {event.location}
-                    </p>
-                    <p className="text-sm mt-1">{event.description}</p>
-                  </div>
-                  <div className="flex justify-end mt-3">
-                    <Button size="sm" className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground">
-                      Interested
                     </Button>
                   </div>
                 </CardContent>
