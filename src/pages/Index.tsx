@@ -4,9 +4,13 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import Footer from '@/components/Footer';
+import useViewportHeight from '@/hooks/use-viewport-height';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Use the viewport height hook to fix iOS height issues
+  useViewportHeight();
   
   useEffect(() => {
     // Simulate loading state for smooth intro

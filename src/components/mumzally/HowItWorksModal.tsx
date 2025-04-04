@@ -43,7 +43,7 @@ interface HowItWorksModalProps {
 }
 
 const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
-  return <HowItWorksDialog className={className} buttonVariant="warm" />;
+  return <HowItWorksDialog className={className} />;
 };
 
 export default HowItWorksModal;

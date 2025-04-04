@@ -11,6 +11,7 @@ import BrandsGrid from '@/components/mumzbrands/BrandsGrid';
 import CategorySection from '@/components/mumzsave/CategorySection';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import useViewportHeight from '@/hooks/use-viewport-height';
 
 interface Brand {
   id: string;
@@ -32,6 +33,9 @@ const MumzBrands = () => {
   const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
   const [brandCategory, setBrandCategory] = useState('All Categories');
   const navigate = useNavigate();
+  
+  // Use the viewport height hook to fix iOS height issues
+  useViewportHeight();
   
   useEffect(() => {
     setIsVisible(true);
