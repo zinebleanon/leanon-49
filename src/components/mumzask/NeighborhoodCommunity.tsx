@@ -65,7 +65,7 @@ const NeighborhoodCommunity = () => {
   }
   
   return (
-    <section className="mt-6 mb-8">
+    <section>
       <div className="bg-[#B8CEC2]/50 rounded-lg p-4 mb-4">
         <h2 className="text-xl font-bold font-playfair flex items-center">
           <MapPin className="mr-2 h-5 w-5 text-[#B8CEC2]" />

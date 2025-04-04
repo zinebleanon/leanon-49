@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X } from 'lucide-react';
@@ -66,117 +66,12 @@ const MumzAsk = () => {
                   LeanOn the Community
                 </span>
               </h1>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button 
-                      size="lg" 
-                      className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                    >
-                      <MessagesSquare className="mr-2 h-5 w-5" /> Ask the Community
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-lg">
-                    <AskQuestionForm categories={categories} onClose={() => {
-                      // Find and click the DialogClose button programmatically
-                      const closeButton = document.querySelector('[aria-label="Close"]');
-                      if (closeButton instanceof HTMLElement) {
-                        closeButton.click();
-                      }
-                    }} />
-                  </DialogContent>
-                </Dialog>
-                
-                {isMobile ? (
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button 
-                        size="lg" 
-                        className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                      >
-                        <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
-                      <div className="pt-4">
-                        <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
-                        <div className="relative mb-4">
-                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <Search className="w-5 h-5 text-gray-500" />
-                          </div>
-                          <Input 
-                            type="search" 
-                            className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
-                            placeholder="Enter keywords to narrow your search..." 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                          />
-                        </div>
-                        <div className="flex flex-wrap gap-2 mb-6 max-h-[60vh] overflow-y-auto">
-                          {categories.map((category) => (
-                            <Button
-                              key={category.name}
-                              variant="outline"
-                              size="sm"
-                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                            >
-                              {category.icon}
-                              {category.name}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                    </SheetContent>
-                  </Sheet>
-                ) : (
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button 
-                        size="lg" 
-                        className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                      >
-                        <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
-                      <div className="pt-4">
-                        <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
-                        <div className="relative mb-4">
-                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <Search className="w-5 h-5 text-gray-500" />
-                          </div>
-                          <Input 
-                            type="search" 
-                            className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
-                            placeholder="Enter keywords to narrow your search..." 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                          />
-                        </div>
-                        <div className="flex flex-wrap gap-2 mb-6 max-h-[40vh] overflow-y-auto">
-                          {categories.map((category) => (
-                            <Button
-                              key={category.name}
-                              variant="outline"
-                              size="sm"
-                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                            >
-                              {category.icon}
-                              {category.name}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                )}
-              </div>
             </div>
           </div>
         </section>
         
         {/* Centered image section with minimal padding */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-3">
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 pb-3">
           <img 
             src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
             alt="Diverse moms silhouettes illustration" 
@@ -184,7 +79,7 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Community Toggle Section */}
+        {/* Community Toggle Section - Moved to top */}
         <div className="px-4 py-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mb-4">
@@ -204,6 +99,139 @@ const MumzAsk = () => {
                 <Users className="mr-2 h-4 w-4" />
                 Neighborhood
               </Button>
+            </div>
+            
+            {/* Action Buttons - Different for each tab */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center my-4">
+              {activeSection === 'general' ? (
+                // General Community actions
+                <>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button 
+                        size="lg" 
+                        className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                      >
+                        <MessagesSquare className="mr-2 h-5 w-5" /> Ask the Community
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-lg">
+                      <AskQuestionForm categories={categories} onClose={() => {
+                        // Find and click the DialogClose button programmatically
+                        const closeButton = document.querySelector('[aria-label="Close"]');
+                        if (closeButton instanceof HTMLElement) {
+                          closeButton.click();
+                        }
+                      }} />
+                    </DialogContent>
+                  </Dialog>
+                  
+                  {isMobile ? (
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button 
+                          size="lg" 
+                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                        >
+                          <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
+                        <div className="pt-4">
+                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                          <div className="relative mb-4">
+                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                              <Search className="w-5 h-5 text-gray-500" />
+                            </div>
+                            <Input 
+                              type="search" 
+                              className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
+                              placeholder="Enter keywords to narrow your search..." 
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex flex-wrap gap-2 mb-6 max-h-[60vh] overflow-y-auto">
+                            {categories.map((category) => (
+                              <Button
+                                key={category.name}
+                                variant="outline"
+                                size="sm"
+                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                              >
+                                {category.icon}
+                                {category.name}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  ) : (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="lg" 
+                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                        >
+                          <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
+                        <div className="pt-4">
+                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                          <div className="relative mb-4">
+                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                              <Search className="w-5 h-5 text-gray-500" />
+                            </div>
+                            <Input 
+                              type="search" 
+                              className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
+                              placeholder="Enter keywords to narrow your search..." 
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex flex-wrap gap-2 mb-6 max-h-[40vh] overflow-y-auto">
+                            {categories.map((category) => (
+                              <Button
+                                key={category.name}
+                                variant="outline"
+                                size="sm"
+                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                              >
+                                {category.icon}
+                                {category.name}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                </>
+              ) : (
+                // Neighborhood Community actions
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="lg" 
+                      className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                    >
+                      <MessagesSquare className="mr-2 h-5 w-5" /> Ask your Neighborhood
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-lg">
+                    <AskQuestionForm categories={categories} onClose={() => {
+                      // Find and click the DialogClose button programmatically
+                      const closeButton = document.querySelector('[aria-label="Close"]');
+                      if (closeButton instanceof HTMLElement) {
+                        closeButton.click();
+                      }
+                    }} />
+                  </DialogContent>
+                </Dialog>
+              )}
             </div>
           </div>
         </div>
