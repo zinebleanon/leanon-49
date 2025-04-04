@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell } from 'lucide-r
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
-import BowIcon from './ui/BowIcon';
+import RibbonIcon from './ui/RibbonIcon';
 import { 
   NavigationMenu,
   NavigationMenuItem,
@@ -122,7 +121,6 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-3 md:gap-4">
-          {/* Inbox Notifications - Visible on all screen sizes */}
           <Link
             to="/inbox"
             className={cn(
@@ -140,7 +138,6 @@ const Navbar = () => {
             )}
           </Link>
           
-          {/* Desktop Navigation Menu */}
           <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
             {navItems.map((item) => (
               <Link
@@ -172,12 +169,11 @@ const Navbar = () => {
               className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg ml-2"
               onClick={handleJoinButtonClick}
             >
-              <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
+              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
           </div>
           
-          {/* Mobile menu button */}
           <button 
             className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
             onClick={toggleMobileMenu}
@@ -204,7 +200,6 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Mobile menu */}
       <div 
         className={cn(
           "md:hidden fixed inset-0 z-40 pt-16 transition-all duration-300 shadow-lg bg-pastel-green",
@@ -262,7 +257,7 @@ const Navbar = () => {
               }}
               onClick={handleJoinButtonClick}
             >
-              <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
+              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
           </div>

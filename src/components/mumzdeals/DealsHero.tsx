@@ -1,6 +1,7 @@
 
 import { ShoppingBag, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import RibbonIcon from '@/components/ui/RibbonIcon';
 
 const DealsHero = () => {
   return (
@@ -16,7 +17,7 @@ const DealsHero = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="rounded-full bg-primary">
-                <Tag className="mr-2 h-4 w-4" />
+                <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" />
                 Browse Deals
               </Button>
               <Button variant="outline" size="lg" className="rounded-full">

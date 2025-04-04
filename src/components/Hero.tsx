@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import HowItWorksDialog from './HowItWorksDialog';
-import BowIcon from './ui/BowIcon';
+import RibbonIcon from './ui/RibbonIcon';
 
 interface HeroProps {
   onJoinClick: () => void;
@@ -48,7 +48,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
       id: 'ally',
       title: 'Find', 
       description: 'Match with Moms in your neighborhood & <span class="font-adlery">LeanOn</span> each other.',
-      icon: <BowIcon className="h-6 w-6 md:h-7 md:w-7" />,
+      icon: <RibbonIcon className="h-6 w-6 md:h-7 md:w-7" />,
       color: 'from-[#FFF8E7] to-[#FFF8E7]/80',
       path: '/ally'
     },
@@ -133,7 +133,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
               onClick={handleJoinClick}
             >
-              <BowIcon className="mr-2 h-5 w-5" fill="currentColor" />
+              <RibbonIcon className="mr-2 h-5 w-5" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
 
