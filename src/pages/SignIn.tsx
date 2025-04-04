@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -29,14 +28,22 @@ const SignIn = () => {
     phone: '',
     password: '',
     confirmPassword: '',
+    neighborhood: '', // Added neighborhood field
   });
+  
+  const neighborhoods = [
+    "Dubai Marina", "JLT", "Downtown Dubai", "Palm Jumeirah", "Arabian Ranches",
+    "Emirates Hills", "Mirdif", "Dubailand", "Silicon Oasis", "Business Bay",
+    "Al Barsha", "Deira", "Bur Dubai", "The Springs", "The Meadows", "The Greens",
+    "Jumeirah", "Umm Suqeim", "Discovery Gardens", "International City"
+  ];
   
   const handleSignInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignInData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
     if (name === 'phone') {
@@ -117,6 +124,16 @@ const SignIn = () => {
       
       setTimeout(() => {
         setIsLoading(false);
+        
+        const userInfo = {
+          name: signUpData.name,
+          email: signUpData.email,
+          neighborhood: signUpData.neighborhood || 'Dubai Marina',
+          phone: signUpData.phone
+        };
+        
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        
         toast({
           title: "Account created!",
           description: "Your phone number has been verified and your account has been created successfully.",
@@ -320,6 +337,25 @@ const SignIn = () => {
                         onChange={handleSignUpChange}
                         required
                       />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-neighborhood">Your Neighborhood</Label>
+                      <select
+                        id="signup-neighborhood"
+                        name="neighborhood"
+                        className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
+                        value={signUpData.neighborhood}
+                        onChange={handleSignUpChange}
+                        required
+                      >
+                        <option value="" disabled>Select your neighborhood</option>
+                        {neighborhoods.map((neighborhood) => (
+                          <option key={neighborhood} value={neighborhood}>
+                            {neighborhood}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     
                     <div className="space-y-2">

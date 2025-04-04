@@ -8,12 +8,14 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
+import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isVisible, setIsVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState<'general' | 'neighborhood'>('general');
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -182,60 +184,90 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Questions Section with reduced padding - removed margin gap */}
+        {/* Community Toggle Section */}
+        <div className="px-4 py-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mb-4">
+              <Button 
+                variant={activeSection === 'general' ? 'default' : 'ghost'}
+                className={`flex-1 rounded-md ${activeSection === 'general' ? 'bg-[#B8CEC2]/70' : ''}`}
+                onClick={() => setActiveSection('general')}
+              >
+                <MessagesSquare className="mr-2 h-4 w-4" />
+                LeanOn Community
+              </Button>
+              <Button 
+                variant={activeSection === 'neighborhood' ? 'default' : 'ghost'}
+                className={`flex-1 rounded-md ${activeSection === 'neighborhood' ? 'bg-[#B8CEC2]/70' : ''}`}
+                onClick={() => setActiveSection('neighborhood')}
+              >
+                <Users className="mr-2 h-4 w-4" />
+                Neighborhood
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Questions Section / Neighborhood Community */}
         <section className="py-3 px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
-            </div>
-            
-            <div className="space-y-3">
-              {/* Placeholder for question cards - you can replace this with your actual question components */}
-              <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                <h3 className="font-semibold mb-2">How do I handle toddler tantrums in public?</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  My 2-year-old has started having major meltdowns whenever we're grocery shopping. I'm at my wit's end!
-                </p>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
-                      <MessageCircle className="h-3 w-3 mr-1" /> 12 replies
-                    </Button>
-                  </div>
-                  <span className="text-xs text-muted-foreground">2 hours ago</span>
+            {activeSection === 'general' ? (
+              <>
+                <div className="flex justify-between items-center mb-3">
+                  <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
                 </div>
-              </div>
-              
-              <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                <h3 className="font-semibold mb-2">Best breastfeeding positions for newborns?</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  I'm a first-time mom struggling with breastfeeding my 2-week-old. Which positions work best for newborns?
-                </p>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
-                      <MessageCircle className="h-3 w-3 mr-1" /> 8 replies
-                    </Button>
+                
+                <div className="space-y-3">
+                  {/* Placeholder for question cards - you can replace this with your actual question components */}
+                  <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+                    <h3 className="font-semibold mb-2">How do I handle toddler tantrums in public?</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      My 2-year-old has started having major meltdowns whenever we're grocery shopping. I'm at my wit's end!
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
+                          <MessageCircle className="h-3 w-3 mr-1" /> 12 replies
+                        </Button>
+                      </div>
+                      <span className="text-xs text-muted-foreground">2 hours ago</span>
+                    </div>
                   </div>
-                  <span className="text-xs text-muted-foreground">4 hours ago</span>
-                </div>
-              </div>
-              
-              <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                <h3 className="font-semibold mb-2">Recommendations for baby food introduction?</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  My baby is turning 6 months next week. Looking for tips on starting solid foods and what to try first.
-                </p>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
-                      <MessageCircle className="h-3 w-3 mr-1" /> 15 replies
-                    </Button>
+                  
+                  <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+                    <h3 className="font-semibold mb-2">Best breastfeeding positions for newborns?</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      I'm a first-time mom struggling with breastfeeding my 2-week-old. Which positions work best for newborns?
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
+                          <MessageCircle className="h-3 w-3 mr-1" /> 8 replies
+                        </Button>
+                      </div>
+                      <span className="text-xs text-muted-foreground">4 hours ago</span>
+                    </div>
                   </div>
-                  <span className="text-xs text-muted-foreground">1 day ago</span>
+                  
+                  <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+                    <h3 className="font-semibold mb-2">Recommendations for baby food introduction?</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      My baby is turning 6 months next week. Looking for tips on starting solid foods and what to try first.
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
+                          <MessageCircle className="h-3 w-3 mr-1" /> 15 replies
+                        </Button>
+                      </div>
+                      <span className="text-xs text-muted-foreground">1 day ago</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <NeighborhoodCommunity />
+            )}
           </div>
         </section>
       </main>
