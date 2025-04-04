@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -42,6 +42,12 @@ const MumzAsk = () => {
     { name: 'Others', icon: <HelpCircle className="h-4 w-4 mr-2" /> }
   ];
   
+  const neighborhoodCategories = [
+    { name: 'Meetups', icon: <CalendarDays className="h-4 w-4 mr-2" /> },
+    { name: 'Events', icon: <Users className="h-4 w-4 mr-2" /> },
+    { name: 'Help & Support', icon: <HeartHandshake className="h-4 w-4 mr-2" /> },
+  ];
+  
   const textStyles = "transition-all duration-700 ease-smooth";
   
   if (isLoading) {
@@ -67,7 +73,7 @@ const MumzAsk = () => {
                 </span>
               </h1>
               
-              {/* Community Toggle Section - Moved to top above image */}
+              {/* Community Toggle Section - Above image */}
               <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-3 mb-4">
                 <Button 
                   variant={activeSection === 'general' ? 'default' : 'ghost'}
@@ -99,7 +105,7 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Action Buttons - Different for each tab */}
+        {/* Action Buttons - Different for each tab - Below the image */}
         <div className="px-4 py-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col sm:flex-row gap-3 justify-center my-4">
@@ -212,25 +218,87 @@ const MumzAsk = () => {
                 </>
               ) : (
                 // Neighborhood Community actions
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button 
-                      size="lg" 
-                      className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                    >
-                      <MessagesSquare className="mr-2 h-5 w-5" /> Ask your Neighborhood
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-lg">
-                    <AskQuestionForm categories={categories} onClose={() => {
-                      // Find and click the DialogClose button programmatically
-                      const closeButton = document.querySelector('[aria-label="Close"]');
-                      if (closeButton instanceof HTMLElement) {
-                        closeButton.click();
-                      }
-                    }} />
-                  </DialogContent>
-                </Dialog>
+                <>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button 
+                        size="lg" 
+                        className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                      >
+                        <MessagesSquare className="mr-2 h-5 w-5" /> Ask your Neighborhood
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-lg">
+                      <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
+                        // Find and click the DialogClose button programmatically
+                        const closeButton = document.querySelector('[aria-label="Close"]');
+                        if (closeButton instanceof HTMLElement) {
+                          closeButton.click();
+                        }
+                      }} />
+                    </DialogContent>
+                  </Dialog>
+                  
+                  {isMobile ? (
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button 
+                          size="lg" 
+                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                        >
+                          <Filter className="mr-2 h-4 w-4" /> Filter by Category
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
+                        <div className="pt-4">
+                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {neighborhoodCategories.map((category) => (
+                              <Button
+                                key={category.name}
+                                variant="outline"
+                                size="sm"
+                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                              >
+                                {category.icon}
+                                {category.name}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  ) : (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="lg" 
+                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                        >
+                          <Filter className="mr-2 h-4 w-4" /> Filter by Category
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
+                        <div className="pt-4">
+                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                          <div className="flex flex-wrap gap-2 mb-6">
+                            {neighborhoodCategories.map((category) => (
+                              <Button
+                                key={category.name}
+                                variant="outline"
+                                size="sm"
+                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                              >
+                                {category.icon}
+                                {category.name}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                </>
               )}
             </div>
           </div>
