@@ -66,6 +66,26 @@ const MumzAsk = () => {
                   LeanOn the Community
                 </span>
               </h1>
+              
+              {/* Community Toggle Section - Moved to top above image */}
+              <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-3 mb-4">
+                <Button 
+                  variant={activeSection === 'general' ? 'default' : 'ghost'}
+                  className={`flex-1 rounded-md ${activeSection === 'general' ? 'bg-[#B8CEC2]/70' : ''}`}
+                  onClick={() => setActiveSection('general')}
+                >
+                  <MessagesSquare className="mr-2 h-4 w-4" />
+                  LeanOn Community
+                </Button>
+                <Button 
+                  variant={activeSection === 'neighborhood' ? 'default' : 'ghost'}
+                  className={`flex-1 rounded-md ${activeSection === 'neighborhood' ? 'bg-[#B8CEC2]/70' : ''}`}
+                  onClick={() => setActiveSection('neighborhood')}
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  Neighborhood
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -79,29 +99,9 @@ const MumzAsk = () => {
           />
         </div>
         
-        {/* Community Toggle Section - Moved to top */}
+        {/* Action Buttons - Different for each tab */}
         <div className="px-4 py-4">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mb-4">
-              <Button 
-                variant={activeSection === 'general' ? 'default' : 'ghost'}
-                className={`flex-1 rounded-md ${activeSection === 'general' ? 'bg-[#B8CEC2]/70' : ''}`}
-                onClick={() => setActiveSection('general')}
-              >
-                <MessagesSquare className="mr-2 h-4 w-4" />
-                LeanOn Community
-              </Button>
-              <Button 
-                variant={activeSection === 'neighborhood' ? 'default' : 'ghost'}
-                className={`flex-1 rounded-md ${activeSection === 'neighborhood' ? 'bg-[#B8CEC2]/70' : ''}`}
-                onClick={() => setActiveSection('neighborhood')}
-              >
-                <Users className="mr-2 h-4 w-4" />
-                Neighborhood
-              </Button>
-            </div>
-            
-            {/* Action Buttons - Different for each tab */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center my-4">
               {activeSection === 'general' ? (
                 // General Community actions
