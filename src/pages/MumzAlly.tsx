@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -18,8 +19,12 @@ const MumzAlly = () => {
   const { neighborhood, kids, workStatus } = useUserInfo();
   
   const currentUserProfile = {
-    location: neighborhood,
-    kids: kids.map(kid => {
+    location: neighborhood || '',
+    kids: kids?.map(kid => {
+      if (!kid?.birthDate) {
+        return { age: 3, gender: 'Girl' };
+      }
+      
       const birthDate = new Date(kid.birthDate);
       const now = new Date();
       const diffMs = now.getTime() - birthDate.getTime();
@@ -30,7 +35,7 @@ const MumzAlly = () => {
         age: isNaN(age) ? 3 : age,
         gender: kid.gender || 'Girl'
       };
-    }),
+    }) || [],
     workStatus: workStatus || 'Part-time',
     interests: ['Yoga', 'Reading', 'Beach Days'],
     nationality: 'British Expat'
@@ -134,15 +139,19 @@ const MumzAlly = () => {
   const calculateCompatibilityScore = (profile) => {
     let score = 0;
     
-    if (profile.location === currentUserProfile.location) {
+    // Safely check for location matches
+    const userLocation = currentUserProfile.location || '';
+    if (profile.location === userLocation) {
       score += 40;
     } else if (['Dubai Marina', 'JBR'].includes(profile.location) && 
-               ['Dubai Marina', 'JBR'].includes(currentUserProfile.location)) {
+               ['Dubai Marina', 'JBR'].includes(userLocation)) {
       score += 30;
     }
     
+    // Safely check for kid age matches
+    const userKids = currentUserProfile.kids || [];
     const kidAgeMatches = profile.kids.some(profileKid => 
-      currentUserProfile.kids.some(userKid => 
+      userKids.some(userKid => 
         Math.abs(profileKid.age - userKid.age) <= 2
       )
     );
@@ -151,16 +160,22 @@ const MumzAlly = () => {
       score += 30;
     }
     
-    if (profile.workStatus === currentUserProfile.workStatus) {
+    // Safely check work status
+    const userWorkStatus = currentUserProfile.workStatus || '';
+    if (profile.workStatus === userWorkStatus) {
       score += 10;
     }
     
+    // Safely check shared interests
+    const userInterests = currentUserProfile.interests || [];
     const sharedInterests = profile.interests.filter(interest => 
-      currentUserProfile.interests.includes(interest)
+      userInterests.includes(interest)
     );
     score += Math.min(sharedInterests.length * 5, 15);
     
-    if (profile.nationality === currentUserProfile.nationality) {
+    // Safely check nationality
+    const userNationality = currentUserProfile.nationality || '';
+    if (profile.nationality === userNationality) {
       score += 5;
     }
     
@@ -174,13 +189,15 @@ const MumzAlly = () => {
   
   const applyFilters = (profiles, activeFilters) => {
     return profiles.filter(profile => {
+      // Age filter
       if (activeFilters.age && activeFilters.age !== "all") {
         const ageRange = activeFilters.age.split('-');
         const minAge = parseInt(ageRange[0]);
-        const maxAge = ageRange[1].includes('+') ? 100 : parseInt(ageRange[1]);
+        const maxAge = ageRange[1]?.includes('+') ? 100 : parseInt(ageRange[1]);
         if (profile.age < minAge || profile.age > maxAge) return false;
       }
       
+      // Kids filter
       if (activeFilters.kids && Array.isArray(activeFilters.kids)) {
         for (const kidFilter of activeFilters.kids) {
           if ((!kidFilter.ageRange || kidFilter.ageRange === "all") && 
@@ -192,8 +209,8 @@ const MumzAlly = () => {
             if (kidFilter.ageRange && kidFilter.ageRange !== "all") {
               const ageRange = kidFilter.ageRange.split('-');
               const minAge = parseInt(ageRange[0]);
-              const maxAge = ageRange[1].includes('+') ? 100 : parseInt(ageRange[1]);
-              if (kid.age < minAge || kid.age > maxAge) return false;
+              const maxAge = ageRange[1]?.includes('+') ? 100 : parseInt(ageRange[1]);
+              if (isNaN(minAge) || (kid.age < minAge || kid.age > maxAge)) return false;
             }
             
             if (kidFilter.gender && kidFilter.gender !== "all" && kid.gender !== kidFilter.gender) {
@@ -207,18 +224,22 @@ const MumzAlly = () => {
         }
       }
       
+      // Location filter
       if (activeFilters.location && activeFilters.location !== "all" && profile.location !== activeFilters.location) {
         return false;
       }
       
+      // Nationality filter
       if (activeFilters.nationality && activeFilters.nationality !== "all" && profile.nationality !== activeFilters.nationality) {
         return false;
       }
       
+      // Work status filter
       if (activeFilters.workStatus && activeFilters.workStatus !== "all" && profile.workStatus !== activeFilters.workStatus) {
         return false;
       }
       
+      // Compatibility threshold filter
       if (activeFilters.compatibilityThreshold && profile.compatibility < activeFilters.compatibilityThreshold) {
         return false;
       }
@@ -228,10 +249,10 @@ const MumzAlly = () => {
   };
   
   const defaultFilters = {
-    location: neighborhood,
+    location: neighborhood || 'Dubai Marina',
     kids: [
       {
-        ageRange: currentUserProfile.kids.length > 0 ? 
+        ageRange: currentUserProfile.kids && currentUserProfile.kids.length > 0 ? 
           currentUserProfile.kids[0].age.toString() : 
           "all",
         gender: "all"
