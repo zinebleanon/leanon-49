@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { UserCircle, MapPin, Baby, MessageCircle, ExternalLink, ArrowLeft } from 'lucide-react';
+import { UserCircle, MapPin, Baby, MessageCircle, ExternalLink, ArrowLeft, Home } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import BowRibbon from '@/components/mumzally/BowRibbon';
 import { toast } from "@/hooks/use-toast";
@@ -81,21 +81,32 @@ const Connections = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-semibold font-playfair">My LeanMoms</h1>
-              <p className="text-muted-foreground mt-2">
-                These are the moms you've connected with through LeanOn. You can message them or view their profiles.
-              </p>
-            </div>
+          <div className="flex items-center gap-3 mb-6">
             <Button 
-              onClick={() => navigate(-1)} 
-              variant="outline"
-              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+              variant="ghost" 
+              size="sm" 
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => navigate(-1)}
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              <span>Back</span>
             </Button>
+            
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/')} 
+              className="bg-white/80 shadow-sm hover:bg-white"
+            >
+              <Home className="h-4 w-4 mr-2" />
+              Main Menu
+            </Button>
+          </div>
+          
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-semibold font-playfair">My LeanMoms</h1>
+            <p className="text-muted-foreground mt-2">
+              These are the moms you've connected with through LeanOn. You can message them or view their profiles.
+            </p>
           </div>
           
           {connections.length > 0 ? (
