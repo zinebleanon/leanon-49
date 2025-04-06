@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -71,14 +72,12 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
   };
 
   const renderDialogContent = () => (
-    <>
+    <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
       <div className="flex justify-between items-center mb-4">
-        <Tabs defaultValue="nearby" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-2 w-full">
-            <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
-            <TabsTrigger value="requests">Match Requests</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <TabsList className="grid grid-cols-2 w-full">
+          <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
+          <TabsTrigger value="requests">Match Requests</TabsTrigger>
+        </TabsList>
         
         <Button 
           variant="outline" 
@@ -150,7 +149,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
         {/* Match Requests Tab */}
         <ConnectionRequests dialogMode={true} />
       </TabsContent>
-    </>
+    </Tabs>
   );
 
   return (
