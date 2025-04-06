@@ -31,8 +31,10 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
   
   useEffect(() => {
     setIsVisible(true);
-    if (!location || !location.latitude) {
+    if (!location || (!location.latitude && !location.longitude)) {
       setShowLocationPrompt(true);
+    } else {
+      setShowLocationPrompt(false);
     }
   }, [location]);
 
