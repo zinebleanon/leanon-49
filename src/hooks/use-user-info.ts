@@ -1,11 +1,25 @@
 
 import { useState, useEffect } from 'react';
 
+interface Kid {
+  birthDate: string;
+  gender: string;
+}
+
 interface UserInfo {
   name: string;
   email: string;
   neighborhood: string;
   phone: string;
+  location?: {
+    latitude: string;
+    longitude: string;
+  };
+  workStatus?: string;
+  nationality?: string;
+  interests?: string;
+  birthDate?: string;
+  kids?: Kid[];
 }
 
 export const useUserInfo = () => {
@@ -29,5 +43,8 @@ export const useUserInfo = () => {
     userInfo,
     isLoading,
     neighborhood: userInfo?.neighborhood || 'Dubai Marina', // Default to Dubai Marina if not set
+    location: userInfo?.location,
+    workStatus: userInfo?.workStatus,
+    kids: userInfo?.kids || [],
   };
 };

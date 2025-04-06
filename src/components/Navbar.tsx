@@ -1,7 +1,8 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell } from 'lucide-react';
+import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, MapPin } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -62,7 +63,21 @@ const Navbar = () => {
   
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
-    { name: 'Find', icon: <Users className="h-4 w-4" />, path: '/ally' },
+    { 
+      name: 'LeanOn Moms', 
+      icon: (
+        <div className="relative">
+          <MapPin className="h-4 w-4" />
+          <RibbonIcon 
+            className="absolute -top-1 -right-2 w-3 h-3" 
+            fill="#FFD9A7" 
+            size="1em" 
+          />
+        </div>
+      ), 
+      path: '/ally',
+      description: 'Find moms around you with similar aged kids' 
+    },
     { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/brands' },
     { name: 'Preloved', icon: <ShoppingBag className="h-4 w-4" />, path: '/marketplace' },
@@ -144,7 +159,7 @@ const Navbar = () => {
                 key={item.name}
                 to={item.path}
                 className={cn(
-                  "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative",
+                  "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative group",
                   isPathActive(item.path)
                     ? "text-primary" 
                     : "text-foreground/70 hover:text-foreground"
@@ -158,6 +173,11 @@ const Navbar = () => {
                   {item.icon}
                   {item.name}
                 </span>
+                {item.description && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 bg-white rounded-md p-2 text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
+                    {item.description}
+                  </div>
+                )}
                 {isPathActive(item.path) && (
                   <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
                 )}
@@ -238,6 +258,11 @@ const Navbar = () => {
                   {item.icon}
                 </span>
                 {item.name}
+                {item.description && (
+                  <span className="ml-auto text-xs text-muted-foreground line-clamp-1 hidden sm:block">
+                    {item.description}
+                  </span>
+                )}
                 {isPathActive(item.path) && (
                   <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
                     Active

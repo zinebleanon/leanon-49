@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,15 +7,16 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check, MapPin } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import BowRibbon from '@/components/mumzally/BowRibbon';
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("signin");
-  const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification
+  const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification, 3: Profile
   const [otpValue, setOtpValue] = useState("");
   
   const [signInData, setSignInData] = useState({
@@ -28,7 +30,15 @@ const SignIn = () => {
     phone: '',
     password: '',
     confirmPassword: '',
-    neighborhood: '', // Added neighborhood field
+    neighborhood: '', 
+    latitude: '',
+    longitude: '',
+    // Additional profile fields
+    workStatus: 'stay-home',
+    nationality: '',
+    interests: '',
+    birthDate: '',
+    kids: [{ birthDate: '', gender: '' }]
   });
   
   const neighborhoods = [
@@ -38,20 +48,64 @@ const SignIn = () => {
     "Jumeirah", "Umm Suqeim", "Discovery Gardens", "International City"
   ];
   
+  const nationalities = [
+    "Emirati", "Indian", "Pakistani", "British", "American", "Egyptian", "Filipino",
+    "Lebanese", "Jordanian", "South African", "Australian", "Canadian", "French",
+    "German", "Italian", "Chinese", "Japanese", "Russian", "Turkish", "Iranian"
+  ];
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      setIsLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setSignUpData(prev => ({
+            ...prev,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
+          }));
+          toast({
+            title: "Location detected",
+            description: "We'll use this to find moms near you"
+          });
+          setIsLoading(false);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          toast({
+            title: "Location error",
+            description: "Could not get your location. You can still select your neighborhood.",
+            variant: "destructive"
+          });
+          setIsLoading(false);
+        }
+      );
+    } else {
+      toast({
+        title: "Geolocation unavailable",
+        description: "Your browser doesn't support geolocation.",
+        variant: "destructive"
+      });
+    }
+  };
+  
   const handleSignInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignInData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
     if (name === 'phone') {
       let formattedValue = value.replace(/\D/g, '');
       
-      if (formattedValue.startsWith('971')) {
-        formattedValue = formattedValue.substring(3);
+      // If the phone number starts with "0", remove it only when there's a prefix
+      if (formattedValue.startsWith('0')) {
+        formattedValue = formattedValue.substring(1);
       }
+      
+      // Don't add "971" prefix - we handle this separately with the +971 display
       
       if (formattedValue.length > 9) {
         formattedValue = formattedValue.substring(0, 9);
@@ -62,6 +116,27 @@ const SignIn = () => {
     }
     
     setSignUpData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleKidChange = (index: number, field: 'birthDate' | 'gender', value: string) => {
+    const newKids = [...signUpData.kids];
+    newKids[index] = { ...newKids[index], [field]: value };
+    setSignUpData(prev => ({ ...prev, kids: newKids }));
+  };
+
+  const addKid = () => {
+    setSignUpData(prev => ({
+      ...prev, 
+      kids: [...prev.kids, { birthDate: '', gender: '' }]
+    }));
+  };
+
+  const removeKid = (index: number) => {
+    if (signUpData.kids.length > 1) {
+      const newKids = [...signUpData.kids];
+      newKids.splice(index, 1);
+      setSignUpData(prev => ({ ...prev, kids: newKids }));
+    }
   };
   
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,7 +166,7 @@ const SignIn = () => {
         return;
       }
       
-      if (signUpData.phone.length !== 9) {
+      if (signUpData.phone.length < 8) {
         toast({
           title: "Invalid phone number",
           description: "Please enter a valid UAE phone number.",
@@ -124,19 +199,49 @@ const SignIn = () => {
       
       setTimeout(() => {
         setIsLoading(false);
+        setSignupStep(3);
+        toast({
+          title: "Phone verified",
+          description: "Now, let's complete your profile"
+        });
+      }, 1500);
+    } else if (signupStep === 3) {
+      // Validate profile data
+      if (!signUpData.neighborhood || !signUpData.workStatus) {
+        toast({
+          title: "Missing information",
+          description: "Please fill out all required fields.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setIsLoading(true);
+      
+      setTimeout(() => {
+        setIsLoading(false);
         
         const userInfo = {
           name: signUpData.name,
           email: signUpData.email,
-          neighborhood: signUpData.neighborhood || 'Dubai Marina',
-          phone: signUpData.phone
+          neighborhood: signUpData.neighborhood,
+          phone: signUpData.phone,
+          location: {
+            latitude: signUpData.latitude,
+            longitude: signUpData.longitude
+          },
+          workStatus: signUpData.workStatus,
+          nationality: signUpData.nationality,
+          interests: signUpData.interests,
+          birthDate: signUpData.birthDate,
+          kids: signUpData.kids
         };
         
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
         
         toast({
           title: "Account created!",
-          description: "Your phone number has been verified and your account has been created successfully.",
+          description: "Your profile has been created successfully.",
         });
         navigate('/ally/subscribe');
       }, 1500);
@@ -172,8 +277,8 @@ const SignIn = () => {
   };
   
   const goBack = () => {
-    if (signupStep === 2) {
-      setSignupStep(1);
+    if (signupStep > 1) {
+      setSignupStep(prev => prev - 1);
       return;
     }
     
@@ -201,7 +306,7 @@ const SignIn = () => {
           className="flex items-center px-2"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          {signupStep === 2 ? "Back to Form" : "Back"}
+          {signupStep > 1 ? "Back" : "Back"}
         </Button>
       </div>
       
@@ -286,15 +391,24 @@ const SignIn = () => {
           <TabsContent value="signup">
             <Card className="border-secondary/20 shadow-md">
               <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
-                <CardTitle>{signupStep === 1 ? "Create an Account" : "Verify Your Phone"}</CardTitle>
+                <CardTitle>
+                  {signupStep === 1 ? "Create an Account" : 
+                   signupStep === 2 ? "Verify Your Phone" : 
+                   "Complete Your Profile"}
+                </CardTitle>
                 {signupStep === 2 && (
                   <CardDescription>
-                    Enter the 6-digit code sent to {formatPhoneDisplay(signUpData.phone)}
+                    Enter the 6-digit code sent to +971 {formatPhoneDisplay(signUpData.phone)}
+                  </CardDescription>
+                )}
+                {signupStep === 3 && (
+                  <CardDescription>
+                    Tell us more about you to find the right matches
                   </CardDescription>
                 )}
               </CardHeader>
               <form onSubmit={handleSignUpSubmit}>
-                {signupStep === 1 ? (
+                {signupStep === 1 && (
                   <CardContent className="space-y-4 pt-6">
                     <div className="space-y-2">
                       <Label htmlFor="signup-name">Full Name</Label>
@@ -337,10 +451,23 @@ const SignIn = () => {
                         onChange={handleSignUpChange}
                         required
                       />
+                      <p className="text-xs text-muted-foreground">Enter without leading 0</p>
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="signup-neighborhood">Your Neighborhood</Label>
+                      <div className="flex justify-between items-center">
+                        <Label htmlFor="signup-neighborhood">Your Neighborhood</Label>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="sm" 
+                          className="h-8 flex items-center gap-1 text-xs"
+                          onClick={getLocation}
+                        >
+                          <MapPin className="h-3.5 w-3.5" />
+                          <span>Get Location</span>
+                        </Button>
+                      </div>
                       <select
                         id="signup-neighborhood"
                         name="neighborhood"
@@ -387,7 +514,9 @@ const SignIn = () => {
                       />
                     </div>
                   </CardContent>
-                ) : (
+                )}
+                
+                {signupStep === 2 && (
                   <CardContent className="space-y-6 pt-6">
                     <div className="flex justify-center">
                       <InputOTP 
@@ -421,6 +550,138 @@ const SignIn = () => {
                   </CardContent>
                 )}
                 
+                {signupStep === 3 && (
+                  <CardContent className="space-y-4 pt-6 max-h-[60vh] overflow-y-auto pr-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-birthdate">Your Birth Date</Label>
+                      <Input
+                        id="signup-birthdate"
+                        name="birthDate"
+                        type="date"
+                        className="border-secondary/30 focus:border-secondary"
+                        value={signUpData.birthDate}
+                        onChange={handleSignUpChange}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-nationality">Your Nationality</Label>
+                      <select
+                        id="signup-nationality"
+                        name="nationality"
+                        className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
+                        value={signUpData.nationality}
+                        onChange={handleSignUpChange}
+                        required
+                      >
+                        <option value="" disabled>Select your nationality</option>
+                        {nationalities.map((nationality) => (
+                          <option key={nationality} value={nationality}>
+                            {nationality}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>Work Status</Label>
+                      <div className="flex gap-4">
+                        <div className="flex items-center">
+                          <input
+                            type="radio"
+                            id="work-status-stay-home"
+                            name="workStatus"
+                            value="stay-home"
+                            checked={signUpData.workStatus === 'stay-home'}
+                            onChange={handleSignUpChange}
+                            className="mr-2"
+                          />
+                          <Label htmlFor="work-status-stay-home">Stay-at-home Mom</Label>
+                        </div>
+                        <div className="flex items-center">
+                          <input
+                            type="radio"
+                            id="work-status-working"
+                            name="workStatus"
+                            value="working"
+                            checked={signUpData.workStatus === 'working'}
+                            onChange={handleSignUpChange}
+                            className="mr-2"
+                          />
+                          <Label htmlFor="work-status-working">Working Mom</Label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>Your Kids</Label>
+                      {signUpData.kids.map((kid, index) => (
+                        <div key={index} className="flex gap-2 items-end mt-2">
+                          <div className="flex-1">
+                            <Label htmlFor={`kid-birthdate-${index}`} className="text-xs">Birth Date</Label>
+                            <Input
+                              id={`kid-birthdate-${index}`}
+                              type="date"
+                              value={kid.birthDate}
+                              onChange={(e) => handleKidChange(index, 'birthDate', e.target.value)}
+                              className="border-secondary/30 focus:border-secondary"
+                              required
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <Label htmlFor={`kid-gender-${index}`} className="text-xs">Gender</Label>
+                            <select
+                              id={`kid-gender-${index}`}
+                              value={kid.gender}
+                              onChange={(e) => handleKidChange(index, 'gender', e.target.value)}
+                              className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
+                              required
+                            >
+                              <option value="" disabled>Select</option>
+                              <option value="boy">Boy</option>
+                              <option value="girl">Girl</option>
+                            </select>
+                          </div>
+                          {index > 0 && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              className="h-10 w-10"
+                              onClick={() => removeKid(index)}
+                            >
+                              -
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addKid}
+                        className="mt-2"
+                      >
+                        + Add Child
+                      </Button>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-interests">Your Interests</Label>
+                      <textarea
+                        id="signup-interests"
+                        name="interests"
+                        rows={3}
+                        placeholder="What are you interested in? (e.g., Cooking, Fitness, Reading)"
+                        className="w-full rounded-md border-secondary/30 focus:border-secondary px-3 py-2"
+                        value={signUpData.interests}
+                        onChange={handleSignUpChange}
+                      ></textarea>
+                    </div>
+                  </CardContent>
+                )}
+                
                 <CardFooter className="flex-col space-y-4 bg-gradient-to-t from-secondary/20 to-transparent pt-4">
                   <Button 
                     type="submit" 
@@ -435,10 +696,15 @@ const SignIn = () => {
                         <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
                         Continue
                       </>
-                    ) : (
+                    ) : signupStep === 2 ? (
                       <>
                         <Check className="mr-2 h-4 w-4" />
-                        Verify & Join
+                        Verify Phone
+                      </>
+                    ) : (
+                      <>
+                        <BowRibbon className="mr-2 h-4 w-4" isActive={true} />
+                        Create Account
                       </>
                     )}
                   </Button>
