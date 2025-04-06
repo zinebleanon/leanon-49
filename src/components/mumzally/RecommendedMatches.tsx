@@ -5,6 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { MumzProfile } from './ProfilesSection';
 import { Link } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { Button } from '@/components/ui/button';
+import BowRibbon from './BowRibbon';
+import { useState } from 'react';
+import { toast } from "@/hooks/use-toast";
 
 interface RecommendedMatchesProps {
   profiles: MumzProfile[];
@@ -12,6 +16,7 @@ interface RecommendedMatchesProps {
 
 const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
   const { neighborhood } = useUserInfo();
+  const [sentConnections, setSentConnections] = useState<number[]>([]);
   
   if (!profiles || profiles.length === 0) {
     return (
@@ -23,6 +28,14 @@ const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
       </div>
     );
   }
+  
+  const handleSendConnection = (id: number, name: string) => {
+    setSentConnections(prev => [...prev, id]);
+    toast({
+      title: "LeanOn Request Sent",
+      description: `You've sent a connection request to ${name}!`,
+    });
+  };
   
   return (
     <div className="mb-6">
@@ -63,6 +76,24 @@ const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
                     ))}
                   </span>
                 </div>
+              </div>
+              
+              <div className="flex justify-end mt-2">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="text-xs py-1 h-8"
+                  onClick={() => handleSendConnection(profile.id, profile.name)}
+                  disabled={sentConnections.includes(profile.id)}
+                >
+                  <BowRibbon 
+                    className="w-8 h-5 mr-1" 
+                    isLeftActive={sentConnections.includes(profile.id)} 
+                    isRightActive={false} 
+                    color="#FFD9A7"
+                  />
+                  {sentConnections.includes(profile.id) ? 'Request Sent' : 'LeanOn'}
+                </Button>
               </div>
             </CardContent>
           </Card>

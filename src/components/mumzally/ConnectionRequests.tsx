@@ -109,7 +109,17 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                         : handleAccept(request.id, request.name)
                     }
                   >
-                    {acceptedRequests.includes(request.id) ? 'Message' : 'Accept'}
+                    {acceptedRequests.includes(request.id) ? (
+                      <>
+                        <BowRibbon isActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
+                        Message
+                      </>
+                    ) : (
+                      <>
+                        <BowRibbon isRightActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
+                        Accept
+                      </>
+                    )}
                   </Button>
                 </div>
               </CardContent>
@@ -180,7 +190,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                       ) : (
                         <>
                           <BowRibbon isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
-                          LeanBack
+                          LeanOn
                         </>
                       )}
                     </div>
