@@ -189,7 +189,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
             <Button 
               variant="outline" 
               size="lg" 
-              className="rounded-full px-6 bg-white border-[#B8CEC2]/50 hover:bg-white/90"
+              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
               asChild
             >
               <Link to="/connections">
