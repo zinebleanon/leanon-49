@@ -78,18 +78,6 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
           <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
           <TabsTrigger value="requests">Match Requests</TabsTrigger>
         </TabsList>
-        
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="ml-2 whitespace-nowrap bg-white"
-          asChild
-        >
-          <Link to="/connections">
-            <Users className="h-4 w-4 mr-1" />
-            My Connections
-          </Link>
-        </Button>
       </div>
       
       <TabsContent value="nearby" className="mt-0">
@@ -203,6 +191,19 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                 </DialogContent>
               </Dialog>
             )}
+
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="rounded-full px-6 bg-white border-[#B8CEC2]/50 hover:bg-white/90"
+              asChild
+            >
+              <Link to="/connections">
+                <Users className="mr-2 h-5 w-5" />
+                My Connections
+              </Link>
+            </Button>
+            
             <HowItWorksModal />
           </div>
         </div>
