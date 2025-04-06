@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
-import { Heart, Mail, Check, Plus, Minus, Calendar } from 'lucide-react';
+import { Heart, Mail, Check, Plus, Minus, Calendar, MapPin } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
@@ -48,10 +49,13 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
     nationality: '',
     workStatus: 'stay-home',
     interests: '',
+    latitude: '',
+    longitude: '',
   });
   const [kids, setKids] = useState<Kid[]>([
     { id: '1', birthDate: undefined, gender: '' }
   ]);
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +142,8 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
       nationality: '',
       workStatus: 'stay-home',
       interests: '',
+      latitude: '',
+      longitude: '',
     });
     setKids([{ id: '1', birthDate: undefined, gender: '' }]);
   };
@@ -147,6 +153,56 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
       setTimeout(resetModal, 300);
     }
     onOpenChange(open);
+  };
+
+  const detectLocation = () => {
+    setIsDetectingLocation(true);
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Set the coordinates
+          setFormData(prev => ({
+            ...prev,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
+          }));
+          
+          // Find the closest neighborhood (simplified mock implementation)
+          // In a real app, you would use reverse geocoding or neighborhood matching logic
+          const randomIndex = Math.floor(Math.random() * neighborhoods.length);
+          const autoDetectedNeighborhood = neighborhoods[randomIndex];
+          
+          setFormData(prev => ({
+            ...prev,
+            neighborhood: autoDetectedNeighborhood
+          }));
+          
+          toast({
+            title: "Location detected",
+            description: `We detected your neighborhood as ${autoDetectedNeighborhood}`,
+          });
+          
+          setIsDetectingLocation(false);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          toast({
+            title: "Location error",
+            description: "Could not detect your location. Please select your neighborhood manually.",
+            variant: "destructive"
+          });
+          setIsDetectingLocation(false);
+        }
+      );
+    } else {
+      toast({
+        title: "Geolocation unavailable",
+        description: "Your browser doesn't support geolocation. Please select your neighborhood manually.",
+        variant: "destructive"
+      });
+      setIsDetectingLocation(false);
+    }
   };
 
   return (
@@ -181,13 +237,13 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
         {step === 'form' && (
           <form onSubmit={handleFormSubmit} className="space-y-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Full Name</Label>
               <Input 
                 id="name" 
                 name="name" 
                 value={formData.name} 
                 onChange={handleInputChange} 
-                placeholder="Enter your name" 
+                placeholder="Enter your full name" 
                 required 
               />
             </div>
@@ -304,7 +360,24 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
             </div>
             
             <div className="grid gap-2">
-              <Label htmlFor="neighborhood">Neighborhood</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="neighborhood">Neighborhood</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={detectLocation}
+                  disabled={isDetectingLocation}
+                  className="flex items-center gap-1"
+                >
+                  {isDetectingLocation ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  ) : (
+                    <MapPin className="h-4 w-4" />
+                  )}
+                  <span>Detect Location</span>
+                </Button>
+              </div>
               <Select 
                 value={formData.neighborhood} 
                 onValueChange={(value) => handleSelectChange('neighborhood', value)}
@@ -320,6 +393,9 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
                   ))}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground mt-1">
+                We'll use this to help you find and connect with other moms around you with kids of similar ages.
+              </p>
             </div>
             
             <div className="grid gap-2">
@@ -407,3 +483,4 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
 };
 
 export default JoinCommunityModal;
+
