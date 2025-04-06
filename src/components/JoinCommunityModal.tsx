@@ -155,10 +155,10 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
         <DialogHeader>
           <DialogTitle className="text-2xl font-playfair mb-2 flex items-center gap-2">
             <Heart className="text-primary h-5 w-5" fill="currentColor" />
-            Join Our Community
+            Join LeanOn Community
           </DialogTitle>
           <DialogDescription>
-            Connect with other mumz, share experiences, and find support.
+            A community of Moms Supporting Moms.
           </DialogDescription>
         </DialogHeader>
 
