@@ -1,5 +1,5 @@
 
-import { UserCircle, MessageCircle, ExternalLink, MapPin } from 'lucide-react';
+import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,7 @@ import { useState } from 'react';
 import MessageForm from './MessageForm';
 import BowRibbon from './BowRibbon';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { Link } from 'react-router-dom';
 
 interface ConnectionRequest {
   id: number;
@@ -17,11 +18,21 @@ interface ConnectionRequest {
   compatibility: number;
 }
 
-interface ConnectionRequestsProps {
-  dialogMode?: boolean;
+interface NearbyMom {
+  id: number;
+  name: string;
+  age: number;
+  location: string;
+  kids: {age: number; gender: string}[];
+  compatibility: number;
 }
 
-const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => {
+interface ConnectionRequestsProps {
+  dialogMode?: boolean;
+  nearbyMoms?: NearbyMom[];
+}
+
+const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionRequestsProps) => {
   const requests: ConnectionRequest[] = [
     {
       id: 1,
@@ -42,7 +53,7 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
-  const { location } = useUserInfo();
+  const { location, kids } = useUserInfo();
 
   const handleAccept = (id: number, name: string) => {
     setAcceptedRequests(prev => [...prev, id]);
@@ -187,6 +198,67 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
                 </Button>
               </div>
             </div>
+          </div>
+        )}
+        
+        {/* Display nearby moms with kids of similar ages */}
+        {nearbyMoms && nearbyMoms.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            {nearbyMoms.map((mom) => (
+              <Card key={mom.id} className="overflow-hidden bg-white/90">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-7 w-7 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">
+                        <Link to={`/ally/profile/${mom.id}`} className="hover:underline">
+                          {mom.name}
+                        </Link>
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{mom.age}, {mom.location}</p>
+                    </div>
+                    <Badge className="ml-auto bg-primary/50 text-foreground font-bold border-primary/30">
+                      {mom.compatibility}%
+                    </Badge>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mb-3">
+                    <Baby className="h-4 w-4 text-amber-500" />
+                    <span className="text-sm">
+                      {mom.kids.map((kid, i) => (
+                        <span key={i}>
+                          {kid.age} y/o {kid.gender}
+                          {i < mom.kids.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <Button 
+                      variant="default" 
+                      className="w-full"
+                      onClick={() => handleAccept(mom.id, mom.name)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <BowRibbon isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
+                        LeanBack
+                      </div>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-8 p-4 bg-white rounded-md shadow-sm text-center">
+            <p className="text-muted-foreground">
+              {location?.latitude
+                ? "We don't see any moms near you with kids of similar ages yet."
+                : "Enable location to see moms in your neighborhood."}
+            </p>
           </div>
         )}
         

@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -16,9 +15,10 @@ import { Filter } from 'lucide-react';
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
   profiles?: any[];
+  nearbyMoms?: any[];
 }
 
-const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
+const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
@@ -28,7 +28,6 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
   
   useEffect(() => {
     setIsVisible(true);
-    // Check if user has location set
     if (!location || !location.latitude) {
       setShowLocationPrompt(true);
     }
@@ -40,7 +39,6 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // Store position in localStorage
           const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
           userInfo.location = {
             latitude: position.coords.latitude.toString(),
@@ -92,7 +90,6 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
                   <div className="flex flex-col h-full">
-                    {/* Filter Button at the top */}
                     <div className="sticky top-0 z-10 mb-3 pt-2">
                       <Button 
                         onClick={handleShowFilters} 
@@ -104,20 +101,17 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                       </Button>
                     </div>
                     
-                    {/* Filters Section (conditionally rendered) */}
                     {showFilters && (
                       <div className="mb-4">
                         <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
                       </div>
                     )}
                     
-                    {/* Recommended Matches */}
                     {profiles && profiles.length > 0 && (
                       <RecommendedMatches profiles={profiles.slice(0, 3)} />
                     )}
                     
-                    {/* Connection Requests */}
-                    <ConnectionRequests />
+                    <ConnectionRequests dialogMode={true} nearbyMoms={nearbyMoms} />
                   </div>
                 </SheetContent>
               </Sheet>
@@ -140,7 +134,6 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-6">
-                    {/* Filter Button at the top */}
                     <div className="sticky top-0 z-10">
                       <Button 
                         onClick={handleShowFilters} 
@@ -152,14 +145,12 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                       </Button>
                     </div>
                     
-                    {/* Filters Section (conditionally rendered) */}
                     {showFilters && (
                       <div className="mb-4">
                         <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
                       </div>
                     )}
                     
-                    {/* Recommended Matches */}
                     {profiles && profiles.length > 0 ? (
                       <RecommendedMatches profiles={profiles.slice(0, 3)} />
                     ) : (
@@ -171,8 +162,7 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                       </div>
                     )}
                     
-                    {/* Connection Requests */}
-                    <ConnectionRequests dialogMode={true} />
+                    <ConnectionRequests dialogMode={true} nearbyMoms={nearbyMoms} />
                   </div>
                 </DialogContent>
               </Dialog>
@@ -181,7 +171,6 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
           </div>
         </div>
         
-        {/* Location prompt dialog */}
         {showLocationPrompt && (
           <Dialog open={showLocationPrompt} onOpenChange={setShowLocationPrompt}>
             <DialogContent className="max-w-md bg-white">

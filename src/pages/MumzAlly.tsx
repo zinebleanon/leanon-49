@@ -251,6 +251,47 @@ const MumzAlly = () => {
   const activeFilters = Object.keys(filters).length > 0 ? filters : defaultFilters;
   const filteredProfiles = applyFilters(rankedProfiles, activeFilters);
   
+  const findNearbyMomsWithSimilarAgedKids = () => {
+    if (!neighborhood || !kids || kids.length === 0) return [];
+    
+    return rankedProfiles.filter(profile => {
+      if (profile.location === neighborhood) {
+        const userKidsAges = currentUserProfile.kids.map(kid => kid.age);
+        const profileKidsAges = profile.kids.map(kid => kid.age);
+        
+        return userKidsAges.some(userKidAge => 
+          profileKidsAges.some(profileKidAge => 
+            Math.abs(userKidAge - profileKidAge) <= 2
+          )
+        );
+      }
+      
+      const nearbyNeighborhoods = {
+        'Dubai Marina': ['JBR', 'Palm Jumeirah'],
+        'JBR': ['Dubai Marina', 'Palm Jumeirah'],
+        'Palm Jumeirah': ['Dubai Marina', 'JBR'],
+        'Downtown Dubai': ['Business Bay'],
+        'Arabian Ranches': ['Dubai Hills']
+      };
+      
+      const nearby = nearbyNeighborhoods[neighborhood] || [];
+      if (nearby.includes(profile.location)) {
+        const userKidsAges = currentUserProfile.kids.map(kid => kid.age);
+        const profileKidsAges = profile.kids.map(kid => kid.age);
+        
+        return userKidsAges.some(userKidAge => 
+          profileKidsAges.some(profileKidAge => 
+            Math.abs(userKidAge - profileKidAge) <= 2
+          )
+        );
+      }
+      
+      return false;
+    }).slice(0, 3);
+  };
+  
+  const nearbyMomsWithSimilarAgedKids = findNearbyMomsWithSimilarAgedKids();
+  
   const recommendedProfiles = [...rankedProfiles]
     .filter(profile => {
       if (neighborhood) {
@@ -305,7 +346,8 @@ const MumzAlly = () => {
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
         <HeroSection 
           onFiltersChange={setFilters} 
-          profiles={recommendedProfiles} 
+          profiles={recommendedProfiles}
+          nearbyMoms={nearbyMomsWithSimilarAgedKids}
         />
         <div className="flex justify-center bg-[#B8CEC2]">
           <img 
@@ -314,7 +356,7 @@ const MumzAlly = () => {
             className="max-w-full md:max-w-lg h-auto mx-auto"
           />
         </div>
-        <MatchRequests />
+        <MatchRequests nearbyMoms={nearbyMomsWithSimilarAgedKids} />
         <ProfilesSection 
           profiles={filteredProfiles} 
           onHeartClick={handleHeartClick}
