@@ -1,12 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { UserCircle, MapPin, Baby, MessageCircle, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { UserCircle, MapPin, Baby, MessageCircle, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import BowRibbon from '@/components/mumzally/BowRibbon';
 import { toast } from "@/hooks/use-toast";
 import MessageForm from '@/components/mumzally/MessageForm';
@@ -28,12 +27,11 @@ const Connections = () => {
   const [connections, setConnections] = useState<Connection[]>([]);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<{id: number, name: string} | null>(null);
+  const navigate = useNavigate();
   
-  // Simulate loading delay
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Mock data for connections - in a real app this would come from an API or local storage
       setConnections([
         {
           id: 2,
@@ -82,11 +80,21 @@ const Connections = () => {
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-6">
-            <h1 className="text-2xl md:text-3xl font-semibold font-playfair">My Connections</h1>
-            <p className="text-muted-foreground mt-2">
-              These are the moms you've connected with through LeanOn. You can message them or view their profiles.
-            </p>
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-semibold font-playfair">My LeanMoms</h1>
+              <p className="text-muted-foreground mt-2">
+                These are the moms you've connected with through LeanOn. You can message them or view their profiles.
+              </p>
+            </div>
+            <Button 
+              onClick={() => navigate(-1)} 
+              variant="outline"
+              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
           </div>
           
           {connections.length > 0 ? (

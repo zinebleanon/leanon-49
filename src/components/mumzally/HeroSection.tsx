@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -81,7 +80,6 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
       </div>
       
       <TabsContent value="nearby" className="mt-0">
-        {/* Filter button - only visible in the Moms Around You tab */}
         <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
           <Button 
             onClick={handleShowFilters} 
@@ -99,34 +97,31 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
           </div>
         )}
         
-        {/* Moms Around You Tab */}
-        <div className="mb-4">
-          {!location?.latitude ? (
-            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-              <p className="text-sm text-muted-foreground">
-                Enable location to see moms in your neighborhood
-              </p>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-2 text-xs h-8 bg-white"
-                onClick={handleRequestLocation}
-              >
-                Share my location
-              </Button>
-            </div>
-          ) : nearbyMoms && nearbyMoms.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-              {nearbyMoms.map((mom) => (
-                <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground mb-4">
-              No moms with kids of similar ages found nearby
+        {!location?.latitude ? (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Enable location to see moms in your neighborhood
             </p>
-          )}
-        </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mt-2 text-xs h-8 bg-white"
+              onClick={handleRequestLocation}
+            >
+              Share my location
+            </Button>
+          </div>
+        ) : nearbyMoms && nearbyMoms.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+            {nearbyMoms.map((mom) => (
+              <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground mb-4">
+            No moms with kids of similar ages found nearby
+          </p>
+        )}
         
         {profiles && profiles.length > 0 && (
           <RecommendedMatches profiles={profiles.slice(0, 3)} />
@@ -134,7 +129,6 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
       </TabsContent>
       
       <TabsContent value="requests" className="mt-0">
-        {/* Match Requests Tab */}
         <ConnectionRequests dialogMode={true} />
       </TabsContent>
     </Tabs>
@@ -200,7 +194,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
             >
               <Link to="/connections">
                 <Users className="mr-2 h-5 w-5" />
-                My Connections
+                My LeanMoms
               </Link>
             </Button>
             
