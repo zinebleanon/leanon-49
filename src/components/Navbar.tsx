@@ -66,7 +66,7 @@ const Navbar = () => {
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
     { 
       name: 'Find', 
-      icon: <RibbonIcon className="h-4 w-4" fill="#222222" />, 
+      icon: <RibbonIcon className="h-4 w-4" fill="currentColor" />, 
       path: '/ally',
       description: 'LeanOn Moms around you, with same age kids' 
     },
