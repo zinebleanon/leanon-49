@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -11,8 +10,9 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { toast } from "@/hooks/use-toast";
 import RecommendedMatches from './RecommendedMatches';
 import ConnectionRequests from './ConnectionRequests';
-import { Filter, ChevronDown, ChevronUp } from 'lucide-react';
+import { Filter, ChevronDown, ChevronUp, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from "react-router-dom";
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -72,70 +72,84 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
 
   const renderDialogContent = () => (
     <>
-      <Tabs defaultValue="nearby" value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-2 w-full mb-4">
-          <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
-          <TabsTrigger value="requests">Match Requests</TabsTrigger>
-        </TabsList>
+      <div className="flex justify-between items-center mb-4">
+        <Tabs defaultValue="nearby" value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-2 w-full">
+            <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
+            <TabsTrigger value="requests">Match Requests</TabsTrigger>
+          </TabsList>
+        </Tabs>
         
-        <TabsContent value="nearby" className="mt-0">
-          {/* Filter button - only visible in the Moms Around You tab */}
-          <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
-            <Button 
-              onClick={handleShowFilters} 
-              variant="outline" 
-              className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
-            >
-              <Filter className="h-4 w-4" />
-              {showFilters ? "Hide Filters" : "Show Filters"}
-            </Button>
-          </div>
-          
-          {showFilters && (
-            <div className="mb-4">
-              <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-            </div>
-          )}
-          
-          {/* Moms Around You Tab */}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="ml-2 whitespace-nowrap bg-white"
+          asChild
+        >
+          <Link to="/connections">
+            <Users className="h-4 w-4 mr-1" />
+            My Connections
+          </Link>
+        </Button>
+      </div>
+      
+      <TabsContent value="nearby" className="mt-0">
+        {/* Filter button - only visible in the Moms Around You tab */}
+        <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
+          <Button 
+            onClick={handleShowFilters} 
+            variant="outline" 
+            className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
+          >
+            <Filter className="h-4 w-4" />
+            {showFilters ? "Hide Filters" : "Show Filters"}
+          </Button>
+        </div>
+        
+        {showFilters && (
           <div className="mb-4">
-            {!location?.latitude ? (
-              <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-                <p className="text-sm text-muted-foreground">
-                  Enable location to see moms in your neighborhood
-                </p>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="mt-2 text-xs h-8 bg-white"
-                  onClick={handleRequestLocation}
-                >
-                  Share my location
-                </Button>
-              </div>
-            ) : nearbyMoms && nearbyMoms.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                {nearbyMoms.map((mom) => (
-                  <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground mb-4">
-                No moms with kids of similar ages found nearby
-              </p>
-            )}
+            <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
           </div>
-          
-          {profiles && profiles.length > 0 && (
-            <RecommendedMatches profiles={profiles.slice(0, 3)} />
-          )}
-        </TabsContent>
+        )}
         
-        <TabsContent value="requests" className="mt-0">
-          {/* Match Requests Tab */}
-          <ConnectionRequests dialogMode={true} />
-        </TabsContent>
-      </Tabs>
+        {/* Moms Around You Tab */}
+        <div className="mb-4">
+          {!location?.latitude ? (
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+              <p className="text-sm text-muted-foreground">
+                Enable location to see moms in your neighborhood
+              </p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-2 text-xs h-8 bg-white"
+                onClick={handleRequestLocation}
+              >
+                Share my location
+              </Button>
+            </div>
+          ) : nearbyMoms && nearbyMoms.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+              {nearbyMoms.map((mom) => (
+                <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground mb-4">
+              No moms with kids of similar ages found nearby
+            </p>
+          )}
+        </div>
+        
+        {profiles && profiles.length > 0 && (
+          <RecommendedMatches profiles={profiles.slice(0, 3)} />
+        )}
+      </TabsContent>
+      
+      <TabsContent value="requests" className="mt-0">
+        {/* Match Requests Tab */}
+        <ConnectionRequests dialogMode={true} />
+      </TabsContent>
     </>
   );
 
