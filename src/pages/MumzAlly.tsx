@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -139,7 +138,6 @@ const MumzAlly = () => {
   const calculateCompatibilityScore = (profile) => {
     let score = 0;
     
-    // Safely check for location matches
     const userLocation = currentUserProfile.location || '';
     if (profile.location === userLocation) {
       score += 40;
@@ -148,7 +146,6 @@ const MumzAlly = () => {
       score += 30;
     }
     
-    // Safely check for kid age matches
     const userKids = currentUserProfile.kids || [];
     const kidAgeMatches = profile.kids.some(profileKid => 
       userKids.some(userKid => 
@@ -160,20 +157,17 @@ const MumzAlly = () => {
       score += 30;
     }
     
-    // Safely check work status
     const userWorkStatus = currentUserProfile.workStatus || '';
     if (profile.workStatus === userWorkStatus) {
       score += 10;
     }
     
-    // Safely check shared interests
     const userInterests = currentUserProfile.interests || [];
     const sharedInterests = profile.interests.filter(interest => 
       userInterests.includes(interest)
     );
     score += Math.min(sharedInterests.length * 5, 15);
     
-    // Safely check nationality
     const userNationality = currentUserProfile.nationality || '';
     if (profile.nationality === userNationality) {
       score += 5;
@@ -189,7 +183,6 @@ const MumzAlly = () => {
   
   const applyFilters = (profiles, activeFilters) => {
     return profiles.filter(profile => {
-      // Age filter
       if (activeFilters.age && activeFilters.age !== "all") {
         const ageRange = activeFilters.age.split('-');
         const minAge = parseInt(ageRange[0]);
@@ -197,7 +190,6 @@ const MumzAlly = () => {
         if (profile.age < minAge || profile.age > maxAge) return false;
       }
       
-      // Kids filter
       if (activeFilters.kids && Array.isArray(activeFilters.kids)) {
         for (const kidFilter of activeFilters.kids) {
           if ((!kidFilter.ageRange || kidFilter.ageRange === "all") && 
@@ -224,22 +216,18 @@ const MumzAlly = () => {
         }
       }
       
-      // Location filter
       if (activeFilters.location && activeFilters.location !== "all" && profile.location !== activeFilters.location) {
         return false;
       }
       
-      // Nationality filter
       if (activeFilters.nationality && activeFilters.nationality !== "all" && profile.nationality !== activeFilters.nationality) {
         return false;
       }
       
-      // Work status filter
       if (activeFilters.workStatus && activeFilters.workStatus !== "all" && profile.workStatus !== activeFilters.workStatus) {
         return false;
       }
       
-      // Compatibility threshold filter
       if (activeFilters.compatibilityThreshold && profile.compatibility < activeFilters.compatibilityThreshold) {
         return false;
       }
@@ -263,6 +251,45 @@ const MumzAlly = () => {
   const activeFilters = Object.keys(filters).length > 0 ? filters : defaultFilters;
   const filteredProfiles = applyFilters(rankedProfiles, activeFilters);
   
+  const recommendedProfiles = [...rankedProfiles]
+    .filter(profile => {
+      if (neighborhood) {
+        if (profile.location === neighborhood) return true;
+        
+        const nearbyNeighborhoods = {
+          'Dubai Marina': ['JBR', 'Palm Jumeirah'],
+          'JBR': ['Dubai Marina', 'Palm Jumeirah'],
+          'Palm Jumeirah': ['Dubai Marina', 'JBR'],
+          'Downtown Dubai': ['Business Bay'],
+          'Arabian Ranches': ['Dubai Hills']
+        };
+        
+        const nearby = nearbyNeighborhoods[neighborhood] || [];
+        return nearby.includes(profile.location);
+      }
+      return true;
+    })
+    .filter(profile => {
+      if (!kids || !kids.length) return true;
+      
+      return kids.some(userKid => {
+        if (!userKid || !userKid.birthDate) return true;
+        
+        const birthDate = new Date(userKid.birthDate);
+        const now = new Date();
+        const diffMs = now.getTime() - birthDate.getTime();
+        const ageDate = new Date(diffMs);
+        const userKidAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+        
+        if (isNaN(userKidAge)) return true;
+        
+        return profile.kids.some(profileKid => 
+          Math.abs(profileKid.age - userKidAge) <= 2
+        );
+      });
+    })
+    .slice(0, 3);
+  
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
@@ -276,7 +303,10 @@ const MumzAlly = () => {
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">
-        <HeroSection onFiltersChange={setFilters} />
+        <HeroSection 
+          onFiltersChange={setFilters} 
+          profiles={recommendedProfiles} 
+        />
         <div className="flex justify-center bg-[#B8CEC2]">
           <img 
             src="/lovable-uploads/aad47488-6aaf-41bc-8d54-c6163b5cc62c.png" 

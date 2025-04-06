@@ -9,12 +9,14 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { toast } from "@/hooks/use-toast";
+import RecommendedMatches from './RecommendedMatches';
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
+  profiles?: any[];
 }
 
-const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
+const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
@@ -82,7 +84,10 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
-                  <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
+                  <div className="flex flex-col h-full">
+                    <RecommendedMatches profiles={profiles.slice(0, 3)} />
+                    <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
+                  </div>
                 </SheetContent>
               </Sheet>
             ) : (
@@ -103,7 +108,10 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                       Filter your preferences to find moms who match your needs
                     </DialogDescription>
                   </DialogHeader>
-                  <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+                  <div className="flex flex-col gap-6">
+                    <RecommendedMatches profiles={profiles.slice(0, 3)} />
+                    <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+                  </div>
                 </DialogContent>
               </Dialog>
             )}
