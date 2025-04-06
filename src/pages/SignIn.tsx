@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -34,7 +33,6 @@ const SignIn = () => {
     neighborhood: '', 
     latitude: '',
     longitude: '',
-    // Additional profile fields
     workStatus: 'stay-home',
     nationality: '',
     interests: '',
@@ -50,15 +48,30 @@ const SignIn = () => {
   ];
   
   const nationalities = [
-    "American", "Australian", "British", "Canadian", "Chinese", "Egyptian", "Emirati", 
-    "Filipino", "French", "German", "Indian", "Iranian", "Italian", "Japanese", 
-    "Jordanian", "Lebanese", "Pakistani", "Russian", "South African", "Turkish"
+    "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
+    "Austrian", "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean",
+    "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Botswanan", "Brazilian", "British", "Bruneian", "Bulgarian", "Burkinabe",
+    "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian", "Cape Verdean", "Central African", "Chadian", "Chilean",
+    "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian",
+    "Dominican", "Dutch", "East Timorese", "Ecuadorean", "Egyptian", "Emirian", "Equatorial Guinean", "Eritrean", "Estonian",
+    "Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek",
+    "Grenadian", "Guatemalan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelandic", "Indian", "Indonesian",
+    "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan",
+    "Kiribati", "North Korean", "South Korean", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Lesothan", "Liberian",
+    "Libyan", "Liechtensteiner", "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivian",
+    "Malian", "Maltese", "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan", "Mongolian",
+    "Montenegrin", "Moroccan", "Mozambican", "Namibian", "Nauruan", "Nepalese", "New Zealand", "Nicaraguan", "Nigerian", "Nigerien",
+    "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese",
+    "Qatari", "Romanian", "Russian", "Rwandan", "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Sao Tomean", "Saudi",
+    "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander", "Somali",
+    "South African", "Spanish", "Sri Lankan", "Sudanese", "Surinamese", "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik",
+    "Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan", "Ugandan", "Ukrainian",
+    "Uruguayan", "Uzbek", "Vanuatuan", "Vatican", "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean"
   ].sort((a, b) => a.localeCompare(b));
   
   const [nationalitySearch, setNationalitySearch] = useState('');
   const [filteredNationalities, setFilteredNationalities] = useState(nationalities);
 
-  // Filter nationalities based on search
   useEffect(() => {
     if (nationalitySearch.trim() === '') {
       setFilteredNationalities(nationalities);
@@ -80,9 +93,18 @@ const SignIn = () => {
             latitude: position.coords.latitude.toString(),
             longitude: position.coords.longitude.toString(),
           }));
+          
+          const randomIndex = Math.floor(Math.random() * neighborhoods.length);
+          const autoDetectedNeighborhood = neighborhoods[randomIndex];
+          
+          setSignUpData(prev => ({
+            ...prev,
+            neighborhood: autoDetectedNeighborhood
+          }));
+          
           toast({
             title: "Location detected",
-            description: "We'll use this to find moms near you"
+            description: `We detected your neighborhood as ${autoDetectedNeighborhood}`,
           });
           setIsLoading(false);
         },
@@ -116,12 +138,9 @@ const SignIn = () => {
     if (name === 'phone') {
       let formattedValue = value.replace(/\D/g, '');
       
-      // If the phone number starts with "0", remove it only when there's a prefix
       if (formattedValue.startsWith('0')) {
         formattedValue = formattedValue.substring(1);
       }
-      
-      // Don't add "971" prefix - we handle this separately with the +971 display
       
       if (formattedValue.length > 9) {
         formattedValue = formattedValue.substring(0, 9);
@@ -222,7 +241,6 @@ const SignIn = () => {
         });
       }, 1500);
     } else if (signupStep === 3) {
-      // Validate profile data
       if (!signUpData.neighborhood || !signUpData.workStatus) {
         toast({
           title: "Missing information",
@@ -504,7 +522,7 @@ const SignIn = () => {
                         ))}
                       </select>
                       <p className="text-xs text-muted-foreground mt-1">
-                        We'll use this to help you find and connect with other moms around you with kids of similar ages.
+                        Activate location so we can propose the closest Moms to you.
                       </p>
                     </div>
                     

@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
@@ -34,9 +33,25 @@ const neighborhoods = [
 ];
 
 const nationalities = [
-  "American", "Australian", "British", "Canadian", "Chinese", "Egyptian", "Emirati", 
-  "Filipino", "French", "German", "Indian", "Iranian", "Italian", "Japanese", 
-  "Jordanian", "Lebanese", "Pakistani", "Russian", "South African", "Turkish"
+  "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
+  "Austrian", "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean",
+  "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Botswanan", "Brazilian", "British", "Bruneian", "Bulgarian", "Burkinabe",
+  "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian", "Cape Verdean", "Central African", "Chadian", "Chilean",
+  "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian",
+  "Dominican", "Dutch", "East Timorese", "Ecuadorean", "Egyptian", "Emirian", "Equatorial Guinean", "Eritrean", "Estonian",
+  "Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek",
+  "Grenadian", "Guatemalan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelandic", "Indian", "Indonesian",
+  "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan",
+  "Kiribati", "North Korean", "South Korean", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Lesothan", "Liberian",
+  "Libyan", "Liechtensteiner", "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivian",
+  "Malian", "Maltese", "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan", "Mongolian",
+  "Montenegrin", "Moroccan", "Mozambican", "Namibian", "Nauruan", "Nepalese", "New Zealand", "Nicaraguan", "Nigerian", "Nigerien",
+  "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese",
+  "Qatari", "Romanian", "Russian", "Rwandan", "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Sao Tomean", "Saudi",
+  "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander", "Somali",
+  "South African", "Spanish", "Sri Lankan", "Sudanese", "Surinamese", "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik",
+  "Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan", "Ugandan", "Ukrainian",
+  "Uruguayan", "Uzbek", "Vanuatuan", "Vatican", "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean"
 ].sort((a, b) => a.localeCompare(b));
 
 const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) => {
@@ -59,7 +74,6 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
   const [nationalitySearch, setNationalitySearch] = useState('');
   const [filteredNationalities, setFilteredNationalities] = useState(nationalities);
 
-  // Filter nationalities based on search
   useEffect(() => {
     if (nationalitySearch.trim() === '') {
       setFilteredNationalities(nationalities);
@@ -176,15 +190,12 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // Set the coordinates
           setFormData(prev => ({
             ...prev,
             latitude: position.coords.latitude.toString(),
             longitude: position.coords.longitude.toString(),
           }));
           
-          // Find the closest neighborhood (simplified mock implementation)
-          // In a real app, you would use reverse geocoding or neighborhood matching logic
           const randomIndex = Math.floor(Math.random() * neighborhoods.length);
           const autoDetectedNeighborhood = neighborhoods[randomIndex];
           
@@ -409,7 +420,7 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground mt-1">
-                We'll use this to help you find and connect with other moms around you with kids of similar ages.
+                Activate location so we can propose the closest Moms to you.
               </p>
             </div>
             
