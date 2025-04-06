@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, BabyIcon } from 'lucide-react';
+import { MapPin, Baby } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { MumzProfile } from './ProfilesSection';
 import { Link } from 'react-router-dom';
@@ -13,8 +13,15 @@ interface RecommendedMatchesProps {
 const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
   const { neighborhood } = useUserInfo();
   
-  if (profiles.length === 0) {
-    return null;
+  if (!profiles || profiles.length === 0) {
+    return (
+      <div className="mb-6 text-center py-4">
+        <h3 className="text-lg font-medium mb-2">No Recommended Matches</h3>
+        <p className="text-sm text-muted-foreground">
+          Try adjusting your filters or adding more information to your profile
+        </p>
+      </div>
+    );
   }
   
   return (
@@ -46,9 +53,9 @@ const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
                 </div>
                 
                 <div className="flex items-center gap-1">
-                  <BabyIcon className="h-3 w-3 text-amber-500" />
+                  <Baby className="h-3 w-3 text-amber-500" />
                   <span>
-                    {profile.kids.map((kid, i) => (
+                    {profile.kids && profile.kids.map((kid, i) => (
                       <span key={i}>
                         {kid.age} y/o {kid.gender}
                         {i < profile.kids.length - 1 ? ', ' : ''}

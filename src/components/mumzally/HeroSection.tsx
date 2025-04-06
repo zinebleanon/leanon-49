@@ -20,6 +20,7 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const isMobile = useIsMobile();
   const { location } = useUserInfo();
   
@@ -62,6 +63,10 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
     }
   };
 
+  const handleShowFilters = () => {
+    setShowFilters(true);
+  };
+
   return (
     <section className="py-8 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -85,8 +90,25 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
                   <div className="flex flex-col h-full">
-                    <RecommendedMatches profiles={profiles.slice(0, 3)} />
-                    <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
+                    {profiles && profiles.length > 0 ? (
+                      <>
+                        <RecommendedMatches profiles={profiles.slice(0, 3)} />
+                        {showFilters ? (
+                          <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
+                        ) : (
+                          <div className="mt-4 flex justify-center">
+                            <Button onClick={handleShowFilters} className="bg-white text-foreground hover:bg-white/90">
+                              Show Filters
+                            </Button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-8">
+                        <p className="text-lg font-medium mb-4">No moms match your criteria yet</p>
+                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
+                      </div>
+                    )}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -105,12 +127,29 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                   <DialogHeader className="relative">
                     <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
                     <DialogDescription className="text-center text-muted-foreground">
-                      Filter your preferences to find moms who match your needs
+                      Recommended moms based on your location and children's ages
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-6">
-                    <RecommendedMatches profiles={profiles.slice(0, 3)} />
-                    <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+                    {profiles && profiles.length > 0 ? (
+                      <>
+                        <RecommendedMatches profiles={profiles.slice(0, 3)} />
+                        {showFilters ? (
+                          <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
+                        ) : (
+                          <div className="mt-4 flex justify-center">
+                            <Button onClick={handleShowFilters} className="bg-white text-foreground hover:bg-white/90">
+                              Adjust Filters
+                            </Button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="text-center py-8">
+                        <p className="text-lg font-medium mb-4">No moms match your criteria yet</p>
+                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+                      </div>
+                    )}
                   </div>
                 </DialogContent>
               </Dialog>
