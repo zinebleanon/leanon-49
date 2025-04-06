@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Users, HelpCircle, Tag, ShoppingBag, Home, Inbox, Bell, MapPin } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import RibbonIcon from './ui/RibbonIcon';
@@ -14,6 +14,7 @@ import {
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
+import { useUserInfo } from '@/hooks/use-user-info';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,6 +23,7 @@ const Navbar = () => {
   const [unreadCount, setUnreadCount] = useState(3); // Example unread count
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { userInfo } = useUserInfo();
   
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 10);
@@ -64,7 +66,7 @@ const Navbar = () => {
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
     { 
-      name: 'LeanOn Moms', 
+      name: 'Find', 
       icon: (
         <div className="relative">
           <MapPin className="h-4 w-4" />
@@ -76,7 +78,7 @@ const Navbar = () => {
         </div>
       ), 
       path: '/ally',
-      description: 'Find moms around you with similar aged kids' 
+      description: 'LeanOn Moms around you, with same age kids' 
     },
     { name: 'Ask', icon: <HelpCircle className="h-4 w-4" />, path: '/ask' },
     { name: 'Deals', icon: <Tag className="h-4 w-4" />, path: '/brands' },
@@ -164,6 +166,13 @@ const Navbar = () => {
                     ? "text-primary" 
                     : "text-foreground/70 hover:text-foreground"
                 )}
+                onClick={(e) => {
+                  // Prevent navigation if user is not logged in and trying to access protected routes
+                  if (!userInfo && item.path !== '/') {
+                    e.preventDefault();
+                    setIsJoinModalOpen(true);
+                  }
+                }}
               >
                 <span className={cn(
                   "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
@@ -247,7 +256,15 @@ const Navbar = () => {
                   animationDelay: `${index * 0.05}s`,
                   WebkitTapHighlightColor: 'transparent'
                 }}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  // Prevent navigation if user is not logged in and trying to access protected routes
+                  if (!userInfo && item.path !== '/') {
+                    e.preventDefault();
+                    setIsJoinModalOpen(true);
+                  } else {
+                    setIsMobileMenuOpen(false);
+                  }
+                }}
               >
                 <span className={cn(
                   "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",

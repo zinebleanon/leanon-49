@@ -17,6 +17,7 @@ import MumzSelect from "./pages/MumzSelect";
 import MumzDeals from "./pages/MumzDeals";
 import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -30,20 +31,22 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignIn />} />
-          <Route path="/ally" element={<MumzAlly />} />
-          <Route path="/ally/subscribe" element={<MumzAllySubscribe />} />
-          <Route path="/ask" element={<MumzAsk />} />
           
-          {/* LeanOn Routes */}
-          <Route path="/" element={<MumzShoppingHub />}>
+          {/* Protected Routes */}
+          <Route path="/ally" element={<ProtectedRoute><MumzAlly /></ProtectedRoute>} />
+          <Route path="/ally/subscribe" element={<ProtectedRoute><MumzAllySubscribe /></ProtectedRoute>} />
+          <Route path="/ask" element={<ProtectedRoute><MumzAsk /></ProtectedRoute>} />
+          
+          {/* LeanOn Routes - All Protected */}
+          <Route path="/" element={<ProtectedRoute><MumzShoppingHub /></ProtectedRoute>}>
             <Route path="save" element={<Navigate to="/brands" replace />} />
             <Route path="marketplace" element={<MumzMarketplace />} />
             <Route path="select" element={<MumzSelect />} />
           </Route>
-          <Route path="/marketplace/sell" element={<MumzMarketplaceSell />} />
-          <Route path="/marketplace/find" element={<MumzMarketplaceFind />} />
-          <Route path="/deals" element={<MumzDeals />} />
-          <Route path="/brands" element={<MumzBrands />} />
+          <Route path="/marketplace/sell" element={<ProtectedRoute><MumzMarketplaceSell /></ProtectedRoute>} />
+          <Route path="/marketplace/find" element={<ProtectedRoute><MumzMarketplaceFind /></ProtectedRoute>} />
+          <Route path="/deals" element={<ProtectedRoute><MumzDeals /></ProtectedRoute>} />
+          <Route path="/brands" element={<ProtectedRoute><MumzBrands /></ProtectedRoute>} />
           
           {/* Catch-all Route */}
           <Route path="*" element={<NotFound />} />

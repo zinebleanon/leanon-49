@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -47,7 +46,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
     { 
       id: 'ally',
       title: 'Find', 
-      description: 'Match with Moms in your neighborhood & <span class="font-adlery">LeanOn</span> each other.',
+      description: 'LeanOn Moms around you, with same age kids...',
       icon: <RibbonIcon className="h-6 w-6 md:h-7 md:w-7" />,
       color: 'from-[#FFF8E7] to-[#FFF8E7]/80',
       path: '/ally'
