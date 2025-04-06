@@ -11,7 +11,8 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { toast } from "@/hooks/use-toast";
 import RecommendedMatches from './RecommendedMatches';
 import ConnectionRequests from './ConnectionRequests';
-import { Filter } from 'lucide-react';
+import { Filter, ChevronDown, ChevronUp } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -24,6 +25,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [activeTab, setActiveTab] = useState("nearby");
   const isMobile = useIsMobile();
   const { location } = useUserInfo();
   
@@ -70,7 +72,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
 
   const renderDialogContent = () => (
     <>
-      <div className="sticky top-0 z-10">
+      <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
         <Button 
           onClick={handleShowFilters} 
           variant="outline" 
@@ -87,42 +89,52 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
         </div>
       )}
       
-      {/* Moms Around You Section */}
-      <div className="mb-4">
-        <h3 className="text-lg font-medium mb-3">Moms Around You</h3>
+      <Tabs defaultValue="nearby" value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid grid-cols-2 w-full mb-4">
+          <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
+          <TabsTrigger value="requests">Match Requests</TabsTrigger>
+        </TabsList>
         
-        {!location?.latitude ? (
-          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-            <p className="text-sm text-muted-foreground">
-              Enable location to see moms in your neighborhood
-            </p>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="mt-2 text-xs h-8 bg-white"
-              onClick={handleRequestLocation}
-            >
-              Share my location
-            </Button>
+        <TabsContent value="nearby" className="mt-0">
+          {/* Moms Around You Tab */}
+          <div className="mb-4">
+            {!location?.latitude ? (
+              <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                <p className="text-sm text-muted-foreground">
+                  Enable location to see moms in your neighborhood
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-2 text-xs h-8 bg-white"
+                  onClick={handleRequestLocation}
+                >
+                  Share my location
+                </Button>
+              </div>
+            ) : nearbyMoms && nearbyMoms.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                {nearbyMoms.map((mom) => (
+                  <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground mb-4">
+                No moms with kids of similar ages found nearby
+              </p>
+            )}
           </div>
-        ) : nearbyMoms && nearbyMoms.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-            {nearbyMoms.map((mom) => (
-              <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-muted-foreground mb-4">
-            No moms with kids of similar ages found nearby
-          </p>
-        )}
-      </div>
-      
-      {profiles && profiles.length > 0 && (
-        <RecommendedMatches profiles={profiles.slice(0, 3)} />
-      )}
-      
-      <ConnectionRequests dialogMode={true} />
+          
+          {profiles && profiles.length > 0 && (
+            <RecommendedMatches profiles={profiles.slice(0, 3)} />
+          )}
+        </TabsContent>
+        
+        <TabsContent value="requests" className="mt-0">
+          {/* Match Requests Tab */}
+          <ConnectionRequests dialogMode={true} />
+        </TabsContent>
+      </Tabs>
     </>
   );
 

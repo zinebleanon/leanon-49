@@ -1,10 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
 import ProfilesSection from '@/components/mumzally/ProfilesSection';
-import MatchRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from "@/hooks/use-toast";
 import MessageForm from '@/components/mumzally/MessageForm';
 import { useNavigate } from 'react-router-dom';
@@ -357,7 +355,6 @@ const MumzAlly = () => {
             className="max-w-full md:max-w-lg h-auto mx-auto"
           />
         </div>
-        <MatchRequests />
         <ProfilesSection 
           profiles={filteredProfiles} 
           onHeartClick={handleHeartClick}
