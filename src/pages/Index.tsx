@@ -5,12 +5,15 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { Settings } from 'lucide-react';
+import { Settings, BellRing } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfo } from '@/hooks/use-user-info';
+import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { userInfo } = useUserInfo();
   
   // Use the viewport height hook to fix iOS height issues
   useViewportHeight();
@@ -27,6 +30,23 @@ const Index = () => {
   const goToAdminPage = () => {
     navigate('/admin/notifications');
   };
+
+  const tryNotification = async () => {
+    if (Notification.permission !== "granted") {
+      const permissionGranted = await askNotificationPermission();
+      if (!permissionGranted) return;
+    }
+    
+    // Get user name from local storage or use a default
+    const userName = userInfo?.name || localStorage.getItem('notification_user_name') || 'User';
+    
+    // Send a test notification with the user's name
+    sendPushNotification(
+      "Welcome to LeanOn", 
+      `Hello {userName}, thanks for trying out our notification feature!`,
+      "all"
+    );
+  };
   
   if (isLoading) {
     return (
@@ -42,15 +62,25 @@ const Index = () => {
       <Hero onJoinClick={() => {}} />
       
       {/* Admin button - positioned discreetly at the bottom right */}
-      <div className="fixed bottom-8 right-8 z-10">
+      <div className="fixed bottom-8 right-8 z-10 space-y-2">
         <Button 
           variant="outline" 
           size="sm" 
-          className="rounded-full w-10 h-10 p-0 bg-background/80 backdrop-blur-sm shadow-md"
+          className="rounded-full w-10 h-10 p-0 bg-background/80 backdrop-blur-sm shadow-md block"
           onClick={goToAdminPage}
         >
           <Settings className="h-4 w-4" />
           <span className="sr-only">Admin</span>
+        </Button>
+        
+        <Button
+          variant="warm"
+          size="sm"
+          className="rounded-full p-0 bg-background/80 backdrop-blur-sm shadow-md block w-10 h-10"
+          onClick={tryNotification}
+        >
+          <BellRing className="h-4 w-4" />
+          <span className="sr-only">Try Notification</span>
         </Button>
       </div>
       

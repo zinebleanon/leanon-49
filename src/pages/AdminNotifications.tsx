@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, BellOff, MessageSquare, Settings, ArrowLeft } from 'lucide-react';
+import { Bell, BellOff, MessageSquare, Settings, ArrowLeft, BellRing } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -19,6 +19,8 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { sendPushNotification } from '@/utils/pushNotifications';
 
 // Mock notification data
 const mockNotifications = [
@@ -34,6 +36,7 @@ const AdminNotifications = () => {
   const [adminCode, setAdminCode] = useState('');
   const [notifications, setNotifications] = useState(mockNotifications);
   const [showNewNotification, setShowNewNotification] = useState(false);
+  const [showPersonalizationHelp, setShowPersonalizationHelp] = useState(false);
   
   const form = useForm({
     defaultValues: {
@@ -42,6 +45,7 @@ const AdminNotifications = () => {
       userGroup: 'all',
       schedule: false,
       scheduleDate: '',
+      personalize: true,
     },
   });
 
@@ -67,7 +71,7 @@ const AdminNotifications = () => {
     navigate('/');
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const newNotification = {
       id: notifications.length + 1,
       title: data.title,
@@ -80,13 +84,35 @@ const AdminNotifications = () => {
     };
     
     setNotifications([...notifications, newNotification]);
+    
+    // If not scheduled, send the notification immediately
+    if (!data.schedule) {
+      const success = await sendPushNotification(
+        data.title, 
+        data.message,
+        data.userGroup
+      );
+      
+      if (success) {
+        toast({
+          title: 'Notification Sent',
+          description: `"${data.title}" has been sent successfully with personalization.`,
+        });
+      } else {
+        toast({
+          title: 'Notification Sent (Preview)',
+          description: 'The notification was displayed as a preview. In production, it would be sent to all users.',
+        });
+      }
+    } else {
+      toast({
+        title: 'Notification Scheduled',
+        description: `"${data.title}" has been scheduled for ${new Date(data.scheduleDate).toLocaleString()}.`,
+      });
+    }
+    
     setShowNewNotification(false);
     form.reset();
-    
-    toast({
-      title: data.schedule ? 'Notification Scheduled' : 'Notification Sent',
-      description: `"${data.title}" has been ${data.schedule ? 'scheduled' : 'sent'} successfully.`,
-    });
   };
 
   const deleteNotification = (id: number) => {
@@ -139,7 +165,7 @@ const AdminNotifications = () => {
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-xl font-semibold mb-2">Push Notifications</h2>
-                <p className="text-muted-foreground">Manage and send notifications to users</p>
+                <p className="text-muted-foreground">Manage and send personalized notifications to users</p>
               </div>
               <Button 
                 onClick={() => setShowNewNotification(!showNewNotification)}
@@ -154,9 +180,33 @@ const AdminNotifications = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Create New Notification</CardTitle>
-                  <CardDescription>Compose a new notification to send to users</CardDescription>
+                  <CardDescription>
+                    Compose a personalized notification to send to users.
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="ml-2 h-6"
+                      onClick={() => setShowPersonalizationHelp(!showPersonalizationHelp)}
+                    >
+                      Help
+                    </Button>
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
+                  {showPersonalizationHelp && (
+                    <Alert className="mb-4">
+                      <BellRing className="h-4 w-4" />
+                      <AlertTitle>Personalization Tips</AlertTitle>
+                      <AlertDescription>
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          <li>Use <code className="bg-muted px-1 rounded">{'{userName}'}</code> in your message to include the recipient's name</li>
+                          <li>Example: "Hello {'{userName}'}, check out our new features!"</li>
+                          <li>If no placeholder is found, the name will be added at the beginning of the message</li>
+                        </ul>
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                       <FormField
@@ -179,8 +229,15 @@ const AdminNotifications = () => {
                           <FormItem>
                             <FormLabel>Message</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter notification message" {...field} required />
+                              <Input 
+                                placeholder="Enter notification message (use {userName} for personalization)" 
+                                {...field} 
+                                required 
+                              />
                             </FormControl>
+                            <FormDescription>
+                              Example: "Hello {'{userName}'}, we have a new feature for you!"
+                            </FormDescription>
                           </FormItem>
                         )}
                       />

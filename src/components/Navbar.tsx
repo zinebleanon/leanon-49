@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -15,6 +14,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
 import { useUserInfo } from '@/hooks/use-user-info';
+import NotificationSubscriber from './NotificationSubscriber';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
