@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -356,7 +357,7 @@ const MumzAlly = () => {
             className="max-w-full md:max-w-lg h-auto mx-auto"
           />
         </div>
-        <MatchRequests nearbyMoms={nearbyMomsWithSimilarAgedKids} />
+        <MatchRequests />
         <ProfilesSection 
           profiles={filteredProfiles} 
           onHeartClick={handleHeartClick}

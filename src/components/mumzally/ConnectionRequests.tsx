@@ -53,7 +53,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
-  const { location, kids } = useUserInfo();
+  const { location } = useUserInfo();
 
   const handleAccept = (id: number, name: string) => {
     setAcceptedRequests(prev => [...prev, id]);
@@ -74,59 +74,11 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
     });
   };
 
-  const handleRequestLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // Store position in localStorage
-          const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-          userInfo.location = {
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString()
-          };
-          localStorage.setItem('userInfo', JSON.stringify(userInfo));
-          
-          toast({
-            title: "Location Updated",
-            description: "We'll now show you moms in your area!",
-          });
-        },
-        (error) => {
-          toast({
-            title: "Location Access Denied",
-            description: "You can still use filters to find moms in specific neighborhoods.",
-            variant: "destructive"
-          });
-        }
-      );
-    }
-  };
-
   // If in dialog mode, use a more compact layout
   if (dialogMode) {
     return (
       <div className="mb-6">
         <h3 className="text-lg font-medium mb-3">Match Requests <span className="text-sm font-normal text-muted-foreground">({requests.length})</span></h3>
-        
-        {!location?.latitude && (
-          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-            <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium">Enable location for better matches</p>
-                <p className="text-xs text-muted-foreground mb-2">See moms in your neighborhood</p>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-xs h-8 bg-white"
-                  onClick={handleRequestLocation}
-                >
-                  Share my location
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {requests.map((request) => (
@@ -180,88 +132,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 font-playfair">Moms Around You</h2>
-        
-        {!location?.latitude && (
-          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-md">
-            <div className="flex items-start gap-3">
-              <MapPin className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium">Enable location for better matches</p>
-                <p className="text-sm text-muted-foreground mb-3">To see moms in your neighborhood, we need to know your location</p>
-                <Button 
-                  variant="outline" 
-                  className="bg-white"
-                  onClick={handleRequestLocation}
-                >
-                  Share my location
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Display nearby moms with kids of similar ages */}
-        {nearbyMoms && nearbyMoms.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {nearbyMoms.map((mom) => (
-              <Card key={mom.id} className="overflow-hidden bg-white/90">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                      <UserCircle className="h-7 w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium">
-                        <Link to={`/ally/profile/${mom.id}`} className="hover:underline">
-                          {mom.name}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{mom.age}, {mom.location}</p>
-                    </div>
-                    <Badge className="ml-auto bg-primary/50 text-foreground font-bold border-primary/30">
-                      {mom.compatibility}%
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 mb-3">
-                    <Baby className="h-4 w-4 text-amber-500" />
-                    <span className="text-sm">
-                      {mom.kids.map((kid, i) => (
-                        <span key={i}>
-                          {kid.age} y/o {kid.gender}
-                          {i < mom.kids.length - 1 ? ', ' : ''}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <Button 
-                      variant="default" 
-                      className="w-full"
-                      onClick={() => handleAccept(mom.id, mom.name)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <BowRibbon isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
-                        LeanBack
-                      </div>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="mb-8 p-4 bg-white rounded-md shadow-sm text-center">
-            <p className="text-muted-foreground">
-              {location?.latitude
-                ? "We don't see any moms near you with kids of similar ages yet."
-                : "Enable location to see moms in your neighborhood."}
-            </p>
-          </div>
-        )}
-        
         <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests <span className="text-lg font-normal text-primary-foreground/80">({requests.length})</span></h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (

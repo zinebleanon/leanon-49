@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -67,6 +68,64 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
     setShowFilters(!showFilters);
   };
 
+  const renderDialogContent = () => (
+    <>
+      <div className="sticky top-0 z-10">
+        <Button 
+          onClick={handleShowFilters} 
+          variant="outline" 
+          className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
+        >
+          <Filter className="h-4 w-4" />
+          {showFilters ? "Hide Filters" : "Show Filters"}
+        </Button>
+      </div>
+      
+      {showFilters && (
+        <div className="mb-4">
+          <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
+        </div>
+      )}
+      
+      {/* Moms Around You Section */}
+      <div className="mb-4">
+        <h3 className="text-lg font-medium mb-3">Moms Around You</h3>
+        
+        {!location?.latitude ? (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Enable location to see moms in your neighborhood
+            </p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mt-2 text-xs h-8 bg-white"
+              onClick={handleRequestLocation}
+            >
+              Share my location
+            </Button>
+          </div>
+        ) : nearbyMoms && nearbyMoms.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+            {nearbyMoms.map((mom) => (
+              <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground mb-4">
+            No moms with kids of similar ages found nearby
+          </p>
+        )}
+      </div>
+      
+      {profiles && profiles.length > 0 && (
+        <RecommendedMatches profiles={profiles.slice(0, 3)} />
+      )}
+      
+      <ConnectionRequests dialogMode={true} />
+    </>
+  );
+
   return (
     <section className="py-8 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -90,28 +149,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
                   <div className="flex flex-col h-full">
-                    <div className="sticky top-0 z-10 mb-3 pt-2">
-                      <Button 
-                        onClick={handleShowFilters} 
-                        variant="outline" 
-                        className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
-                      >
-                        <Filter className="h-4 w-4" />
-                        {showFilters ? "Hide Filters" : "Show Filters"}
-                      </Button>
-                    </div>
-                    
-                    {showFilters && (
-                      <div className="mb-4">
-                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-                      </div>
-                    )}
-                    
-                    {profiles && profiles.length > 0 && (
-                      <RecommendedMatches profiles={profiles.slice(0, 3)} />
-                    )}
-                    
-                    <ConnectionRequests dialogMode={true} nearbyMoms={nearbyMoms} />
+                    {renderDialogContent()}
                   </div>
                 </SheetContent>
               </Sheet>
@@ -134,35 +172,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-6">
-                    <div className="sticky top-0 z-10">
-                      <Button 
-                        onClick={handleShowFilters} 
-                        variant="outline" 
-                        className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
-                      >
-                        <Filter className="h-4 w-4" />
-                        {showFilters ? "Hide Filters" : "Show Filters"}
-                      </Button>
-                    </div>
-                    
-                    {showFilters && (
-                      <div className="mb-4">
-                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-                      </div>
-                    )}
-                    
-                    {profiles && profiles.length > 0 ? (
-                      <RecommendedMatches profiles={profiles.slice(0, 3)} />
-                    ) : (
-                      <div className="text-center py-6">
-                        <p className="text-lg font-medium mb-4">No moms match your criteria yet</p>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Try adjusting your filters or adding more information to your profile
-                        </p>
-                      </div>
-                    )}
-                    
-                    <ConnectionRequests dialogMode={true} nearbyMoms={nearbyMoms} />
+                    {renderDialogContent()}
                   </div>
                 </DialogContent>
               </Dialog>
