@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus, Calendar } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import BowRibbon from '@/components/mumzally/BowRibbon';
@@ -22,7 +22,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
   const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification, 3: Profile
   const [otpValue, setOtpValue] = useState("");
   
@@ -237,10 +237,11 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
         });
       }, 1500);
     } else if (signupStep === 2) {
-      if (otpValue.length !== 6) {
+      // Changed from length !== 6 to length !== 4 for 4-digit OTP
+      if (otpValue.length !== 4) {
         toast({
           title: "Invalid code",
-          description: "Please enter the 6-digit verification code.",
+          description: "Please enter the 4-digit verification code.",
           variant: "destructive",
         });
         return;
@@ -339,6 +340,21 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     setActiveTab("signup");
   };
   
+  // Added this new function to handle tab changes
+  const handleTabChange = (value: string) => {
+    // Explicitly cast the value to our tab type
+    setActiveTab(value as 'signin' | 'signup');
+  };
+
+  // Added function to skip verification for testing purposes
+  const skipVerification = () => {
+    toast({
+      title: "Verification skipped",
+      description: "For testing purposes only"
+    });
+    setSignupStep(3);
+  };
+  
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pt-0 relative">
       <div className="absolute top-4 left-4">
@@ -366,7 +382,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
         
-        <Tabs defaultValue={activeTab} className="w-full mt-4" value={activeTab} onValueChange={setActiveTab}>
+        <Tabs defaultValue={activeTab} className="w-full mt-4" value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid w-full grid-cols-2 mb-2 bg-secondary/30">
             <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
@@ -448,7 +464,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                 </CardTitle>
                 {signupStep === 2 && (
                   <CardDescription>
-                    Enter the 6-digit code sent to +971 {formatPhoneDisplay(signUpData.phone)}
+                    Enter the 4-digit code sent to +971 {formatPhoneDisplay(signUpData.phone)}
                   </CardDescription>
                 )}
                 {signupStep === 3 && (
@@ -583,7 +599,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                     
                     <div className="flex justify-center">
                       <InputOTP 
-                        maxLength={6} 
+                        maxLength={4} 
                         value={otpValue} 
                         onChange={setOtpValue}
                         className="gap-2"
@@ -593,13 +609,11 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                           <InputOTPSlot index={1} className="h-12 w-12 text-lg" />
                           <InputOTPSlot index={2} className="h-12 w-12 text-lg" />
                           <InputOTPSlot index={3} className="h-12 w-12 text-lg" />
-                          <InputOTPSlot index={4} className="h-12 w-12 text-lg" />
-                          <InputOTPSlot index={5} className="h-12 w-12 text-lg" />
                         </InputOTPGroup>
                       </InputOTP>
                     </div>
                     
-                    <div className="text-center">
+                    <div className="text-center flex flex-col gap-2">
                       <Button 
                         variant="link" 
                         type="button" 
@@ -608,6 +622,16 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                         className="text-muted-foreground text-sm"
                       >
                         Didn't receive a code? Resend
+                      </Button>
+                      
+                      <Button
+                        variant="outline"
+                        type="button"
+                        onClick={skipVerification}
+                        size="sm"
+                        className="mx-auto text-xs"
+                      >
+                        Skip verification (for testing)
                       </Button>
                     </div>
                   </CardContent>

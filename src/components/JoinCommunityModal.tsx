@@ -4,17 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/hooks/use-toast';
-import { Heart, Mail, Check, Plus, Minus, Calendar, MapPin, Search } from 'lucide-react';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { Heart, Mail } from 'lucide-react';
 
 interface JoinCommunityModalProps {
   isOpen: boolean;
@@ -24,7 +14,6 @@ interface JoinCommunityModalProps {
 // Redirect to sign-up page instead of using in-modal sign-up
 const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<'options' | 'redirect'>('options');
 
   const handleRedirectToSignUp = () => {
     onOpenChange(false);
