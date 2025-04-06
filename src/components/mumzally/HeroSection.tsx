@@ -140,7 +140,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-              Connect with <br /> Moms Around You
+              Connect with <br /> LeanMoms Around You
             </span>
           </h1>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
@@ -152,7 +152,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
                     <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                    Find Moms Around
+                    Find LeanMoms Around
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
@@ -169,7 +169,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
                     <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                    Find Moms Around
+                    Find LeanMoms Around
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#B8CEC2] border-[#B8CEC2]/50">
