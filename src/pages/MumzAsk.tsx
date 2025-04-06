@@ -9,6 +9,8 @@ import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, Scho
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
+import HowItWorksModal from '@/components/mumzally/HowItWorksModal';
+import RibbonIcon from '@/components/ui/RibbonIcon';
 
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -88,6 +90,78 @@ const MumzAsk = () => {
                   Neighborhood
                 </Button>
               </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                {activeSection === 'general' ? (
+                  <>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="lg" 
+                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                        >
+                          <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
+                          Ask LeanOn Community
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-lg">
+                        <AskQuestionForm categories={categories} onClose={() => {
+                          const closeButton = document.querySelector('[aria-label="Close"]');
+                          if (closeButton instanceof HTMLElement) {
+                            closeButton.click();
+                          }
+                        }} />
+                      </DialogContent>
+                    </Dialog>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+                      onClick={() => setActiveSection('neighborhood')}
+                    >
+                      <Users className="mr-2 h-5 w-5" />
+                      Ask Your Neighborhood
+                    </Button>
+                    
+                    <HowItWorksModal />
+                  </>
+                ) : (
+                  <>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="lg" 
+                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                        >
+                          <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
+                          Ask Your Neighborhood
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-lg">
+                        <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
+                          const closeButton = document.querySelector('[aria-label="Close"]');
+                          if (closeButton instanceof HTMLElement) {
+                            closeButton.click();
+                          }
+                        }} />
+                      </DialogContent>
+                    </Dialog>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+                      onClick={() => setActiveSection('general')}
+                    >
+                      <MessagesSquare className="mr-2 h-5 w-5" />
+                      Ask LeanOn Community
+                    </Button>
+                    
+                    <HowItWorksModal />
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </section>
@@ -102,193 +176,117 @@ const MumzAsk = () => {
         
         <div className="px-4 py-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3 justify-center my-4">
-              {activeSection === 'general' ? (
-                <>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button 
-                        size="lg" 
-                        className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                      >
-                        <MessagesSquare className="mr-2 h-5 w-5" /> Ask the Community
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-lg">
-                      <AskQuestionForm categories={categories} onClose={() => {
-                        const closeButton = document.querySelector('[aria-label="Close"]');
-                        if (closeButton instanceof HTMLElement) {
-                          closeButton.click();
+            <div className="flex justify-end">
+              {isMobile ? (
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      className="mb-4 flex items-center gap-1"
+                    >
+                      <Filter className="mr-2 h-4 w-4" /> Filter
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
+                    <div className="pt-4">
+                      <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                      <div className="relative mb-4">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          <Search className="w-5 h-5 text-gray-500" />
+                        </div>
+                        <Input 
+                          type="search" 
+                          className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
+                          placeholder="Enter keywords to narrow your search..." 
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </div>
+                      <div className="flex flex-wrap gap-2 mb-6 max-h-[60vh] overflow-y-auto">
+                        {activeSection === 'general' ? 
+                          categories.map((category) => (
+                            <Button
+                              key={category.name}
+                              variant="outline"
+                              size="sm"
+                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                            >
+                              {category.icon}
+                              {category.name}
+                            </Button>
+                          )) :
+                          neighborhoodCategories.map((category) => (
+                            <Button
+                              key={category.name}
+                              variant="outline"
+                              size="sm"
+                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                            >
+                              {category.icon}
+                              {category.name}
+                            </Button>
+                          ))
                         }
-                      }} />
-                    </DialogContent>
-                  </Dialog>
-                  
-                  {isMobile ? (
-                    <Sheet>
-                      <SheetTrigger asChild>
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                        >
-                          <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
-                        </Button>
-                      </SheetTrigger>
-                      <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
-                        <div className="pt-4">
-                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
-                          <div className="relative mb-4">
-                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                              <Search className="w-5 h-5 text-gray-500" />
-                            </div>
-                            <Input 
-                              type="search" 
-                              className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
-                              placeholder="Enter keywords to narrow your search..." 
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                          </div>
-                          <div className="flex flex-wrap gap-2 mb-6 max-h-[60vh] overflow-y-auto">
-                            {categories.map((category) => (
-                              <Button
-                                key={category.name}
-                                variant="outline"
-                                size="sm"
-                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                              >
-                                {category.icon}
-                                {category.name}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </SheetContent>
-                    </Sheet>
-                  ) : (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                        >
-                          <Filter className="mr-2 h-4 w-4" /> Filter &amp; Find your Topic
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
-                        <div className="pt-4">
-                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
-                          <div className="relative mb-4">
-                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                              <Search className="w-5 h-5 text-gray-500" />
-                            </div>
-                            <Input 
-                              type="search" 
-                              className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
-                              placeholder="Enter keywords to narrow your search..." 
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                          </div>
-                          <div className="flex flex-wrap gap-2 mb-6 max-h-[40vh] overflow-y-auto">
-                            {categories.map((category) => (
-                              <Button
-                                key={category.name}
-                                variant="outline"
-                                size="sm"
-                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                              >
-                                {category.icon}
-                                {category.name}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                </>
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
               ) : (
-                <>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button 
-                        size="lg" 
-                        className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                      >
-                        <MessagesSquare className="mr-2 h-5 w-5" /> Ask your Neighborhood
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-lg">
-                      <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
-                        const closeButton = document.querySelector('[aria-label="Close"]');
-                        if (closeButton instanceof HTMLElement) {
-                          closeButton.click();
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="mb-4 flex items-center gap-1"
+                    >
+                      <Filter className="mr-2 h-4 w-4" /> Filter
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
+                    <div className="pt-4">
+                      <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
+                      <div className="relative mb-4">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          <Search className="w-5 h-5 text-gray-500" />
+                        </div>
+                        <Input 
+                          type="search" 
+                          className="block w-full p-4 ps-10 bg-white/90 border border-[#B8CEC2]/30 rounded-lg"
+                          placeholder="Enter keywords to narrow your search..." 
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </div>
+                      <div className="flex flex-wrap gap-2 mb-6 max-h-[40vh] overflow-y-auto">
+                        {activeSection === 'general' ? 
+                          categories.map((category) => (
+                            <Button
+                              key={category.name}
+                              variant="outline"
+                              size="sm"
+                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                            >
+                              {category.icon}
+                              {category.name}
+                            </Button>
+                          )) :
+                          neighborhoodCategories.map((category) => (
+                            <Button
+                              key={category.name}
+                              variant="outline"
+                              size="sm"
+                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                            >
+                              {category.icon}
+                              {category.name}
+                            </Button>
+                          ))
                         }
-                      }} />
-                    </DialogContent>
-                  </Dialog>
-                  
-                  {isMobile ? (
-                    <Sheet>
-                      <SheetTrigger asChild>
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                        >
-                          <Filter className="mr-2 h-4 w-4" /> Filter by Category
-                        </Button>
-                      </SheetTrigger>
-                      <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
-                        <div className="pt-4">
-                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
-                          <div className="flex flex-wrap gap-2 mb-6">
-                            {neighborhoodCategories.map((category) => (
-                              <Button
-                                key={category.name}
-                                variant="outline"
-                                size="sm"
-                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                              >
-                                {category.icon}
-                                {category.name}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </SheetContent>
-                    </Sheet>
-                  ) : (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                        >
-                          <Filter className="mr-2 h-4 w-4" /> Filter by Category
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-md sm:max-w-lg bg-[#B8CEC2] border-[#B8CEC2]/50">
-                        <div className="pt-4">
-                          <h3 className="text-xl font-medium mb-3">Filter by Category</h3>
-                          <div className="flex flex-wrap gap-2 mb-6">
-                            {neighborhoodCategories.map((category) => (
-                              <Button
-                                key={category.name}
-                                variant="outline"
-                                size="sm"
-                                className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                              >
-                                {category.icon}
-                                {category.name}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                </>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               )}
             </div>
           </div>
