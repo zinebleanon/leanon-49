@@ -355,11 +355,6 @@ const MumzAlly = () => {
             className="max-w-full md:max-w-lg h-auto mx-auto"
           />
         </div>
-        <ProfilesSection 
-          profiles={filteredProfiles} 
-          onHeartClick={handleHeartClick}
-          onMessageClick={handleMessageClick}
-        />
       </main>
       
       {selectedMum && (

@@ -72,23 +72,6 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
 
   const renderDialogContent = () => (
     <>
-      <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
-        <Button 
-          onClick={handleShowFilters} 
-          variant="outline" 
-          className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
-        >
-          <Filter className="h-4 w-4" />
-          {showFilters ? "Hide Filters" : "Show Filters"}
-        </Button>
-      </div>
-      
-      {showFilters && (
-        <div className="mb-4">
-          <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-        </div>
-      )}
-      
       <Tabs defaultValue="nearby" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid grid-cols-2 w-full mb-4">
           <TabsTrigger value="nearby">Moms Around You</TabsTrigger>
@@ -96,6 +79,24 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
         </TabsList>
         
         <TabsContent value="nearby" className="mt-0">
+          {/* Filter button - only visible in the Moms Around You tab */}
+          <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
+            <Button 
+              onClick={handleShowFilters} 
+              variant="outline" 
+              className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
+            >
+              <Filter className="h-4 w-4" />
+              {showFilters ? "Hide Filters" : "Show Filters"}
+            </Button>
+          </div>
+          
+          {showFilters && (
+            <div className="mb-4">
+              <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
+            </div>
+          )}
+          
           {/* Moms Around You Tab */}
           <div className="mb-4">
             {!location?.latitude ? (
