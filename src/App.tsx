@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import AdminNotifications from "./pages/AdminNotifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useNotificationInit } from "./hooks/use-notification-init";
+import Connections from "./pages/Connections";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const AppContent = () => {
       <Route path="/ally" element={<ProtectedRoute><MumzAlly /></ProtectedRoute>} />
       <Route path="/ally/subscribe" element={<ProtectedRoute><MumzAllySubscribe /></ProtectedRoute>} />
       <Route path="/ask" element={<ProtectedRoute><MumzAsk /></ProtectedRoute>} />
+      <Route path="/connections" element={<ProtectedRoute><Connections /></ProtectedRoute>} />
       
       {/* LeanOn Routes - All Protected */}
       <Route path="/" element={<ProtectedRoute><MumzShoppingHub /></ProtectedRoute>}>
