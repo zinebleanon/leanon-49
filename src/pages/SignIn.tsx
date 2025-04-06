@@ -7,10 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check, MapPin } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check, MapPin, Search } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import BowRibbon from '@/components/mumzally/BowRibbon';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,10 +50,25 @@ const SignIn = () => {
   ];
   
   const nationalities = [
-    "Emirati", "Indian", "Pakistani", "British", "American", "Egyptian", "Filipino",
-    "Lebanese", "Jordanian", "South African", "Australian", "Canadian", "French",
-    "German", "Italian", "Chinese", "Japanese", "Russian", "Turkish", "Iranian"
-  ];
+    "American", "Australian", "British", "Canadian", "Chinese", "Egyptian", "Emirati", 
+    "Filipino", "French", "German", "Indian", "Iranian", "Italian", "Japanese", 
+    "Jordanian", "Lebanese", "Pakistani", "Russian", "South African", "Turkish"
+  ].sort((a, b) => a.localeCompare(b));
+  
+  const [nationalitySearch, setNationalitySearch] = useState('');
+  const [filteredNationalities, setFilteredNationalities] = useState(nationalities);
+
+  // Filter nationalities based on search
+  useEffect(() => {
+    if (nationalitySearch.trim() === '') {
+      setFilteredNationalities(nationalities);
+    } else {
+      const filtered = nationalities.filter(nationality => 
+        nationality.toLowerCase().includes(nationalitySearch.toLowerCase())
+      );
+      setFilteredNationalities(filtered);
+    }
+  }, [nationalitySearch]);
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -271,7 +287,7 @@ const SignIn = () => {
       setIsLoading(false);
       toast({
         title: "Code resent",
-        description: `We've sent a new verification code to ${formatPhoneDisplay(signUpData.phone)}`,
+        description: `We've sent a new verification code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
       });
     }, 1000);
   };
@@ -440,17 +456,21 @@ const SignIn = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="signup-phone">Phone Number (UAE only)</Label>
-                      <Input 
-                        id="signup-phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="XX XXX XXXX"
-                        className="border-secondary/30 focus:border-secondary"
-                        prefix="+971"
-                        value={formatPhoneDisplay(signUpData.phone)}
-                        onChange={handleSignUpChange}
-                        required
-                      />
+                      <div className="flex items-center">
+                        <div className="bg-muted flex items-center px-3 rounded-l-md border border-r-0 border-input h-10 text-sm">
+                          +971
+                        </div>
+                        <Input 
+                          id="signup-phone"
+                          name="phone"
+                          type="tel"
+                          placeholder="XX XXX XXXX"
+                          className="border-secondary/30 focus:border-secondary rounded-l-none"
+                          value={formatPhoneDisplay(signUpData.phone)}
+                          onChange={handleSignUpChange}
+                          required
+                        />
+                      </div>
                       <p className="text-xs text-muted-foreground">Enter without leading 0</p>
                     </div>
                     
@@ -483,6 +503,9 @@ const SignIn = () => {
                           </option>
                         ))}
                       </select>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        We'll use this to help you find and connect with other moms around you with kids of similar ages.
+                      </p>
                     </div>
                     
                     <div className="space-y-2">
@@ -518,6 +541,12 @@ const SignIn = () => {
                 
                 {signupStep === 2 && (
                   <CardContent className="space-y-6 pt-6">
+                    <div className="text-center mb-4">
+                      <div className="inline-block bg-muted px-3 py-1 rounded-full text-sm font-medium">
+                        +971 {formatPhoneDisplay(signUpData.phone)}
+                      </div>
+                    </div>
+                    
                     <div className="flex justify-center">
                       <InputOTP 
                         maxLength={6} 
@@ -567,21 +596,50 @@ const SignIn = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="signup-nationality">Your Nationality</Label>
-                      <select
-                        id="signup-nationality"
-                        name="nationality"
-                        className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
-                        value={signUpData.nationality}
-                        onChange={handleSignUpChange}
-                        required
-                      >
-                        <option value="" disabled>Select your nationality</option>
-                        {nationalities.map((nationality) => (
-                          <option key={nationality} value={nationality}>
-                            {nationality}
-                          </option>
-                        ))}
-                      </select>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start text-left font-normal"
+                          >
+                            {signUpData.nationality || "Select your nationality"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[200px] p-0" align="start">
+                          <div className="p-2">
+                            <div className="flex items-center border rounded-md px-2">
+                              <Search className="h-4 w-4 text-muted-foreground mr-2" />
+                              <Input
+                                placeholder="Search..."
+                                value={nationalitySearch}
+                                onChange={(e) => setNationalitySearch(e.target.value)}
+                                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-9"
+                              />
+                            </div>
+                          </div>
+                          <div className="max-h-[200px] overflow-y-auto">
+                            {filteredNationalities.length > 0 ? (
+                              filteredNationalities.map((nationality) => (
+                                <div
+                                  key={nationality}
+                                  className="px-3 py-2 text-sm cursor-pointer hover:bg-secondary"
+                                  onClick={() => {
+                                    const newSignUpData = {...signUpData, nationality};
+                                    setSignUpData(newSignUpData);
+                                    setNationalitySearch('');
+                                  }}
+                                >
+                                  {nationality}
+                                </div>
+                              ))
+                            ) : (
+                              <div className="px-3 py-2 text-sm text-muted-foreground">
+                                No results found
+                              </div>
+                            )}
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                     
                     <div className="space-y-2">

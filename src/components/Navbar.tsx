@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -66,7 +67,7 @@ const Navbar = () => {
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
     { 
       name: 'Find', 
-      icon: <RibbonIcon className="h-4 w-4" />, 
+      icon: <RibbonIcon className="h-4 w-4" color="currentColor" />, 
       path: '/ally',
       description: 'LeanOn Moms around you, with same age kids' 
     },

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
-import { Heart, Mail, Check, Plus, Minus, Calendar, MapPin } from 'lucide-react';
+import { Heart, Mail, Check, Plus, Minus, Calendar, MapPin, Search } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
@@ -34,10 +34,10 @@ const neighborhoods = [
 ];
 
 const nationalities = [
-  "Emirati", "Indian", "Pakistani", "British", "American", "Egyptian", "Filipino",
-  "Lebanese", "Jordanian", "South African", "Australian", "Canadian", "French",
-  "German", "Italian", "Chinese", "Japanese", "Russian", "Turkish", "Iranian"
-];
+  "American", "Australian", "British", "Canadian", "Chinese", "Egyptian", "Emirati", 
+  "Filipino", "French", "German", "Indian", "Iranian", "Italian", "Japanese", 
+  "Jordanian", "Lebanese", "Pakistani", "Russian", "South African", "Turkish"
+].sort((a, b) => a.localeCompare(b));
 
 const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) => {
   const [step, setStep] = useState<'options' | 'form' | 'success'>('options');
@@ -56,6 +56,20 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
     { id: '1', birthDate: undefined, gender: '' }
   ]);
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [nationalitySearch, setNationalitySearch] = useState('');
+  const [filteredNationalities, setFilteredNationalities] = useState(nationalities);
+
+  // Filter nationalities based on search
+  useEffect(() => {
+    if (nationalitySearch.trim() === '') {
+      setFilteredNationalities(nationalities);
+    } else {
+      const filtered = nationalities.filter(nationality => 
+        nationality.toLowerCase().includes(nationalitySearch.toLowerCase())
+      );
+      setFilteredNationalities(filtered);
+    }
+  }, [nationalitySearch]);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,6 +160,7 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
       longitude: '',
     });
     setKids([{ id: '1', birthDate: undefined, gender: '' }]);
+    setNationalitySearch('');
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -400,21 +415,49 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
             
             <div className="grid gap-2">
               <Label htmlFor="nationality">Nationality</Label>
-              <Select 
-                value={formData.nationality} 
-                onValueChange={(value) => handleSelectChange('nationality', value)}
-              >
-                <SelectTrigger id="nationality">
-                  <SelectValue placeholder="Select your nationality" />
-                </SelectTrigger>
-                <SelectContent>
-                  {nationalities.map((nationality) => (
-                    <SelectItem key={nationality} value={nationality}>
-                      {nationality}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal"
+                  >
+                    {formData.nationality || "Select your nationality"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0" align="start">
+                  <div className="p-2">
+                    <div className="flex items-center border rounded-md px-2">
+                      <Search className="h-4 w-4 text-muted-foreground mr-2" />
+                      <Input
+                        placeholder="Search..."
+                        value={nationalitySearch}
+                        onChange={(e) => setNationalitySearch(e.target.value)}
+                        className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-9"
+                      />
+                    </div>
+                  </div>
+                  <div className="max-h-[200px] overflow-y-auto">
+                    {filteredNationalities.length > 0 ? (
+                      filteredNationalities.map((nationality) => (
+                        <div
+                          key={nationality}
+                          className="px-3 py-2 text-sm cursor-pointer hover:bg-secondary"
+                          onClick={() => {
+                            handleSelectChange('nationality', nationality);
+                            setNationalitySearch('');
+                          }}
+                        >
+                          {nationality}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="px-3 py-2 text-sm text-muted-foreground">
+                        No results found
+                      </div>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
             
             <div className="grid gap-2">
@@ -483,4 +526,3 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
 };
 
 export default JoinCommunityModal;
-
