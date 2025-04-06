@@ -29,8 +29,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignIn />} />
+          {/* Both sign-in and sign-up routes use the same component with appropriate default tabs */}
+          <Route path="/sign-in" element={<SignIn defaultTab="signin" />} />
+          <Route path="/sign-up" element={<SignIn defaultTab="signup" />} />
           
           {/* Protected Routes */}
           <Route path="/ally" element={<ProtectedRoute><MumzAlly /></ProtectedRoute>} />

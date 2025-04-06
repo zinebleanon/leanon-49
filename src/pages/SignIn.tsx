@@ -1,23 +1,39 @@
+
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check, MapPin, Search } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import BowRibbon from '@/components/mumzally/BowRibbon';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import RibbonIcon from '@/components/ui/RibbonIcon';
 
-const SignIn = () => {
+interface SignInProps {
+  defaultTab?: 'signin' | 'signup';
+}
+
+const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("signin");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification, 3: Profile
   const [otpValue, setOtpValue] = useState("");
+  
+  // Set active tab based on location pathname if not explicitly provided
+  useEffect(() => {
+    if (location.pathname === '/sign-up' && activeTab !== 'signup') {
+      setActiveTab('signup');
+    } else if (location.pathname === '/sign-in' && activeTab !== 'signin') {
+      setActiveTab('signin');
+    }
+  }, [location.pathname, activeTab]);
   
   const [signInData, setSignInData] = useState({
     email: '',
@@ -350,7 +366,7 @@ const SignIn = () => {
           <p className="text-gray-600 text-sm">A community of supportive moms</p>
         </div>
         
-        <Tabs defaultValue="signin" className="w-full mt-4" value={activeTab} onValueChange={setActiveTab}>
+        <Tabs defaultValue={activeTab} className="w-full mt-4" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-2 bg-secondary/30">
             <TabsTrigger value="signin" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign In</TabsTrigger>
             <TabsTrigger value="signup" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">Sign Up</TabsTrigger>
@@ -727,7 +743,7 @@ const SignIn = () => {
                               className="h-10 w-10"
                               onClick={() => removeKid(index)}
                             >
-                              -
+                              <Minus className="h-4 w-4" />
                             </Button>
                           )}
                         </div>
@@ -739,7 +755,7 @@ const SignIn = () => {
                         onClick={addKid}
                         className="mt-2"
                       >
-                        + Add Child
+                        <Plus className="h-4 w-4 mr-2" /> Add Child
                       </Button>
                     </div>
                     
@@ -769,7 +785,7 @@ const SignIn = () => {
                     )}
                     {signupStep === 1 ? (
                       <>
-                        <BowIcon className="mr-2 h-4 w-4" fill="currentColor" />
+                        <RibbonIcon className="mr-2 h-4 w-4" color="currentColor" />
                         Continue
                       </>
                     ) : signupStep === 2 ? (
@@ -779,7 +795,7 @@ const SignIn = () => {
                       </>
                     ) : (
                       <>
-                        <BowRibbon className="mr-2 h-4 w-4" isActive={true} />
+                        <RibbonIcon className="mr-2 h-4 w-4" color="currentColor" />
                         Create Account
                       </>
                     )}
