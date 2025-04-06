@@ -7,23 +7,35 @@ import MatchRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from "@/hooks/use-toast";
 import MessageForm from '@/components/mumzally/MessageForm';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfo } from '@/hooks/use-user-info';
 
 const MumzAlly = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState<Record<string, any>>({});
   const [selectedMum, setSelectedMum] = useState<{id: number, name: string} | null>(null);
   const [isMessageFormOpen, setIsMessageFormOpen] = useState(false);
+  const navigate = useNavigate();
+  const { neighborhood, kids, workStatus } = useUserInfo();
   
   const currentUserProfile = {
-    location: 'Dubai Marina',
-    kids: [{age: 3, gender: 'Girl'}],
-    workStatus: 'Part-time',
+    location: neighborhood,
+    kids: kids.map(kid => {
+      const birthDate = new Date(kid.birthDate);
+      const now = new Date();
+      const diffMs = now.getTime() - birthDate.getTime();
+      const ageDate = new Date(diffMs);
+      const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+      
+      return {
+        age: isNaN(age) ? 3 : age,
+        gender: kid.gender || 'Girl'
+      };
+    }),
+    workStatus: workStatus || 'Part-time',
     interests: ['Yoga', 'Reading', 'Beach Days'],
     nationality: 'British Expat'
   };
   
-  const navigate = useNavigate();
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -215,9 +227,20 @@ const MumzAlly = () => {
     });
   };
   
-  const filteredProfiles = Object.keys(filters).length > 0 
-    ? applyFilters(rankedProfiles, filters)
-    : rankedProfiles;
+  const defaultFilters = {
+    location: neighborhood,
+    kids: [
+      {
+        ageRange: currentUserProfile.kids.length > 0 ? 
+          currentUserProfile.kids[0].age.toString() : 
+          "all",
+        gender: "all"
+      }
+    ]
+  };
+  
+  const activeFilters = Object.keys(filters).length > 0 ? filters : defaultFilters;
+  const filteredProfiles = applyFilters(rankedProfiles, activeFilters);
   
   if (isLoading) {
     return (
@@ -262,5 +285,3 @@ const MumzAlly = () => {
 };
 
 export default MumzAlly;
-
-

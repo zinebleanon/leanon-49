@@ -7,6 +7,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import RibbonIcon from '@/components/ui/RibbonIcon';
+import { useUserInfo } from '@/hooks/use-user-info';
+import { toast } from "@/hooks/use-toast";
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -15,13 +17,48 @@ interface HeroSectionProps {
 const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
   const isMobile = useIsMobile();
+  const { location } = useUserInfo();
   
   useEffect(() => {
     setIsVisible(true);
-  }, []);
+    // Check if user has location set
+    if (!location || !location.latitude) {
+      setShowLocationPrompt(true);
+    }
+  }, [location]);
 
   const textStyles = "transition-all duration-700 ease-smooth";
+  
+  const handleRequestLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Store position in localStorage
+          const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+          userInfo.location = {
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString()
+          };
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
+          
+          setShowLocationPrompt(false);
+          toast({
+            title: "Location Updated",
+            description: "We'll now show you moms in your area!",
+          });
+        },
+        (error) => {
+          toast({
+            title: "Location Access Denied",
+            description: "You can still use filters to find moms in specific neighborhoods.",
+            variant: "destructive"
+          });
+        }
+      );
+    }
+  };
 
   return (
     <section className="py-8 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
@@ -40,7 +77,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                     size="lg" 
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
-                    <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" />
+                    <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
                     Find Moms Around
                   </Button>
                 </SheetTrigger>
@@ -55,7 +92,7 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
                     size="lg" 
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
-                    <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" />
+                    <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
                     Find Moms Around
                   </Button>
                 </DialogTrigger>
@@ -73,6 +110,28 @@ const HeroSection = ({ onFiltersChange }: HeroSectionProps) => {
             <HowItWorksModal />
           </div>
         </div>
+        
+        {/* Location prompt dialog */}
+        {showLocationPrompt && (
+          <Dialog open={showLocationPrompt} onOpenChange={setShowLocationPrompt}>
+            <DialogContent className="max-w-md bg-white">
+              <DialogHeader>
+                <DialogTitle>Enable Location for Better Matches</DialogTitle>
+                <DialogDescription className="pt-2">
+                  To find moms in your neighborhood, we need access to your location. This helps us connect you with moms who are nearby.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col gap-4 pt-2">
+                <Button onClick={handleRequestLocation} className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground">
+                  Share My Location
+                </Button>
+                <Button variant="outline" onClick={() => setShowLocationPrompt(false)}>
+                  Not Now
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
     </section>
   );
