@@ -10,6 +10,8 @@ import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { toast } from "@/hooks/use-toast";
 import RecommendedMatches from './RecommendedMatches';
+import ConnectionRequests from './ConnectionRequests';
+import { Filter } from 'lucide-react';
 
 interface HeroSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -64,7 +66,7 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
   };
 
   const handleShowFilters = () => {
-    setShowFilters(true);
+    setShowFilters(!showFilters);
   };
 
   return (
@@ -90,25 +92,32 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
                   <div className="flex flex-col h-full">
-                    {profiles && profiles.length > 0 ? (
-                      <>
-                        <RecommendedMatches profiles={profiles.slice(0, 3)} />
-                        {showFilters ? (
-                          <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-                        ) : (
-                          <div className="mt-4 flex justify-center">
-                            <Button onClick={handleShowFilters} className="bg-white text-foreground hover:bg-white/90">
-                              Show Filters
-                            </Button>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="text-center py-8">
-                        <p className="text-lg font-medium mb-4">No moms match your criteria yet</p>
-                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => {}} />
+                    {/* Filter Button at the top */}
+                    <div className="sticky top-0 z-10 mb-3 pt-2">
+                      <Button 
+                        onClick={handleShowFilters} 
+                        variant="outline" 
+                        className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
+                      >
+                        <Filter className="h-4 w-4" />
+                        {showFilters ? "Hide Filters" : "Show Filters"}
+                      </Button>
+                    </div>
+                    
+                    {/* Filters Section (conditionally rendered) */}
+                    {showFilters && (
+                      <div className="mb-4">
+                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
                       </div>
                     )}
+                    
+                    {/* Recommended Matches */}
+                    {profiles && profiles.length > 0 && (
+                      <RecommendedMatches profiles={profiles.slice(0, 3)} />
+                    )}
+                    
+                    {/* Connection Requests */}
+                    <ConnectionRequests />
                   </div>
                 </SheetContent>
               </Sheet>
@@ -131,25 +140,39 @@ const HeroSection = ({ onFiltersChange, profiles = [] }: HeroSectionProps) => {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-6">
-                    {profiles && profiles.length > 0 ? (
-                      <>
-                        <RecommendedMatches profiles={profiles.slice(0, 3)} />
-                        {showFilters ? (
-                          <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-                        ) : (
-                          <div className="mt-4 flex justify-center">
-                            <Button onClick={handleShowFilters} className="bg-white text-foreground hover:bg-white/90">
-                              Adjust Filters
-                            </Button>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="text-center py-8">
-                        <p className="text-lg font-medium mb-4">No moms match your criteria yet</p>
-                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => setIsFilterOpen(false)} />
+                    {/* Filter Button at the top */}
+                    <div className="sticky top-0 z-10">
+                      <Button 
+                        onClick={handleShowFilters} 
+                        variant="outline" 
+                        className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
+                      >
+                        <Filter className="h-4 w-4" />
+                        {showFilters ? "Hide Filters" : "Show Filters"}
+                      </Button>
+                    </div>
+                    
+                    {/* Filters Section (conditionally rendered) */}
+                    {showFilters && (
+                      <div className="mb-4">
+                        <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
                       </div>
                     )}
+                    
+                    {/* Recommended Matches */}
+                    {profiles && profiles.length > 0 ? (
+                      <RecommendedMatches profiles={profiles.slice(0, 3)} />
+                    ) : (
+                      <div className="text-center py-6">
+                        <p className="text-lg font-medium mb-4">No moms match your criteria yet</p>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Try adjusting your filters or adding more information to your profile
+                        </p>
+                      </div>
+                    )}
+                    
+                    {/* Connection Requests */}
+                    <ConnectionRequests dialogMode={true} />
                   </div>
                 </DialogContent>
               </Dialog>

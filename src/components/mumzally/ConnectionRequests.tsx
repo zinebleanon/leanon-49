@@ -1,3 +1,4 @@
+
 import { UserCircle, MessageCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,7 +16,11 @@ interface ConnectionRequest {
   compatibility: number;
 }
 
-const MatchRequests = () => {
+interface ConnectionRequestsProps {
+  dialogMode?: boolean;
+}
+
+const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => {
   const requests: ConnectionRequest[] = [
     {
       id: 1,
@@ -56,6 +61,60 @@ const MatchRequests = () => {
     });
   };
 
+  // If in dialog mode, use a more compact layout
+  if (dialogMode) {
+    return (
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-3">Match Requests</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {requests.map((request) => (
+            <Card key={request.id} className="overflow-hidden bg-white/90">
+              <CardContent className="p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                    <UserCircle className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-sm">{request.name}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {request.age}, {request.location}
+                    </p>
+                  </div>
+                  <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
+                    {request.compatibility}%
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-end">
+                  <Button 
+                    variant="default" 
+                    size="sm"
+                    className="text-xs"
+                    onClick={() => 
+                      acceptedRequests.includes(request.id) 
+                        ? handleMessageClick(request.id, request.name)
+                        : handleAccept(request.id, request.name)
+                    }
+                  >
+                    {acceptedRequests.includes(request.id) ? 'Message' : 'Accept'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        
+        {selectedRecipient && (
+          <MessageForm 
+            open={messageDialogOpen} 
+            onOpenChange={setMessageDialogOpen} 
+            recipient={selectedRecipient}
+          />
+        )}
+      </div>
+    );
+  }
+
+  // Regular full view for the main page
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -130,4 +189,4 @@ const MatchRequests = () => {
   );
 };
 
-export default MatchRequests;
+export default ConnectionRequests;
