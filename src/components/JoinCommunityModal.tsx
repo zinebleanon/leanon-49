@@ -163,11 +163,7 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
         </DialogHeader>
 
         {step === 'options' && (
-          <div className="grid gap-4 py-4">
-            <p className="text-center text-muted-foreground mb-4">
-              Join our community of supportive mumz:
-            </p>
-            
+          <div className="grid gap-4 py-4">            
             <Card 
               className="cursor-pointer hover:border-primary transition-all"
               onClick={() => setStep('form')}
@@ -177,9 +173,6 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
                   <Mail className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="font-semibold mb-2">Join via Subscription</h3>
-                <p className="text-sm text-muted-foreground">
-                  Complete a simple form to join our community
-                </p>
               </CardContent>
             </Card>
           </div>

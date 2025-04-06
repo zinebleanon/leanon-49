@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -111,7 +112,7 @@ const Navbar = () => {
           to="/" 
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center"
         >
-          <div className="flex items-center h-12 md:h-14 bg-white/90 p-1 rounded-lg shadow-sm">
+          <div className="flex items-center h-12 md:h-14 p-1 rounded-lg">
             <img 
               src="/lovable-uploads/e721b501-95df-45ef-b358-51c2c2fc8144.png" 
               alt="LeanOn Logo" 
