@@ -1,5 +1,5 @@
 
-import { UserCircle, MessageCircle, ExternalLink } from 'lucide-react';
+import { UserCircle, MessageCircle, ExternalLink, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { useState } from 'react';
 import MessageForm from './MessageForm';
 import BowRibbon from './BowRibbon';
+import { useUserInfo } from '@/hooks/use-user-info';
 
 interface ConnectionRequest {
   id: number;
@@ -41,6 +42,7 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
+  const { location } = useUserInfo();
 
   const handleAccept = (id: number, name: string) => {
     setAcceptedRequests(prev => [...prev, id]);
@@ -61,11 +63,60 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
     });
   };
 
+  const handleRequestLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Store position in localStorage
+          const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+          userInfo.location = {
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString()
+          };
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
+          
+          toast({
+            title: "Location Updated",
+            description: "We'll now show you moms in your area!",
+          });
+        },
+        (error) => {
+          toast({
+            title: "Location Access Denied",
+            description: "You can still use filters to find moms in specific neighborhoods.",
+            variant: "destructive"
+          });
+        }
+      );
+    }
+  };
+
   // If in dialog mode, use a more compact layout
   if (dialogMode) {
     return (
       <div className="mb-6">
         <h3 className="text-lg font-medium mb-3">Match Requests <span className="text-sm font-normal text-muted-foreground">({requests.length})</span></h3>
+        
+        {!location?.latitude && (
+          <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+            <div className="flex items-start gap-3">
+              <MapPin className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium">Enable location for better matches</p>
+                <p className="text-xs text-muted-foreground mb-2">See moms in your neighborhood</p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-xs h-8 bg-white"
+                  onClick={handleRequestLocation}
+                >
+                  Share my location
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden bg-white/90">
@@ -118,6 +169,27 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">Moms Around You</h2>
+        
+        {!location?.latitude && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-md">
+            <div className="flex items-start gap-3">
+              <MapPin className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium">Enable location for better matches</p>
+                <p className="text-sm text-muted-foreground mb-3">To see moms in your neighborhood, we need to know your location</p>
+                <Button 
+                  variant="outline" 
+                  className="bg-white"
+                  onClick={handleRequestLocation}
+                >
+                  Share my location
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests <span className="text-lg font-normal text-primary-foreground/80">({requests.length})</span></h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (
