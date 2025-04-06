@@ -16,6 +16,7 @@ interface ConnectionRequest {
   age: number;
   location: string;
   compatibility: number;
+  activeInCommunity?: boolean;
 }
 
 interface NearbyMom {
@@ -25,6 +26,7 @@ interface NearbyMom {
   location: string;
   kids: {age: number; gender: string}[];
   compatibility: number;
+  activeInCommunity?: boolean;
 }
 
 interface ConnectionRequestsProps {
@@ -39,14 +41,16 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
       name: "Sarah",
       age: 32,
       location: "Dubai Marina",
-      compatibility: 85
+      compatibility: 85,
+      activeInCommunity: true
     },
     {
       id: 2,
       name: "Emma",
       age: 29,
       location: "Palm Jumeirah",
-      compatibility: 92
+      compatibility: 92,
+      activeInCommunity: false
     }
   ];
 
@@ -89,9 +93,14 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                     <UserCircle className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-sm">{request.name}</h3>
+                    <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
+                      {request.name}
+                    </Link>
                     <p className="text-xs text-muted-foreground">
                       {request.age}, {request.location}
+                      {request.activeInCommunity && (
+                        <span className="ml-1 text-green-600">● Active</span>
+                      )}
                     </p>
                   </div>
                   <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
@@ -116,7 +125,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                       </>
                     ) : (
                       <>
-                        <BowRibbon isRightActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
+                        <BowRibbon isLeftActive={false} isRightActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
                         Accept
                       </>
                     )}
@@ -152,9 +161,16 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                     <UserCircle className="h-8 w-8 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium">{request.name}</h3>
+                    <h3 className="font-medium">
+                      <Link to={`/ally/profile/${request.id}`} className="hover:underline">
+                        {request.name}
+                      </Link>
+                    </h3>
                     <p className="text-sm text-muted-foreground">
                       {request.age}, {request.location}
+                      {request.activeInCommunity && (
+                        <span className="ml-1 text-green-600">● Active in Community</span>
+                      )}
                     </p>
                   </div>
                   <div className="ml-auto flex items-center gap-2">
@@ -169,8 +185,10 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                     size="sm"
                     className="text-sm text-primary hover:text-primary/80 p-0 h-auto flex items-center gap-1"
                   >
-                    See {request.name}'s profile
-                    <ExternalLink className="h-3 w-3 ml-1" />
+                    <Link to={`/ally/profile/${request.id}`} className="flex items-center gap-1">
+                      See {request.name}'s profile
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </Link>
                   </Button>
                   <Button 
                     variant="default" 
@@ -189,7 +207,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                         </>
                       ) : (
                         <>
-                          <BowRibbon isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
+                          <BowRibbon isLeftActive={false} isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
                           LeanOn
                         </>
                       )}

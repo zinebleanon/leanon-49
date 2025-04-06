@@ -12,7 +12,7 @@ interface BowRibbonProps {
 
 const BowRibbon = ({ 
   className, 
-  isActive = true,
+  isActive = false,
   isLeftActive = false,
   isRightActive = false,
   color = "#FFD9A7"
@@ -22,6 +22,10 @@ const BowRibbon = ({
   // If isRightActive is true, only right side is active
   const leftActive = isActive || isLeftActive;
   const rightActive = isActive || isRightActive;
+
+  // If neither side is active, use a muted color
+  const leftColor = leftActive ? color : "#e2e8f0";
+  const rightColor = rightActive ? color : "#e2e8f0"; 
   
   return (
     <div className={`relative flex items-center justify-center ${className}`}>
