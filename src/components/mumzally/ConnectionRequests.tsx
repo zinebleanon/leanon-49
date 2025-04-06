@@ -65,7 +65,7 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
   if (dialogMode) {
     return (
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-3">Match Requests</h3>
+        <h3 className="text-lg font-medium mb-3">Match Requests <span className="text-sm font-normal text-muted-foreground">({requests.length})</span></h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden bg-white/90">
@@ -118,7 +118,7 @@ const ConnectionRequests = ({ dialogMode = false }: ConnectionRequestsProps) => 
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests</h2>
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests <span className="text-lg font-normal text-primary-foreground/80">({requests.length})</span></h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden">
