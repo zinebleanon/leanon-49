@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -9,9 +8,12 @@ import {
   AlertCircle,
   Tag,
   ArrowLeft,
-  Search
+  Search,
+  Image,
+  X
 } from 'lucide-react';
 import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 interface AskQuestionFormProps {
   categories: { name: string; icon: JSX.Element }[];
@@ -91,10 +93,13 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const [suggestedCategories, setSuggestedCategories] = useState<string[]>([]);
   const [relatedQuestions, setRelatedQuestions] = useState<string[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [images, setImages] = useState<{ file: File; preview: string }[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<{
     title?: string;
     details?: string;
     category?: string;
+    images?: string;
   }>({});
   const { toast } = useToast();
 
@@ -102,7 +107,6 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
     if (title.length > 2) {
       setIsSearching(true);
       
-      // Debounce the search to avoid too many updates
       const timer = setTimeout(() => {
         const text = `${title} ${details}`.toLowerCase();
         
@@ -116,13 +120,11 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
         
         setSuggestedCategories([...new Set(finalSuggestions)]);
         
-        // Find related questions based on title
         const allQuestions = Object.values(popularQuestions).flat();
         const related = allQuestions.filter(question => 
           question.toLowerCase().includes(title.toLowerCase())
         );
         
-        // If no exact matches, try to find questions containing any word from the title
         if (related.length === 0 && title.length > 3) {
           const titleWords = title.toLowerCase().split(/\s+/).filter(word => word.length > 3);
           const fuzzyMatches = allQuestions.filter(question => 
@@ -143,11 +145,18 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
     }
   }, [title, details]);
 
+  useEffect(() => {
+    return () => {
+      images.forEach(image => URL.revokeObjectURL(image.preview));
+    };
+  }, [images]);
+
   const validateForm = () => {
     const newErrors: {
       title?: string;
       details?: string;
       category?: string;
+      images?: string;
     } = {};
     
     if (!title.trim()) {
@@ -166,6 +175,10 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       newErrors.category = 'Please select a category';
     }
     
+    if (images.length > 3) {
+      newErrors.images = 'Maximum 3 images allowed';
+    }
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -176,12 +189,13 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
     if (validateForm()) {
       toast({
         title: "Question Submitted",
-        description: "Your question has been sent for review and will be published once approved by an admin.",
+        description: `Your question with ${images.length > 0 ? images.length + ' images' : 'no images'} has been sent for review and will be published once approved by an admin.`,
       });
       
       setTitle('');
       setDetails('');
       setSelectedCategory('');
+      setImages([]);
       
       if (onClose) {
         onClose();
@@ -192,17 +206,44 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const selectRelatedQuestion = (question: string) => {
     setTitle(question);
     
-    // Find which category contains this question
     const categoryEntry = Object.entries(popularQuestions)
       .find(([_, questions]) => questions.includes(question));
     
     if (categoryEntry) {
       setSelectedCategory(categoryEntry[0]);
       
-      // Also set a reasonable default for details based on the question
       if (!details) {
         setDetails(`I'm looking for advice about ${question.toLowerCase().replace(/\?$/, '')}. Any experiences or tips would be helpful.`);
       }
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newImages = Array.from(e.target.files).map(file => ({
+        file,
+        preview: URL.createObjectURL(file)
+      }));
+      
+      const allImages = [...images, ...newImages].slice(0, 3);
+      setImages(allImages);
+      
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = [...images];
+    URL.revokeObjectURL(newImages[index].preview);
+    newImages.splice(index, 1);
+    setImages(newImages);
+  };
+
+  const handleImageButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -305,6 +346,64 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
             {errors.details}
           </p>
         )}
+      </div>
+      
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Add Images (optional)</label>
+        <div className="flex flex-col space-y-3">
+          <div className="flex flex-wrap gap-3">
+            {images.map((image, index) => (
+              <div 
+                key={index} 
+                className="relative w-24 h-24 rounded-md overflow-hidden border border-[#B8CEC2]"
+              >
+                <img 
+                  src={image.preview} 
+                  alt={`Uploaded ${index}`} 
+                  className="w-full h-full object-cover" 
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-1 right-1 bg-white/80 rounded-full p-1 hover:bg-white"
+                >
+                  <X className="h-3 w-3 text-foreground" />
+                </button>
+              </div>
+            ))}
+            
+            {images.length < 3 && (
+              <button
+                type="button"
+                onClick={handleImageButtonClick}
+                className="w-24 h-24 border-2 border-dashed border-[#B8CEC2] rounded-md flex flex-col items-center justify-center hover:bg-[#B8CEC2]/10"
+              >
+                <Image className="h-6 w-6 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground mt-1">Add Image</span>
+              </button>
+            )}
+          </div>
+          
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+            multiple
+          />
+          
+          <p className="text-xs text-muted-foreground">
+            Upload up to 3 images (jpg, png) - max 5MB each
+          </p>
+          
+          {errors.images && (
+            <p className="text-destructive text-xs flex items-center gap-1 mt-1">
+              <AlertCircle className="h-3 w-3" />
+              {errors.images}
+            </p>
+          )}
+        </div>
       </div>
       
       <div className="space-y-2">

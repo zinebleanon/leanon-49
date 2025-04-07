@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, ThumbsUp, Clock, Filter } from 'lucide-react';
@@ -22,7 +23,8 @@ const mockGeneralCommunityMessages = [
     replies: 12,
     likes: 8,
     timestamp: '2 hours ago',
-    category: 'Parenting'
+    category: 'Parenting',
+    images: ['https://images.unsplash.com/photo-1472396961693-142e6e269027?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MjczMTEwOA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080']
   },
   {
     id: 2,
@@ -31,7 +33,8 @@ const mockGeneralCommunityMessages = [
     replies: 8,
     likes: 5,
     timestamp: '4 hours ago',
-    category: 'Feeding & Breastfeeding'
+    category: 'Feeding & Breastfeeding',
+    images: []
   },
   {
     id: 3,
@@ -40,7 +43,8 @@ const mockGeneralCommunityMessages = [
     replies: 15,
     likes: 11,
     timestamp: '1 day ago',
-    category: 'Diversification'
+    category: 'Diversification',
+    images: ['https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTcxMjUwODMyNA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080']
   },
   {
     id: 4,
@@ -49,7 +53,8 @@ const mockGeneralCommunityMessages = [
     replies: 10,
     likes: 7,
     timestamp: '1 day ago',
-    category: 'Health'
+    category: 'Health',
+    images: []
   },
   {
     id: 5,
@@ -58,7 +63,8 @@ const mockGeneralCommunityMessages = [
     replies: 18,
     likes: 12,
     timestamp: '2 days ago',
-    category: 'Schools & Nurseries'
+    category: 'Schools & Nurseries',
+    images: ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4NjY3MTkyNw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080']
   }
 ];
 
@@ -70,7 +76,8 @@ const mockNeighborhoodMessages = [
     replies: 15,
     likes: 20,
     timestamp: '1 hour ago',
-    category: 'Meetups'
+    category: 'Meetups',
+    images: ['https://images.unsplash.com/photo-1582562124811-c09040d0a901?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTcxMjUwODM5MA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080']
   },
   {
     id: 2,
@@ -79,7 +86,8 @@ const mockNeighborhoodMessages = [
     replies: 7,
     likes: 3,
     timestamp: '3 hours ago',
-    category: 'Help & Support'
+    category: 'Help & Support',
+    images: []
   },
   {
     id: 3,
@@ -88,7 +96,8 @@ const mockNeighborhoodMessages = [
     replies: 10,
     likes: 22,
     timestamp: '1 day ago',
-    category: 'Events'
+    category: 'Events',
+    images: ['https://images.unsplash.com/photo-1721322800607-8c38375eef04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTcxMjUwODM1OA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080']
   },
   {
     id: 4,
@@ -97,7 +106,8 @@ const mockNeighborhoodMessages = [
     replies: 9,
     likes: 14,
     timestamp: '1 day ago',
-    category: 'Kids Camps'
+    category: 'Kids Camps',
+    images: []
   },
   {
     id: 5,
@@ -106,7 +116,8 @@ const mockNeighborhoodMessages = [
     replies: 6,
     likes: 11,
     timestamp: '2 days ago',
-    category: 'Kids Activities'
+    category: 'Kids Activities',
+    images: ['https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTcxMjUwODQ4OA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080']
   }
 ];
 
@@ -118,6 +129,7 @@ type MessageProps = {
   likes: number;
   timestamp: string;
   category: string;
+  images?: string[];
 };
 
 export type FilterType = 'recent' | 'popular' | 'category';
@@ -170,6 +182,22 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
       <p className="text-sm text-muted-foreground mb-3">
         {message.content}
       </p>
+      
+      {/* Display images if present */}
+      {message.images && message.images.length > 0 && (
+        <div className="mb-3 flex gap-2 overflow-x-auto pb-2">
+          {message.images.map((img, index) => (
+            <div key={index} className="w-20 h-20 flex-shrink-0 rounded-md overflow-hidden">
+              <img 
+                src={img} 
+                alt={`Image for ${message.title}`} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+      
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
