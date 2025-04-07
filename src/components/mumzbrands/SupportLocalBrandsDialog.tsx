@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -92,7 +92,6 @@ interface SupportLocalBrandsDialogProps {
 const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogProps) => {
   const [activeTab, setActiveTab] = useState<string>("discover");
   const [selectedCategory, setSelectedCategory] = useState<string>("all"); 
-  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const { toast } = useToast();
   
   const form = useForm<LocalBrandFormValues>({
@@ -110,7 +109,6 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
   const onSubmit = (data: LocalBrandFormValues) => {
     console.log("Form submitted:", data);
     
-    // In a real app, this would send the data to an API
     toast({
       title: "Brand submitted for approval",
       description: "Thank you for submitting your brand. Our team will review it shortly.",
@@ -157,7 +155,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </Select>
             </div>
             
-            <ScrollArea className="flex-1 h-[400px]">
+            <ScrollArea className="flex-1 pb-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4">
                 {filteredBrands.length > 0 ? (
                   filteredBrands.map((brand) => (
@@ -204,24 +202,9 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                 )}
               </div>
             </ScrollArea>
-            
-            <div className="mt-4 bg-[#B8CEC2]/10 p-4 rounded-lg">
-              <div className="flex items-start gap-3">
-                <Sparkles className="h-5 w-5 text-[#B8CEC2] mt-1" />
-                <div>
-                  <h3 className="font-medium">Share Your Experience</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Have you used products from any of these mom's local brands? Share your experience to help other parents make informed decisions.
-                  </p>
-                  <Button className="mt-2" variant="outline" size="sm" onClick={() => setIsReviewDialogOpen(true)}>
-                    Write a Review
-                  </Button>
-                </div>
-              </div>
-            </div>
           </TabsContent>
           
-          <TabsContent value="list" className="space-y-4 mt-0 flex-1 overflow-hidden">
+          <TabsContent value="list" className="flex-1 overflow-hidden">
             <div className="bg-[#B8CEC2]/10 p-4 rounded-lg mb-4">
               <div className="flex items-start gap-3">
                 <Sparkles className="h-5 w-5 text-[#B8CEC2] mt-1" />
@@ -234,7 +217,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </div>
             </div>
             
-            <ScrollArea className="h-[400px]">
+            <ScrollArea className="h-[400px] w-full overflow-y-auto pr-4">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-1">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

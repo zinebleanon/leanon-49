@@ -5,6 +5,13 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Copy, CheckCircle, Star } from 'lucide-react';
 import BowRibbon from '@/components/mumzally/BowRibbon';
 import { useToast } from '@/hooks/use-toast';
+import { Textarea } from '@/components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 interface Brand {
   id: string;
@@ -24,9 +31,25 @@ interface BrandDetailDialogProps {
   onClose: () => void;
 }
 
+const reviewSchema = z.object({
+  rating: z.string().min(1, { message: "Please select a rating" }),
+  review: z.string().min(5, { message: "Review must be at least 5 characters" }).max(500, { message: "Review must be less than 500 characters" })
+});
+
+type ReviewFormValues = z.infer<typeof reviewSchema>;
+
 const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) => {
   const [codeCopied, setCodeCopied] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const { toast } = useToast();
+  
+  const form = useForm<ReviewFormValues>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      rating: '',
+      review: ''
+    }
+  });
   
   if (!brand) return null;
   
@@ -46,6 +69,16 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   const visitWebsite = () => {
     window.open(brand.website, '_blank');
+  };
+  
+  const onSubmitReview = (data: ReviewFormValues) => {
+    console.log('Review submitted:', data);
+    toast({
+      title: "Review submitted",
+      description: "Thank you for your feedback!",
+    });
+    setShowReviewForm(false);
+    form.reset();
   };
   
   return (
@@ -105,11 +138,97 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
             </div>
           </div>
           
-          <div className="flex justify-center">
-            <Button onClick={visitWebsite} className="rounded-full">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-3">
+            <Button onClick={visitWebsite} className="rounded-full w-full md:w-auto">
               Visit Website <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
+            
+            <Button 
+              variant="outline" 
+              className="rounded-full w-full md:w-auto"
+              onClick={() => setShowReviewForm(!showReviewForm)}
+              aria-expanded={showReviewForm}
+              aria-controls="review-form"
+            >
+              Rate & Review
+            </Button>
           </div>
+          
+          {showReviewForm && (
+            <div id="review-form" className="border rounded-lg p-4 mt-4 bg-muted/20">
+              <h4 className="font-medium mb-3">Write a Review</h4>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmitReview)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="rating"
+                    render={({ field }) => (
+                      <FormItem className="space-y-1">
+                        <FormLabel>Rating</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex space-x-1"
+                          >
+                            {[1, 2, 3, 4, 5].map((rating) => (
+                              <FormItem key={rating} className="flex items-center space-x-1">
+                                <FormControl>
+                                  <RadioGroupItem value={rating.toString()} id={`rating-${rating}`} className="sr-only" />
+                                </FormControl>
+                                <Label
+                                  htmlFor={`rating-${rating}`}
+                                  className={`cursor-pointer p-1 ${
+                                    field.value === rating.toString() ? "text-yellow-500" : "text-gray-400"
+                                  }`}
+                                >
+                                  <Star className={field.value === rating.toString() ? "fill-yellow-500" : ""} size={20} />
+                                </Label>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="review"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Your Review</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Share your experience with this brand..." 
+                            className="min-h-[100px] resize-none"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <div className="flex justify-end gap-2">
+                    <Button 
+                      type="button" 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => {
+                        setShowReviewForm(false);
+                        form.reset();
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" size="sm">Submit Review</Button>
+                  </div>
+                </form>
+              </Form>
+            </div>
+          )}
           
           <p className="text-xs text-center text-muted-foreground">
             Discount valid until December 31, 2025. Terms and conditions apply.

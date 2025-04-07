@@ -60,7 +60,6 @@ const BrandsGrid = ({ brands }: BrandsGridProps) => {
               </div>
               <h3 className="text-center font-medium text-sm md:text-base">{brand.name}</h3>
               <div className="flex items-center justify-center mt-1 md:mt-2">
-                {/* Stars for rating */}
                 <div className="flex items-center gap-0.5" role="img" aria-label="4 out of 5 stars rating">
                   {[...Array(5)].map((_, i) => (
                     <Star 
