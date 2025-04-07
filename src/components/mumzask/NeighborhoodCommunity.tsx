@@ -1,6 +1,7 @@
+
 import { useState } from 'react';
 import { useUserInfo } from '@/hooks/use-user-info';
-import { UserCircle, MapPin, MessageCircle, Calendar, HeartHandshake, AlertCircle, Bell, Ticket, Tent, Smile } from 'lucide-react';
+import { UserCircle, MapPin, MessageCircle, Calendar, HeartHandshake, AlertCircle, Bell, Ticket, Tent, Smile, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

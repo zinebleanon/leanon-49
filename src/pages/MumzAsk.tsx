@@ -9,7 +9,7 @@ import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, Scho
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
-import HowItWorksModal from '@/components/mumzally/HowItWorksModal';
+import AskHowItWorksModal from '@/components/mumzask/AskHowItWorksModal';
 import RibbonIcon from '@/components/ui/RibbonIcon';
 
 const MumzAsk = () => {
@@ -117,18 +117,20 @@ const MumzAsk = () => {
                   </DialogContent>
                 </Dialog>
                 
-                <HowItWorksModal />
+                <AskHowItWorksModal />
               </div>
             </div>
           </div>
         </section>
         
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 pb-3">
-          <img 
-            src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
-            alt="Diverse moms silhouettes illustration" 
-            className="w-full max-w-3xl h-auto mx-auto object-contain"
-          />
+        <div className="flex justify-center bg-[#B8CEC2] px-4 md:px-8 pb-3">
+          <div className="max-w-3xl w-full">
+            <img 
+              src="/lovable-uploads/00a4dae1-217d-4bd7-ac01-2cd9c6427bb8.png" 
+              alt="Diverse moms silhouettes illustration" 
+              className="w-full h-auto object-contain mx-auto"
+            />
+          </div>
         </div>
         
         <div className="px-4 py-4">
