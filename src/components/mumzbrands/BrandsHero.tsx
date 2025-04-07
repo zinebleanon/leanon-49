@@ -1,9 +1,12 @@
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import { HeartHandshake, BadgePercent } from 'lucide-react';
+import SupportLocalBrandsDialog from './SupportLocalBrandsDialog';
 
 const BrandsHero = () => {
+  const [isLocalBrandsDialogOpen, setIsLocalBrandsDialogOpen] = useState(false);
+  
   const scrollToCategories = () => {
     const categoriesSection = document.getElementById('categories');
     if (categoriesSection) {
@@ -24,6 +27,7 @@ const BrandsHero = () => {
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+              onClick={() => setIsLocalBrandsDialogOpen(true)}
             >
               <HeartHandshake className="mr-2 h-5 w-5" /> Support Moms Local Brands
             </Button>
@@ -37,6 +41,12 @@ const BrandsHero = () => {
           </div>
         </div>
       </div>
+      
+      {/* Support Local Brands Dialog */}
+      <SupportLocalBrandsDialog 
+        isOpen={isLocalBrandsDialogOpen}
+        onClose={() => setIsLocalBrandsDialogOpen(false)}
+      />
     </section>
   );
 };
