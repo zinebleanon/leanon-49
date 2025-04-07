@@ -65,8 +65,8 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-28 pb-12"> {/* Increased top padding to accommodate the taller navbar */}
-        {/* Hero Section - reduced top padding */}
+      <main className="pt-20 pb-24 md:pb-12"> {/* Adjusted padding for mobile bottom nav */}
+        {/* Hero Section */}
         <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
@@ -104,7 +104,7 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section - reduced padding */}
+        {/* Centered image section */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0">
           <img 
             src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
