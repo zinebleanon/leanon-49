@@ -7,14 +7,13 @@ import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package, ArrowLeft } from 'lucide-react';
+import { Search, Package } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const navigate = useNavigate();
   
   useEffect(() => {
     setIsVisible(true);
@@ -67,19 +66,6 @@ const MumzMarketplace = () => {
       <Navbar />
       
       <main className="pt-16 pb-12">
-        {/* Back Button - consistent with other pages */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            <span>Back</span>
-          </Button>
-        </div>
-        
         {/* Hero Section */}
         <section className="py-6 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
