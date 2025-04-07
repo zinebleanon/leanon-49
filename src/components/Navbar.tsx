@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Home, HelpCircle, Tag, ShoppingBag, Inbox, Bell, Menu } from 'lucide-react';
+import { Home, HelpCircle, Tag, ShoppingBag, Inbox, Bell, Menu, Users } from 'lucide-react';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -68,7 +68,7 @@ const Navbar = () => {
     { name: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
     { 
       name: 'Connect', 
-      icon: <RibbonIcon className="h-5 w-5" color="currentColor" />, 
+      icon: <Users className="h-5 w-5" />, 
       path: '/ally',
       description: 'LeanOn Moms around you, with same age kids' 
     },
