@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -218,7 +219,7 @@ const Navbar = () => {
       >
         <nav className="h-full flex flex-col px-4 overflow-auto -webkit-overflow-scrolling-touch">
           <div className="flex flex-col space-y-2 py-6">
-            {navItems.map((item) => (
+            {navItems.map((item, itemIndex) => (
               <Link
                 key={item.name}
                 to={item.path}
@@ -231,7 +232,7 @@ const Navbar = () => {
                 style={{
                   borderRadius: "1rem",
                   padding: "0.75rem 1.25rem",
-                  animationDelay: `${index * 0.05}s`,
+                  animationDelay: `${itemIndex * 0.05}s`,
                   WebkitTapHighlightColor: 'transparent'
                 }}
                 onClick={(e) => {
