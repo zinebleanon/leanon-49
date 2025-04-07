@@ -10,7 +10,8 @@ const MarketplaceHero = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-              <span className="text-black">Mumz</span> <span className="text-orange-500">Marketplace</span>
+              <span className="text-black">Mumz</span><br />
+              <span className="text-orange-500">Marketplace</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 font-playfair">
               Buy and sell gently used children's items across the UAE. Connect with other moms to declutter your home and find quality items at a fraction of retail prices.
