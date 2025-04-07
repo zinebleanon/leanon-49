@@ -78,7 +78,7 @@ interface SupportLocalBrandsDialogProps {
 
 const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogProps) => {
   const [activeTab, setActiveTab] = useState<string>("discover");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all"); // Changed from empty string to "all"
   const { toast } = useToast();
   
   const form = useForm<LocalBrandFormValues>({
@@ -107,9 +107,9 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
   };
 
   // Filter brands based on selected category
-  const filteredBrands = selectedCategory 
-    ? sampleBrands.filter(brand => brand.category === selectedCategory)
-    : sampleBrands;
+  const filteredBrands = selectedCategory === "all"
+    ? sampleBrands
+    : sampleBrands.filter(brand => brand.category === selectedCategory);
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -135,7 +135,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                   <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="all">All Categories</SelectItem> {/* Changed from empty string to "all" */}
                   {brandCategories.map((category) => (
                     <SelectItem key={category} value={category}>{category}</SelectItem>
                   ))}
