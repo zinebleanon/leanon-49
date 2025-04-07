@@ -105,11 +105,12 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3 px-4 md:py-4 md:px-6',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3 px-4 md:py-4 md:px-6 flex flex-col',
         isScrolled ? 'bg-white shadow-sm' : 'bg-white'
       )}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      {/* Logo and icons row */}
+      <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
         <Link 
           to="/" 
           className="text-xl md:text-2xl font-playfair font-medium tracking-tight animate-fade-in flex items-center"
@@ -148,54 +149,6 @@ const Navbar = () => {
             )}
           </Link>
           
-          <div className="hidden md:flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={cn(
-                  "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative group",
-                  isPathActive(item.path)
-                    ? "text-primary" 
-                    : "text-foreground/70 hover:text-foreground"
-                )}
-                onClick={(e) => {
-                  // Prevent navigation if user is not logged in and trying to access protected routes
-                  if (!userInfo && item.path !== '/') {
-                    e.preventDefault();
-                    setIsJoinModalOpen(true);
-                  }
-                }}
-              >
-                <span className={cn(
-                  "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
-                  isPathActive(item.path) && "scale-100"
-                )}></span>
-                <span className="relative flex items-center gap-2">
-                  {item.icon}
-                  {item.name}
-                </span>
-                {item.description && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 bg-white rounded-md p-2 text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
-                    {item.description}
-                  </div>
-                )}
-                {isPathActive(item.path) && (
-                  <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
-                )}
-              </Link>
-            ))}
-            
-            <Button
-              variant="warm"
-              className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg ml-2"
-              onClick={handleJoinButtonClick}
-            >
-              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join & <span className="font-adlery">LeanOn</span>
-            </Button>
-          </div>
-          
           <button 
             className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
             onClick={toggleMobileMenu}
@@ -219,6 +172,57 @@ const Navbar = () => {
               )}></span>
             </div>
           </button>
+        </div>
+      </div>
+      
+      {/* Navigation menu row - now displayed below the logo row */}
+      <div className="hidden md:flex justify-center mt-2 w-full">
+        <div className="flex items-center space-x-4 bg-white rounded-full px-6 py-3 shadow-sm">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              className={cn(
+                "text-sm font-medium flex items-center gap-2 px-3 py-2 transition-all duration-300 relative group",
+                isPathActive(item.path)
+                  ? "text-primary" 
+                  : "text-foreground/70 hover:text-foreground"
+              )}
+              onClick={(e) => {
+                // Prevent navigation if user is not logged in and trying to access protected routes
+                if (!userInfo && item.path !== '/') {
+                  e.preventDefault();
+                  setIsJoinModalOpen(true);
+                }
+              }}
+            >
+              <span className={cn(
+                "absolute inset-0 bg-primary/5 rounded-full scale-0 transition-transform duration-300",
+                isPathActive(item.path) && "scale-100"
+              )}></span>
+              <span className="relative flex items-center gap-2">
+                {item.icon}
+                {item.name}
+              </span>
+              {item.description && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-1 bg-white rounded-md p-2 text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
+                  {item.description}
+                </div>
+              )}
+              {isPathActive(item.path) && (
+                <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full"></span>
+              )}
+            </Link>
+          ))}
+          
+          <Button
+            variant="warm"
+            className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg ml-2"
+            onClick={handleJoinButtonClick}
+          >
+            <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
+            Join & <span className="font-adlery">LeanOn</span>
+          </Button>
         </div>
       </div>
       

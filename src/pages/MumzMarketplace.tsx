@@ -65,7 +65,7 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-12 pb-12">
+      <main className="pt-28 pb-12"> {/* Increased top padding to accommodate the taller navbar */}
         {/* Hero Section - reduced top padding */}
         <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
