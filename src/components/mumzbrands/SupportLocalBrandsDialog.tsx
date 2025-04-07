@@ -78,6 +78,7 @@ interface SupportLocalBrandsDialogProps {
 
 const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogProps) => {
   const [activeTab, setActiveTab] = useState<string>("discover");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const { toast } = useToast();
   
   const form = useForm<LocalBrandFormValues>({
@@ -104,6 +105,11 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
     form.reset();
     onClose();
   };
+
+  // Filter brands based on selected category
+  const filteredBrands = selectedCategory 
+    ? sampleBrands.filter(brand => brand.category === selectedCategory)
+    : sampleBrands;
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -122,22 +128,24 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
           </TabsList>
           
           <TabsContent value="discover" className="space-y-4 mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {brandCategories.map((category) => (
-                <Button 
-                  key={category} 
-                  variant="outline" 
-                  className="justify-start border border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/10 h-auto py-3"
-                >
-                  {category}
-                </Button>
-              ))}
+            <div className="mb-4">
+              <h3 className="text-lg font-medium mb-2">Filter by Category</h3>
+              <Select onValueChange={setSelectedCategory} value={selectedCategory}>
+                <SelectTrigger className="w-full md:w-[240px]">
+                  <SelectValue placeholder="All Categories" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Categories</SelectItem>
+                  {brandCategories.map((category) => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             
-            <div className="mt-6">
-              <h3 className="text-lg font-medium mb-4">Featured Mom's Brands</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {sampleBrands.map((brand) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {filteredBrands.length > 0 ? (
+                filteredBrands.map((brand) => (
                   <div 
                     key={brand.id} 
                     className="flex gap-3 p-3 rounded-lg border border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/10"
@@ -149,7 +157,26 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                       <p className="text-sm mt-1">{brand.description}</p>
                     </div>
                   </div>
-                ))}
+                ))
+              ) : (
+                <div className="col-span-full text-center py-10">
+                  <p className="text-muted-foreground">No brands found in this category</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="mt-4 bg-[#B8CEC2]/10 p-4 rounded-lg">
+              <div className="flex items-start gap-3">
+                <Sparkles className="h-5 w-5 text-[#B8CEC2] mt-1" />
+                <div>
+                  <h3 className="font-medium">Share Your Experience</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Have you used products from any of these mom's local brands? Share your experience to help other parents make informed decisions.
+                  </p>
+                  <Button className="mt-2" variant="outline" size="sm">
+                    Write a Review
+                  </Button>
+                </div>
               </div>
             </div>
           </TabsContent>
