@@ -19,7 +19,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-6 mb-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-10 mb-6">
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
