@@ -4,16 +4,10 @@ import { HeartHandshake, BadgePercent } from 'lucide-react';
 
 interface BrandsHeroProps {
   onOpenDialog: () => void;
+  onOpenDiscountDialog: () => void;
 }
 
-const BrandsHero = ({ onOpenDialog }: BrandsHeroProps) => {
-  const scrollToCategories = () => {
-    const categoriesSection = document.getElementById('categories');
-    if (categoriesSection) {
-      categoriesSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
+const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => {
   return (
     <section className="py-16 md:py-20 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -34,7 +28,7 @@ const BrandsHero = ({ onOpenDialog }: BrandsHeroProps) => {
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-              onClick={scrollToCategories}
+              onClick={onOpenDiscountDialog}
             >
               <BadgePercent className="mr-2 h-5 w-5" /> Unlock Your Discount Codes
             </Button>

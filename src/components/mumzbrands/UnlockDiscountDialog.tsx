@@ -3,10 +3,19 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Check, Copy, Gift, Lock, Unlock, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Check, Copy, Gift, Lock, Unlock, ChevronRight, ChevronLeft, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BowRibbon from '@/components/mumzally/BowRibbon';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface UnlockDiscountDialogProps {
   isOpen: boolean;
@@ -27,7 +36,14 @@ const UnlockDiscountDialog = ({ isOpen, onClose }: UnlockDiscountDialogProps) =>
   const [codeCopied, setCodeCopied] = useState(false);
   const [showBrowseMode, setShowBrowseMode] = useState(false);
   const [currentBrandIndex, setCurrentBrandIndex] = useState(0);
+  const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
+  const [brandCategory, setBrandCategory] = useState('All Categories');
+  const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
+  
+  const categories = [
+    "All Categories", "Baby", "Toys", "Clothing", "Food", "Wellness", "Home", "Education", "Technology"
+  ];
   
   const allDiscountCodes: DiscountCode[] = [
     {
@@ -68,6 +84,26 @@ const UnlockDiscountDialog = ({ isOpen, onClose }: UnlockDiscountDialogProps) =>
     }
   ];
   
+  const handleCategoryChange = (value: string) => {
+    if (value) {
+      setBrandCategory(value);
+    }
+  };
+  
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+  
+  const filteredDiscountCodes = allDiscountCodes.filter(discount => {
+    // Filter by brand type if needed (would need to add type to discount objects)
+    // Filter by search term if provided
+    if (searchTerm.trim() !== '') {
+      return discount.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             discount.code.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+    return true;
+  });
+  
   const handleUnlock = () => {
     // In a real app, you would validate the code with your backend
     if (code.trim().toLowerCase() === 'mumz' || code.trim() === '1234') {
@@ -106,11 +142,14 @@ const UnlockDiscountDialog = ({ isOpen, onClose }: UnlockDiscountDialogProps) =>
     setDiscountCode('');
     setShowBrowseMode(false);
     setCurrentBrandIndex(0);
+    setBrandType('all');
+    setBrandCategory('All Categories');
+    setSearchTerm('');
     onClose();
   };
   
   const handleNextBrand = () => {
-    if (currentBrandIndex < allDiscountCodes.length - 1) {
+    if (currentBrandIndex < filteredDiscountCodes.length - 1) {
       setCurrentBrandIndex(prevIndex => prevIndex + 1);
     } else {
       setCurrentBrandIndex(0); // Loop back to the beginning
@@ -121,7 +160,7 @@ const UnlockDiscountDialog = ({ isOpen, onClose }: UnlockDiscountDialogProps) =>
     if (currentBrandIndex > 0) {
       setCurrentBrandIndex(prevIndex => prevIndex - 1);
     } else {
-      setCurrentBrandIndex(allDiscountCodes.length - 1); // Loop to the end
+      setCurrentBrandIndex(filteredDiscountCodes.length - 1); // Loop to the end
     }
   };
   
@@ -193,61 +232,96 @@ const UnlockDiscountDialog = ({ isOpen, onClose }: UnlockDiscountDialogProps) =>
             ) : showBrowseMode ? (
               <div className="space-y-6">
                 <div className="bg-background/80 p-6 rounded-lg border border-pastel-yellow/40 shadow-sm">
-                  <div className="flex justify-between items-center mb-4">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-8 w-8 p-0" 
-                      onClick={handlePrevBrand}
+                  {/* Browse Mode Category Filter */}
+                  <div className="mb-4">
+                    <Tabs 
+                      defaultValue="all" 
+                      onValueChange={(value) => setBrandType(value as 'all' | 'local' | 'international')}
+                      className="border rounded-lg overflow-hidden p-0.5 bg-muted/20 mb-4"
                     >
-                      <ChevronLeft className="h-5 w-5" />
-                    </Button>
+                      <TabsList className="grid w-full grid-cols-3 bg-transparent">
+                        <TabsTrigger value="all" className="rounded-md data-[state=active]:bg-white">All Brands</TabsTrigger>
+                        <TabsTrigger value="local" className="rounded-md data-[state=active]:bg-white">Local</TabsTrigger>
+                        <TabsTrigger value="international" className="rounded-md data-[state=active]:bg-white">International</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
                     
-                    <div className="text-center">
-                      <h3 className="text-lg font-medium">
-                        {allDiscountCodes[currentBrandIndex].brand}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {currentBrandIndex + 1} of {allDiscountCodes.length}
-                      </p>
+                    <div className="relative w-full mb-4">
+                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+                      <Input 
+                        type="search" 
+                        placeholder="Search brands..." 
+                        className="pl-8"
+                        value={searchTerm}
+                        onChange={handleSearch}
+                      />
                     </div>
                     
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-8 w-8 p-0" 
-                      onClick={handleNextBrand}
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </Button>
+                    <ScrollArea className="w-full">
+                      <div className="mb-2 pb-2 overflow-x-auto">
+                        <ToggleGroup type="single" value={brandCategory} onValueChange={handleCategoryChange}>
+                          <div className="flex space-x-2 pb-1">
+                            {categories.map((category) => (
+                              <ToggleGroupItem 
+                                key={category} 
+                                value={category}
+                                className="rounded-full text-sm whitespace-nowrap bg-background data-[state=on]:bg-[#B8CEC2]/60 data-[state=on]:text-foreground"
+                              >
+                                {category}
+                              </ToggleGroupItem>
+                            ))}
+                          </div>
+                        </ToggleGroup>
+                      </div>
+                    </ScrollArea>
                   </div>
                   
-                  <div className="flex flex-col items-center justify-center gap-3 mt-6">
-                    <div className="bg-green-100 p-3 rounded-full">
-                      <Gift className="h-6 w-6 text-green-600" />
+                  {/* Carousel of discount codes */}
+                  {filteredDiscountCodes.length > 0 ? (
+                    <Carousel className="w-full max-w-md mx-auto">
+                      <CarouselContent>
+                        {filteredDiscountCodes.map((discount, index) => (
+                          <CarouselItem key={index}>
+                            <div className="flex flex-col items-center justify-center gap-3 p-4">
+                              <h3 className="text-lg font-medium text-center">{discount.brand}</h3>
+                              <div className="bg-green-100 p-3 rounded-full">
+                                <Gift className="h-6 w-6 text-green-600" />
+                              </div>
+                              
+                              <h3 className="text-lg font-medium text-center">
+                                {discount.value}
+                              </h3>
+                              
+                              <div className="flex items-center justify-center gap-2 bg-white rounded-full px-4 py-3 shadow-sm mx-auto max-w-[200px] border border-pastel-yellow my-2">
+                                <code className="font-bold text-lg">{discount.code}</code>
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost" 
+                                  className="h-8 w-8 p-0 rounded-full" 
+                                  onClick={() => handleCopyCode(discount.code)}
+                                  aria-label="Copy discount code"
+                                >
+                                  {codeCopied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                                </Button>
+                              </div>
+                              
+                              <p className="text-sm">
+                                <span className="font-medium">Valid until:</span> {discount.expiry}
+                              </p>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <div className="flex justify-center mt-4 gap-2">
+                        <CarouselPrevious className="relative static left-0 translate-y-0" />
+                        <CarouselNext className="relative static right-0 translate-y-0" />
+                      </div>
+                    </Carousel>
+                  ) : (
+                    <div className="text-center p-6">
+                      <p className="text-muted-foreground">No discount codes found matching your criteria</p>
                     </div>
-                    
-                    <h3 className="text-lg font-medium text-center">
-                      {allDiscountCodes[currentBrandIndex].value}
-                    </h3>
-                    
-                    <div className="flex items-center justify-center gap-2 bg-white rounded-full px-4 py-3 shadow-sm mx-auto max-w-[200px] border border-pastel-yellow my-2">
-                      <code className="font-bold text-lg">{allDiscountCodes[currentBrandIndex].code}</code>
-                      <Button 
-                        size="sm" 
-                        variant="ghost" 
-                        className="h-8 w-8 p-0 rounded-full" 
-                        onClick={() => handleCopyCode(allDiscountCodes[currentBrandIndex].code)}
-                        aria-label="Copy discount code"
-                      >
-                        {codeCopied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                    
-                    <p className="text-sm">
-                      <span className="font-medium">Valid until:</span> {allDiscountCodes[currentBrandIndex].expiry}
-                    </p>
-                  </div>
+                  )}
                   
                   <div className="mt-6 pt-4 border-t border-pastel-yellow/20">
                     <Button 
