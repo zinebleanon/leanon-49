@@ -125,9 +125,9 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-background">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-playfair">Support Mom's Local Brands</DialogTitle>
+          <DialogTitle className="text-2xl font-playfair">Moms' Local Brands</DialogTitle>
           <DialogDescription>
             Discover unique mom-owned brands or list your own local brand for the community.
           </DialogDescription>
@@ -155,16 +155,16 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </Select>
             </div>
             
-            <ScrollArea className="flex-1 pb-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4">
+            <ScrollArea className="flex-1 pb-4 h-[400px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 pr-4">
                 {filteredBrands.length > 0 ? (
                   filteredBrands.map((brand) => (
                     <div 
                       key={brand.id} 
-                      className="flex flex-col gap-3 p-4 rounded-lg border border-[#B8CEC2]/50 hover:shadow-md transition-shadow hover:bg-[#B8CEC2]/5"
+                      className="flex flex-col gap-3 p-4 rounded-lg border border-primary/30 hover:shadow-md transition-shadow hover:bg-primary/5"
                     >
                       <div className="flex gap-3">
-                        <div className="bg-white p-2 rounded-md w-20 h-20 flex items-center justify-center">
+                        <div className="bg-white/90 p-2 rounded-md w-20 h-20 flex items-center justify-center shadow-sm">
                           <img src={brand.image} alt={brand.name} className="w-16 h-16 object-contain" />
                         </div>
                         <div className="flex-1">
@@ -186,7 +186,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                       </div>
                       <p className="text-sm mt-1">{brand.description}</p>
                       <div className="mt-auto pt-2 flex items-center justify-between">
-                        <div className="flex items-center bg-[#B8CEC2]/20 px-3 py-1 rounded-full">
+                        <div className="flex items-center bg-primary/10 px-3 py-1 rounded-full">
                           <span className="text-xs font-medium">Code: <span className="font-bold">{brand.discountCode}</span></span>
                         </div>
                         <Button size="sm" variant="outline" className="rounded-full">
@@ -205,9 +205,9 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
           </TabsContent>
           
           <TabsContent value="list" className="flex-1 overflow-hidden">
-            <div className="bg-[#B8CEC2]/10 p-4 rounded-lg mb-4">
+            <div className="bg-primary/10 p-4 rounded-lg mb-4">
               <div className="flex items-start gap-3">
-                <Sparkles className="h-5 w-5 text-[#B8CEC2] mt-1" />
+                <Sparkles className="h-5 w-5 text-primary mt-1" />
                 <div>
                   <h3 className="font-medium">List Your Local Brand</h3>
                   <p className="text-sm text-muted-foreground">

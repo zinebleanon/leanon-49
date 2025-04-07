@@ -50,8 +50,8 @@ const BrandsGrid = ({ brands }: BrandsGridProps) => {
             className="overflow-hidden hover:shadow-md transition-all cursor-pointer border group hover:scale-[1.02]"
             onClick={() => handleBrandClick(brand)}
           >
-            <CardContent className="p-4 md:p-6 flex flex-col items-center justify-center h-[180px] md:h-[200px]" style={{ backgroundColor: brand.bgColor }}>
-              <div className="bg-white/80 rounded-full p-3 md:p-4 mb-3 md:mb-4 w-16 h-16 md:w-24 md:h-24 flex items-center justify-center group-hover:bg-white transition-colors">
+            <CardContent className="p-4 md:p-6 flex flex-col items-center justify-center h-[180px] md:h-[200px]" style={{ backgroundColor: brand.bgColor || '#F6F9F8' }}>
+              <div className="bg-white/90 rounded-full p-3 md:p-4 mb-3 md:mb-4 w-16 h-16 md:w-24 md:h-24 flex items-center justify-center group-hover:bg-white transition-colors shadow-sm">
                 <img 
                   src={brand.logo} 
                   alt={brand.name} 
@@ -70,8 +70,8 @@ const BrandsGrid = ({ brands }: BrandsGridProps) => {
                 </div>
               </div>
               <div className="mt-1 md:mt-2">
-                <span className="inline-block px-2 md:px-3 py-0.5 md:py-1 bg-white/70 rounded-full text-[10px] md:text-xs font-medium">
-                  {brand.category}
+                <span className="inline-block px-2 md:px-3 py-0.5 md:py-1 bg-white/90 rounded-full text-[10px] md:text-xs font-medium shadow-sm">
+                  {brand.category === 'local' ? 'Local Brand' : 'International'}
                 </span>
               </div>
             </CardContent>

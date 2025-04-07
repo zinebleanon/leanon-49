@@ -59,7 +59,7 @@ const MumzBrands = () => {
       website: 'https://www.pampers.com',
       discountCode: 'LEANON15',
       discountValue: '15% off all products',
-      bgColor: '#f2f7fd'
+      bgColor: '#f8f4ff'
     },
     {
       id: '2',
@@ -70,7 +70,7 @@ const MumzBrands = () => {
       website: 'https://www.mothercare.com',
       discountCode: 'LEANON20',
       discountValue: '20% off first purchase',
-      bgColor: '#f8f4ff'
+      bgColor: '#f0fff4'
     },
     {
       id: '3',
@@ -114,7 +114,7 @@ const MumzBrands = () => {
       website: 'https://www.oshkosh.com',
       discountCode: 'LEANON30',
       discountValue: '30% off your purchase',
-      bgColor: '#f0fff4'
+      bgColor: '#f2f7fd'
     }
   ];
   
@@ -142,15 +142,15 @@ const MumzBrands = () => {
   const marketplaceCategories = ['Clothing', 'Strollers', 'Car Seats', 'Toys', 'Books'];
   
   return (
-    <div className="min-h-screen flex flex-col bg-[#B8CEC2]/30">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       
-      <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-auto">
+      <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-visible">
         {/* Hero Section */}
         <BrandsHero onOpenDialog={() => setIsLocalBrandsDialogOpen(true)} />
         
         {/* Centered ribbon tag image - with reduced spacing */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0">
+        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
             alt="Discount tag ribbon" 
