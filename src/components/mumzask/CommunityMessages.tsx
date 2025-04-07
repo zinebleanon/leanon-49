@@ -1,9 +1,25 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, ThumbsUp, Clock } from 'lucide-react';
+import { MessageCircle, ThumbsUp, Clock, Filter } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock data for demonstration
 const mockGeneralCommunityMessages = [
@@ -208,35 +224,47 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
             </Button>
           </div>
           
-          {categoryFilter && (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setCategoryFilter(null)}
-              className="text-xs"
-            >
-              Clear Filter
-            </Button>
-          )}
-        </div>
-        
-        <div className="mb-4 flex flex-wrap gap-2">
-          {currentCategories.map((category) => (
-            <Button
-              key={category.name}
-              variant="outline"
-              size="sm"
-              className={`rounded-full ${
-                categoryFilter === category.name 
-                  ? 'bg-[#FFD9A7] text-foreground border-[#FFD9A7]' 
-                  : 'bg-white hover:bg-[#FFD9A7]/30 text-foreground/70 border-[#FFD9A7]/50'
-              }`}
-              onClick={() => handleCategoryClick(category.name)}
-            >
-              {category.icon}
-              {category.name}
-            </Button>
-          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className={categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}
+              >
+                <Filter className="h-4 w-4 mr-1" /> 
+                {categoryFilter ? `Filter: ${categoryFilter}` : "Filter by Topic"}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 bg-white border border-[#B8CEC2]/20">
+              <DropdownMenuLabel>Filter by Topic</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div className="max-h-[300px] overflow-y-auto">
+                <DropdownMenuGroup>
+                  {currentCategories.map((category) => (
+                    <DropdownMenuItem 
+                      key={category.name}
+                      className={`cursor-pointer ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
+                      onClick={() => handleCategoryClick(category.name)}
+                    >
+                      {category.icon}
+                      <span>{category.name}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </div>
+              {categoryFilter && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    className="cursor-pointer text-red-500 hover:text-red-700"
+                    onClick={() => setCategoryFilter(null)}
+                  >
+                    Clear Filter
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         
         <TabsContent value="general">
