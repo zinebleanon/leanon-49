@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Home } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 const MumzShoppingHub = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,15 +38,6 @@ const MumzShoppingHub = () => {
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
               <span>Back</span>
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/')} 
-              className="bg-white/80 shadow-sm hover:bg-white"
-            >
-              <Home className="h-4 w-4 mr-2" />
-              Main Menu
             </Button>
           </div>
           <Outlet />
