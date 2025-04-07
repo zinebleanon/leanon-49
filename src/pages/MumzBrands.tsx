@@ -9,10 +9,11 @@ import BrandsHero from '@/components/mumzbrands/BrandsHero';
 import BrandFilterSection from '@/components/mumzbrands/BrandFilterSection';
 import BrandsGrid from '@/components/mumzbrands/BrandsGrid';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Gift, Ticket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import SupportLocalBrandsDialog from '@/components/mumzbrands/SupportLocalBrandsDialog';
+import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
 
 interface Brand {
   id: string;
@@ -34,6 +35,7 @@ const MumzBrands = () => {
   const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
   const [brandCategory, setBrandCategory] = useState('All Categories');
   const [isLocalBrandsDialogOpen, setIsLocalBrandsDialogOpen] = useState(false);
+  const [isDiscountDialogOpen, setIsDiscountDialogOpen] = useState(false);
   const navigate = useNavigate();
   
   // Use the viewport height hook to fix iOS height issues
@@ -159,6 +161,17 @@ const MumzBrands = () => {
           />
         </div>
         
+        {/* Unlock Discount Button */}
+        <div className="flex justify-center -mt-2 mb-4">
+          <Button 
+            variant="warm" 
+            className="rounded-full shadow-md" 
+            onClick={() => setIsDiscountDialogOpen(true)}
+          >
+            <Gift className="mr-2 h-4 w-4" /> Unlock Special Discount
+          </Button>
+        </div>
+        
         <CategorySection 
           activeTab="deals"
           dealCategories={dealCategories}
@@ -180,6 +193,12 @@ const MumzBrands = () => {
         <SupportLocalBrandsDialog 
           isOpen={isLocalBrandsDialogOpen}
           onClose={() => setIsLocalBrandsDialogOpen(false)}
+        />
+        
+        {/* Unlock Discount Dialog */}
+        <UnlockDiscountDialog
+          isOpen={isDiscountDialogOpen}
+          onClose={() => setIsDiscountDialogOpen(false)}
         />
       </main>
       
