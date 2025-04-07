@@ -123,7 +123,7 @@ const MumzAsk = () => {
           </div>
         </section>
         
-        <section className="py-3 px-4 mt-6">
+        <section className="py-3 px-4 mt-12">
           <div className="max-w-4xl mx-auto">
             <CommunityMessages 
               categories={categories}
