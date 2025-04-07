@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,8 +6,6 @@ import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import BrandsHero from '@/components/mumzbrands/BrandsHero';
 import BrandsGrid from '@/components/mumzbrands/BrandsGrid';
-import { Gift } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import SupportLocalBrandsDialog from '@/components/mumzbrands/SupportLocalBrandsDialog';
 import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
@@ -144,17 +141,6 @@ const MumzBrands = () => {
           />
         </div>
         
-        {/* Unlock Discount Button */}
-        <div className="flex justify-center -mt-2 mb-4">
-          <Button 
-            variant="warm" 
-            className="rounded-full shadow-md" 
-            onClick={() => setIsDiscountDialogOpen(true)}
-          >
-            <Gift className="mr-2 h-4 w-4" /> Unlock Special Discount
-          </Button>
-        </div>
-        
         <section className="py-6 px-6">
           <div className="max-w-7xl mx-auto">
             <BrandsGrid brands={brands} />
@@ -167,7 +153,7 @@ const MumzBrands = () => {
           onClose={() => setIsLocalBrandsDialogOpen(false)}
         />
         
-        {/* Unlock Discount Dialog */}
+        {/* Browse Discounts Dialog */}
         <UnlockDiscountDialog
           isOpen={isDiscountDialogOpen}
           onClose={() => setIsDiscountDialogOpen(false)}

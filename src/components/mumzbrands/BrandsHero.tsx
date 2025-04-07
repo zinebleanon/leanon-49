@@ -30,7 +30,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
               onClick={onOpenDiscountDialog}
             >
-              <BadgePercent className="mr-2 h-5 w-5" /> Unlock Your Discount Codes
+              <BadgePercent className="mr-2 h-5 w-5" /> Browse Available Discounts
             </Button>
           </div>
         </div>
