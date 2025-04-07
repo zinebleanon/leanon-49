@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,7 +8,8 @@ import {
   Send,
   AlertCircle,
   Tag,
-  ArrowLeft
+  ArrowLeft,
+  Search
 } from 'lucide-react';
 import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 
@@ -34,23 +36,51 @@ const categoryKeywords: Record<string, string[]> = {
 const popularQuestions: Record<string, string[]> = {
   'Parenting': [
     'How do I handle toddler tantrums in public?',
-    'What are effective discipline strategies for a 3-year-old?'
+    'What are effective discipline strategies for a 3-year-old?',
+    'How to deal with sibling rivalry?',
+    'What's the best approach for nighttime potty training?'
   ],
   'Pregnancy': [
     'What foods should I avoid during pregnancy?',
-    'How can I manage morning sickness in the first trimester?'
+    'How can I manage morning sickness in the first trimester?',
+    'When should I start preparing the nursery?',
+    'What pregnancy exercises are safe in the third trimester?'
+  ],
+  'Birth': [
+    'What should be in my hospital bag for delivery?',
+    'How do I create an effective birth plan?',
+    'What are the signs of labor I should watch for?',
+    'How long is recovery from a C-section?'
+  ],
+  'Postpartum': [
+    'How to cope with postpartum depression?',
+    'What's normal in postpartum recovery?',
+    'When can I start exercising after birth?',
+    'Tips for managing with a newborn while recovering?'
+  ],
+  'Health': [
+    'When should I worry about my child's fever?',
+    'What vaccinations are recommended for infants?',
+    'How to soothe a teething baby?',
+    'Signs that my child needs to see a doctor?'
   ],
   'Feeding & Breastfeeding': [
     'Best breastfeeding positions for newborns?',
-    'How do I know if my baby is getting enough milk?'
+    'How do I know if my baby is getting enough milk?',
+    'Tips for increasing milk supply?',
+    'How to deal with painful breastfeeding?'
   ],
   'Diversification': [
     'Recommendations for baby food introduction?',
-    'When should I start introducing solid foods to my baby?'
+    'When should I start introducing solid foods to my baby?',
+    'Best first foods for babies?',
+    'How to introduce potential allergens safely?'
   ],
   'Others': [
     'What are some self-care tips for new moms?',
-    'How do you maintain a work-life balance as a parent?'
+    'How do you maintain a work-life balance as a parent?',
+    'Recommendations for baby-friendly vacation spots?',
+    'How to find a supportive mom group in my area?'
   ]
 };
 
@@ -60,6 +90,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [suggestedCategories, setSuggestedCategories] = useState<string[]>([]);
   const [relatedQuestions, setRelatedQuestions] = useState<string[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [errors, setErrors] = useState<{
     title?: string;
     details?: string;
@@ -68,29 +99,49 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const text = `${title} ${details}`.toLowerCase();
-    
-    const suggestions = Object.entries(categoryKeywords)
-      .filter(([_, keywords]) => 
-        keywords.some(keyword => text.includes(keyword.toLowerCase()))
-      )
-      .map(([category]) => category);
-    
-    const finalSuggestions = suggestions.length > 0 ? suggestions : ['Others'];
-    
-    setSuggestedCategories([...new Set(finalSuggestions)]);
-    
-    const related = Object.entries(popularQuestions)
-      .filter(([category]) => 
-        finalSuggestions.includes(category) || (selectedCategory && category === selectedCategory)
-      )
-      .flatMap(([_, questions]) => questions)
-      .filter(question => 
-        !title || question.toLowerCase().includes(title.toLowerCase())
-      );
-    
-    setRelatedQuestions([...new Set(related)]);
-  }, [title, details, selectedCategory]);
+    if (title.length > 2) {
+      setIsSearching(true);
+      
+      // Debounce the search to avoid too many updates
+      const timer = setTimeout(() => {
+        const text = `${title} ${details}`.toLowerCase();
+        
+        const suggestions = Object.entries(categoryKeywords)
+          .filter(([_, keywords]) => 
+            keywords.some(keyword => text.includes(keyword.toLowerCase()))
+          )
+          .map(([category]) => category);
+        
+        const finalSuggestions = suggestions.length > 0 ? suggestions : ['Others'];
+        
+        setSuggestedCategories([...new Set(finalSuggestions)]);
+        
+        // Find related questions based on title
+        const allQuestions = Object.values(popularQuestions).flat();
+        const related = allQuestions.filter(question => 
+          question.toLowerCase().includes(title.toLowerCase())
+        );
+        
+        // If no exact matches, try to find questions containing any word from the title
+        if (related.length === 0 && title.length > 3) {
+          const titleWords = title.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+          const fuzzyMatches = allQuestions.filter(question => 
+            titleWords.some(word => question.toLowerCase().includes(word))
+          );
+          setRelatedQuestions([...new Set(fuzzyMatches)].slice(0, 5));
+        } else {
+          setRelatedQuestions([...new Set(related)].slice(0, 5));
+        }
+        
+        setIsSearching(false);
+      }, 300);
+      
+      return () => clearTimeout(timer);
+    } else {
+      setRelatedQuestions([]);
+      setIsSearching(false);
+    }
+  }, [title, details]);
 
   const validateForm = () => {
     const newErrors: {
@@ -141,11 +192,17 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
   const selectRelatedQuestion = (question: string) => {
     setTitle(question);
     
-    const category = Object.entries(popularQuestions)
-      .find(([_, questions]) => questions.includes(question))?.[0];
+    // Find which category contains this question
+    const categoryEntry = Object.entries(popularQuestions)
+      .find(([_, questions]) => questions.includes(question));
     
-    if (category) {
-      setSelectedCategory(category);
+    if (categoryEntry) {
+      setSelectedCategory(categoryEntry[0]);
+      
+      // Also set a reasonable default for details based on the question
+      if (!details) {
+        setDetails(`I'm looking for advice about ${question.toLowerCase().replace(/\?$/, '')}. Any experiences or tips would be helpful.`);
+      }
     }
   };
 
@@ -173,15 +230,28 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       </DialogHeader>
       
       <div className="space-y-2">
-        <label htmlFor="question-title" className="text-sm font-medium">
-          Question Title
+        <label htmlFor="question-title" className="text-sm font-medium flex justify-between">
+          <span>Question Title</span>
+          {title.length > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {title.length} characters
+            </span>
+          )}
         </label>
-        <Input
-          id="question-title"
-          placeholder="What would you like to ask?"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <div className="relative">
+          <Input
+            id="question-title"
+            placeholder="What would you like to ask?"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={isSearching ? "pr-10" : ""}
+          />
+          {isSearching && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin">
+              <Search className="h-4 w-4 text-muted-foreground" />
+            </div>
+          )}
+        </div>
         {errors.title && (
           <p className="text-destructive text-xs flex items-center gap-1 mt-1">
             <AlertCircle className="h-3 w-3" />
@@ -190,19 +260,19 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
         )}
         
         {relatedQuestions.length > 0 && (
-          <div className="mt-2 space-y-2">
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <Tag className="h-3 w-3" />
-              Similar questions:
+          <div className="mt-3 space-y-2 bg-muted/30 rounded-lg p-3 border border-muted">
+            <p className="text-sm text-foreground font-medium flex items-center gap-1">
+              <Search className="h-3.5 w-3.5" />
+              Similar questions from the community:
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-col gap-2">
               {relatedQuestions.map((question, i) => (
                 <Button
                   key={i}
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="text-xs text-left justify-start h-auto py-1 border-dashed border-gray-300"
+                  className="text-sm text-left justify-start h-auto py-2 border-dashed border-muted hover:bg-accent"
                   onClick={() => selectRelatedQuestion(question)}
                 >
                   {question}
@@ -214,8 +284,13 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       </div>
       
       <div className="space-y-2">
-        <label htmlFor="question-details" className="text-sm font-medium">
-          Question Details
+        <label htmlFor="question-details" className="text-sm font-medium flex justify-between">
+          <span>Question Details</span>
+          {details.length > 0 && (
+            <span className="text-xs text-muted-foreground">
+              {details.length} characters
+            </span>
+          )}
         </label>
         <Textarea
           id="question-details"
