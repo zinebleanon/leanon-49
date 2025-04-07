@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake, Ticket, Tent, Smile } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
@@ -124,7 +123,7 @@ const MumzAsk = () => {
           </div>
         </section>
         
-        <section className="py-3 px-4">
+        <section className="py-3 px-4 mt-6">
           <div className="max-w-4xl mx-auto">
             <CommunityMessages 
               categories={categories}

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, ThumbsUp, Clock, Filter } from 'lucide-react';
@@ -13,13 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 // Mock data for demonstration
 const mockGeneralCommunityMessages = [
@@ -205,22 +197,22 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
         </TabsList>
         
         <div className="mb-4 flex justify-between items-center">
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <Button 
               variant={filterType === 'recent' ? 'default' : 'outline'}
               size="sm" 
               onClick={() => setFilterType('recent')}
-              className={filterType === 'recent' ? 'bg-[#B8CEC2]' : ''}
+              className={`text-xs px-2 h-8 ${filterType === 'recent' ? 'bg-[#B8CEC2]' : ''}`}
             >
-              <Clock className="h-4 w-4 mr-1" /> Most Recent
+              <Clock className="h-3 w-3 mr-1" /> Recent
             </Button>
             <Button 
               variant={filterType === 'popular' ? 'default' : 'outline'}
               size="sm" 
               onClick={() => setFilterType('popular')}
-              className={filterType === 'popular' ? 'bg-[#B8CEC2]' : ''}
+              className={`text-xs px-2 h-8 ${filterType === 'popular' ? 'bg-[#B8CEC2]' : ''}`}
             >
-              <ThumbsUp className="h-4 w-4 mr-1" /> Most Popular
+              <ThumbsUp className="h-3 w-3 mr-1" /> Popular
             </Button>
           </div>
           
@@ -229,21 +221,21 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
               <Button 
                 variant="outline" 
                 size="sm"
-                className={categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}
+                className={`text-xs px-2 h-8 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
               >
-                <Filter className="h-4 w-4 mr-1" /> 
-                {categoryFilter ? `Filter: ${categoryFilter}` : "Filter by Topic"}
+                <Filter className="h-3 w-3 mr-1" /> 
+                {categoryFilter ? `${categoryFilter}` : "Filter"}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-white border border-[#B8CEC2]/20">
-              <DropdownMenuLabel>Filter by Topic</DropdownMenuLabel>
+            <DropdownMenuContent className="w-48 bg-white border border-[#B8CEC2]/20">
+              <DropdownMenuLabel className="text-xs">Filter by Topic</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <div className="max-h-[300px] overflow-y-auto">
+              <div className="max-h-[250px] overflow-y-auto">
                 <DropdownMenuGroup>
                   {currentCategories.map((category) => (
                     <DropdownMenuItem 
                       key={category.name}
-                      className={`cursor-pointer ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
+                      className={`cursor-pointer text-xs ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
                       onClick={() => handleCategoryClick(category.name)}
                     >
                       {category.icon}
@@ -256,7 +248,7 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
                 <>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
-                    className="cursor-pointer text-red-500 hover:text-red-700"
+                    className="cursor-pointer text-red-500 hover:text-red-700 text-xs"
                     onClick={() => setCategoryFilter(null)}
                   >
                     Clear Filter
