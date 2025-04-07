@@ -90,8 +90,14 @@ const MumzDeals = () => {
         
         <DealsHero />
         
-        <div className="max-w-7xl mx-auto px-4 mb-8 flex justify-end">
-          <DealsHowItWorksDialog />
+        {/* Ribbon image with negative margin for better visibility */}
+        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0 -mt-8">
+          <img 
+            src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
+            alt="Discount tag ribbon" 
+            className="w-full max-w-2xl h-auto mx-auto object-contain my-0"
+            loading="eager"
+          />
         </div>
         
         <CategorySection 

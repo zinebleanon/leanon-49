@@ -1,7 +1,8 @@
 
-import { ShoppingBag, Tag } from 'lucide-react';
+import { ShoppingBag, Tag, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RibbonIcon from '@/components/ui/RibbonIcon';
+import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
 
 const DealsHero = () => {
   return (
@@ -12,17 +13,30 @@ const DealsHero = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
               <span className="text-black">Mumz</span> <span className="text-orange-500">Deals</span>
             </h1>
-            <p className="text-lg text-muted-foreground mb-8 font-playfair">
-              Exclusive discounts and offers curated for moms. Save on your favorite brands and products for you and your little ones.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="rounded-full bg-primary">
+            <div className="flex flex-wrap gap-4 mt-8">
+              <Button 
+                size="lg"
+                className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+              >
                 <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" />
                 Browse Deals
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full">
-                <ShoppingBag className="mr-2 h-4 w-4" />
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+              >
+                <ShoppingBag className="mr-2 h-5 w-5" />
                 Featured Brands
+              </Button>
+            </div>
+            <div className="mt-8 flex justify-center md:justify-start">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+              >
+                <Info className="mr-2 h-5 w-5" /> How It Works
               </Button>
             </div>
           </div>

@@ -45,7 +45,7 @@ const DealsHowItWorksDialog = () => {
           size="lg" 
           className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
         >
-          <Info className="mr-2 h-4 w-4" /> How It Works
+          <Info className="mr-2 h-5 w-5" /> How It Works
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
