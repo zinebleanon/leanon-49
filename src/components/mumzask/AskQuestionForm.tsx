@@ -38,7 +38,7 @@ const popularQuestions: Record<string, string[]> = {
     'How do I handle toddler tantrums in public?',
     'What are effective discipline strategies for a 3-year-old?',
     'How to deal with sibling rivalry?',
-    'What's the best approach for nighttime potty training?'
+    'What is the best approach for nighttime potty training?'
   ],
   'Pregnancy': [
     'What foods should I avoid during pregnancy?',
@@ -54,12 +54,12 @@ const popularQuestions: Record<string, string[]> = {
   ],
   'Postpartum': [
     'How to cope with postpartum depression?',
-    'What's normal in postpartum recovery?',
+    'What is normal in postpartum recovery?',
     'When can I start exercising after birth?',
     'Tips for managing with a newborn while recovering?'
   ],
   'Health': [
-    'When should I worry about my child's fever?',
+    'When should I worry about my child\'s fever?',
     'What vaccinations are recommended for infants?',
     'How to soothe a teething baby?',
     'Signs that my child needs to see a doctor?'
