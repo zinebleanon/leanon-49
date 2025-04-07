@@ -27,7 +27,7 @@ const MumzShoppingHub = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-20 pb-24 md:pb-16 px-4"> {/* Adjusted padding for mobile bottom nav */}
+      <main className="pt-20 pb-16 px-4"> {/* Adjusted padding since we removed bottom nav */}
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
             <Button 

@@ -43,7 +43,7 @@ const Index = () => {
     // Send a test notification with the user's name
     sendPushNotification(
       "Welcome to LeanOn", 
-      `Hello {userName}, thanks for trying out our notification feature!`,
+      `Hello ${userName}, thanks for trying out our notification feature!`,
       "all"
     );
   };
