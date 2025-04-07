@@ -66,9 +66,9 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-20 pb-16">
+      <main className="pt-16 pb-12">
         {/* Back Button - consistent with other pages */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-2">
           <Button 
             variant="ghost" 
             size="sm" 
@@ -80,8 +80,8 @@ const MumzMarketplace = () => {
           </Button>
         </div>
         
-        {/* Hero Section - adjusted padding to match other pages */}
-        <section className="py-10 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
+        {/* Hero Section */}
+        <section className="py-6 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
               <h1 className={`text-3xl md:text-5xl font-bold mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
@@ -127,7 +127,7 @@ const MumzMarketplace = () => {
           />
         </div>
         
-        <section className="py-10 px-6">
+        <section className="py-8 px-6">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
             <MarketplaceItemsGrid items={featuredItems} />
