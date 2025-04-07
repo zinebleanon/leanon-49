@@ -29,14 +29,20 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </Button>
             <Button 
               size="lg" 
-              className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
               onClick={onOpenDiscountDialog}
             >
               <BadgePercent className="mr-2 h-5 w-5" /> Browse Available Discounts
             </Button>
           </div>
           <div className="mt-8 flex justify-center md:justify-start">
-            <BrandsHowItWorksDialog />
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+            >
+              <Info className="mr-2 h-5 w-5" /> How It Works
+            </Button>
           </div>
         </div>
       </div>
