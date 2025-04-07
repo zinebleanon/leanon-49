@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
+import { HeartHandshake, BadgePercent } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
 
 interface BrandsHeroProps {
@@ -34,15 +34,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             >
               <BadgePercent className="mr-2 h-5 w-5" /> Browse Available Discounts
             </Button>
-          </div>
-          <div className="mt-8 flex justify-center md:justify-start">
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
-            >
-              <Info className="mr-2 h-5 w-5" /> How It Works
-            </Button>
+            <BrandsHowItWorksDialog />
           </div>
         </div>
       </div>
