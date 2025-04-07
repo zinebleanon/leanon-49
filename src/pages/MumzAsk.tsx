@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -72,6 +73,51 @@ const MumzAsk = () => {
                 </span>
               </h1>
               
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="lg" 
+                      className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                    >
+                      <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
+                      Ask LeanOn Community
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-lg">
+                    <AskQuestionForm categories={categories} onClose={() => {
+                      const closeButton = document.querySelector('[aria-label="Close"]');
+                      if (closeButton instanceof HTMLElement) {
+                        closeButton.click();
+                      }
+                    }} />
+                  </DialogContent>
+                </Dialog>
+                
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+                    >
+                      <Users className="mr-2 h-5 w-5" />
+                      Ask Your Neighborhood
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-lg">
+                    <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
+                      const closeButton = document.querySelector('[aria-label="Close"]');
+                      if (closeButton instanceof HTMLElement) {
+                        closeButton.click();
+                      }
+                    }} />
+                  </DialogContent>
+                </Dialog>
+                
+                <HowItWorksModal />
+              </div>
+              
               <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-3 mb-4">
                 <Button 
                   variant={activeSection === 'general' ? 'default' : 'ghost'}
@@ -89,78 +135,6 @@ const MumzAsk = () => {
                   <Users className="mr-2 h-4 w-4" />
                   Neighborhood
                 </Button>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                {activeSection === 'general' ? (
-                  <>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                        >
-                          <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                          Ask LeanOn Community
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-lg">
-                        <AskQuestionForm categories={categories} onClose={() => {
-                          const closeButton = document.querySelector('[aria-label="Close"]');
-                          if (closeButton instanceof HTMLElement) {
-                            closeButton.click();
-                          }
-                        }} />
-                      </DialogContent>
-                    </Dialog>
-                    
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
-                      onClick={() => setActiveSection('neighborhood')}
-                    >
-                      <Users className="mr-2 h-5 w-5" />
-                      Ask Your Neighborhood
-                    </Button>
-                    
-                    <HowItWorksModal />
-                  </>
-                ) : (
-                  <>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                        >
-                          <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                          Ask Your Neighborhood
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-lg">
-                        <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
-                          const closeButton = document.querySelector('[aria-label="Close"]');
-                          if (closeButton instanceof HTMLElement) {
-                            closeButton.click();
-                          }
-                        }} />
-                      </DialogContent>
-                    </Dialog>
-                    
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
-                      onClick={() => setActiveSection('general')}
-                    >
-                      <MessagesSquare className="mr-2 h-5 w-5" />
-                      Ask LeanOn Community
-                    </Button>
-                    
-                    <HowItWorksModal />
-                  </>
-                )}
               </div>
             </div>
           </div>
