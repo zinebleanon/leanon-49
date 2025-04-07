@@ -125,39 +125,25 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl p-0 border-none overflow-hidden bg-white shadow-lg">
-        <div className="bg-gradient-to-r from-pastel-green/30 to-pastel-yellow/30 py-6">
-          <DialogHeader className="px-6">
-            <DialogTitle className="text-2xl font-semibold text-center">Moms' Local Brands</DialogTitle>
-            <DialogDescription className="text-center">
-              Discover unique mom-owned brands or list your own local brand for the community.
-            </DialogDescription>
-          </DialogHeader>
-        </div>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-background">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-playfair">Moms' Local Brands</DialogTitle>
+          <DialogDescription>
+            Discover unique mom-owned brands or list your own local brand for the community.
+          </DialogDescription>
+        </DialogHeader>
         
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="px-6 py-4 border-b">
-            <TabsList className="grid w-full grid-cols-2 bg-pastel-green/10">
-              <TabsTrigger 
-                value="discover" 
-                className="data-[state=active]:bg-pastel-green data-[state=active]:text-emerald-800"
-              >
-                Discover Mom's Brands
-              </TabsTrigger>
-              <TabsTrigger 
-                value="list" 
-                className="data-[state=active]:bg-pastel-green data-[state=active]:text-emerald-800"
-              >
-                List Your Local Brand
-              </TabsTrigger>
-            </TabsList>
-          </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col overflow-hidden">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="discover">Discover Mom's Brands</TabsTrigger>
+            <TabsTrigger value="list">List Your Local Brand</TabsTrigger>
+          </TabsList>
           
-          <TabsContent value="discover" className="p-0 mt-0">
-            <div className="px-6 py-4 sticky top-0 z-10 bg-white border-b">
+          <TabsContent value="discover" className="flex-1 flex flex-col overflow-hidden">
+            <div className="mb-4 sticky top-0 z-10 bg-background pb-2 border-b">
               <h3 className="text-lg font-medium mb-2">Filter by Category</h3>
               <Select onValueChange={setSelectedCategory} value={selectedCategory}>
-                <SelectTrigger className="w-full md:w-[240px] border-pastel-green/50 focus:ring-pastel-green/30">
+                <SelectTrigger className="w-full md:w-[240px]">
                   <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
                 <SelectContent>
@@ -169,16 +155,16 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </Select>
             </div>
             
-            <ScrollArea className="h-[400px] px-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+            <ScrollArea className="flex-1 pb-4 h-[400px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 pr-4">
                 {filteredBrands.length > 0 ? (
                   filteredBrands.map((brand) => (
                     <div 
                       key={brand.id} 
-                      className="flex flex-col gap-3 p-4 rounded-lg border border-pastel-green/30 hover:shadow-md transition-shadow hover:bg-pastel-green/5"
+                      className="flex flex-col gap-3 p-4 rounded-lg border border-primary/30 hover:shadow-md transition-shadow hover:bg-primary/5"
                     >
                       <div className="flex gap-3">
-                        <div className="bg-white p-2 rounded-md w-20 h-20 flex items-center justify-center shadow-sm">
+                        <div className="bg-white/90 p-2 rounded-md w-20 h-20 flex items-center justify-center shadow-sm">
                           <img src={brand.image} alt={brand.name} className="w-16 h-16 object-contain" />
                         </div>
                         <div className="flex-1">
@@ -200,10 +186,10 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                       </div>
                       <p className="text-sm mt-1">{brand.description}</p>
                       <div className="mt-auto pt-2 flex items-center justify-between">
-                        <div className="flex items-center bg-pastel-green/20 px-3 py-1 rounded-full text-emerald-800">
+                        <div className="flex items-center bg-primary/10 px-3 py-1 rounded-full">
                           <span className="text-xs font-medium">Code: <span className="font-bold">{brand.discountCode}</span></span>
                         </div>
-                        <Button size="sm" variant="outline" className="rounded-full border-pastel-green/50 text-emerald-800 hover:bg-pastel-green/10">
+                        <Button size="sm" variant="outline" className="rounded-full">
                           Visit <ExternalLink className="ml-1 h-3 w-3" />
                         </Button>
                       </div>
@@ -218,10 +204,10 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
             </ScrollArea>
           </TabsContent>
           
-          <TabsContent value="list" className="p-0 mt-0">
-            <div className="bg-pastel-green/10 m-6 p-4 rounded-lg">
+          <TabsContent value="list" className="flex-1 overflow-hidden">
+            <div className="bg-primary/10 p-4 rounded-lg mb-4">
               <div className="flex items-start gap-3">
-                <Sparkles className="h-5 w-5 text-emerald-600 mt-1" />
+                <Sparkles className="h-5 w-5 text-primary mt-1" />
                 <div>
                   <h3 className="font-medium">List Your Local Brand</h3>
                   <p className="text-sm text-muted-foreground">
@@ -231,9 +217,9 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </div>
             </div>
             
-            <ScrollArea className="h-[400px] px-6">
+            <ScrollArea className="h-[400px] w-full overflow-y-auto pr-4">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pb-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-1">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
@@ -242,11 +228,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                         <FormItem>
                           <FormLabel>Brand Name</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Enter your brand name" 
-                              {...field} 
-                              className="border-pastel-green/50 focus-visible:ring-pastel-green/30"
-                            />
+                            <Input placeholder="Enter your brand name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -261,7 +243,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                           <FormLabel>Category</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger className="border-pastel-green/50 focus:ring-pastel-green/30">
+                              <SelectTrigger>
                                 <SelectValue placeholder="Select a category" />
                               </SelectTrigger>
                             </FormControl>
@@ -286,7 +268,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                         <FormControl>
                           <Textarea 
                             placeholder="Describe your brand and what you offer" 
-                            className="min-h-[100px] border-pastel-green/50 focus-visible:ring-pastel-green/30"
+                            className="min-h-[100px]"
                             {...field} 
                           />
                         </FormControl>
@@ -304,7 +286,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                         <FormControl>
                           <Textarea 
                             placeholder="Tell us what sets your brand apart" 
-                            className="min-h-[100px] border-pastel-green/50 focus-visible:ring-pastel-green/30"
+                            className="min-h-[100px]"
                             {...field} 
                           />
                         </FormControl>
@@ -321,11 +303,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                         <FormItem>
                           <FormLabel>Website</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="https://your-brand-website.com" 
-                              {...field} 
-                              className="border-pastel-green/50 focus-visible:ring-pastel-green/30"
-                            />
+                            <Input placeholder="https://your-brand-website.com" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -339,11 +317,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                         <FormItem>
                           <FormLabel>Contact Email</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="your-email@example.com" 
-                              {...field} 
-                              className="border-pastel-green/50 focus-visible:ring-pastel-green/30"
-                            />
+                            <Input placeholder="your-email@example.com" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -351,7 +325,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                     />
                   </div>
                   
-                  <div className="bg-pastel-yellow/20 p-4 rounded-lg flex items-start gap-3 border border-pastel-yellow/50">
+                  <div className="bg-muted/30 p-4 rounded-lg flex items-start gap-3">
                     <Check className="h-5 w-5 text-green-500 mt-1" />
                     <p className="text-sm text-muted-foreground">
                       By submitting this form, your brand will be reviewed by our admin team. Once approved, it will be listed in our Mom's Local Brands directory.
@@ -359,20 +333,8 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                   </div>
                   
                   <div className="flex justify-end gap-3 pt-2">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={onClose}
-                      className="border-gray-300 text-gray-600"
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      type="submit"
-                      className="bg-pastel-green hover:bg-pastel-green/80 text-emerald-800"
-                    >
-                      Submit for Approval
-                    </Button>
+                    <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button type="submit">Submit for Approval</Button>
                   </div>
                 </form>
               </Form>

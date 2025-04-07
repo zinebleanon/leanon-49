@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Copy, CheckCircle, Star } from 'lucide-react';
 import BowRibbon from '@/components/mumzally/BowRibbon';
@@ -84,29 +84,25 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md md:max-w-lg p-0 overflow-hidden border-none bg-white shadow-lg">
-        <div className="bg-gradient-to-r from-pastel-green/30 to-pastel-yellow/30 py-6">
-          <DialogHeader className="px-6">
-            <div className="flex justify-center mb-4">
-              <div className="bg-white p-3 rounded-full shadow-md">
-                <img 
-                  src={brand.logo} 
-                  alt={brand.name} 
-                  className="h-20 w-20 object-contain"
-                />
-              </div>
-            </div>
-            <DialogTitle className="text-2xl text-center font-semibold">{brand.name}</DialogTitle>
-            <div className="text-center mt-2">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-pastel-green/40 text-emerald-800">
-                {brand.category === 'local' ? 'Local Brand' : 'International Brand'}
-              </span>
-            </div>
-          </DialogHeader>
-        </div>
+      <DialogContent className="max-w-md md:max-w-lg overflow-hidden max-h-[90vh]">
+        <DialogHeader>
+          <div className="flex justify-center mb-4">
+            <img 
+              src={brand.logo} 
+              alt={brand.name} 
+              className="h-20 object-contain"
+            />
+          </div>
+          <DialogTitle className="text-2xl text-center">{brand.name}</DialogTitle>
+          <DialogDescription className="text-center">
+            <span className="inline-block px-3 py-1 rounded-full text-xs bg-primary/20 text-primary-foreground">
+              {brand.category === 'local' ? 'Local Brand' : 'International Brand'}
+            </span>
+          </DialogDescription>
+        </DialogHeader>
         
-        <ScrollArea className="max-h-[60vh] p-6">
-          <div className="space-y-6">
+        <ScrollArea className="h-[calc(80vh-140px)] pr-4 pb-4">
+          <div className="space-y-6 p-1">
             <div className="flex justify-center">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -120,8 +116,8 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
             </div>
             
             <div className="prose prose-sm max-w-none">
-              <p className="text-foreground text-center">{brand.description}</p>
-              <p className="font-medium text-center mt-4">As a LeanOn community member, you get access to exclusive discounts:</p>
+              <p className="text-foreground">{brand.description}</p>
+              <p className="font-medium">As a LeanOn community member, you get access to exclusive discounts:</p>
               <div className="my-6 relative">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 z-10">
                   <BowRibbon />
@@ -145,16 +141,13 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
             </div>
             
             <div className="flex flex-col md:flex-row justify-center items-center gap-3">
-              <Button 
-                onClick={visitWebsite} 
-                className="rounded-full w-full md:w-auto bg-pastel-green hover:bg-pastel-green/80 text-emerald-800"
-              >
+              <Button onClick={visitWebsite} className="rounded-full w-full md:w-auto">
                 Visit Website <ExternalLink className="ml-2 h-4 w-4" />
               </Button>
               
               <Button 
                 variant="outline" 
-                className="rounded-full w-full md:w-auto border-pastel-green text-emerald-800 hover:bg-pastel-green/10"
+                className="rounded-full w-full md:w-auto"
                 onClick={() => setShowReviewForm(!showReviewForm)}
                 aria-expanded={showReviewForm}
                 aria-controls="review-form"
@@ -164,7 +157,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
             </div>
             
             {showReviewForm && (
-              <div id="review-form" className="border rounded-lg p-4 mt-4 bg-pastel-yellow/10 border-pastel-yellow/30">
+              <div id="review-form" className="border rounded-lg p-4 mt-4 bg-muted/20">
                 <h4 className="font-medium mb-3">Write a Review</h4>
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmitReview)} className="space-y-4">
@@ -188,11 +181,13 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
                                       value={rating.toString()} 
                                       id={`rating-${rating}`} 
                                       aria-label={`${rating} stars`}
-                                    />
+                                    >
+                                      <span className="sr-only">{rating} stars</span>
+                                    </RadioGroupItem>
                                   </FormControl>
                                   <Label
                                     htmlFor={`rating-${rating}`}
-                                    className="cursor-pointer p-1"
+                                    className={`cursor-pointer p-1`}
                                   >
                                     <Star 
                                       className={`h-5 w-5 ${
@@ -230,9 +225,8 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
                     <div className="flex justify-end gap-2">
                       <Button 
                         type="button" 
-                        variant="outline" 
+                        variant="ghost" 
                         size="sm"
-                        className="text-gray-600 border-gray-300"
                         onClick={() => {
                           setShowReviewForm(false);
                           form.reset();
@@ -240,13 +234,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
                       >
                         Cancel
                       </Button>
-                      <Button 
-                        type="submit" 
-                        size="sm"
-                        className="bg-pastel-green hover:bg-pastel-green/80 text-emerald-800"
-                      >
-                        Submit Review
-                      </Button>
+                      <Button type="submit" size="sm">Submit Review</Button>
                     </div>
                   </form>
                 </Form>
