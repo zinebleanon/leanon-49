@@ -15,7 +15,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 font-playfair">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-              Brands You Know<br />& You Don't Know
+              Brands You Know<br />Or You Don't Know
             </span>
           </h1>
           
