@@ -64,16 +64,16 @@ const MumzAsk = () => {
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-6 md:pb-10">
-        <section className="py-3 md:py-5 px-4 md:px-8 bg-[#B8CEC2]">
+        <section className="py-3 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-3xl md:text-5xl font-bold mb-3 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   LeanOn the Community
                 </span>
               </h1>
               
-              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button 
@@ -118,7 +118,7 @@ const MumzAsk = () => {
                 <HowItWorksModal />
               </div>
               
-              <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-3 mb-4">
+              <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-6">
                 <Button 
                   variant={activeSection === 'general' ? 'default' : 'ghost'}
                   className={`flex-1 rounded-md ${activeSection === 'general' ? 'bg-[#B8CEC2]/70' : ''}`}
