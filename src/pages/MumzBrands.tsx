@@ -132,7 +132,7 @@ const MumzBrands = () => {
         />
         
         {/* Centered ribbon tag image - moved higher with greater negative margin */}
-        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0 -mt-16">
+        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0 -mt-24">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
             alt="Discount tag ribbon" 
