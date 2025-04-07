@@ -7,7 +7,7 @@ import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package, ArrowLeft } from 'lucide-react';
+import { Search, Package } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 
 const MumzMarketplace = () => {
@@ -62,31 +62,22 @@ const MumzMarketplace = () => {
   const textStyles = "transition-all duration-700 ease-smooth";
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 mb-8">
-          <Button variant="ghost" asChild className="mb-4">
-            <Link to="/save">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Mumz Save
-            </Link>
-          </Button>
-        </div>
-        
-        {/* Hero Section - aligned with MumzDeals layout */}
-        <section className="py-12 md:py-16 px-6 md:px-8 bg-[#B8CEC2]">
+      <main className="pt-12 pb-12">
+        {/* Hero Section - reduced top padding */}
+        <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-4xl md:text-5xl font-bold mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-4 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   Preloved
                   <br />
                   from Moms to Moms
                 </span>
               </h1>
-              <div className="flex flex-wrap gap-4 mt-8">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-3">
                 <Button 
                   size="lg" 
                   className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
@@ -113,13 +104,12 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section - styled like Deals page */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 -mt-12">
+        {/* Centered image section - reduced padding */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0">
           <img 
             src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
             alt="Baby nursery with toys and furniture" 
-            className="w-full max-w-2xl h-auto mx-auto object-contain my-0"
-            loading="eager"
+            className="w-full max-w-3xl h-auto mx-auto object-contain"
           />
         </div>
         
