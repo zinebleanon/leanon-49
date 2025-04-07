@@ -67,7 +67,7 @@ const Navbar = () => {
   const navItems = [
     { name: 'Home', icon: <Home className="h-4 w-4" />, path: '/' },
     { 
-      name: 'Find', 
+      name: 'Connect', 
       icon: <RibbonIcon className="h-4 w-4" color="currentColor" />, 
       path: '/ally',
       description: 'LeanOn Moms around you, with same age kids' 

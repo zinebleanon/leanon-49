@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -155,7 +154,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
                     <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                    Connect LeanMoms Around
+                    Find LeanMoms Around
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
@@ -172,7 +171,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
                     <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                    Connect LeanMoms Around
+                    Find LeanMoms Around
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#B8CEC2] border-[#B8CEC2]/50">
