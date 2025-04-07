@@ -2,18 +2,19 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package } from 'lucide-react';
+import { Search, Package, ArrowLeft } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     setIsVisible(true);
@@ -65,19 +66,32 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-12 md:pt-16 pb-6 md:pb-10">
-        {/* Hero Section - reduced padding */}
-        <section className="py-2 md:py-3 px-4 md:px-8 bg-[#B8CEC2]">
+      <main className="pt-20 pb-16">
+        {/* Back Button - consistent with other pages */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-4">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            <span>Back</span>
+          </Button>
+        </div>
+        
+        {/* Hero Section - adjusted padding to match other pages */}
+        <section className="py-10 md:py-12 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-3xl md:text-5xl font-bold mb-2 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   Preloved
                   <br />
                   from Moms to Moms
                 </span>
               </h1>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-4">
                 <Button 
                   size="lg" 
                   className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
@@ -104,7 +118,7 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section - reduced padding */}
+        {/* Centered image section */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-1">
           <img 
             src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
@@ -113,9 +127,9 @@ const MumzMarketplace = () => {
           />
         </div>
         
-        <section className="py-6 px-6">
+        <section className="py-10 px-6">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4 font-playfair">Featured Items</h2>
+            <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
             <MarketplaceItemsGrid items={featuredItems} />
           </div>
         </section>
