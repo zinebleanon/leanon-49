@@ -84,9 +84,12 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md md:max-w-lg overflow-hidden max-h-[90vh]">
+      <DialogContent className="max-w-md md:max-w-lg overflow-hidden max-h-[90vh] bg-gradient-to-b from-white to-pastel-yellow/10 border-pastel-yellow/30">
         <DialogHeader>
-          <div className="flex justify-center mb-4">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 z-10">
+            <BowRibbon />
+          </div>
+          <div className="flex justify-center mb-4 pt-4">
             <img 
               src={brand.logo} 
               alt={brand.name} 
@@ -95,7 +98,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
           </div>
           <DialogTitle className="text-2xl text-center">{brand.name}</DialogTitle>
           <DialogDescription className="text-center">
-            <span className="inline-block px-3 py-1 rounded-full text-xs bg-primary/20 text-primary-foreground">
+            <span className="inline-block px-3 py-1 rounded-full text-xs bg-pastel-green/30 text-foreground">
               {brand.category === 'local' ? 'Local Brand' : 'International Brand'}
             </span>
           </DialogDescription>
@@ -119,10 +122,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
               <p className="text-foreground">{brand.description}</p>
               <p className="font-medium">As a LeanOn community member, you get access to exclusive discounts:</p>
               <div className="my-6 relative">
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 z-10">
-                  <BowRibbon />
-                </div>
-                <div className="bg-pastel-yellow/20 rounded-lg p-6 pt-8 text-center border border-pastel-yellow">
+                <div className="bg-pastel-yellow/20 rounded-lg p-6 text-center border border-pastel-yellow">
                   <p className="text-lg font-bold mb-2">{brand.discountValue}</p>
                   <div className="flex items-center justify-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm mx-auto max-w-[200px]">
                     <code className="font-bold">{brand.discountCode}</code>
@@ -141,7 +141,10 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
             </div>
             
             <div className="flex flex-col md:flex-row justify-center items-center gap-3">
-              <Button onClick={visitWebsite} className="rounded-full w-full md:w-auto">
+              <Button 
+                onClick={visitWebsite} 
+                className="rounded-full w-full md:w-auto bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground"
+              >
                 Visit Website <ExternalLink className="ml-2 h-4 w-4" />
               </Button>
               
@@ -157,7 +160,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
             </div>
             
             {showReviewForm && (
-              <div id="review-form" className="border rounded-lg p-4 mt-4 bg-muted/20">
+              <div id="review-form" className="border rounded-lg p-4 mt-4 bg-muted/20 border-pastel-yellow/30">
                 <h4 className="font-medium mb-3">Write a Review</h4>
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmitReview)} className="space-y-4">
@@ -234,7 +237,13 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" size="sm">Submit Review</Button>
+                      <Button 
+                        type="submit" 
+                        size="sm" 
+                        className="bg-pastel-green hover:bg-pastel-green/90 text-foreground"
+                      >
+                        Submit Review
+                      </Button>
                     </div>
                   </form>
                 </Form>

@@ -239,8 +239,8 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                               className="h-16 object-contain mb-2"
                             />
                             <h3 className="text-lg font-medium text-center">{discount.brand}</h3>
-                            <div className="bg-green-100 p-3 rounded-full">
-                              <Gift className="h-6 w-6 text-green-600" />
+                            <div className="bg-pastel-green/30 p-3 rounded-full">
+                              <Gift className="h-6 w-6 text-pastel-green" />
                             </div>
                             
                             <h3 className="text-lg font-medium text-center">

@@ -6,7 +6,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import BrandsHero from '@/components/mumzbrands/BrandsHero';
-import BrandsGrid from '@/components/mumzbrands/BrandsGrid';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import SupportLocalBrandsDialog from '@/components/mumzbrands/SupportLocalBrandsDialog';
 import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
