@@ -11,6 +11,7 @@ import CategorySection from '@/components/mumzsave/CategorySection';
 import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
 
 const MumzDeals = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -88,6 +89,10 @@ const MumzDeals = () => {
         </div>
         
         <DealsHero />
+        
+        <div className="max-w-7xl mx-auto px-4 mb-8 flex justify-end">
+          <DealsHowItWorksDialog />
+        </div>
         
         <CategorySection 
           activeTab="deals"

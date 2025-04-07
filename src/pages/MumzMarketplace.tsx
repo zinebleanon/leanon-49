@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
 import { Search, Package } from 'lucide-react';
+import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -94,6 +95,8 @@ const MumzMarketplace = () => {
                     <Package className="mr-2 h-5 w-5" /> List your Item
                   </Link>
                 </Button>
+
+                <MarketplaceHowItWorksDialog />
               </div>
             </div>
           </div>

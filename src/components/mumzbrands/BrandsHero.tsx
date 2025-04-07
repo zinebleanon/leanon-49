@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { HeartHandshake, BadgePercent } from 'lucide-react';
-import HowItWorksDialog from '@/components/HowItWorksDialog';
+import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
+import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
 
 interface BrandsHeroProps {
   onOpenDialog: () => void;
@@ -18,9 +18,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
               Brands You Know<br />& You Don't Know
             </span>
           </h1>
-          <p className="text-foreground/80 mb-6 max-w-2xl mx-auto md:mx-0">
-            Browse our curated selection of both international and local brands offering exclusive discounts for LeanOn community members.
-          </p>
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-6 mb-4">
             <Button 
               size="lg" 
@@ -38,7 +36,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </Button>
           </div>
           <div className="mt-8 flex justify-center md:justify-start">
-            <HowItWorksDialog />
+            <BrandsHowItWorksDialog />
           </div>
         </div>
       </div>
