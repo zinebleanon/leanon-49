@@ -117,25 +117,6 @@ const MumzAsk = () => {
                 
                 <HowItWorksModal />
               </div>
-              
-              <div className="bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 p-2 flex mt-6">
-                <Button 
-                  variant={activeSection === 'general' ? 'default' : 'ghost'}
-                  className={`flex-1 rounded-md ${activeSection === 'general' ? 'bg-[#B8CEC2]/70' : ''}`}
-                  onClick={() => setActiveSection('general')}
-                >
-                  <MessagesSquare className="mr-2 h-4 w-4" />
-                  LeanOn Community
-                </Button>
-                <Button 
-                  variant={activeSection === 'neighborhood' ? 'default' : 'ghost'}
-                  className={`flex-1 rounded-md ${activeSection === 'neighborhood' ? 'bg-[#B8CEC2]/70' : ''}`}
-                  onClick={() => setActiveSection('neighborhood')}
-                >
-                  <Users className="mr-2 h-4 w-4" />
-                  Neighborhood
-                </Button>
-              </div>
             </div>
           </div>
         </section>
