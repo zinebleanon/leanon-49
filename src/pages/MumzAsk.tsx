@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake, Ticket, Tent, Smile } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -47,6 +46,9 @@ const MumzAsk = () => {
   const neighborhoodCategories = [
     { name: 'Meetups', icon: <CalendarDays className="h-4 w-4 mr-2" /> },
     { name: 'Help & Support', icon: <HeartHandshake className="h-4 w-4 mr-2" /> },
+    { name: 'Events', icon: <Ticket className="h-4 w-4 mr-2" /> },
+    { name: 'Kids Camps', icon: <Tent className="h-4 w-4 mr-2" /> },
+    { name: 'Kids Activities', icon: <Smile className="h-4 w-4 mr-2" /> },
   ];
   
   const textStyles = "transition-all duration-700 ease-smooth";
