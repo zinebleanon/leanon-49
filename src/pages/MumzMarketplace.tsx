@@ -7,7 +7,7 @@ import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package } from 'lucide-react';
+import { Search, Package, ArrowLeft } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 
 const MumzMarketplace = () => {
@@ -62,10 +62,19 @@ const MumzMarketplace = () => {
   const textStyles = "transition-all duration-700 ease-smooth";
   
   return (
-    <div className="min-h-screen bg-[#B8CEC2]/30">
+    <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-4 mb-8">
+          <Button variant="ghost" asChild className="mb-4">
+            <Link to="/save">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Mumz Save
+            </Link>
+          </Button>
+        </div>
+        
         {/* Hero Section - aligned with MumzDeals layout */}
         <section className="py-12 md:py-16 px-6 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
@@ -104,12 +113,13 @@ const MumzMarketplace = () => {
           </div>
         </section>
         
-        {/* Centered image section */}
+        {/* Centered image section - styled like Deals page */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 -mt-12">
           <img 
             src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
             alt="Baby nursery with toys and furniture" 
-            className="w-full max-w-3xl h-auto mx-auto object-contain"
+            className="w-full max-w-2xl h-auto mx-auto object-contain my-0"
+            loading="eager"
           />
         </div>
         
