@@ -142,12 +142,6 @@ const MumzBrands = () => {
           />
         </div>
         
-        <section className="py-6 px-6">
-          <div className="max-w-7xl mx-auto">
-            <BrandsGrid brands={brands} />
-          </div>
-        </section>
-        
         {/* Support Local Brands Dialog */}
         <SupportLocalBrandsDialog 
           isOpen={isLocalBrandsDialogOpen}
