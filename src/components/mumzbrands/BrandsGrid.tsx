@@ -32,8 +32,8 @@ const BrandsGrid = ({ brands }: BrandsGridProps) => {
   
   if (brands.length === 0) {
     return (
-      <div className="text-center py-16 px-4">
-        <h3 className="text-xl font-medium mb-2">No brands found</h3>
+      <div className="text-center py-16 px-4 bg-pastel-green/5 rounded-lg border border-pastel-green/20">
+        <h3 className="text-xl font-medium mb-2 text-emerald-800">No brands found</h3>
         <p className="text-muted-foreground max-w-md mx-auto">
           Try adjusting your filters or check back later. We're constantly adding new brands to our collection!
         </p>
@@ -47,7 +47,7 @@ const BrandsGrid = ({ brands }: BrandsGridProps) => {
         {brands.map((brand) => (
           <Card 
             key={brand.id} 
-            className="overflow-hidden hover:shadow-md transition-all cursor-pointer border group hover:scale-[1.02]"
+            className="overflow-hidden hover:shadow-md transition-all cursor-pointer border border-pastel-green/20 group hover:scale-[1.02]"
             onClick={() => handleBrandClick(brand)}
           >
             <CardContent className="p-4 md:p-6 flex flex-col items-center justify-center h-[180px] md:h-[200px]" style={{ backgroundColor: brand.bgColor || '#F6F9F8' }}>
@@ -70,7 +70,7 @@ const BrandsGrid = ({ brands }: BrandsGridProps) => {
                 </div>
               </div>
               <div className="mt-1 md:mt-2">
-                <span className="inline-block px-2 md:px-3 py-0.5 md:py-1 bg-white/90 rounded-full text-[10px] md:text-xs font-medium shadow-sm">
+                <span className="inline-block px-2 md:px-3 py-0.5 md:py-1 bg-pastel-green/20 text-emerald-800 rounded-full text-[10px] md:text-xs font-medium shadow-sm">
                   {brand.category === 'local' ? 'Local Brand' : 'International'}
                 </span>
               </div>
