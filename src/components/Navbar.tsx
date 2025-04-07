@@ -2,20 +2,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Bell, User, Menu } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Home, HelpCircle, Tag, ShoppingBag, Inbox, Bell, Menu, Users } from 'lucide-react';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useUserInfo } from '@/hooks/use-user-info';
+import RibbonIcon from './ui/RibbonIcon';
 import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  navigationMenuTriggerStyle
+} from '@/components/ui/navigation-menu';
+import { Badge } from '@/components/ui/badge';
+import { useUserInfo } from '@/hooks/use-user-info';
+import NotificationSubscriber from './NotificationSubscriber';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(3);
   const location = useLocation();
@@ -31,16 +35,57 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
   
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+  
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Connect', path: '/ally' },
-    { name: 'Ask', path: '/ask' },
-    { name: 'Deals', path: '/brands' },
-    { name: 'Preloved', path: '/marketplace' },
+    { name: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
+    { 
+      name: 'Connect', 
+      icon: <Users className="h-5 w-5" />, 
+      path: '/ally',
+      description: 'LeanOn Moms around you, with same age kids' 
+    },
+    { name: 'Ask', icon: <HelpCircle className="h-5 w-5" />, path: '/ask' },
+    { name: 'Deals', icon: <Tag className="h-5 w-5" />, path: '/brands' },
+    { name: 'Preloved', icon: <ShoppingBag className="h-5 w-5" />, path: '/marketplace' },
   ];
 
   const handleJoinButtonClick = () => {
     setIsJoinModalOpen(true);
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(prev => !prev);
   };
   
   const isPathActive = (path: string) => {
@@ -85,59 +130,158 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-3 md:gap-4">
-          {userInfo ? (
-            <>
-              <Link
-                to="/inbox"
-                className={cn(
-                  "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
-                  isPathActive('/inbox')
-                    ? "bg-primary/10 text-primary" 
-                    : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
-                )}
-              >
-                <Bell className="h-5 w-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                    {unreadCount}
-                  </span>
-                )}
-              </Link>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-sm hover:bg-primary/5">
-                    <User className="h-5 w-5 text-foreground/70" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-white">
-                  {navItems.map((item) => (
-                    <DropdownMenuItem key={item.name} asChild>
-                      <Link 
-                        to={item.path}
-                        className={cn(
-                          "w-full cursor-pointer",
-                          isPathActive(item.path) ? "bg-primary/10 text-primary" : ""
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          ) : (
+          <Link
+            to="/inbox"
+            className={cn(
+              "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
+              isPathActive('/inbox')
+                ? "bg-primary/10 text-primary" 
+                : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
+            )}
+          >
+            <Inbox className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
+                {unreadCount}
+              </span>
+            )}
+          </Link>
+          
+          <button 
+            className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+            role="button"
+            tabIndex={0}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+      
+      <div className="fixed bottom-0 left-0 right-0 md:relative md:bottom-auto md:mt-2 bg-white border-t border-gray-200 md:border-none shadow-lg md:shadow-none z-40">
+        <div className="flex justify-around items-center max-w-xl mx-auto px-2 py-2 md:py-3 md:bg-white md:rounded-full md:shadow-sm">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              className={cn(
+                "flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-full transition-all duration-300 relative group",
+                isPathActive(item.path)
+                  ? "text-primary" 
+                  : "text-foreground/70 hover:text-foreground"
+              )}
+              onClick={(e) => {
+                if (!userInfo && item.path !== '/') {
+                  e.preventDefault();
+                  setIsJoinModalOpen(true);
+                }
+              }}
+            >
+              <span className={cn(
+                "p-1.5 rounded-full", 
+                isPathActive(item.path) ? "bg-primary/10" : ""
+              )}>
+                {item.icon}
+              </span>
+              <span className="text-xs font-medium">{item.name}</span>
+              {item.description && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-0 -mt-14 bg-white rounded-md p-2 text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
+                  {item.description}
+                </div>
+              )}
+            </Link>
+          ))}
+          
+          <div className="md:block hidden">
             <Button
               variant="warm"
               size="sm"
               className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
               onClick={handleJoinButtonClick}
             >
+              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
               Join
             </Button>
-          )}
+          </div>
         </div>
+      </div>
+      
+      <div 
+        className={cn(
+          "md:hidden fixed inset-0 z-30 pt-16 pb-16 transition-all duration-300 shadow-lg bg-pastel-green",
+          isMobileMenuOpen 
+            ? "opacity-100 pointer-events-auto translate-y-0" 
+            : "opacity-0 pointer-events-none translate-y-[-20px]"
+        )}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <nav className="h-full flex flex-col px-4 overflow-auto -webkit-overflow-scrolling-touch">
+          <div className="flex flex-col space-y-2 py-6">
+            {navItems.map((item, itemIndex) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={cn(
+                  "text-base font-medium py-3 flex items-center gap-3 animate-slide-up transition-all duration-300",
+                  isPathActive(item.path)
+                    ? "text-primary bg-white shadow-md"
+                    : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm"
+                )}
+                style={{
+                  borderRadius: "1rem",
+                  padding: "0.75rem 1.25rem",
+                  animationDelay: `${itemIndex * 0.05}s`,
+                  WebkitTapHighlightColor: 'transparent'
+                }}
+                onClick={(e) => {
+                  if (!userInfo && item.path !== '/') {
+                    e.preventDefault();
+                    setIsJoinModalOpen(true);
+                  } else {
+                    setIsMobileMenuOpen(false);
+                  }
+                }}
+              >
+                <span className={cn(
+                  "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",
+                  isPathActive(item.path) 
+                    ? "bg-primary/10 text-primary" 
+                    : "text-foreground/60"
+                )}>
+                  {item.icon}
+                </span>
+                {item.name}
+                {item.description && (
+                  <span className="ml-auto text-xs text-muted-foreground line-clamp-1 hidden sm:block">
+                    {item.description}
+                  </span>
+                )}
+                {isPathActive(item.path) && (
+                  <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                    Active
+                  </span>
+                )}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
+            <Button
+              variant="warm"
+              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg"
+              style={{ 
+                animationDelay: '0.2s',
+                WebkitTapHighlightColor: 'transparent'
+              }}
+              onClick={handleJoinButtonClick}
+            >
+              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
+              Join & <span className="font-adlery">LeanOn</span>
+            </Button>
+          </div>
+        </nav>
       </div>
 
       <JoinCommunityModal
