@@ -29,15 +29,7 @@ const DealsHero = () => {
                 <ShoppingBag className="mr-2 h-5 w-5" />
                 Featured Brands
               </Button>
-            </div>
-            <div className="mt-8 flex justify-center md:justify-start">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
-              >
-                <Info className="mr-2 h-5 w-5" /> How It Works
-              </Button>
+              <DealsHowItWorksDialog />
             </div>
           </div>
           <div className="hidden md:block">

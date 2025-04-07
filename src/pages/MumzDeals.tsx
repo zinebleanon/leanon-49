@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -31,7 +30,6 @@ const MumzDeals = () => {
   };
 
   const handleGetDeal = () => {
-    // Direct access to deals without subscription
     window.open('#', '_blank');
   };
 
@@ -90,8 +88,7 @@ const MumzDeals = () => {
         
         <DealsHero />
         
-        {/* Ribbon image with negative margin for better visibility */}
-        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0 -mt-8">
+        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0 -mt-12">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
             alt="Discount tag ribbon" 
