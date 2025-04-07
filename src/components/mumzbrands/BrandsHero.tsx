@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import RibbonIcon from '@/components/ui/RibbonIcon';
+import { HeartHandshake } from 'lucide-react';
 
 const BrandsHero = () => {
   const scrollToCategories = () => {
@@ -21,6 +22,12 @@ const BrandsHero = () => {
             </span>
           </h1>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-2 mb-1">
+            <Button 
+              size="lg" 
+              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+            >
+              <HeartHandshake className="mr-2 h-5 w-5" /> Support Moms Local Brands
+            </Button>
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
