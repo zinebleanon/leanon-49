@@ -143,7 +143,7 @@ const MumzBrands = () => {
     <div className="min-h-screen bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-12 md:pt-16 pb-6 md:pb-10">
+      <main className="pt-20 pb-6 md:pb-10">
         {/* Hero Section */}
         <BrandsHero />
         
