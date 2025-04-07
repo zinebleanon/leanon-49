@@ -17,6 +17,7 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
   ];
   
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [searchTerm, setSearchTerm] = useState("");
   
   const handleCategoryChange = (value: string) => {
     if (value) {
@@ -25,16 +26,27 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
     }
   };
   
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    // In a real app, this would trigger search functionality
+  };
+  
   return (
-    <section className="py-6 px-6 md:px-8 mb-4 bg-background shadow-sm rounded-b-lg" id="filter-section">
+    <section className="py-6 px-4 md:px-8 mb-4 bg-background shadow-sm rounded-b-lg sticky top-[72px] z-10" id="filter-section">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold font-playfair">Browse Brands</h2>
+        <div className="flex flex-wrap gap-4 items-center justify-between mb-4 md:mb-6">
+          <h2 className="text-xl md:text-2xl font-bold font-playfair">Browse Brands</h2>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <div className="relative hidden md:flex w-64">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
-              <Input type="search" placeholder="Search brands..." className="pl-8" />
+              <Input 
+                type="search" 
+                placeholder="Search brands..." 
+                className="pl-8"
+                value={searchTerm}
+                onChange={handleSearch}
+              />
             </div>
             
             <Tabs 
@@ -53,11 +65,17 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
         
         <div className="relative md:hidden w-full mb-4">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
-          <Input type="search" placeholder="Search brands..." className="pl-8" />
+          <Input 
+            type="search" 
+            placeholder="Search brands..." 
+            className="pl-8"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
         </div>
         
-        <ScrollArea className="w-full pb-2">
-          <div className="mb-2">
+        <ScrollArea className="w-full">
+          <div className="mb-2 pb-2 overflow-x-auto">
             <ToggleGroup type="single" value={selectedCategory} onValueChange={handleCategoryChange}>
               <div className="flex space-x-2 pb-1">
                 {categories.map((category) => (

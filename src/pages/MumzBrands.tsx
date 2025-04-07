@@ -145,7 +145,7 @@ const MumzBrands = () => {
     <div className="min-h-screen flex flex-col bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-y-auto">
+      <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-auto">
         {/* Hero Section */}
         <BrandsHero onOpenDialog={() => setIsLocalBrandsDialogOpen(true)} />
         

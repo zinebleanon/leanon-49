@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -91,6 +92,7 @@ interface SupportLocalBrandsDialogProps {
 const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogProps) => {
   const [activeTab, setActiveTab] = useState<string>("discover");
   const [selectedCategory, setSelectedCategory] = useState<string>("all"); 
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const { toast } = useToast();
   
   const form = useForm<LocalBrandFormValues>({
@@ -133,7 +135,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
           </DialogDescription>
         </DialogHeader>
         
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col overflow-hidden">
           <TabsList className="grid w-full grid-cols-2 mb-4">
             <TabsTrigger value="discover">Discover Mom's Brands</TabsTrigger>
             <TabsTrigger value="list">List Your Local Brand</TabsTrigger>
@@ -155,7 +157,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </Select>
             </div>
             
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 h-[400px]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4">
                 {filteredBrands.length > 0 ? (
                   filteredBrands.map((brand) => (
@@ -170,13 +172,18 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                         <div className="flex-1">
                           <h4 className="font-medium text-lg">{brand.name}</h4>
                           <p className="text-xs text-muted-foreground">{brand.category}</p>
-                          <div className="flex items-center mt-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="flex items-center gap-1 h-6 px-2 py-0 mt-1"
+                            aria-label={`Rate ${brand.name}. Current rating: ${brand.rating} out of 5 stars based on ${brand.reviewCount} reviews`}
+                          >
                             <div className="flex items-center">
                               <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500" />
                               <span className="text-sm font-medium ml-1">{brand.rating}</span>
                             </div>
                             <span className="text-xs text-muted-foreground ml-2">({brand.reviewCount} reviews)</span>
-                          </div>
+                          </Button>
                         </div>
                       </div>
                       <p className="text-sm mt-1">{brand.description}</p>
@@ -206,7 +213,7 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
                   <p className="text-sm text-muted-foreground">
                     Have you used products from any of these mom's local brands? Share your experience to help other parents make informed decisions.
                   </p>
-                  <Button className="mt-2" variant="outline" size="sm">
+                  <Button className="mt-2" variant="outline" size="sm" onClick={() => setIsReviewDialogOpen(true)}>
                     Write a Review
                   </Button>
                 </div>
@@ -227,9 +234,9 @@ const SupportLocalBrandsDialog = ({ isOpen, onClose }: SupportLocalBrandsDialogP
               </div>
             </div>
             
-            <ScrollArea className="h-[calc(100%-80px)]">
+            <ScrollArea className="h-[400px]">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-1">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}

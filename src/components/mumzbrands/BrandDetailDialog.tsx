@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Copy, CheckCircle } from 'lucide-react';
+import { ExternalLink, Copy, CheckCircle, Star } from 'lucide-react';
 import BowRibbon from '@/components/mumzally/BowRibbon';
+import { useToast } from '@/hooks/use-toast';
 
 interface Brand {
   id: string;
@@ -25,12 +26,18 @@ interface BrandDetailDialogProps {
 
 const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) => {
   const [codeCopied, setCodeCopied] = useState(false);
+  const { toast } = useToast();
   
   if (!brand) return null;
   
   const handleCopyCode = () => {
     navigator.clipboard.writeText(brand.discountCode);
     setCodeCopied(true);
+    
+    toast({
+      title: "Discount code copied!",
+      description: `Use "${brand.discountCode}" to get ${brand.discountValue}`,
+    });
     
     setTimeout(() => {
       setCodeCopied(false);
@@ -43,7 +50,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md md:max-w-lg">
+      <DialogContent className="max-w-md md:max-w-lg overflow-y-auto max-h-[90vh]">
         <DialogHeader>
           <div className="flex justify-center mb-4">
             <img 
@@ -61,6 +68,18 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
         </DialogHeader>
         
         <div className="space-y-6">
+          <div className="flex justify-center">
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className={`h-4 w-4 ${i < 4 ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300 fill-gray-300'}`} 
+                />
+              ))}
+              <span className="ml-2 text-sm text-muted-foreground">(124 reviews)</span>
+            </div>
+          </div>
+          
           <div className="prose prose-sm max-w-none">
             <p className="text-foreground">{brand.description}</p>
             <p className="font-medium">As a LeanOn community member, you get access to exclusive discounts:</p>
@@ -77,6 +96,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
                     variant="ghost" 
                     className="h-8 w-8 p-0 rounded-full" 
                     onClick={handleCopyCode}
+                    aria-label="Copy discount code"
                   >
                     {codeCopied ? <CheckCircle className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                   </Button>
@@ -92,7 +112,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
           </div>
           
           <p className="text-xs text-center text-muted-foreground">
-            Discount valid until December 31, 2023. Terms and conditions apply.
+            Discount valid until December 31, 2025. Terms and conditions apply.
           </p>
         </div>
       </DialogContent>
