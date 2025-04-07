@@ -72,7 +72,8 @@ const MumzMarketplace = () => {
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
               <h1 className={`text-3xl md:text-5xl font-bold mb-2 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-                  Preloved<br />
+                  Preloved
+                  <br />
                   from Moms to Moms
                 </span>
               </h1>
@@ -83,7 +84,7 @@ const MumzMarketplace = () => {
                   asChild
                 >
                   <Link to="/marketplace/find">
-                    <Search className="mr-2 h-5 w-5" /> Find an Item
+                    <Search className="mr-2 h-5 w-5" /> Find a Preloved Item
                   </Link>
                 </Button>
                 
@@ -93,7 +94,7 @@ const MumzMarketplace = () => {
                   asChild
                 >
                   <Link to="/marketplace/sell">
-                    <Package className="mr-2 h-5 w-5" /> List your Item
+                    <Package className="mr-2 h-5 w-5" /> List your Preloved Item
                   </Link>
                 </Button>
 
