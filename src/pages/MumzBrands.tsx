@@ -12,6 +12,7 @@ import CategorySection from '@/components/mumzsave/CategorySection';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import useViewportHeight from '@/hooks/use-viewport-height';
+import SupportLocalBrandsDialog from '@/components/mumzbrands/SupportLocalBrandsDialog';
 
 interface Brand {
   id: string;
@@ -32,6 +33,7 @@ const MumzBrands = () => {
   const [filteredBrands, setFilteredBrands] = useState<Brand[]>([]);
   const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
   const [brandCategory, setBrandCategory] = useState('All Categories');
+  const [isLocalBrandsDialogOpen, setIsLocalBrandsDialogOpen] = useState(false);
   const navigate = useNavigate();
   
   // Use the viewport height hook to fix iOS height issues
@@ -140,12 +142,12 @@ const MumzBrands = () => {
   const marketplaceCategories = ['Clothing', 'Strollers', 'Car Seats', 'Toys', 'Books'];
   
   return (
-    <div className="min-h-screen bg-[#B8CEC2]/30">
+    <div className="min-h-screen flex flex-col bg-[#B8CEC2]/30">
       <Navbar />
       
-      <main className="pt-20 pb-6 md:pb-10">
+      <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-y-auto">
         {/* Hero Section */}
-        <BrandsHero />
+        <BrandsHero onOpenDialog={() => setIsLocalBrandsDialogOpen(true)} />
         
         {/* Centered ribbon tag image - with reduced spacing */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0">
@@ -173,6 +175,12 @@ const MumzBrands = () => {
             <BrandsGrid brands={filteredBrands} />
           </div>
         </section>
+        
+        {/* Support Local Brands Dialog */}
+        <SupportLocalBrandsDialog 
+          isOpen={isLocalBrandsDialogOpen}
+          onClose={() => setIsLocalBrandsDialogOpen(false)}
+        />
       </main>
       
       <Footer />

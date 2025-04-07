@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface BrandFilterSectionProps {
   onCategoryChange: (category: string) => void;
@@ -21,9 +22,9 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
   };
   
   return (
-    <section className="py-4 px-6 md:px-8">
+    <section className="py-4 px-6 md:px-8 mb-4" id="filter-section">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
+        <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">Browse Brands</h2>
           
           <Tabs defaultValue="all" onValueChange={(value) => onTypeChange(value as 'all' | 'local' | 'international')}>
@@ -35,21 +36,23 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
           </Tabs>
         </div>
         
-        <div className="mb-6">
-          <ToggleGroup type="single" value={selectedCategory} onValueChange={handleCategoryChange}>
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <ToggleGroupItem 
-                  key={category} 
-                  value={category}
-                  className="rounded-full text-sm"
-                >
-                  {category}
-                </ToggleGroupItem>
-              ))}
-            </div>
-          </ToggleGroup>
-        </div>
+        <ScrollArea className="w-full pb-2">
+          <div className="mb-6">
+            <ToggleGroup type="single" value={selectedCategory} onValueChange={handleCategoryChange}>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <ToggleGroupItem 
+                    key={category} 
+                    value={category}
+                    className="rounded-full text-sm"
+                  >
+                    {category}
+                  </ToggleGroupItem>
+                ))}
+              </div>
+            </ToggleGroup>
+          </div>
+        </ScrollArea>
       </div>
     </section>
   );
