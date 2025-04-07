@@ -10,10 +10,19 @@ import {
   ArrowLeft,
   Search,
   Image,
-  X
+  X,
+  Check
 } from 'lucide-react';
 import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface AskQuestionFormProps {
   categories: { name: string; icon: JSX.Element }[];
@@ -433,21 +442,24 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
           </div>
         )}
         
-        <div className="flex flex-wrap gap-2 max-h-[200px] overflow-y-auto">
-          {categories.map((category) => (
-            <Button
-              key={category.name}
-              type="button"
-              variant={selectedCategory === category.name ? "default" : "outline"}
-              size="sm"
-              className={`rounded-full flex items-center ${selectedCategory === category.name ? 'bg-[#FFD9A7] text-foreground' : 'bg-white/80 border-[#B8CEC2]/50 hover:bg-[#B8CEC2]/30'}`}
-              onClick={() => setSelectedCategory(category.name)}
-            >
-              {category.icon}
-              {category.name}
-            </Button>
-          ))}
-        </div>
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <SelectTrigger className="w-full bg-white">
+            <SelectValue placeholder="Select a category" />
+          </SelectTrigger>
+          <SelectContent className="max-h-60 bg-white">
+            <ScrollArea className="h-[200px]">
+              {categories.map((category) => (
+                <SelectItem key={category.name} value={category.name} className="cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    {category.icon}
+                    <span>{category.name}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </ScrollArea>
+          </SelectContent>
+        </Select>
+        
         {errors.category && (
           <p className="text-destructive text-xs flex items-center gap-1 mt-1">
             <AlertCircle className="h-3 w-3" />
