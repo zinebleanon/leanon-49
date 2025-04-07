@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,12 +12,12 @@ import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AskHowItWorksModal from '@/components/mumzask/AskHowItWorksModal';
 import RibbonIcon from '@/components/ui/RibbonIcon';
+import CommunityMessages from '@/components/mumzask/CommunityMessages';
 
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isVisible, setIsVisible] = useState(false);
-  const [activeSection, setActiveSection] = useState<'general' | 'neighborhood'>('general');
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -163,30 +164,17 @@ const MumzAsk = () => {
                         />
                       </div>
                       <div className="flex flex-wrap gap-2 mb-6 max-h-[60vh] overflow-y-auto">
-                        {activeSection === 'general' ? 
-                          categories.map((category) => (
-                            <Button
-                              key={category.name}
-                              variant="outline"
-                              size="sm"
-                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                            >
-                              {category.icon}
-                              {category.name}
-                            </Button>
-                          )) :
-                          neighborhoodCategories.map((category) => (
-                            <Button
-                              key={category.name}
-                              variant="outline"
-                              size="sm"
-                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                            >
-                              {category.icon}
-                              {category.name}
-                            </Button>
-                          ))
-                        }
+                        {categories.map((category) => (
+                          <Button
+                            key={category.name}
+                            variant="outline"
+                            size="sm"
+                            className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                          >
+                            {category.icon}
+                            {category.name}
+                          </Button>
+                        ))}
                       </div>
                     </div>
                   </SheetContent>
@@ -218,30 +206,17 @@ const MumzAsk = () => {
                         />
                       </div>
                       <div className="flex flex-wrap gap-2 mb-6 max-h-[40vh] overflow-y-auto">
-                        {activeSection === 'general' ? 
-                          categories.map((category) => (
-                            <Button
-                              key={category.name}
-                              variant="outline"
-                              size="sm"
-                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                            >
-                              {category.icon}
-                              {category.name}
-                            </Button>
-                          )) :
-                          neighborhoodCategories.map((category) => (
-                            <Button
-                              key={category.name}
-                              variant="outline"
-                              size="sm"
-                              className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
-                            >
-                              {category.icon}
-                              {category.name}
-                            </Button>
-                          ))
-                        }
+                        {categories.map((category) => (
+                          <Button
+                            key={category.name}
+                            variant="outline"
+                            size="sm"
+                            className="rounded-full bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground border-[#FFD9A7]"
+                          >
+                            {category.icon}
+                            {category.name}
+                          </Button>
+                        ))}
                       </div>
                     </div>
                   </DialogContent>
@@ -253,62 +228,10 @@ const MumzAsk = () => {
         
         <section className="py-3 px-4">
           <div className="max-w-4xl mx-auto">
-            {activeSection === 'general' ? (
-              <>
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-2xl font-bold font-playfair">Most Frequently Asked Questions</h2>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                    <h3 className="font-semibold mb-2">How do I handle toddler tantrums in public?</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      My 2-year-old has started having major meltdowns whenever we're grocery shopping. I'm at my wit's end!
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
-                          <MessageCircle className="h-3 w-3 mr-1" /> 12 replies
-                        </Button>
-                      </div>
-                      <span className="text-xs text-muted-foreground">2 hours ago</span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                    <h3 className="font-semibold mb-2">Best breastfeeding positions for newborns?</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      I'm a first-time mom struggling with breastfeeding my 2-week-old. Which positions work best for newborns?
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
-                          <MessageCircle className="h-3 w-3 mr-1" /> 8 replies
-                        </Button>
-                      </div>
-                      <span className="text-xs text-muted-foreground">4 hours ago</span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                    <h3 className="font-semibold mb-2">Recommendations for baby food introduction?</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      My baby is turning 6 months next week. Looking for tips on starting solid foods and what to try first.
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="rounded-full h-7 px-3 text-xs">
-                          <MessageCircle className="h-3 w-3 mr-1" /> 15 replies
-                        </Button>
-                      </div>
-                      <span className="text-xs text-muted-foreground">1 day ago</span>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <NeighborhoodCommunity />
-            )}
+            <CommunityMessages 
+              categories={categories}
+              neighborhoodCategories={neighborhoodCategories}
+            />
           </div>
         </section>
       </main>
