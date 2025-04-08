@@ -143,7 +143,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                     />
                     {isFullyConnected ? 'Connected' : 
                      isConnectionSent ? 'Request Sent' : 
-                     isConnectionAccepted ? 'Accept' : 'LeanOn'}
+                     isConnectionAccepted ? 'LeanBack' : 'LeanOn'}
                   </Button>
                 </div>
               </CardContent>

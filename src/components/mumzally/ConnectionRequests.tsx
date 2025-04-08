@@ -115,7 +115,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                   className="text-xs"
                   onClick={() => handleAcceptRequest(request.id, request.name)}
                 >
-                  Accept
+                  LeanBack
                 </Button>
                 <Button 
                   variant="outline" 
@@ -208,7 +208,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                     onClick={() => handleAcceptRequest(request.id, request.name)}
                   >
                     <BowRibbon className="w-8 h-5 mr-1" color="#FFD9A7" />
-                    Accept
+                    LeanBack
                   </Button>
                 </div>
               </CardContent>
@@ -315,7 +315,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                       >
                         <div className="flex items-center gap-2">
                           <BowRibbon className="w-12 h-8 mr-1" color="#FFD9A7" />
-                          Accept
+                          LeanBack
                         </div>
                       </Button>
                     </div>
