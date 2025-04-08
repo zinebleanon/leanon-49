@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Search } from 'lucide-react';
+import { Send, Search, Mail, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useUserInfo } from '@/hooks/use-user-info';
@@ -96,7 +96,7 @@ const Inbox = () => {
           id: 'msg2',
           senderId: 'currentUser',
           senderName: userInfo?.name || 'You',
-          content: 'I'm doing well, thanks for asking! How about you?',
+          content: "I'm doing well, thanks for asking! How about you?",
           timestamp: '2025-04-08T10:35:00Z',
           read: true
         },
@@ -104,7 +104,7 @@ const Inbox = () => {
           id: 'msg3',
           senderId: 'user1',
           senderName: 'Sarah Johnson',
-          content: 'Great! I was wondering if you'd like to arrange a playdate for our kids this weekend?',
+          content: "Great! I was wondering if you'd like to arrange a playdate for our kids this weekend?",
           timestamp: '2025-04-08T10:40:00Z',
           read: false
         }
