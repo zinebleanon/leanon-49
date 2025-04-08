@@ -55,12 +55,17 @@ const MumzAlly = () => {
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
   };
 
+  const handleFiltersChange = (filters: Record<string, any>) => {
+    // Handle filter changes
+    console.log("Filters changed:", filters);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
-        <HeroSection />
+        <HeroSection onFiltersChange={handleFiltersChange} />
         
         <section className="py-8">
           <div className="container mx-auto">
@@ -83,7 +88,7 @@ const MumzAlly = () => {
       
       <Footer />
       
-      <HowItWorksModal isOpen={isHowItWorksOpen} onClose={() => setIsHowItWorksOpen(false)} />
+      <HowItWorksModal />
       
       {selectedRecipient && (
         <MessageDialog 
