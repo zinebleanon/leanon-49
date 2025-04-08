@@ -13,7 +13,6 @@ import NotificationSubscriber from './NotificationSubscriber';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(3);
   const location = useLocation();
@@ -28,36 +27,7 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
-  
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${window.scrollY}px`;
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    }
-    
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-    };
-  }, [isMobileMenuOpen]);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
-  
   const navItems = [
     { name: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
     { 
@@ -73,13 +43,6 @@ const Navbar = () => {
 
   const handleJoinButtonClick = () => {
     setIsJoinModalOpen(true);
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-  };
-  
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(prev => !prev);
   };
   
   const isPathActive = (path: string) => {
@@ -141,16 +104,17 @@ const Navbar = () => {
             )}
           </Link>
           
-          <button 
-            className="md:hidden flex items-center justify-center z-50 h-10 w-10 rounded-full bg-white shadow-sm"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-            role="button"
-            tabIndex={0}
-            style={{ WebkitTapHighlightColor: 'transparent' }}
-          >
-            <Menu className="h-5 w-5" />
-          </button>
+          {!userInfo && (
+            <Button
+              variant="warm"
+              size="sm"
+              className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
+              onClick={handleJoinButtonClick}
+            >
+              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
+              Join
+            </Button>
+          )}
         </div>
       </div>
       
@@ -187,95 +151,7 @@ const Navbar = () => {
               )}
             </Link>
           ))}
-          
-          <div className="md:block hidden">
-            <Button
-              variant="warm"
-              size="sm"
-              className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
-              onClick={handleJoinButtonClick}
-            >
-              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join
-            </Button>
-          </div>
         </div>
-      </div>
-      
-      <div 
-        className={cn(
-          "md:hidden fixed inset-0 z-30 pt-16 pb-16 transition-all duration-300 shadow-lg bg-pastel-green",
-          isMobileMenuOpen 
-            ? "opacity-100 pointer-events-auto translate-y-0" 
-            : "opacity-0 pointer-events-none translate-y-[-20px]"
-        )}
-        aria-hidden={!isMobileMenuOpen}
-      >
-        <nav className="h-full flex flex-col px-4 overflow-auto -webkit-overflow-scrolling-touch">
-          <div className="flex flex-col space-y-2 py-6">
-            {navItems.map((item, itemIndex) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={cn(
-                  "text-base font-medium py-3 flex items-center gap-3 animate-slide-up transition-all duration-300",
-                  isPathActive(item.path)
-                    ? "text-primary bg-white shadow-md"
-                    : "text-foreground/80 bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-sm"
-                )}
-                style={{
-                  borderRadius: "1rem",
-                  padding: "0.75rem 1.25rem",
-                  animationDelay: `${itemIndex * 0.05}s`,
-                  WebkitTapHighlightColor: 'transparent'
-                }}
-                onClick={(e) => {
-                  if (!userInfo && item.path !== '/') {
-                    e.preventDefault();
-                    setIsJoinModalOpen(true);
-                  } else {
-                    setIsMobileMenuOpen(false);
-                  }
-                }}
-              >
-                <span className={cn(
-                  "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300",
-                  isPathActive(item.path) 
-                    ? "bg-primary/10 text-primary" 
-                    : "text-foreground/60"
-                )}>
-                  {item.icon}
-                </span>
-                {item.name}
-                {item.description && (
-                  <span className="ml-auto text-xs text-muted-foreground line-clamp-1 hidden sm:block">
-                    {item.description}
-                  </span>
-                )}
-                {isPathActive(item.path) && (
-                  <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
-                    Active
-                  </span>
-                )}
-              </Link>
-            ))}
-          </div>
-          
-          <div className="mt-auto pb-8 bg-pastel-yellow rounded-t-3xl py-6 px-4">
-            <Button
-              variant="warm"
-              className="w-full py-5 rounded-full animate-slide-up shadow-md hover:shadow-lg"
-              style={{ 
-                animationDelay: '0.2s',
-                WebkitTapHighlightColor: 'transparent'
-              }}
-              onClick={handleJoinButtonClick}
-            >
-              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join & <span className="font-adlery">LeanOn</span>
-            </Button>
-          </div>
-        </nav>
       </div>
 
       <JoinCommunityModal
