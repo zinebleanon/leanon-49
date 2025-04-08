@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,6 +10,8 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
 import { toast } from '@/hooks/use-toast';
 import MessageDialog from '@/components/mumzally/MessageDialog';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface Conversation {
   id: string;
@@ -27,6 +29,8 @@ const Inbox = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { userInfo } = useUserInfo();
   
   useEffect(() => {
@@ -67,6 +71,14 @@ const Inbox = () => {
     
     return () => clearTimeout(timeout);
   }, []);
+  
+  const filteredConversations = useMemo(() => {
+    if (!searchQuery.trim()) return conversations;
+    
+    return conversations.filter(conversation => 
+      conversation.participantName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [conversations, searchQuery]);
   
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -128,6 +140,15 @@ const Inbox = () => {
     );
   };
   
+  const handleSearchSelect = (conversationId: string) => {
+    const conversation = conversations.find(conv => conv.id === conversationId);
+    if (conversation) {
+      handleConversationClick(conversation);
+    }
+    setIsSearchOpen(false);
+    setSearchQuery('');
+  };
+  
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -140,13 +161,58 @@ const Inbox = () => {
         <div className="grid md:grid-cols-12 gap-4 h-[calc(100vh-250px)] min-h-[600px]">
           <div className="md:col-span-12 flex flex-col border rounded-lg overflow-hidden bg-card">
             <div className="p-3 border-b bg-muted/30">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input 
-                  placeholder="Search conversations" 
-                  className="pl-9"
-                />
-              </div>
+              <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+                <PopoverTrigger asChild>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                    <Input 
+                      placeholder="Search conversations" 
+                      className="pl-9"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        if (e.target.value.trim().length > 0) {
+                          setIsSearchOpen(true);
+                        }
+                      }}
+                      onFocus={() => {
+                        if (searchQuery.trim().length > 0) {
+                          setIsSearchOpen(true);
+                        }
+                      }}
+                    />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="p-0 w-[300px] md:w-[400px]" align="start">
+                  <Command>
+                    <CommandList>
+                      <CommandEmpty>No conversations found</CommandEmpty>
+                      <CommandGroup heading="Conversations">
+                        {filteredConversations.map((conversation) => (
+                          <CommandItem
+                            key={conversation.id}
+                            value={conversation.id}
+                            onSelect={() => handleSearchSelect(conversation.id)}
+                            className="flex items-center gap-2 p-2"
+                          >
+                            <Avatar className="h-8 w-8 bg-[#FFD9A7] text-primary">
+                              <AvatarFallback className="text-sm">
+                                {getInitials(conversation.participantName)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium">{conversation.participantName}</p>
+                              <p className="text-xs text-muted-foreground truncate w-48">
+                                {conversation.lastMessage}
+                              </p>
+                            </div>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
             
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
@@ -161,17 +227,17 @@ const Inbox = () => {
                     <div className="flex justify-center items-center h-full">
                       <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                     </div>
-                  ) : conversations.length === 0 ? (
+                  ) : filteredConversations.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center p-4">
                       <Mail className="h-12 w-12 text-muted-foreground mb-3" />
-                      <h3 className="font-medium text-lg mb-1">No conversations yet</h3>
+                      <h3 className="font-medium text-lg mb-1">No conversations found</h3>
                       <p className="text-muted-foreground text-sm">
-                        Connect with other moms to start chatting
+                        Try searching with a different name
                       </p>
                     </div>
                   ) : (
                     <div className="space-y-1">
-                      {conversations.map((conversation) => (
+                      {filteredConversations.map((conversation) => (
                         <div 
                           key={conversation.id}
                           className={`p-3 rounded-md cursor-pointer transition-colors ${

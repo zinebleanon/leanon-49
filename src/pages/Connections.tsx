@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -9,13 +10,41 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import ProfilesSection from '@/components/mumzally/ProfilesSection';
 import FilterSection from '@/components/mumzally/FilterSection';
-// Import MessageDialog instead of MessageForm
 import MessageDialog from '@/components/mumzally/MessageDialog';
+
+// Sample profile data
+const mockProfiles = [
+  {
+    id: 1,
+    name: "Emma Thompson",
+    age: 32,
+    location: "Sunset District",
+    kids: [{ age: 3, gender: "Girl" }, { age: 5, gender: "Boy" }],
+    nationality: "American",
+    workStatus: "Part-time",
+    interests: ["Outdoor activities", "Cooking", "Reading"],
+    bio: "Mom of two looking to connect with other families in the area.",
+    compatibility: 92
+  },
+  {
+    id: 2,
+    name: "Sophia Chen",
+    age: 29,
+    location: "Mission District",
+    kids: [{ age: 2, gender: "Girl" }],
+    nationality: "Chinese-American",
+    workStatus: "Full-time",
+    interests: ["Arts and crafts", "Music", "Playgroups"],
+    bio: "First-time mom looking for playdates and support.",
+    compatibility: 88
+  }
+];
 
 const Connections = () => {
   const [activeTab, setActiveTab] = useState('recommended');
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
+  const [filters, setFilters] = useState({});
   const { userInfo } = useUserInfo();
 
   const handleMessageClick = (id: number, name: string) => {
@@ -26,6 +55,16 @@ const Connections = () => {
   const handleSendMessage = (text: string, image: string | null) => {
     // This would typically send the message to the backend
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
+  };
+
+  const handleFiltersChange = (newFilters: any) => {
+    setFilters(newFilters);
+    // You would typically filter your profiles here based on the new filters
+  };
+
+  const handleHeartClick = (id: number) => {
+    console.log("Heart clicked for profile", id);
+    // Handle heart/connection request logic here
   };
 
   return (
@@ -40,7 +79,7 @@ const Connections = () => {
         <div className="grid md:grid-cols-12 gap-4 h-[calc(100vh-250px)] min-h-[600px]">
           {/* Filters Section */}
           <div className="md:col-span-3">
-            <FilterSection />
+            <FilterSection onFiltersChange={handleFiltersChange} />
           </div>
 
           {/* Main Content Section */}
@@ -54,13 +93,17 @@ const Connections = () => {
 
               <div className="flex-1 overflow-y-auto">
                 <TabsContent value="recommended" className="m-0">
-                  <RecommendedMatches onMessageClick={handleMessageClick} />
+                  <RecommendedMatches profiles={mockProfiles} onMessageClick={handleMessageClick} />
                 </TabsContent>
                 <TabsContent value="requests" className="m-0">
                   <ConnectionRequests dialogMode={true} />
                 </TabsContent>
                 <TabsContent value="profiles" className="m-0">
-                  <ProfilesSection onMessageClick={handleMessageClick} />
+                  <ProfilesSection 
+                    profiles={mockProfiles} 
+                    onHeartClick={handleHeartClick} 
+                    onMessageClick={handleMessageClick} 
+                  />
                 </TabsContent>
               </div>
             </Tabs>

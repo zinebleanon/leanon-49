@@ -10,11 +10,12 @@ import BowRibbon from './BowRibbon';
 import { useState } from 'react';
 import { toast } from "@/hooks/use-toast";
 
-interface RecommendedMatchesProps {
-  profiles: MumzProfile[];
+export interface RecommendedMatchesProps {
+  profiles?: MumzProfile[];
+  onMessageClick?: (id: number, name: string) => void;
 }
 
-const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
+const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatchesProps) => {
   const { neighborhood } = useUserInfo();
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [acceptedConnections, setAcceptedConnections] = useState<number[]>([2]); // Example: Mom with ID 2 has accepted
@@ -42,6 +43,12 @@ const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
       title: "LeanOn Request Sent",
       description: `You've sent a connection request to ${name}!`,
     });
+  };
+
+  const handleMessageButtonClick = (id: number, name: string) => {
+    if (onMessageClick) {
+      onMessageClick(id, name);
+    }
   };
   
   return (
@@ -102,14 +109,26 @@ const RecommendedMatches = ({ profiles }: RecommendedMatchesProps) => {
                 </div>
                 
                 <div className="flex justify-between mt-3">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-xs py-1 px-0 h-8 text-primary hover:text-primary/80"
-                    asChild
-                  >
-                    <Link to={`/ally/profile/${profile.id}`}>View Profile</Link>
-                  </Button>
+                  {onMessageClick && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs py-1 px-0 h-8 text-primary hover:text-primary/80"
+                      onClick={() => handleMessageButtonClick(profile.id, profile.name)}
+                    >
+                      Message
+                    </Button>
+                  )}
+                  {!onMessageClick && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs py-1 px-0 h-8 text-primary hover:text-primary/80"
+                      asChild
+                    >
+                      <Link to={`/ally/profile/${profile.id}`}>View Profile</Link>
+                    </Button>
+                  )}
                   
                   <Button
                     variant="default"
