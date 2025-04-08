@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, Tag, ShoppingBag, Home } from 'lucide-react';
+import { HelpCircle, Tag, ShoppingBag, Home, Users } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import HowItWorksDialog from './HowItWorksDialog';
 import RibbonIcon from './ui/RibbonIcon';
@@ -46,9 +46,9 @@ const Hero = ({ onJoinClick }: HeroProps) => {
   const features = [
     { 
       id: 'ally',
-      title: 'Find', 
+      title: 'Connect', 
       description: 'LeanOn Moms around you, with same age kids...',
-      icon: <RibbonIcon className="h-5 w-5 md:h-5 md:w-5" fill="#222222" />,
+      icon: <Users className="h-5 w-5 md:h-5 md:w-5" />,
       color: 'from-[#FFF8E7] to-[#FFF8E7]/80',
       path: '/ally'
     },
