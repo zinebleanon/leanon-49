@@ -21,6 +21,10 @@ import AdminNotifications from "./pages/AdminNotifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useNotificationInit } from "./hooks/use-notification-init";
 import Connections from "./pages/Connections";
+import Notifications from "./pages/Notifications";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import Inbox from "./pages/Inbox";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +47,10 @@ const AppContent = () => {
       <Route path="/ally/subscribe" element={<ProtectedRoute><MumzAllySubscribe /></ProtectedRoute>} />
       <Route path="/ask" element={<ProtectedRoute><MumzAsk /></ProtectedRoute>} />
       <Route path="/connections" element={<ProtectedRoute><Connections /></ProtectedRoute>} />
+      <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/inbox" element={<ProtectedRoute><Inbox /></ProtectedRoute>} />
       
       {/* LeanOn Routes - All Protected */}
       <Route path="/" element={<ProtectedRoute><MumzShoppingHub /></ProtectedRoute>}>
