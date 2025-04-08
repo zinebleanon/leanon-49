@@ -98,7 +98,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
       <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-between items-center mb-4">
           <TabsList className="grid grid-cols-2 w-full">
-            <TabsTrigger value="nearby">Nearby</TabsTrigger>
+            <TabsTrigger value="nearby">Nearby Moms</TabsTrigger>
             <TabsTrigger value="requests">Connect Requests ({pendingRequestsCount})</TabsTrigger>
           </TabsList>
         </div>
