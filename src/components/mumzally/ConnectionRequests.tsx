@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -91,44 +90,95 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     console.log(`Accepted request from ${name} (ID: ${id})`);
   };
 
-  // If in simplified view mode (most straightforward UI)
+  // If in simplified view mode - show pending requests (both incoming and outgoing)
   if (simplifiedView) {
+    const pendingRequests = requests.filter(req => 
+      req.requestType === 'incoming' || req.requestType === 'outgoing'
+    );
+    
+    if (pendingRequests.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center h-40 text-center p-4">
+          <Users className="h-10 w-10 text-muted-foreground mb-2" />
+          <h3 className="font-medium mb-1">No Pending Requests</h3>
+          <p className="text-sm text-muted-foreground">
+            When moms send you LeanOn requests or you send requests, they'll appear here
+          </p>
+        </div>
+      );
+    }
+    
     return (
-      <div className="space-y-2">
-        {requests.filter(req => req.requestType === 'connected').map((request) => (
-          <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
-            <CardContent className="p-3 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                  <UserCircle className="h-7 w-7 text-primary" />
+      <div className="mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {pendingRequests.map((request) => (
+            <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
+              <CardContent className="p-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                    <UserCircle className="h-7 w-7 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">
+                      <Link to={`/ally/profile/${request.id}`} className="hover:underline">
+                        {request.name}
+                      </Link>
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {request.age}, {request.location}
+                      {request.activeInCommunity && (
+                        <span className="ml-1 text-green-600">● Active</span>
+                      )}
+                    </p>
+                  </div>
+                  {request.requestType === 'incoming' ? (
+                    <Badge className="ml-auto bg-primary/20 text-foreground text-xs">
+                      Incoming Request
+                    </Badge>
+                  ) : (
+                    <Badge className="ml-auto bg-amber-100 text-amber-800 text-xs border-amber-200">
+                      Pending
+                    </Badge>
+                  )}
                 </div>
-                <div>
-                  <h3 className="font-medium">
-                    {request.name}
-                  </h3>
+                
+                <div className="flex items-center justify-end gap-2">
+                  {request.requestType === 'incoming' ? (
+                    <>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="text-xs"
+                        onClick={() => handleMessageClick(request.id, request.name)}
+                      >
+                        Message
+                      </Button>
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        className="text-xs"
+                        onClick={() => handleAcceptRequest(request.id, request.name)}
+                      >
+                        <BowRibbon isLeftActive={true} isRightActive={false} className="w-6 h-4 mr-1" color="#FFD9A7" />
+                        Accept
+                      </Button>
+                    </>
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => handleMessageClick(request.id, request.name)}
+                    >
+                      <MessageSquare className="h-3 w-3 mr-1" />
+                      Message
+                    </Button>
+                  )}
                 </div>
-              </div>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="text-primary"
-                onClick={() => handleMessageClick(request.id, request.name)}
-              >
-                <MessageSquare className="h-5 w-5" />
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-        
-        {requests.filter(req => req.requestType === 'connected').length === 0 && (
-          <div className="flex flex-col items-center justify-center h-40 text-center p-4">
-            <Users className="h-10 w-10 text-muted-foreground mb-2" />
-            <h3 className="font-medium mb-1">No LeanMoms yet</h3>
-            <p className="text-sm text-muted-foreground">
-              Connect with other moms to build your network
-            </p>
-          </div>
-        )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
         
         {selectedRecipient && (
           <MessageDialog 
