@@ -1,4 +1,4 @@
-import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby } from 'lucide-react';
+import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -38,7 +38,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   const requests: ConnectionRequest[] = [
     {
       id: 1,
-      name: "Sarah",
+      name: "Sarah Johnson",
       age: 32,
       location: "Dubai Marina",
       compatibility: 85,
@@ -46,7 +46,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     },
     {
       id: 2,
-      name: "Emma",
+      name: "Emma Carter",
       age: 29,
       location: "Palm Jumeirah",
       compatibility: 92,
@@ -75,22 +75,17 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                 </div>
                 <div>
                   <h3 className="font-medium">
-                    <Link to={`/ally/profile/${request.id}`} className="hover:underline">
-                      {request.name}
-                    </Link>
+                    {request.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground">
-                    {request.age}, {request.location}
-                  </p>
                 </div>
               </div>
               <Button 
-                variant="outline" 
-                size="sm"
-                className="text-primary border-primary"
+                variant="ghost" 
+                size="icon"
+                className="text-primary"
                 onClick={() => handleMessageClick(request.id, request.name)}
               >
-                Message
+                <MessageSquare className="h-5 w-5" />
               </Button>
             </CardContent>
           </Card>
