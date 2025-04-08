@@ -81,7 +81,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   const handleSendConnection = (id: number, name: string) => {
     setSentConnections(prev => [...prev, id]);
     toast({
-      title: "LeanOn Request Sent",
+      title: "Connect Request Sent",
       description: `You've sent a connection request to ${name}!`,
     });
   };
@@ -89,7 +89,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   const handleAcceptConnection = (id: number, name: string) => {
     setAcceptedConnections(prev => [...prev, id]);
     toast({
-      title: "LeanOn Request Accepted",
+      title: "Connect Request Accepted",
       description: `You are now connected with ${name}!`,
     });
   };
@@ -197,7 +197,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                     />
                     {isFullyConnected ? 'Connected' : 
                      isConnectionSent ? 'Request Sent' : 
-                     isConnectionAccepted ? 'Accept LeanOn' : 'LeanOn'}
+                     isConnectionAccepted ? 'Accept Connect' : 'Connect'}
                   </Button>
                 </div>
               </CardContent>

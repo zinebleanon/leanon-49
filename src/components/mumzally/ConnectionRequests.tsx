@@ -1,3 +1,4 @@
+
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -82,7 +83,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
 
   const handleAcceptRequest = (id: number, name: string) => {
     toast({
-      title: "LeanOn Request Accepted",
+      title: "Connect Request Accepted",
       description: `You are now connected with ${name}!`,
     });
     
@@ -100,9 +101,9 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
       return (
         <div className="flex flex-col items-center justify-center h-40 text-center p-4">
           <Users className="h-10 w-10 text-muted-foreground mb-2" />
-          <h3 className="font-medium mb-1">No Pending Requests</h3>
+          <h3 className="font-medium mb-1">No Pending Connects</h3>
           <p className="text-sm text-muted-foreground">
-            When moms send you LeanOn requests or you send requests, they'll appear here
+            When moms send you connect requests or you send requests, they'll appear here
           </p>
         </div>
       );
@@ -209,7 +210,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
       <div className="mb-6">
         {incomingRequests.length > 0 && (
           <>
-            <h3 className="text-lg font-medium mb-3">LeanOn Requests <span className="text-sm font-normal text-muted-foreground">({incomingRequests.length})</span></h3>
+            <h3 className="text-lg font-medium mb-3">Connect Requests <span className="text-sm font-normal text-muted-foreground">({incomingRequests.length})</span></h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
               {incomingRequests.map((request) => (
@@ -251,7 +252,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                         onClick={() => handleAcceptRequest(request.id, request.name)}
                       >
                         <BowRibbon isLeftActive={true} isRightActive={false} className="w-8 h-5 mr-1" color="#FFD9A7" />
-                        Accept LeanOn
+                        Accept Connect
                       </Button>
                     </div>
                   </CardContent>
@@ -261,7 +262,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </>
         )}
         
-        <h3 className="text-lg font-medium mb-3">My LeanMoms <span className="text-sm font-normal text-muted-foreground">({connectedMoms.length})</span></h3>
+        <h3 className="text-lg font-medium mb-3">My Connections <span className="text-sm font-normal text-muted-foreground">({connectedMoms.length})</span></h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {connectedMoms.map((request) => (
@@ -332,7 +333,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
         {incomingRequests.length > 0 && (
           <div className="mb-10">
             <h2 className="text-2xl font-semibold mb-6 font-playfair">
-              New LeanOn Requests <span className="text-lg font-normal text-primary-foreground/80">({incomingRequests.length})</span>
+              New Connect Requests <span className="text-lg font-normal text-primary-foreground/80">({incomingRequests.length})</span>
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {incomingRequests.map((request) => (
@@ -387,7 +388,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                           onClick={() => handleAcceptRequest(request.id, request.name)}
                         >
                           <BowRibbon isLeftActive={true} isRightActive={false} className="w-10 h-6 mr-1" color="#FFD9A7" />
-                          Accept LeanOn
+                          Accept Connect
                         </Button>
                       </div>
                     </div>
@@ -398,7 +399,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </div>
         )}
         
-        <h2 className="text-2xl font-semibold mb-6 font-playfair">My LeanMoms <span className="text-lg font-normal text-primary-foreground/80">({connectedMoms.length})</span></h2>
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">My Connections <span className="text-lg font-normal text-primary-foreground/80">({connectedMoms.length})</span></h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {connectedMoms.map((request) => (
             <Card key={request.id} className="overflow-hidden">

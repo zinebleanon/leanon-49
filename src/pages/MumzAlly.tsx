@@ -85,7 +85,7 @@ const MumzAlly = () => {
         <section className="py-8">
           <div className="container mx-auto">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold font-playfair">Pending Requests</h2>
+              <h2 className="text-2xl font-semibold font-playfair">Pending Connects</h2>
               <Link to="/connections">
                 <Button variant="outline">
                   See All
