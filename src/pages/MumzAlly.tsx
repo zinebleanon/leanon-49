@@ -3,13 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
-import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
-import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
 import MessageDialog from '@/components/mumzally/MessageDialog';
 import HowItWorksModal from '@/components/mumzally/HowItWorksModal';
 import { useUserInfo } from '@/hooks/use-user-info';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 
 // Sample profile data
 const mockProfiles = [
@@ -177,11 +173,6 @@ const MumzAlly = () => {
     setFilteredProfiles(locationMatches);
   };
 
-  const handleMessageClick = (id: number, name: string) => {
-    setSelectedRecipient({ id, name });
-    setMessageDialogOpen(true);
-  };
-  
   const handleSendMessage = (text: string, image: string | null) => {
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
   };
@@ -198,21 +189,9 @@ const MumzAlly = () => {
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
         <HeroSection onFiltersChange={handleFiltersChange} profiles={filteredProfiles} nearbyMoms={nearbyMoms} />
         
-        <section className="py-8">
-          <div className="container mx-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold font-playfair">Recommended For You</h2>
-              <Link to="/connections">
-                <Button variant="outline">
-                  See All
-                </Button>
-              </Link>
-            </div>
-            <RecommendedMatches profiles={filteredProfiles} onMessageClick={handleMessageClick} />
-          </div>
-        </section>
+        {/* Recommended For You section has been removed */}
         
-        <ConnectionRequests />
+        {/* Connect Requests section has been removed */}
         
         {/* MatchingVisualization component has been removed */}
       </main>
