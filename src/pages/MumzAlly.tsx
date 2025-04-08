@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,7 +7,6 @@ import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
 import MessageDialog from '@/components/mumzally/MessageDialog';
 import HowItWorksModal from '@/components/mumzally/HowItWorksModal';
-import MatchingVisualization from '@/components/mumzally/MatchingVisualization';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -214,7 +214,7 @@ const MumzAlly = () => {
         
         <ConnectionRequests />
         
-        <MatchingVisualization />
+        {/* MatchingVisualization component has been removed */}
       </main>
       
       <Footer />
