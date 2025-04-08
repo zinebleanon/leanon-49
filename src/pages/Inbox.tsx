@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Mail, Users } from 'lucide-react';
+import { Search, Mail, Users, UserCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserInfo } from '@/hooks/use-user-info';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
@@ -145,9 +145,9 @@ const Inbox = () => {
                         >
                           <div className="flex items-center gap-3">
                             <div className="relative">
-                              <Avatar>
+                              <Avatar className="bg-[#FFD9A7] text-primary">
                                 <AvatarImage src={conversation.participantAvatar} />
-                                <AvatarFallback className="bg-primary/20 text-primary">
+                                <AvatarFallback className="bg-[#FFD9A7] text-primary font-medium">
                                   {getInitials(conversation.participantName)}
                                 </AvatarFallback>
                               </Avatar>
