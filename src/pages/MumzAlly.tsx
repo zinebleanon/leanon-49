@@ -65,6 +65,15 @@ const mockProfiles = [
   }
 ];
 
+interface FilterOptions {
+  location?: string;
+  kids?: Array<{
+    ageRange?: string;
+    gender?: string;
+  }>;
+  compatibilityThreshold?: number;
+}
+
 const MumzAlly = () => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const { userInfo } = useUserInfo();
@@ -78,7 +87,7 @@ const MumzAlly = () => {
     filterProfilesByLocationAndKids();
   }, [userInfo]);
 
-  const filterProfilesByLocationAndKids = (filters = {}) => {
+  const filterProfilesByLocationAndKids = (filters: FilterOptions = {}) => {
     // Get user's location and kids information
     const userLocation = userInfo?.location?.latitude && userInfo?.location?.longitude ? userInfo.location : null;
     const userNeighborhood = userInfo?.neighborhood || "";
@@ -113,8 +122,8 @@ const MumzAlly = () => {
             : 0;
             
           return profile.kids.some(profileKid => {
-            // Age difference of 2 years or less is considered a match
-            return Math.abs(profileKid.age - userKidAge) <= 2;
+            // Age difference of 1 year or less is considered a match (changed from 2 years)
+            return Math.abs(profileKid.age - userKidAge) <= 1;
           });
         });
         
@@ -134,7 +143,7 @@ const MumzAlly = () => {
       if (filters.kids && filters.kids.length > 0) {
         locationMatches = locationMatches.filter(profile => {
           // For each kid filter that has values
-          return filters.kids.some((kidFilter, index) => {
+          return filters.kids.some((kidFilter) => {
             // Skip if no filter criteria
             if (!kidFilter.ageRange || kidFilter.ageRange === 'all') {
               return true;
@@ -145,7 +154,7 @@ const MumzAlly = () => {
               const ageMatch = kidFilter.ageRange === 'all' || 
                 profileKid.age.toString() === kidFilter.ageRange;
               
-              const genderMatch = kidFilter.gender === 'all' || 
+              const genderMatch = !kidFilter.gender || kidFilter.gender === 'all' || 
                 profileKid.gender === kidFilter.gender;
                 
               return ageMatch && genderMatch;
