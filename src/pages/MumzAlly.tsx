@@ -11,7 +11,6 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-// Sample profile data
 const mockProfiles = [
   {
     id: 1,
@@ -80,47 +79,37 @@ const MumzAlly = () => {
   const [filteredProfiles, setFilteredProfiles] = useState(mockProfiles);
   const [nearbyMoms, setNearbyMoms] = useState<typeof mockProfiles>([]);
 
-  // Effect to initially filter moms based on location and kids' ages
   useEffect(() => {
     filterProfilesByLocationAndKids();
   }, [userInfo]);
 
   const filterProfilesByLocationAndKids = (filters: FilterOptions = {}) => {
-    // Get user's location and kids information
     const userLocation = userInfo?.location?.latitude && userInfo?.location?.longitude ? userInfo.location : null;
     const userNeighborhood = userInfo?.neighborhood || "";
     const userKids = userInfo?.kids || [];
 
-    // Filter profiles by location
     let locationMatches = [...mockProfiles];
     
-    // If we have geolocation data, filter by proximity (simplified)
     if (userLocation) {
-      // Simulate filtering by geolocation (in a real app we'd calculate distance)
       const nearby = mockProfiles.filter(profile => 
-        // For the sample, let's say these profiles are close based on their ID
         profile.id === 3 || profile.id === 4
       );
       setNearbyMoms(nearby);
     } else if (userNeighborhood) {
-      // Filter by neighborhood/location name match
       const nearby = mockProfiles.filter(profile => 
         profile.location === userNeighborhood
       );
       setNearbyMoms(nearby);
     }
 
-    // Filter by kids age similarity
     if (userKids.length > 0) {
       locationMatches = locationMatches.filter(profile => {
-        // Check if any of the user's kids have similar ages to any of the profile's kids
         const hasKidsMatch = userKids.some(userKid => {
           const userKidAge = userKid.birthDate 
             ? Math.floor((new Date().getTime() - new Date(userKid.birthDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000)) 
             : 0;
             
           return profile.kids.some(profileKid => {
-            // Age difference of 1 year or less is considered a match (changed from 2 years)
             return Math.abs(profileKid.age - userKidAge) <= 1;
           });
         });
@@ -129,9 +118,7 @@ const MumzAlly = () => {
       });
     }
 
-    // Apply any additional filters from the filter UI
     if (Object.keys(filters).length > 0) {
-      // Apply more specific filters
       if (filters.location && filters.location !== 'all') {
         locationMatches = locationMatches.filter(profile => 
           profile.location === filters.location
@@ -140,14 +127,11 @@ const MumzAlly = () => {
       
       if (filters.kids && filters.kids.length > 0) {
         locationMatches = locationMatches.filter(profile => {
-          // For each kid filter that has values
           return filters.kids.some((kidFilter) => {
-            // Skip if no filter criteria
             if (!kidFilter.ageRange || kidFilter.ageRange === 'all') {
               return true;
             }
             
-            // Check if profile has kid matching this age range
             return profile.kids.some(profileKid => {
               const ageMatch = kidFilter.ageRange === 'all' || 
                 profileKid.age.toString() === kidFilter.ageRange;
@@ -161,17 +145,13 @@ const MumzAlly = () => {
         });
       }
       
-      // Filter by compatibility threshold
       if (filters.compatibilityThreshold) {
         locationMatches = locationMatches.filter(profile => 
           profile.compatibility >= filters.compatibilityThreshold
         );
       }
-      
-      // More filters can be applied here...
     }
 
-    // Sort by compatibility
     locationMatches.sort((a, b) => b.compatibility - a.compatibility);
     
     setFilteredProfiles(locationMatches);
@@ -187,7 +167,6 @@ const MumzAlly = () => {
   };
 
   const handleFiltersChange = (filters: Record<string, any>) => {
-    // Apply filters to the profiles
     filterProfilesByLocationAndKids(filters);
   };
 
@@ -213,8 +192,6 @@ const MumzAlly = () => {
         </section>
         
         <ConnectionRequests />
-        
-        <MatchingVisualization />
       </main>
       
       <Footer />
