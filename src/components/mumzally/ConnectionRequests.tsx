@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -32,9 +31,10 @@ interface NearbyMom {
 interface ConnectionRequestsProps {
   dialogMode?: boolean;
   nearbyMoms?: NearbyMom[];
+  simplifiedView?: boolean;
 }
 
-const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionRequestsProps) => {
+const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedView = false }: ConnectionRequestsProps) => {
   const requests: ConnectionRequest[] = [
     {
       id: 1,
@@ -54,29 +54,68 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
     }
   ];
 
-  const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
-  const { location } = useUserInfo();
-
-  const handleAccept = (id: number, name: string) => {
-    setAcceptedRequests(prev => [...prev, id]);
-    toast({
-      title: "Match Connection Made!",
-      description: `You've made a new Match with ${name}!`,
-    });
-  };
 
   const handleMessageClick = (id: number, name: string) => {
     setSelectedRecipient({ id, name });
     setMessageDialogOpen(true);
   };
 
-  const handleDecline = (id: number) => {
-    toast({
-      description: "Match request declined",
-    });
-  };
+  // If in simplified view mode (most straightforward UI)
+  if (simplifiedView) {
+    return (
+      <div className="space-y-2">
+        {requests.map((request) => (
+          <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
+            <CardContent className="p-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                  <UserCircle className="h-7 w-7 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-medium">
+                    <Link to={`/ally/profile/${request.id}`} className="hover:underline">
+                      {request.name}
+                    </Link>
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {request.age}, {request.location}
+                  </p>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="text-primary border-primary"
+                onClick={() => handleMessageClick(request.id, request.name)}
+              >
+                Message
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+        
+        {requests.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-40 text-center p-4">
+            <Users className="h-10 w-10 text-muted-foreground mb-2" />
+            <h3 className="font-medium mb-1">No LeanMoms yet</h3>
+            <p className="text-sm text-muted-foreground">
+              Connect with other moms to build your network
+            </p>
+          </div>
+        )}
+        
+        {selectedRecipient && (
+          <MessageForm 
+            open={messageDialogOpen} 
+            onOpenChange={setMessageDialogOpen} 
+            recipient={selectedRecipient}
+          />
+        )}
+      </div>
+    );
+  }
 
   // If in dialog mode, use a more compact layout
   if (dialogMode) {

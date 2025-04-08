@@ -182,7 +182,7 @@ const Inbox = () => {
                 </TabsContent>
                 
                 <TabsContent value="leanmoms" className="m-0 h-full">
-                  <ConnectionRequests dialogMode={true} />
+                  <ConnectionRequests simplifiedView={true} />
                 </TabsContent>
               </div>
             </Tabs>
