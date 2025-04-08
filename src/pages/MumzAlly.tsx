@@ -45,7 +45,6 @@ const MumzAlly = () => {
   const { userInfo } = useUserInfo();
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
-  const [filters, setFilters] = useState({});
 
   const handleMessageClick = (id: number, name: string) => {
     setSelectedRecipient({ id, name });
@@ -56,22 +55,17 @@ const MumzAlly = () => {
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
   };
 
-  const handleFiltersChange = (newFilters: any) => {
-    setFilters(newFilters);
-    // You would typically filter profiles based on the new filters
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
-        <HeroSection onFiltersChange={handleFiltersChange} profiles={mockProfiles} />
+        <HeroSection />
         
         <section className="py-8">
           <div className="container mx-auto">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold font-playfair">Moms Around You</h2>
+              <h2 className="text-2xl font-semibold font-playfair">Recommended For You</h2>
               <Link to="/connections">
                 <Button variant="outline">
                   See All
@@ -82,27 +76,14 @@ const MumzAlly = () => {
           </div>
         </section>
         
-        <section className="py-8">
-          <div className="container mx-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold font-playfair">Pending Connects</h2>
-              <Link to="/connections">
-                <Button variant="outline">
-                  See All
-                </Button>
-              </Link>
-            </div>
-            <ConnectionRequests simplifiedView={true} />
-          </div>
-        </section>
+        <ConnectionRequests />
         
         <MatchingVisualization />
       </main>
       
       <Footer />
       
-      {/* Removed the onClose prop since it doesn't exist in the component */}
-      <HowItWorksModal />
+      <HowItWorksModal isOpen={isHowItWorksOpen} onClose={() => setIsHowItWorksOpen(false)} />
       
       {selectedRecipient && (
         <MessageDialog 

@@ -16,7 +16,7 @@ export interface RecommendedMatchesProps {
 }
 
 const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatchesProps) => {
-  const { neighborhood, kids } = useUserInfo();
+  const { neighborhood } = useUserInfo();
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [acceptedConnections, setAcceptedConnections] = useState<number[]>([2]); // Example: Mom with ID 2 has accepted
   
@@ -37,60 +37,11 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
     activeInCommunity: profile.id % 2 === 0 // Example: Every second profile is active
   }));
   
-  // Filter profiles based on location and children's ages
-  const filteredProfiles = enhancedProfiles.filter(profile => {
-    // Location filtering (simplified example)
-    const locationMatch = profile.location.includes(neighborhood) || 
-                         neighborhood.includes(profile.location);
-    
-    // Child age filtering (simplistic approach)
-    let ageMatch = false;
-    if (kids && kids.length > 0 && profile.kids) {
-      // Check if any of the user's kids' ages match any of the profile's kids' ages
-      const userChildAges = kids.map(kid => {
-        // Calculate age from birth date if available
-        if (kid.birthDate) {
-          const birthDate = new Date(kid.birthDate);
-          const today = new Date();
-          let age = today.getFullYear() - birthDate.getFullYear();
-          const monthDiff = today.getMonth() - birthDate.getMonth();
-          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-          }
-          return age;
-        }
-        return 0;
-      });
-      
-      profile.kids.forEach(profileKid => {
-        userChildAges.forEach(userChildAge => {
-          // Consider a match if ages are within 2 years
-          if (Math.abs(profileKid.age - userChildAge) <= 2) {
-            ageMatch = true;
-          }
-        });
-      });
-    } else {
-      // If no kids data, don't filter by age
-      ageMatch = true;
-    }
-    
-    return locationMatch && ageMatch;
-  });
-
   const handleSendConnection = (id: number, name: string) => {
     setSentConnections(prev => [...prev, id]);
     toast({
-      title: "Connect Request Sent",
+      title: "LeanOn Request Sent",
       description: `You've sent a connection request to ${name}!`,
-    });
-  };
-
-  const handleAcceptConnection = (id: number, name: string) => {
-    setAcceptedConnections(prev => [...prev, id]);
-    toast({
-      title: "Connect Request Accepted",
-      description: `You are now connected with ${name}!`,
     });
   };
 
@@ -102,13 +53,13 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium mb-3">Based on Location & Children's Ages</h3>
+      <h3 className="text-lg font-medium mb-3">Moms Around You</h3>
       <p className="text-sm text-muted-foreground mb-4">
-        Moms in {neighborhood || 'your area'} with children of similar ages
+        Based on your {neighborhood || 'location'} and children's ages
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {filteredProfiles.map((profile) => {
+        {enhancedProfiles.map((profile) => {
           const isConnectionSent = sentConnections.includes(profile.id);
           const isConnectionAccepted = acceptedConnections.includes(profile.id);
           const isFullyConnected = isConnectionSent && isConnectionAccepted;
@@ -183,9 +134,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                     variant="default"
                     size="sm"
                     className="text-xs py-1 h-8"
-                    onClick={() => isConnectionAccepted && !isConnectionSent 
-                      ? handleAcceptConnection(profile.id, profile.name) 
-                      : handleSendConnection(profile.id, profile.name)}
+                    onClick={() => handleSendConnection(profile.id, profile.name)}
                     disabled={isConnectionSent || isFullyConnected}
                   >
                     <BowRibbon 
@@ -197,7 +146,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                     />
                     {isFullyConnected ? 'Connected' : 
                      isConnectionSent ? 'Request Sent' : 
-                     isConnectionAccepted ? 'Accept Connect' : 'Connect'}
+                     isConnectionAccepted ? 'Accept' : 'LeanOn'}
                   </Button>
                 </div>
               </CardContent>
