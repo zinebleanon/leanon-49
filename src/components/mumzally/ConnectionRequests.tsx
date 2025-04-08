@@ -1,3 +1,4 @@
+
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +9,7 @@ import BowRibbon from './BowRibbon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Link } from 'react-router-dom';
 import MessageDialog from './MessageDialog';
+import LeanMomsDialog from './LeanMomsDialog';
 
 interface ConnectionRequest {
   id: number;
@@ -56,6 +58,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   ];
 
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+  const [leanMomsDialogOpen, setLeanMomsDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [rejectedRequests, setRejectedRequests] = useState<number[]>([]);
@@ -256,7 +259,20 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     
     return (
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-3">Connect Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="text-lg font-medium">Connect Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
+          {leanBackMoms.length > 0 && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setLeanMomsDialogOpen(true)}
+              className="text-xs flex items-center gap-1"
+            >
+              <Users className="h-4 w-4 mr-1" />
+              My LeanMoms ({leanBackMoms.length})
+            </Button>
+          )}
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {filteredRequests.map((request) => (
@@ -315,6 +331,13 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </div>
         )}
         
+        {/* LeanMoms Dialog */}
+        <LeanMomsDialog
+          open={leanMomsDialogOpen}
+          onOpenChange={setLeanMomsDialogOpen}
+          leanBackMoms={leanBackMoms}
+        />
+        
         {selectedRecipient && (
           <MessageDialog 
             open={messageDialogOpen} 
@@ -342,7 +365,21 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 font-playfair">Connect Requests <span className="text-lg font-normal text-primary-foreground/80">({filteredRequests.length})</span></h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-semibold font-playfair">Connect Requests <span className="text-lg font-normal text-primary-foreground/80">({filteredRequests.length})</span></h2>
+          
+          {leanBackMoms.length > 0 && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setLeanMomsDialogOpen(true)}
+              className="bg-white hover:bg-white/90 flex items-center gap-1"
+            >
+              <Users className="h-4 w-4 mr-1" />
+              My LeanMoms ({leanBackMoms.length})
+            </Button>
+          )}
+        </div>
         
         {filteredRequests.length === 0 ? (
           <div className="bg-white rounded-lg p-8 text-center">
@@ -415,6 +452,13 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </div>
         )}
       </div>
+      
+      {/* LeanMoms Dialog */}
+      <LeanMomsDialog
+        open={leanMomsDialogOpen}
+        onOpenChange={setLeanMomsDialogOpen}
+        leanBackMoms={leanBackMoms}
+      />
       
       {selectedRecipient && (
         <MessageDialog 
