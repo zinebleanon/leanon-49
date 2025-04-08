@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -31,7 +30,6 @@ const Inbox = () => {
   const { userInfo } = useUserInfo();
   
   useEffect(() => {
-    // Simulate loading conversations from an API
     const timeout = setTimeout(() => {
       const mockConversations: Conversation[] = [
         {
@@ -103,7 +101,6 @@ const Inbox = () => {
     setSelectedConversation(conversation);
     setMessageDialogOpen(true);
     
-    // Mark conversation as read
     setConversations(prev => 
       prev.map(conv => 
         conv.id === conversation.id 
@@ -116,7 +113,6 @@ const Inbox = () => {
   const handleSendMessage = (text: string, image: string | null) => {
     if (!selectedConversation) return;
     
-    // Update the conversation with the new last message
     const displayMessage = text.trim() || (image ? 'Sent an image' : '');
     
     setConversations(prev => 
@@ -142,8 +138,7 @@ const Inbox = () => {
         </div>
         
         <div className="grid md:grid-cols-12 gap-4 h-[calc(100vh-250px)] min-h-[600px]">
-          {/* Conversations List */}
-          <div className="md:col-span-4 flex flex-col border rounded-lg overflow-hidden bg-card">
+          <div className="md:col-span-12 flex flex-col border rounded-lg overflow-hidden bg-card">
             <div className="p-3 border-b bg-muted/30">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -229,17 +224,6 @@ const Inbox = () => {
                 </TabsContent>
               </div>
             </Tabs>
-          </div>
-          
-          {/* Message View */}
-          <div className="md:col-span-8 flex flex-col border rounded-lg overflow-hidden bg-card">
-            <div className="flex flex-col items-center justify-center h-full text-center p-4">
-              <Mail className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="font-medium text-lg mb-2">Select a conversation</h3>
-              <p className="text-muted-foreground">
-                Choose a conversation from the list to view messages
-              </p>
-            </div>
           </div>
         </div>
       </main>
