@@ -70,10 +70,10 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
     setIsLoading(true);
     
     try {
-      // Convert birthDate to ISO string
+      // Convert birthDate to ISO string and ensure gender is always a string (not undefined)
       const formattedData = {
-        ...data,
         birthDate: data.birthDate.toISOString(),
+        gender: data.gender // This is now guaranteed to be a string due to our schema validation
       };
       
       let success = false;
