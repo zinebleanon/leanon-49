@@ -7,13 +7,85 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users } from 'lucide-react';
+import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users, Plus, Trash2 } from 'lucide-react';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Separator } from '@/components/ui/separator';
+import EditProfileDialog from '@/components/profile/EditProfileDialog';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Profile = () => {
-  const { userInfo } = useUserInfo();
+  const { userInfo, removeKid } = useUserInfo();
   const [activeTab, setActiveTab] = useState('profile');
+  const { toast } = useToast();
+  
+  // Edit dialog states
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editDialogMode, setEditDialogMode] = useState<'profile' | 'kid'>('profile');
+  const [editingKidIndex, setEditingKidIndex] = useState<number | undefined>(undefined);
+  const [editDialogTitle, setEditDialogTitle] = useState('');
+  const [editDialogDescription, setEditDialogDescription] = useState('');
+  
+  // Delete kid dialog
+  const [deleteKidDialogOpen, setDeleteKidDialogOpen] = useState(false);
+  const [deletingKidIndex, setDeletingKidIndex] = useState<number | undefined>(undefined);
+  
+  const openEditProfileDialog = () => {
+    setEditDialogMode('profile');
+    setEditDialogTitle('Edit Profile');
+    setEditDialogDescription('Update your personal information');
+    setEditDialogOpen(true);
+  };
+  
+  const openEditKidDialog = (index?: number) => {
+    setEditDialogMode('kid');
+    setEditingKidIndex(index);
+    
+    if (index !== undefined) {
+      setEditDialogTitle('Edit Child');
+      setEditDialogDescription('Update your child\'s information');
+    } else {
+      setEditDialogTitle('Add Child');
+      setEditDialogDescription('Add information about your child');
+    }
+    
+    setEditDialogOpen(true);
+  };
+  
+  const openDeleteKidDialog = (index: number) => {
+    setDeletingKidIndex(index);
+    setDeleteKidDialogOpen(true);
+  };
+  
+  const handleDeleteKid = () => {
+    if (deletingKidIndex === undefined) return;
+    
+    const success = removeKid(deletingKidIndex);
+    
+    if (success) {
+      toast({
+        title: "Child removed",
+        description: "The child has been removed from your profile.",
+      });
+    } else {
+      toast({
+        title: "Removal failed",
+        description: "There was a problem removing the child. Please try again.",
+        variant: "destructive",
+      });
+    }
+    
+    setDeleteKidDialogOpen(false);
+  };
   
   const getInitials = (name: string) => {
     if (!name) return 'U';
@@ -50,7 +122,12 @@ const Profile = () => {
                   </AvatarFallback>
                 </Avatar>
                 
-                <Button variant="outline" size="sm" className="mt-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-4"
+                  onClick={openEditProfileDialog}
+                >
                   <Edit className="mr-2 h-4 w-4" />
                   Edit Profile
                 </Button>
@@ -107,8 +184,12 @@ const Profile = () => {
           
           <TabsContent value="profile" className="mt-4">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-xl">About Me</CardTitle>
+                <Button variant="ghost" size="sm" onClick={openEditProfileDialog}>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -150,8 +231,16 @@ const Profile = () => {
           
           <TabsContent value="kids" className="mt-4">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-xl">My Kids</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => openEditKidDialog()}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Kid
+                </Button>
               </CardHeader>
               <CardContent>
                 {!userInfo?.kids || userInfo.kids.length === 0 ? (
@@ -161,9 +250,13 @@ const Profile = () => {
                     <p className="text-muted-foreground max-w-md mx-auto">
                       Add information about your kids to find moms with children of similar ages.
                     </p>
-                    <Button className="mt-4" variant="warm">
-                      <Edit className="mr-2 h-4 w-4" />
-                      Add Kids
+                    <Button 
+                      className="mt-4" 
+                      variant="warm"
+                      onClick={() => openEditKidDialog()}
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add Kid
                     </Button>
                   </div>
                 ) : (
@@ -184,9 +277,23 @@ const Profile = () => {
                               </div>
                             </div>
                           </div>
-                          <Button size="sm" variant="ghost">
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="ghost"
+                              onClick={() => openEditKidDialog(index)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="ghost"
+                              className="text-destructive hover:text-destructive/80"
+                              onClick={() => openDeleteKidDialog(index)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -217,6 +324,32 @@ const Profile = () => {
           </TabsContent>
         </Tabs>
       </main>
+      
+      <EditProfileDialog
+        isOpen={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        mode={editDialogMode}
+        kidIndex={editingKidIndex}
+        title={editDialogTitle}
+        description={editDialogDescription}
+      />
+      
+      <AlertDialog open={deleteKidDialogOpen} onOpenChange={setDeleteKidDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently remove this child from your profile.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteKid} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       
       <Footer />
     </div>
