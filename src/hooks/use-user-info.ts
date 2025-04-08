@@ -100,6 +100,29 @@ export const useUserInfo = () => {
     }
   };
 
+  // Helper function to get kids' ages
+  const getKidsAges = () => {
+    if (!userInfo?.kids) return [];
+    
+    return userInfo.kids.map(kid => {
+      if (kid.birthDate) {
+        // Calculate age in years
+        const birthDate = new Date(kid.birthDate);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        
+        // Adjust age if birthday hasn't occurred yet this year
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        
+        return { age, gender: kid.gender };
+      }
+      return { age: 0, gender: kid.gender };
+    });
+  };
+
   return {
     userInfo,
     isLoading,
@@ -111,5 +134,6 @@ export const useUserInfo = () => {
     location: userInfo?.location,
     workStatus: userInfo?.workStatus,
     kids: userInfo?.kids || [],
+    kidsAges: getKidsAges(),
   };
 };
