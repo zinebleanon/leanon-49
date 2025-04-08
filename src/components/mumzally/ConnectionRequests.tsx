@@ -87,7 +87,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     });
   };
 
-  // If in simplified view mode (most straightforward UI)
+  // If in simplified view mode (most straightforward UI) - used in Inbox page
   if (simplifiedView) {
     const filteredRequests = connectionRequests.filter(request => 
       !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
@@ -108,22 +108,38 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                   </h3>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Button 
-                  variant="default" 
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
                   size="sm"
-                  className="text-xs"
-                  onClick={() => handleAcceptRequest(request.id, request.name)}
+                  className="relative group"
+                  onClick={() => handleMessageClick(request.id, request.name)}
                 >
-                  LeanBack
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="text-xs"
-                  onClick={() => handleRejectRequest(request.id, request.name)}
-                >
-                  Decline
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                  <div className="absolute right-0 top-full mt-1 bg-white shadow-md rounded-md p-2 hidden group-hover:flex flex-col gap-1 z-10 min-w-28">
+                    <Button 
+                      variant="default" 
+                      size="sm"
+                      className="text-xs w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAcceptRequest(request.id, request.name);
+                      }}
+                    >
+                      LeanBack
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-xs w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRejectRequest(request.id, request.name);
+                      }}
+                    >
+                      Decline
+                    </Button>
+                  </div>
                 </Button>
               </div>
             </CardContent>
