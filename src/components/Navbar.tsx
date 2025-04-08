@@ -7,12 +7,6 @@ import { Link, useLocation, Navigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import RibbonIcon from './ui/RibbonIcon';
-import { 
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-  navigationMenuTriggerStyle
-} from '@/components/ui/navigation-menu';
 import { Badge } from '@/components/ui/badge';
 import { useUserInfo } from '@/hooks/use-user-info';
 import NotificationSubscriber from './NotificationSubscriber';
@@ -70,7 +64,7 @@ const Navbar = () => {
       name: 'Connect', 
       icon: <Users className="h-5 w-5" />, 
       path: '/ally',
-      description: 'LeanOn Moms around you, with same age kids' 
+      description: 'LeanOn Moms around you, in the same neighborhood, with same age kids' 
     },
     { name: 'Ask', icon: <HelpCircle className="h-5 w-5" />, path: '/ask' },
     { name: 'Deals', icon: <Tag className="h-5 w-5" />, path: '/brands' },
