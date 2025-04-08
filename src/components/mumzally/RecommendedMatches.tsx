@@ -45,6 +45,14 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
     });
   };
 
+  const handleAcceptConnection = (id: number, name: string) => {
+    setAcceptedConnections(prev => [...prev, id]);
+    toast({
+      title: "LeanOn Request Accepted",
+      description: `You are now connected with ${name}!`,
+    });
+  };
+
   const handleMessageButtonClick = (id: number, name: string) => {
     if (onMessageClick) {
       onMessageClick(id, name);
@@ -134,7 +142,9 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                     variant="default"
                     size="sm"
                     className="text-xs py-1 h-8"
-                    onClick={() => handleSendConnection(profile.id, profile.name)}
+                    onClick={() => isConnectionAccepted && !isConnectionSent 
+                      ? handleAcceptConnection(profile.id, profile.name) 
+                      : handleSendConnection(profile.id, profile.name)}
                     disabled={isConnectionSent || isFullyConnected}
                   >
                     <BowRibbon 
@@ -146,7 +156,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                     />
                     {isFullyConnected ? 'Connected' : 
                      isConnectionSent ? 'Request Sent' : 
-                     isConnectionAccepted ? 'Accept' : 'LeanOn'}
+                     isConnectionAccepted ? 'Accept LeanOn' : 'LeanOn'}
                   </Button>
                 </div>
               </CardContent>

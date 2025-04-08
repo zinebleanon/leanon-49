@@ -45,6 +45,7 @@ const MumzAlly = () => {
   const { userInfo } = useUserInfo();
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
+  const [filters, setFilters] = useState({});
 
   const handleMessageClick = (id: number, name: string) => {
     setSelectedRecipient({ id, name });
@@ -55,12 +56,17 @@ const MumzAlly = () => {
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
   };
 
+  const handleFiltersChange = (newFilters: any) => {
+    setFilters(newFilters);
+    // You would typically filter profiles based on the new filters
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
-        <HeroSection />
+        <HeroSection onFiltersChange={handleFiltersChange} profiles={mockProfiles} />
         
         <section className="py-8">
           <div className="container mx-auto">
@@ -83,7 +89,7 @@ const MumzAlly = () => {
       
       <Footer />
       
-      <HowItWorksModal isOpen={isHowItWorksOpen} onClose={() => setIsHowItWorksOpen(false)} />
+      <HowItWorksModal onClose={() => setIsHowItWorksOpen(false)} />
       
       {selectedRecipient && (
         <MessageDialog 
