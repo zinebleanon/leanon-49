@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,7 +10,6 @@ import MatchingVisualization from '@/components/mumzally/MatchingVisualization';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { toast } from "@/hooks/use-toast";
 
 // Sample profile data
 const mockProfiles = [
@@ -177,12 +175,6 @@ const MumzAlly = () => {
     locationMatches.sort((a, b) => b.compatibility - a.compatibility);
     
     setFilteredProfiles(locationMatches);
-    
-    // Show toast notification about matched results
-    toast({
-      title: "Matches updated",
-      description: `Found ${locationMatches.length} moms based on location and children's ages`,
-    });
   };
 
   const handleMessageClick = (id: number, name: string) => {
