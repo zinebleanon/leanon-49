@@ -1,12 +1,13 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart } from 'lucide-react';
+import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users } from 'lucide-react';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Separator } from '@/components/ui/separator';
 

@@ -11,6 +11,7 @@ interface UserInfo {
   email: string;
   neighborhood: string;
   phone: string;
+  profileImage?: string;
   location?: {
     latitude: string;
     longitude: string;
@@ -19,6 +20,7 @@ interface UserInfo {
   nationality?: string;
   interests?: string;
   birthDate?: string;
+  bio?: string;
   kids?: Kid[];
 }
 
