@@ -1,3 +1,4 @@
+
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,7 +36,8 @@ interface ConnectionRequestsProps {
 }
 
 const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedView = false }: ConnectionRequestsProps) => {
-  const requests: ConnectionRequest[] = [
+  // Connected moms (profiles that have fully connected)
+  const connectedMoms: ConnectionRequest[] = [
     {
       id: 1,
       name: "Sarah Johnson",
@@ -71,8 +73,8 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   if (simplifiedView) {
     return (
       <div className="space-y-2">
-        {requests.map((request) => (
-          <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
+        {connectedMoms.map((mom) => (
+          <Card key={mom.id} className="border-transparent hover:bg-muted/30 transition-colors">
             <CardContent className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
@@ -80,7 +82,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                 </div>
                 <div>
                   <h3 className="font-medium">
-                    {request.name}
+                    {mom.name}
                   </h3>
                 </div>
               </div>
@@ -88,7 +90,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                 variant="ghost" 
                 size="icon"
                 className="text-primary"
-                onClick={() => handleMessageClick(request.id, request.name)}
+                onClick={() => handleMessageClick(mom.id, mom.name)}
               >
                 <MessageSquare className="h-5 w-5" />
               </Button>
@@ -96,7 +98,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </Card>
         ))}
         
-        {requests.length === 0 && (
+        {connectedMoms.length === 0 && (
           <div className="flex flex-col items-center justify-center h-40 text-center p-4">
             <Users className="h-10 w-10 text-muted-foreground mb-2" />
             <h3 className="font-medium mb-1">No LeanMoms yet</h3>
@@ -129,29 +131,29 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   if (dialogMode) {
     return (
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-3">My LeanMoms <span className="text-sm font-normal text-muted-foreground">({requests.length})</span></h3>
+        <h3 className="text-lg font-medium mb-3">My LeanMoms <span className="text-sm font-normal text-muted-foreground">({connectedMoms.length})</span></h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {requests.map((request) => (
-            <Card key={request.id} className="overflow-hidden bg-white/90">
+          {connectedMoms.map((mom) => (
+            <Card key={mom.id} className="overflow-hidden bg-white/90">
               <CardContent className="p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
                     <UserCircle className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
-                      {request.name}
+                    <Link to={`/ally/profile/${mom.id}`} className="font-medium text-sm hover:underline">
+                      {mom.name}
                     </Link>
                     <p className="text-xs text-muted-foreground">
-                      {request.age}, {request.location}
-                      {request.activeInCommunity && (
+                      {mom.age}, {mom.location}
+                      {mom.activeInCommunity && (
                         <span className="ml-1 text-green-600">● Active</span>
                       )}
                     </p>
                   </div>
                   <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
-                    {request.compatibility}%
+                    {mom.compatibility}%
                   </Badge>
                 </div>
                 <div className="flex items-center justify-end">
@@ -159,7 +161,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
                     variant="default" 
                     size="sm"
                     className="text-xs"
-                    onClick={() => handleMessageClick(request.id, request.name)}
+                    onClick={() => handleMessageClick(mom.id, mom.name)}
                   >
                     <BowRibbon isActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
                     Message
@@ -193,60 +195,71 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 font-playfair">My LeanMoms <span className="text-lg font-normal text-primary-foreground/80">({requests.length})</span></h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {requests.map((request) => (
-            <Card key={request.id} className="overflow-hidden">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                    <UserCircle className="h-8 w-8 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">
-                      <Link to={`/ally/profile/${request.id}`} className="hover:underline">
-                        {request.name}
-                      </Link>
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {request.age}, {request.location}
-                      {request.activeInCommunity && (
-                        <span className="ml-1 text-green-600">● Active in Community</span>
-                      )}
-                    </p>
-                  </div>
-                  <div className="ml-auto flex items-center gap-2">
-                    <Badge className="bg-primary/50 text-foreground font-bold border-primary/30">
-                      {request.compatibility}% Match
-                    </Badge>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="text-sm text-primary hover:text-primary/80 p-0 h-auto flex items-center gap-1"
-                  >
-                    <Link to={`/ally/profile/${request.id}`} className="flex items-center gap-1">
-                      See {request.name}'s profile
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </Link>
-                  </Button>
-                  <Button 
-                    variant="default" 
-                    className="ml-auto"
-                    onClick={() => handleMessageClick(request.id, request.name)}
-                  >
-                    <div className="flex items-center gap-2">
-                      <BowRibbon isActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
-                      Message {request.name}
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">My LeanMoms <span className="text-lg font-normal text-primary-foreground/80">({connectedMoms.length})</span></h2>
+        
+        {connectedMoms.length === 0 ? (
+          <div className="bg-white rounded-lg p-8 text-center">
+            <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-medium mb-2">No LeanMoms yet</h3>
+            <p className="text-muted-foreground max-w-md mx-auto">
+              Connect with other moms to build your network. Once you've connected with moms, they'll appear here.
+            </p>
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {connectedMoms.map((mom) => (
+              <Card key={mom.id} className="overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-8 w-8 text-primary" />
                     </div>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    <div>
+                      <h3 className="font-medium">
+                        <Link to={`/ally/profile/${mom.id}`} className="hover:underline">
+                          {mom.name}
+                        </Link>
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {mom.age}, {mom.location}
+                        {mom.activeInCommunity && (
+                          <span className="ml-1 text-green-600">● Active in Community</span>
+                        )}
+                      </p>
+                    </div>
+                    <div className="ml-auto flex items-center gap-2">
+                      <Badge className="bg-primary/50 text-foreground font-bold border-primary/30">
+                        {mom.compatibility}% Match
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="text-sm text-primary hover:text-primary/80 p-0 h-auto flex items-center gap-1"
+                    >
+                      <Link to={`/ally/profile/${mom.id}`} className="flex items-center gap-1">
+                        See {mom.name}'s profile
+                        <ExternalLink className="h-3 w-3 ml-1" />
+                      </Link>
+                    </Button>
+                    <Button 
+                      variant="default" 
+                      className="ml-auto"
+                      onClick={() => handleMessageClick(mom.id, mom.name)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <BowRibbon isActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
+                        Message {mom.name}
+                      </div>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
       
       {selectedRecipient && (
