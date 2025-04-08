@@ -54,9 +54,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   return (
     <div className="mb-6">
       <h3 className="text-lg font-medium mb-3">Moms Around You</h3>
-      <p className="text-sm text-muted-foreground mb-4">
-        Based on your {neighborhood || 'location'} and children's ages
-      </p>
+      {/* Removed the text about location and children's ages */}
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {enhancedProfiles.map((profile) => {

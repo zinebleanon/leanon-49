@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
@@ -121,7 +122,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
           </div>
         ) : (
           <p className="text-sm text-muted-foreground mb-4">
-            No moms with kids of similar ages found nearby
+            No moms found nearby
           </p>
         )}
         
@@ -178,7 +179,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                   <DialogHeader className="relative">
                     <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
                     <DialogDescription className="text-center text-muted-foreground">
-                      Recommended moms based on your location and children's ages
+                      Recommended moms based on your preferences
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-6">
