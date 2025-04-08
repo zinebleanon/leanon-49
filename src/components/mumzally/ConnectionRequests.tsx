@@ -4,10 +4,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from "@/hooks/use-toast";
 import { useState } from 'react';
-import MessageForm from './MessageForm';
 import BowRibbon from './BowRibbon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Link } from 'react-router-dom';
+import MessageDialog from './MessageDialog';
 
 interface ConnectionRequest {
   id: number;
@@ -61,6 +61,11 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     setSelectedRecipient({ id, name });
     setMessageDialogOpen(true);
   };
+  
+  const handleSendMessage = (text: string, image: string | null) => {
+    // This would typically send the message to the backend
+    console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
+  };
 
   // If in simplified view mode (most straightforward UI)
   if (simplifiedView) {
@@ -102,10 +107,18 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
         )}
         
         {selectedRecipient && (
-          <MessageForm 
+          <MessageDialog 
             open={messageDialogOpen} 
             onOpenChange={setMessageDialogOpen} 
-            recipient={selectedRecipient}
+            conversation={{
+              id: `conv-${selectedRecipient.id}`,
+              participantId: selectedRecipient.id.toString(),
+              participantName: selectedRecipient.name,
+              lastMessage: "",
+              lastMessageTimestamp: new Date().toISOString(),
+              unreadCount: 0
+            }}
+            onSendMessage={handleSendMessage}
           />
         )}
       </div>
@@ -158,10 +171,18 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
         </div>
         
         {selectedRecipient && (
-          <MessageForm 
+          <MessageDialog 
             open={messageDialogOpen} 
             onOpenChange={setMessageDialogOpen} 
-            recipient={selectedRecipient}
+            conversation={{
+              id: `conv-${selectedRecipient.id}`,
+              participantId: selectedRecipient.id.toString(),
+              participantName: selectedRecipient.name,
+              lastMessage: "",
+              lastMessageTimestamp: new Date().toISOString(),
+              unreadCount: 0
+            }}
+            onSendMessage={handleSendMessage}
           />
         )}
       </div>
@@ -229,10 +250,18 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
       </div>
       
       {selectedRecipient && (
-        <MessageForm 
+        <MessageDialog 
           open={messageDialogOpen} 
           onOpenChange={setMessageDialogOpen} 
-          recipient={selectedRecipient}
+          conversation={{
+            id: `conv-${selectedRecipient.id}`,
+            participantId: selectedRecipient.id.toString(),
+            participantName: selectedRecipient.name,
+            lastMessage: "",
+            lastMessageTimestamp: new Date().toISOString(),
+            unreadCount: 0
+          }}
+          onSendMessage={handleSendMessage}
         />
       )}
     </section>
