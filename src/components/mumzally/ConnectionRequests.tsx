@@ -1,10 +1,9 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from "@/hooks/use-toast";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BowRibbon from './BowRibbon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Link } from 'react-router-dom';
@@ -60,6 +59,25 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [rejectedRequests, setRejectedRequests] = useState<number[]>([]);
+  const [leanBackMoms, setLeanBackMoms] = useState<ConnectionRequest[]>([]);
+
+  // Load accepted moms from localStorage on component mount
+  useEffect(() => {
+    const savedLeanBackMoms = localStorage.getItem('leanBackMoms');
+    if (savedLeanBackMoms) {
+      setLeanBackMoms(JSON.parse(savedLeanBackMoms));
+    }
+    
+    const savedAcceptedRequests = localStorage.getItem('acceptedRequests');
+    if (savedAcceptedRequests) {
+      setAcceptedRequests(JSON.parse(savedAcceptedRequests));
+    }
+    
+    const savedRejectedRequests = localStorage.getItem('rejectedRequests');
+    if (savedRejectedRequests) {
+      setRejectedRequests(JSON.parse(savedRejectedRequests));
+    }
+  }, []);
 
   const handleMessageClick = (id: number, name: string) => {
     setSelectedRecipient({ id, name });
@@ -72,7 +90,23 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   };
 
   const handleAcceptRequest = (id: number, name: string) => {
-    setAcceptedRequests(prev => [...prev, id]);
+    // Find the mom details from the requests
+    const acceptedMom = connectionRequests.find(request => request.id === id);
+    
+    if (acceptedMom) {
+      // Add to lean back moms list
+      const updatedLeanBackMoms = [...leanBackMoms, acceptedMom];
+      setLeanBackMoms(updatedLeanBackMoms);
+      
+      // Save to localStorage for persistence
+      localStorage.setItem('leanBackMoms', JSON.stringify(updatedLeanBackMoms));
+    }
+    
+    // Update the accepted list
+    const updatedAccepted = [...acceptedRequests, id];
+    setAcceptedRequests(updatedAccepted);
+    localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
+    
     toast({
       title: "Connection Request Accepted",
       description: `You are now connected with ${name}!`,
@@ -80,7 +114,10 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   };
 
   const handleRejectRequest = (id: number, name: string) => {
-    setRejectedRequests(prev => [...prev, id]);
+    const updatedRejected = [...rejectedRequests, id];
+    setRejectedRequests(updatedRejected);
+    localStorage.setItem('rejectedRequests', JSON.stringify(updatedRejected));
+    
     toast({
       title: "Connection Request Declined",
       description: `You've declined ${name}'s connection request.`,
@@ -89,69 +126,105 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
 
   // If in simplified view mode (most straightforward UI) - used in Inbox page
   if (simplifiedView) {
-    const filteredRequests = connectionRequests.filter(request => 
+    // Get pending requests (not accepted or rejected)
+    const pendingRequests = connectionRequests.filter(request => 
       !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
     );
     
+    // Show accepted moms in the LeanMoms tab
     return (
       <div className="space-y-2">
-        {filteredRequests.map((request) => (
-          <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
-            <CardContent className="p-3 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                  <UserCircle className="h-7 w-7 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-medium">
-                    {request.name}
-                  </h3>
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="relative group"
-                  onClick={() => handleMessageClick(request.id, request.name)}
-                >
-                  <MessageSquare className="h-5 w-5 text-primary" />
-                  <div className="absolute right-0 top-full mt-1 bg-white shadow-md rounded-md p-2 hidden group-hover:flex flex-col gap-1 z-10 min-w-28">
-                    <Button 
-                      variant="default" 
+        {/* Show pending requests */}
+        {pendingRequests.length > 0 && (
+          <div className="mb-4">
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">Pending Requests</h3>
+            {pendingRequests.map((request) => (
+              <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
+                <CardContent className="p-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-7 w-7 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">
+                        {request.name}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
                       size="sm"
-                      className="text-xs w-full"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAcceptRequest(request.id, request.name);
-                      }}
+                      className="relative group"
+                      onClick={() => handleMessageClick(request.id, request.name)}
                     >
-                      LeanBack
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="text-xs w-full"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRejectRequest(request.id, request.name);
-                      }}
-                    >
-                      Decline
+                      <MessageSquare className="h-5 w-5 text-primary" />
+                      <div className="absolute right-0 top-full mt-1 bg-white shadow-md rounded-md p-2 hidden group-hover:flex flex-col gap-1 z-10 min-w-28">
+                        <Button 
+                          variant="default" 
+                          size="sm"
+                          className="text-xs w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAcceptRequest(request.id, request.name);
+                          }}
+                        >
+                          LeanBack
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-xs w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRejectRequest(request.id, request.name);
+                          }}
+                        >
+                          Decline
+                        </Button>
+                      </div>
                     </Button>
                   </div>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
         
-        {filteredRequests.length === 0 && (
+        {/* Show accepted moms (lean back) */}
+        {leanBackMoms.length > 0 ? (
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">My LeanMoms</h3>
+            {leanBackMoms.map((mom) => (
+              <Card key={mom.id} className="border-transparent hover:bg-muted/30 transition-colors">
+                <CardContent className="p-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-7 w-7 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">
+                        {mom.name}
+                      </h3>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleMessageClick(mom.id, mom.name)}
+                  >
+                    <MessageSquare className="h-5 w-5 text-primary" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
           <div className="flex flex-col items-center justify-center h-40 text-center p-4">
             <Users className="h-10 w-10 text-muted-foreground mb-2" />
-            <h3 className="font-medium mb-1">No Connection Requests</h3>
+            <h3 className="font-medium mb-1">No LeanMoms Yet</h3>
             <p className="text-sm text-muted-foreground">
-              You'll see connection requests from other moms here
+              LeanBack on connect requests to add moms to your LeanMoms list
             </p>
           </div>
         )}
