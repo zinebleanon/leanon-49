@@ -82,7 +82,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
   if (dialogMode) {
     return (
       <div className="mb-6">
-        <h3 className="text-lg font-medium mb-3">Match Requests <span className="text-sm font-normal text-muted-foreground">({requests.length})</span></h3>
+        <h3 className="text-lg font-medium mb-3">My LeanMoms <span className="text-sm font-normal text-muted-foreground">({requests.length})</span></h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {requests.map((request) => (
@@ -112,23 +112,10 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                     variant="default" 
                     size="sm"
                     className="text-xs"
-                    onClick={() => 
-                      acceptedRequests.includes(request.id) 
-                        ? handleMessageClick(request.id, request.name)
-                        : handleAccept(request.id, request.name)
-                    }
+                    onClick={() => handleMessageClick(request.id, request.name)}
                   >
-                    {acceptedRequests.includes(request.id) ? (
-                      <>
-                        <BowRibbon isActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
-                        Message
-                      </>
-                    ) : (
-                      <>
-                        <BowRibbon isLeftActive={false} isRightActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
-                        Accept
-                      </>
-                    )}
+                    <BowRibbon isActive={true} className="w-8 h-5 mr-1" color="#FFD9A7" />
+                    Message
                   </Button>
                 </div>
               </CardContent>
@@ -151,7 +138,7 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 font-playfair">Match Requests <span className="text-lg font-normal text-primary-foreground/80">({requests.length})</span></h2>
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">My LeanMoms <span className="text-lg font-normal text-primary-foreground/80">({requests.length})</span></h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {requests.map((request) => (
             <Card key={request.id} className="overflow-hidden">
@@ -193,24 +180,11 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [] }: ConnectionR
                   <Button 
                     variant="default" 
                     className="ml-auto"
-                    onClick={() => 
-                      acceptedRequests.includes(request.id) 
-                        ? handleMessageClick(request.id, request.name)
-                        : handleAccept(request.id, request.name)
-                    }
+                    onClick={() => handleMessageClick(request.id, request.name)}
                   >
                     <div className="flex items-center gap-2">
-                      {acceptedRequests.includes(request.id) ? (
-                        <>
-                          <BowRibbon isActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
-                          Message {request.name}
-                        </>
-                      ) : (
-                        <>
-                          <BowRibbon isLeftActive={false} isRightActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
-                          LeanOn
-                        </>
-                      )}
+                      <BowRibbon isActive={true} className="w-12 h-8 mr-1" color="#FFD9A7" />
+                      Message {request.name}
                     </div>
                   </Button>
                 </div>
