@@ -168,6 +168,8 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
             </span>
           </h1>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-6">
+            <HowItWorksModal className="h-9" />
+            
             {isMobile ? (
               <Sheet>
                 <SheetTrigger asChild>
@@ -221,8 +223,6 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                 <span>My LeanMoms</span>
               </Link>
             </Button>
-            
-            <HowItWorksModal className="h-9" />
           </div>
         </div>
         

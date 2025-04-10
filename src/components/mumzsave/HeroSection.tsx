@@ -1,7 +1,8 @@
 
 import { Button } from '@/components/ui/button';
-import { Users, MessageCircle, Tag, ShoppingBag, BookOpen, Store } from 'lucide-react';
+import { Users, MessageCircle, Tag, ShoppingBag, BookOpen, Store, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import HowItWorksDialog from '@/components/HowItWorksDialog';
 
 interface HeroSectionProps {
   handleBrowseDeals: () => void;
@@ -44,6 +45,7 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <HowItWorksDialog className="flex-shrink-0" />
           <Button 
             size="lg" 
             className="rounded-full bg-primary flex items-center"

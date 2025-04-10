@@ -14,6 +14,7 @@ const DealsHero = () => {
               <span className="text-black">Mumz</span> <span className="text-orange-500">Deals</span>
             </h1>
             <div className="flex flex-wrap gap-4 mt-8">
+              <DealsHowItWorksDialog />
               <Button 
                 size="md"
                 className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
@@ -29,7 +30,6 @@ const DealsHero = () => {
                 <ShoppingBag className="h-4 w-4 mr-1.5 flex-shrink-0" />
                 <span>Featured Brands</span>
               </Button>
-              <DealsHowItWorksDialog />
             </div>
           </div>
           <div className="hidden md:block">

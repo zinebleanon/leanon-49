@@ -20,6 +20,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           </h1>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-12 mb-8">
+            <BrandsHowItWorksDialog />
             <Button 
               size="md" 
               className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
@@ -36,7 +37,6 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
               <BadgePercent className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
               <span>Browse Available Discounts</span>
             </Button>
-            <BrandsHowItWorksDialog />
           </div>
         </div>
       </div>
