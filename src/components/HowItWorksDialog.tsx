@@ -44,11 +44,11 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
       <DialogTrigger asChild>
         <Button 
           variant={buttonVariant}
-          size="md" 
-          className={`rounded-full px-4 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center h-9 ${className}`}
+          size="lg" 
+          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
         >
-          <Info className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
-          <span>How It Works</span>
+          <Info className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
+          <span className="my-auto">How It Works</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
