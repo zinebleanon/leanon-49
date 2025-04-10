@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -218,6 +219,7 @@ const MumzAlly = () => {
 
   const handleLeanOn = (id: number, name: string) => {
     setSentConnections(prev => [...prev, id]);
+    // Removed toast notification here
   };
   
   const handleSkip = (id: number) => {

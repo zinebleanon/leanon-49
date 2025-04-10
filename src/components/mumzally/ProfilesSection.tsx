@@ -1,6 +1,5 @@
 
 import ProfileCard, { Kid } from './ProfileCard';
-import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -26,7 +25,7 @@ interface ProfilesSectionProps {
 
 const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSectionProps) => {
   const handleHeartClick = (id: number) => {
-    // Removing the toast notification that appears when clicking connect
+    // Simply pass the id to the parent without any toast notification
     onHeartClick(id);
   };
   
@@ -35,7 +34,7 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>
-          {/* Removed the "results found" badge here as well */}
+          {/* No badges or text here */}
         </div>
         
         {profiles.length > 0 ? (

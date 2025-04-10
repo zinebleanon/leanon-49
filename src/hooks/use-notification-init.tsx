@@ -19,27 +19,8 @@ export const useNotificationInit = () => {
       });
     }
 
-    // Show a welcome notification if permission is already granted
-    if (Notification.permission === 'granted') {
-      // Check if user has a stored name
-      const userName = localStorage.getItem('notification_user_name') || 'User';
-      
-      // Only show this for demo purposes - in production you'd only show notifications
-      // in response to actual events
-      setTimeout(() => {
-        if (Math.random() > 0.7) { // Only show occasionally for demo
-          const notification = new Notification('Welcome to LeanOn', {
-            body: `Hello ${userName}, welcome back to the LeanOn community!`,
-            icon: '/favicon.ico'
-          });
-          
-          notification.onclick = () => {
-            window.focus();
-            notification.close();
-          };
-        }
-      }, 5000);
-    }
+    // No longer showing automatic welcome notifications
+    // The notification was removed as requested
 
     // When the app is visible, we'll handle any push notification clicks
     const handleVisibilityChange = () => {

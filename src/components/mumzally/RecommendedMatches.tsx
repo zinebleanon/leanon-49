@@ -38,7 +38,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   
   const handleSendConnection = (id: number, name: string) => {
     setSentConnections(prev => [...prev, id]);
-    // Removed toast notification that appeared when clicking connect
+    // No toast notification here
   };
 
   const handleMessageButtonClick = (id: number, name: string) => {
