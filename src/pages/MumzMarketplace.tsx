@@ -70,46 +70,44 @@ const MumzMarketplace = () => {
       <Navbar />
       
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
-        <section className="py-3 md:py-8 bg-[#B8CEC2]">
-          <div className="max-w-3xl">
-            <h1 className={`text-3xl md:text-5xl font-bold mb-8 md:mb-10 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-                Preloved
-                <br />
-                from Moms to Moms
-              </span>
-            </h1>
+        <div>
+          <h1 className={`text-3xl md:text-5xl font-bold mb-8 md:mb-10 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
+              Preloved
+              <br />
+              from Moms to Moms
+            </span>
+          </h1>
+          
+          <div className="flex flex-col sm:flex-row gap-3 justify-start mt-6">
+            <Button 
+              size="lg" 
+              className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+              asChild
+            >
+              <Link to="/marketplace/find">
+                <Search className="mr-2 h-5 w-5 flex-shrink-0 my-auto" /> 
+                <span className="my-auto">Find a Preloved Item</span>
+              </Link>
+            </Button>
             
-            <div className="flex flex-col sm:flex-row gap-3 justify-start mt-6">
-              <Button 
-                size="lg" 
-                className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                asChild
-              >
-                <Link to="/marketplace/find">
-                  <Search className="mr-2 h-5 w-5 flex-shrink-0 my-auto" /> 
-                  <span className="my-auto">Find a Preloved Item</span>
-                </Link>
-              </Button>
-              
-              <Button 
-                size="lg" 
-                className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-                asChild
-              >
-                <Link to="/marketplace/sell">
-                  <Package className="mr-2 h-5 w-5 flex-shrink-0 my-auto" />
-                  <span className="my-auto">List your Preloved Item</span>
-                </Link>
-              </Button>
+            <Button 
+              size="lg" 
+              className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+              asChild
+            >
+              <Link to="/marketplace/sell">
+                <Package className="mr-2 h-5 w-5 flex-shrink-0 my-auto" />
+                <span className="my-auto">List your Preloved Item</span>
+              </Link>
+            </Button>
 
-              <MarketplaceHowItWorksDialog />
-            </div>
+            <MarketplaceHowItWorksDialog />
           </div>
-        </section>
+        </div>
         
         {/* Centered image section */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] py-0">
+        <div className="flex justify-center items-center mt-8">
           <img 
             src="/lovable-uploads/15bbcc24-f4f2-41b8-85db-23c7baa535b3.png" 
             alt="Baby nursery with toys and furniture" 
@@ -117,12 +115,10 @@ const MumzMarketplace = () => {
           />
         </div>
         
-        <section className="py-3 mt-12 bg-[#B8CEC2]">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
-            <MarketplaceItemsGrid items={featuredItems} />
-          </div>
-        </section>
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
+          <MarketplaceItemsGrid items={featuredItems} />
+        </div>
       </main>
       
       <Footer />
