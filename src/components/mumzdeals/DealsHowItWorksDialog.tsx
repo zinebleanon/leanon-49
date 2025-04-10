@@ -14,12 +14,11 @@ const DealsHowItWorksDialog = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button 
-          variant="outline" 
-          size="md" 
-          className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
+          size="lg" 
+          className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center"
         >
-          <Info className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
-          <span>How It Works</span>
+          <Info className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
+          <span className="my-auto">How It Works</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
