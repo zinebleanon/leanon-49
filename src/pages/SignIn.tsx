@@ -453,6 +453,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                       icon={<Lock className="h-4 w-4" />}
                       value={signInData.password}
                       onChange={handleSignInChange}
+                      showPasswordToggle={true}
                       required
                     />
                   </div>
@@ -606,6 +607,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                         icon={<Lock className="h-4 w-4" />}
                         value={signUpData.password}
                         onChange={handleSignUpChange}
+                        showPasswordToggle={true}
                         required
                       />
                     </div>
@@ -620,6 +622,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                         className="border-secondary/30 focus:border-secondary"
                         value={signUpData.confirmPassword}
                         onChange={handleSignUpChange}
+                        showPasswordToggle={true}
                         required
                       />
                     </div>
