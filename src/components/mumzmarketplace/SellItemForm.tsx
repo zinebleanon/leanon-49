@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,6 +27,7 @@ import {
 } from '@/components/ui/sheet';
 import { Check, X, ShieldCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const SellItemForm = () => {
   const navigate = useNavigate();
@@ -34,10 +36,12 @@ const SellItemForm = () => {
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [brand, setBrand] = useState('');
+  const [customBrand, setCustomBrand] = useState('');
   const [condition, setCondition] = useState('');
   const [pricingType, setPricingType] = useState('paid');
   const [price, setPrice] = useState('');
-  const [location, setLocation] = useState('');
+  const [ageGroup, setAgeGroup] = useState('');
+  const [size, setSize] = useState('');
   const [isFreeItem, setIsFreeItem] = useState(false);
   const [status, setStatus] = useState('available');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,6 +69,23 @@ const SellItemForm = () => {
     "Cybex", "Bugaboo", "UPPAbaby", "Tommee Tippee", "Carters",
     "Evenflo", "Skip Hop", "Gerber", "MAM", "Babybjorn",
     "Other"
+  ];
+
+  const ageGroups = [
+    "Newborn (0-3m)", 
+    "Infant (3-12m)", 
+    "Toddler (1-3y)", 
+    "Preschool (3-5y)", 
+    "Kids (5-8y)", 
+    "Older Kids (8-12y)",
+    "Teen (12+)",
+    "Adult"
+  ];
+
+  const clothingSizes = [
+    "Preemie", "Newborn", "0-3m", "3-6m", "6-9m", "9-12m", "12-18m", "18-24m",
+    "2T", "3T", "4T", "5T", "6", "7", "8", "10", "12", "14", "16",
+    "XS", "S", "M", "L", "XL", "XXL", "Not Applicable"
   ];
   
   useEffect(() => {
@@ -102,6 +123,9 @@ const SellItemForm = () => {
     if (value === 'free') {
       setIsFreeItem(true);
       setPrice('0');
+    } else if (value === 'contact') {
+      setIsFreeItem(false);
+      setPrice('Contact for Price');
     } else {
       setIsFreeItem(false);
       setPrice('');
@@ -120,7 +144,9 @@ const SellItemForm = () => {
       return;
     }
     
-    if (!title || !description || !category || !subCategory || !brand || !condition || (!isFreeItem && !price) || !location) {
+    const finalBrand = brand === "Other" ? customBrand : brand;
+    
+    if (!title || !description || !category || !subCategory || !finalBrand || !condition || (!isFreeItem && pricingType === 'paid' && !price) || !ageGroup) {
       toast({
         title: "Missing Information",
         description: "Please fill out all required fields.",
@@ -132,16 +158,23 @@ const SellItemForm = () => {
     setIsSubmitting(true);
     
     setTimeout(() => {
+      const finalPrice = pricingType === 'free' 
+        ? 'Free' 
+        : pricingType === 'contact' 
+          ? 'Contact MomSeller' 
+          : `${price} AED`;
+          
       const newItem = {
         id: Date.now().toString(),
         title,
         description,
         category,
         subCategory,
-        brand,
+        brand: finalBrand,
+        ageGroup,
+        size: size || 'Not Applicable',
         condition,
-        price: isFreeItem ? 'Free' : `${price} AED`,
-        location,
+        price: finalPrice,
         createdDate: new Date().toISOString(),
         status: 'available',
         approved: false
@@ -169,10 +202,12 @@ const SellItemForm = () => {
       setCategory('');
       setSubCategory('');
       setBrand('');
+      setCustomBrand('');
       setCondition('');
       setPricingType('paid');
       setPrice('');
-      setLocation('');
+      setAgeGroup('');
+      setSize('');
       setIsFreeItem(false);
       
       setIsSubmitting(false);
@@ -274,9 +309,12 @@ const SellItemForm = () => {
                         <Badge variant="outline">{item.category}</Badge>
                         <Badge variant="outline">{item.subCategory}</Badge>
                         <Badge variant="outline">{item.brand}</Badge>
+                        <Badge variant="outline">{item.ageGroup}</Badge>
+                        {item.size !== "Not Applicable" && (
+                          <Badge variant="outline">Size: {item.size}</Badge>
+                        )}
                         <Badge variant="outline">{item.condition}</Badge>
                         <Badge variant="outline">{item.price}</Badge>
-                        <Badge variant="outline">{item.location}</Badge>
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -375,6 +413,36 @@ const SellItemForm = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="ageGroup">Age Group</Label>
+                  <Select onValueChange={setAgeGroup} value={ageGroup} required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select age group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ageGroups.map((age) => (
+                        <SelectItem key={age} value={age}>{age}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <Label htmlFor="size">Size (if applicable)</Label>
+                  <Select onValueChange={setSize} value={size}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clothingSizes.map((sizeOption) => (
+                        <SelectItem key={sizeOption} value={sizeOption}>{sizeOption}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {category && (
                   <div>
                     <Label htmlFor="subCategory">Sub-Category</Label>
@@ -403,47 +471,52 @@ const SellItemForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <Label>Pricing</Label>
-                <div className="flex items-center space-x-4">
-                  <Select onValueChange={handlePricingTypeChange} value={pricingType}>
-                    <SelectTrigger className="w-[150px]">
-                      <SelectValue placeholder="Select pricing" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="free">Free</SelectItem>
-                      <SelectItem value="paid">Paid</SelectItem>
-                    </SelectContent>
-                  </Select>
                   
-                  {!isFreeItem && (
-                    <div className="flex-1">
+                  {brand === "Other" && (
+                    <div className="mt-2">
                       <Input 
-                        type="number" 
-                        placeholder="Price in AED" 
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        required={!isFreeItem}
-                        min="1"
-                        prefix="AED"
+                        placeholder="Specify brand"
+                        value={customBrand}
+                        onChange={(e) => setCustomBrand(e.target.value)}
+                        required={brand === "Other"}
                       />
                     </div>
                   )}
                 </div>
               </div>
               
-              <div>
-                <Label htmlFor="location">Location</Label>
-                <Input 
-                  id="location" 
-                  placeholder="e.g., Dubai Marina, Abu Dhabi" 
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  required
-                />
+              <div className="space-y-4">
+                <Label>Pricing</Label>
+                <RadioGroup value={pricingType} onValueChange={handlePricingTypeChange} className="flex flex-col space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="free" id="pricing-free" />
+                    <Label htmlFor="pricing-free" className="cursor-pointer">Free</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="paid" id="pricing-paid" />
+                    <Label htmlFor="pricing-paid" className="cursor-pointer">Paid</Label>
+                    
+                    {pricingType === "paid" && (
+                      <div className="flex-1 ml-2">
+                        <Input 
+                          type="number" 
+                          placeholder="Price in AED" 
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                          required={pricingType === "paid"}
+                          min="1"
+                          prefix="AED"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="contact" id="pricing-contact" />
+                    <Label htmlFor="pricing-contact" className="cursor-pointer">Contact MomSeller</Label>
+                  </div>
+                </RadioGroup>
               </div>
               
               <div className="flex justify-between items-center">
@@ -477,9 +550,12 @@ const SellItemForm = () => {
                     <div className="flex flex-wrap gap-1">
                       <Badge variant="outline">{item.price}</Badge>
                       <Badge variant="outline">{item.condition}</Badge>
+                      <Badge variant="outline">{item.ageGroup}</Badge>
+                      {item.size !== "Not Applicable" && (
+                        <Badge variant="outline">Size: {item.size}</Badge>
+                      )}
                       <Badge variant="outline">{item.subCategory}</Badge>
                       <Badge variant="outline">{item.brand}</Badge>
-                      <Badge variant="outline">{item.location}</Badge>
                     </div>
                   </div>
                 </div>
@@ -505,9 +581,12 @@ const SellItemForm = () => {
                       <div className="flex flex-wrap gap-1 mt-2">
                         <Badge variant="outline">{item.price}</Badge>
                         <Badge variant="outline">{item.condition}</Badge>
+                        <Badge variant="outline">{item.ageGroup}</Badge>
+                        {item.size !== "Not Applicable" && (
+                          <Badge variant="outline">Size: {item.size}</Badge>
+                        )}
                         <Badge variant="outline">{item.subCategory}</Badge>
                         <Badge variant="outline">{item.brand}</Badge>
-                        <Badge variant="outline">{item.location}</Badge>
                       </div>
                     </div>
                     <div>
