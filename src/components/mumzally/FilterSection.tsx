@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,6 +12,24 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/components/ui/radio-group";
 
 interface FilterSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -25,26 +42,34 @@ interface FilterSectionProps {
 const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTerm = '' }: FilterSectionProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [age, setAge] = useState('all');
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   
-  // First child
-  const [kid1AgeRange, setKid1AgeRange] = useState('all');
-  const [kid1Gender, setKid1Gender] = useState('all');
+  // Mother's age
+  const [age, setAge] = useState('all');
   
-  // Second child
-  const [kid2AgeRange, setKid2AgeRange] = useState('all');
-  const [kid2Gender, setKid2Gender] = useState('all');
+  // Children filters
+  const [kidFilters, setKidFilters] = useState([
+    { ageRange: 'all', gender: 'all' },
+    { ageRange: 'all', gender: 'all' },
+    { ageRange: 'all', gender: 'all' }
+  ]);
   
-  // Third child
-  const [kid3AgeRange, setKid3AgeRange] = useState('all');
-  const [kid3Gender, setKid3Gender] = useState('all');
-  
+  // Location, nationality, work status
   const [location, setLocation] = useState('all');
   const [nationality, setNationality] = useState('all');
   const [workStatus, setWorkStatus] = useState('all');
+  
+  // Interests
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const interestOptions = [
+    "Outdoor activities", "Cooking", "Reading", "Arts and crafts", 
+    "Music", "Playgroups", "Swimming", "Fitness", "Baby groups", "Beach days"
+  ];
+  
+  // Compatibility slider
   const [compatibilityThreshold, setCompatibilityThreshold] = useState([70]);
   
+  // Track active filters count
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
 
   // Update local search term when prop changes
@@ -52,72 +77,57 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
     setLocalSearchTerm(searchTerm);
   }, [searchTerm]);
   
+  // Update kid filter at specific index
+  const updateKidFilter = (index: number, field: 'ageRange' | 'gender', value: string) => {
+    const newFilters = [...kidFilters];
+    newFilters[index] = { ...newFilters[index], [field]: value };
+    setKidFilters(newFilters);
+  };
+  
+  // Toggle interest selection
+  const toggleInterest = (interest: string) => {
+    setSelectedInterests(prev => 
+      prev.includes(interest) 
+        ? prev.filter(i => i !== interest)
+        : [...prev, interest]
+    );
+  };
+  
+  // Calculate active filters count
   useEffect(() => {
-    const activeFilters = {
-      age: age !== 'all' ? age : null,
-      kids: [
-        {
-          ageRange: kid1AgeRange !== 'all' ? kid1AgeRange : null,
-          gender: kid1Gender !== 'all' ? kid1Gender : null
-        },
-        {
-          ageRange: kid2AgeRange !== 'all' ? kid2AgeRange : null,
-          gender: kid2Gender !== 'all' ? kid2Gender : null
-        },
-        {
-          ageRange: kid3AgeRange !== 'all' ? kid3AgeRange : null,
-          gender: kid3Gender !== 'all' ? kid3Gender : null
-        }
-      ],
-      location: location !== 'all' ? location : null,
-      nationality: nationality !== 'all' ? nationality : null,
-      workStatus: workStatus !== 'all' ? workStatus : null,
-      compatibilityThreshold: compatibilityThreshold[0],
-      searchTerm: localSearchTerm.trim() !== '' ? localSearchTerm : null
-    };
-    
-    // Count active filters
     let count = 0;
-    if (activeFilters.age) count++;
-    if (activeFilters.kids[0].ageRange || activeFilters.kids[0].gender) count++;
-    if (activeFilters.kids[1].ageRange || activeFilters.kids[1].gender) count++;
-    if (activeFilters.kids[2].ageRange || activeFilters.kids[2].gender) count++;
-    if (activeFilters.location) count++;
-    if (activeFilters.nationality) count++;
-    if (activeFilters.workStatus) count++;
-    if (activeFilters.compatibilityThreshold !== 70) count++;
-    if (activeFilters.searchTerm) count++;
+    
+    if (age !== 'all') count++;
+    
+    kidFilters.forEach(kid => {
+      if (kid.ageRange !== 'all' || kid.gender !== 'all') count++;
+    });
+    
+    if (location !== 'all') count++;
+    if (nationality !== 'all') count++;
+    if (workStatus !== 'all') count++;
+    if (selectedInterests.length > 0) count++;
+    if (compatibilityThreshold[0] !== 70) count++;
+    if (localSearchTerm.trim() !== '') count++;
     
     setActiveFiltersCount(count);
-    
-  }, [age, kid1AgeRange, kid1Gender, kid2AgeRange, kid2Gender, kid3AgeRange, kid3Gender, 
-      location, nationality, workStatus, compatibilityThreshold, localSearchTerm]);
+  }, [age, kidFilters, location, nationality, workStatus, selectedInterests, compatibilityThreshold, localSearchTerm]);
   
+  // Apply all filters
   const applyFilters = () => {
     const filters = {
       age,
-      kids: [
-        {
-          ageRange: kid1AgeRange,
-          gender: kid1Gender
-        },
-        {
-          ageRange: kid2AgeRange,
-          gender: kid2Gender
-        },
-        {
-          ageRange: kid3AgeRange,
-          gender: kid3Gender
-        }
-      ],
+      kids: kidFilters,
       location,
       nationality,
       workStatus,
+      interests: selectedInterests,
       compatibilityThreshold: compatibilityThreshold[0],
       searchTerm: localSearchTerm
     };
     
     onFiltersChange(filters);
+    
     toast({
       title: "Filters applied",
       description: `${activeFiltersCount} ${activeFiltersCount === 1 ? 'filter' : 'filters'} applied to your search.`,
@@ -130,17 +140,18 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
     }
   };
   
+  // Reset all filters
   const resetFilters = () => {
     setAge('all');
-    setKid1AgeRange('all');
-    setKid1Gender('all');
-    setKid2AgeRange('all');
-    setKid2Gender('all');
-    setKid3AgeRange('all');
-    setKid3Gender('all');
+    setKidFilters([
+      { ageRange: 'all', gender: 'all' },
+      { ageRange: 'all', gender: 'all' },
+      { ageRange: 'all', gender: 'all' }
+    ]);
     setLocation('all');
     setNationality('all');
     setWorkStatus('all');
+    setSelectedInterests([]);
     setCompatibilityThreshold([70]);
     setLocalSearchTerm('');
     
@@ -152,27 +163,20 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
     });
   };
   
-  // Generate age options from 0 to 11
+  // Generate age options
   const ageOptions = Array.from({ length: 12 }, (_, i) => ({
     value: i.toString(),
     label: `${i} year${i !== 1 ? 's' : ''}`
   }));
   
-  const renderFilterItem = (label, component) => (
-    <div className="mb-4">
-      <Label className="block mb-2 font-medium">{label}</Label>
-      {component}
-    </div>
-  );
-  
   const renderFilterContent = () => (
-    <div className="py-6 px-4 bg-[#B8CEC2]">
-      <div className="max-w-7xl mx-auto">
+    <div className="py-6 px-4 bg-[#B8CEC2]/90">
+      <div className="max-w-md mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl md:text-2xl font-semibold font-playfair">Filter Match</h2>
+            <h2 className="text-xl font-semibold font-playfair">Find Moms</h2>
             {activeFiltersCount > 0 && (
-              <Badge variant="outline" className="bg-[#B8CEC2]/50 px-2 py-1">
+              <Badge variant="outline" className="bg-white/50 px-2 py-1">
                 {activeFiltersCount}
               </Badge>
             )}
@@ -183,26 +187,26 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           </Button>
         </div>
         
-        {/* Search field at the top */}
+        {/* Intelligent Search */}
         <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm mb-4">
-          {renderFilterItem("Search", (
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="Search by name, location, interests..."
-                value={localSearchTerm}
-                onChange={(e) => setLocalSearchTerm(e.target.value)}
-                className="pl-10 bg-white/80 border-[#B8CEC2]/30"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            </div>
-          ))}
+          <Label className="block mb-2 font-medium">Search</Label>
+          <div className="relative">
+            <Input
+              type="text"
+              placeholder="Search by name, location, interests..."
+              value={localSearchTerm}
+              onChange={(e) => setLocalSearchTerm(e.target.value)}
+              className="pl-10 bg-white/80 border-[#B8CEC2]/30"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          </div>
         </Card>
         
-        <div className="space-y-4 overflow-y-auto pb-16" style={{ maxHeight: isMobile ? 'calc(100vh - 240px)' : 'none' }}>
-          {/* Mother's Age */}
-          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-            {renderFilterItem("Mother's Age", (
+        <ScrollArea className="h-[60vh] pr-4">
+          <div className="space-y-4">
+            {/* Mother's Age */}
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
+              <Label className="block mb-2 font-medium">Mom's Age</Label>
               <Select value={age} onValueChange={setAge}>
                 <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="All Ages" />
@@ -218,142 +222,63 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            ))}
-          </Card>
-          
-          {/* Children */}
-          <div className="space-y-3">
-            <h3 className="font-medium mb-1">Children</h3>
-            {/* Child 1 */}
-            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-              <h3 className="font-medium mb-3 text-sm">Child 1</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="kid1AgeRange" className="block mb-2 text-xs">Age</Label>
-                  <Select value={kid1AgeRange} onValueChange={setKid1AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
-                      <SelectValue placeholder="All Ages" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
-                      <ScrollArea className="h-[200px]">
-                        <SelectGroup>
-                          <SelectItem value="all">All Ages</SelectItem>
-                          {ageOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="kid1Gender" className="block mb-2 text-xs">Gender</Label>
-                  <Select value={kid1Gender} onValueChange={setKid1Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
-                      <SelectValue placeholder="Any Gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Gender</SelectItem>
-                        <SelectItem value="Boy">Boy</SelectItem>
-                        <SelectItem value="Girl">Girl</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
             </Card>
             
-            {/* Child 2 */}
+            {/* Children */}
             <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-              <h3 className="font-medium mb-3 text-sm">Child 2</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="kid2AgeRange" className="block mb-2 text-xs">Age</Label>
-                  <Select value={kid2AgeRange} onValueChange={setKid2AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
-                      <SelectValue placeholder="All Ages" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
-                      <ScrollArea className="h-[200px]">
-                        <SelectGroup>
-                          <SelectItem value="all">All Ages</SelectItem>
-                          {ageOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
+              <Label className="block mb-2 font-medium">Children</Label>
+              
+              {kidFilters.map((kid, index) => (
+                <div key={`kid-${index}`} className="mb-3 last:mb-0">
+                  <h3 className="text-sm font-medium mb-2">Child {index + 1}</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-xs mb-1 block">Age</Label>
+                      <Select 
+                        value={kid.ageRange} 
+                        onValueChange={(value) => updateKidFilter(index, 'ageRange', value)}
+                      >
+                        <SelectTrigger className="w-full h-9 text-sm bg-white/80 border-[#B8CEC2]/30">
+                          <SelectValue placeholder="All Ages" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border-[#B8CEC2]/30">
+                          <SelectGroup>
+                            <SelectItem value="all">All Ages</SelectItem>
+                            {ageOptions.map(option => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-xs mb-1 block">Gender</Label>
+                      <Select 
+                        value={kid.gender} 
+                        onValueChange={(value) => updateKidFilter(index, 'gender', value)}
+                      >
+                        <SelectTrigger className="w-full h-9 text-sm bg-white/80 border-[#B8CEC2]/30">
+                          <SelectValue placeholder="All" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border-[#B8CEC2]/30">
+                          <SelectGroup>
+                            <SelectItem value="all">All</SelectItem>
+                            <SelectItem value="Boy">Boy</SelectItem>
+                            <SelectItem value="Girl">Girl</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <Label htmlFor="kid2Gender" className="block mb-2 text-xs">Gender</Label>
-                  <Select value={kid2Gender} onValueChange={setKid2Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
-                      <SelectValue placeholder="Any Gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Gender</SelectItem>
-                        <SelectItem value="Boy">Boy</SelectItem>
-                        <SelectItem value="Girl">Girl</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              ))}
             </Card>
             
-            {/* Child 3 */}
+            {/* Location */}
             <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-              <h3 className="font-medium mb-3 text-sm">Child 3</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="kid3AgeRange" className="block mb-2 text-xs">Age</Label>
-                  <Select value={kid3AgeRange} onValueChange={setKid3AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
-                      <SelectValue placeholder="All Ages" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
-                      <ScrollArea className="h-[200px]">
-                        <SelectGroup>
-                          <SelectItem value="all">All Ages</SelectItem>
-                          {ageOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="kid3Gender" className="block mb-2 text-xs">Gender</Label>
-                  <Select value={kid3Gender} onValueChange={setKid3Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
-                      <SelectValue placeholder="Any Gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-[#B8CEC2]/30">
-                      <SelectGroup>
-                        <SelectItem value="all">Any Gender</SelectItem>
-                        <SelectItem value="Boy">Boy</SelectItem>
-                        <SelectItem value="Girl">Girl</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </Card>
-          </div>
-          
-          {/* Location */}
-          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-            {renderFilterItem("Location", (
+              <Label className="block mb-2 font-medium">Location</Label>
               <Select value={location} onValueChange={setLocation}>
                 <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Location" />
@@ -369,12 +294,11 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            ))}
-          </Card>
-          
-          {/* Nationality */}
-          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-            {renderFilterItem("Nationality", (
+            </Card>
+            
+            {/* Nationality */}
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
+              <Label className="block mb-2 font-medium">Nationality</Label>
               <Select value={nationality} onValueChange={setNationality}>
                 <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Nationality" />
@@ -391,19 +315,18 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            ))}
-          </Card>
-          
-          {/* Profession */}
-          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-            {renderFilterItem("Profession", (
+            </Card>
+            
+            {/* Work Status */}
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
+              <Label className="block mb-2 font-medium">Work Status</Label>
               <Select value={workStatus} onValueChange={setWorkStatus}>
                 <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
-                  <SelectValue placeholder="Any Profession" />
+                  <SelectValue placeholder="Any Work Status" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
-                    <SelectItem value="all">Any Profession</SelectItem>
+                    <SelectItem value="all">Any Work Status</SelectItem>
                     <SelectItem value="Full-time">Full-time</SelectItem>
                     <SelectItem value="Part-time">Part-time</SelectItem>
                     <SelectItem value="Stay-at-home">Stay-at-home</SelectItem>
@@ -412,51 +335,72 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            ))}
-          </Card>
-          
-          {/* Compatibility slider */}
-          <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
-            <div className="flex justify-between mb-2">
-              <Label>Minimum Compatibility</Label>
-              <span className="text-sm font-medium">{compatibilityThreshold}%</span>
-            </div>
-            <Slider
-              value={compatibilityThreshold}
-              onValueChange={setCompatibilityThreshold}
-              max={100}
-              step={5}
-              className="my-4"
-            />
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>50%</span>
-              <span>75%</span>
-              <span>100%</span>
-            </div>
-          </Card>
-        </div>
+            </Card>
+            
+            {/* Interests */}
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
+              <Label className="block mb-2 font-medium">Interests</Label>
+              <div className="flex flex-wrap gap-2">
+                {interestOptions.map(interest => (
+                  <Badge 
+                    key={interest}
+                    variant={selectedInterests.includes(interest) ? "default" : "outline"}
+                    className={`
+                      cursor-pointer py-1 px-2 
+                      ${selectedInterests.includes(interest) 
+                        ? "bg-pastel-yellow text-foreground" 
+                        : "bg-white/50 hover:bg-white"
+                      }
+                    `}
+                    onClick={() => toggleInterest(interest)}
+                  >
+                    {interest}
+                  </Badge>
+                ))}
+              </div>
+            </Card>
+            
+            {/* Compatibility slider */}
+            <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm">
+              <div className="flex justify-between mb-2">
+                <Label>Minimum Compatibility</Label>
+                <span className="text-sm font-medium">{compatibilityThreshold}%</span>
+              </div>
+              <Slider
+                value={compatibilityThreshold}
+                onValueChange={setCompatibilityThreshold}
+                max={100}
+                step={5}
+                className="my-4"
+              />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+              </div>
+            </Card>
+          </div>
+        </ScrollArea>
         
         {/* Sticky action buttons */}
         <div className="sticky bottom-4 mt-4 flex justify-end gap-2">
-          {(onClose || onOpenChange) && (
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                if (onOpenChange) {
-                  onOpenChange(false);
-                } else if (onClose) {
-                  onClose();
-                }
-              }} 
-              className="border-[#B8CEC2] bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-          )}
+          <Button 
+            variant="outline" 
+            onClick={() => {
+              if (onOpenChange) {
+                onOpenChange(false);
+              } else if (onClose) {
+                onClose();
+              }
+            }} 
+            className="border-[#B8CEC2] bg-white hover:bg-[#B8CEC2]/20 text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
           <Button 
             onClick={applyFilters} 
-            className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
+            className="bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground"
           >
             <Check className="h-4 w-4 mr-2" />
             Apply Filters
@@ -470,7 +414,7 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
   if (open !== undefined && onOpenChange) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full max-w-5xl p-0 bg-[#B8CEC2]">
+        <DialogContent className="w-full max-w-md p-0 bg-[#B8CEC2]/90 border-none">
           {renderFilterContent()}
         </DialogContent>
       </Dialog>

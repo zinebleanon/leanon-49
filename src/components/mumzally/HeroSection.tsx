@@ -118,11 +118,22 @@ const HeroSection = ({
         <div>
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Matched for You</h2>
-            {profiles.length > 0 && (
-              <Badge variant="outline" className="px-3 py-1 bg-white/50">
-                {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
-              </Badge>
-            )}
+            <div className="flex items-center gap-2">
+              {profiles.length > 0 && (
+                <Badge variant="outline" className="px-3 py-1 bg-white/50">
+                  {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
+                </Badge>
+              )}
+              <Button 
+                size="sm" 
+                variant="warm"
+                onClick={() => setIsFiltersOpen(true)} 
+                className="h-8 flex items-center gap-1 px-3"
+              >
+                <Filter className="h-3 w-3" />
+                <span className="text-xs font-semibold">Filters</span>
+              </Button>
+            </div>
           </div>
           <RecommendedMatches profiles={profiles} />
         </div>
