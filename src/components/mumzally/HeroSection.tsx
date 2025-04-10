@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -103,7 +102,7 @@ const HeroSection = ({
         
         <div className="flex flex-col gap-3 items-center w-full max-w-[200px] mx-auto md:mx-0">
           <Button
-            className="w-full gap-2"
+            className="w-full gap-2 h-11 px-8"
             variant="warm"
             size="md"
             onClick={() => setIsHowItWorksOpen(true)}
@@ -140,7 +139,6 @@ const HeroSection = ({
         </div>
       </div>
       
-      {/* Enhanced search and filter section */}
       <div className="mb-8 sticky top-20 z-20">
         <div className="bg-[#B8CEC2]/90 p-3 rounded-lg shadow-sm border border-[#B8CEC2] backdrop-blur-sm">
           <div className="flex items-center space-x-2">
