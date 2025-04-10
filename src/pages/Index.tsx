@@ -85,38 +85,38 @@ const Index = () => {
         <div className="container px-4 py-20 md:py-24 max-w-5xl mx-auto">
           <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
             <CardHeader className="pb-2 bg-pastel-yellow/20">
-              <CardTitle className="text-2xl md:text-3xl font-playfair text-center">
+              <CardTitle className="text-4xl md:text-5xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
-              <CardDescription className="text-center text-sm mb-1">
+              <CardDescription className="text-lg md:text-xl mb-1 text-center">
                 It's great to see you again in the LeanOn community
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pt-2 pb-3">
+            <CardContent className="pt-4 pb-5">
               <div className="max-w-md mx-auto">
                 <div className="bg-white/80 rounded-lg p-5 border border-pastel-yellow/20 shadow-sm">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Gift className="h-5 w-5 text-pastel-yellow" />
-                    <h3 className="font-medium text-base">Invite Friends & Family</h3>
+                  <div className="flex items-center gap-3 mb-3">
+                    <Gift className="h-8 w-8 text-pastel-yellow" />
+                    <h3 className="font-medium text-2xl">Invite Friends & Family</h3>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-3">
+                  <p className="text-base text-muted-foreground mb-4">
                     Share your referral code with other moms and help grow our supportive community!
                   </p>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-sm font-medium flex-1 text-center border border-pastel-yellow/20">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="bg-pastel-yellow/10 px-4 py-2 rounded-md font-mono text-xl font-medium flex-1 text-center border border-pastel-yellow/20">
                       {referralCode}
                     </div>
                     <Button 
                       variant="outline" 
-                      size="sm" 
-                      className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow px-2 py-1"
+                      size="lg" 
+                      className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow px-4 py-2 text-lg"
                       onClick={handleCopyReferralCode}
                     >
                       Copy
                     </Button>
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-base text-muted-foreground">
                     Each friend who joins gets a special welcome gift! 
                   </div>
                 </div>
