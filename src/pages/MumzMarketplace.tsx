@@ -227,45 +227,46 @@ const MumzMarketplace = () => {
           </div>
         </div>
         
-        <div className="mt-8 mb-6 flex items-center gap-3">
-          <div className="relative flex-1 max-w-md">
-            <input
-              type="text"
-              placeholder="Search listings..."
-              className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4 font-playfair">Available Listings</h2>
+          
+          <div className="mb-6 flex items-center gap-3">
+            <div className="relative flex-1 max-w-md">
+              <input
+                type="text"
+                placeholder="Search listings..."
+                className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-1"
+              onClick={() => setIsFilterDialogOpen(true)}
+            >
+              <Filter className="h-4 w-4" />
+              Filters
+            </Button>
+            
+            <MarketplaceFilterDialog 
+              open={isFilterDialogOpen} 
+              onOpenChange={setIsFilterDialogOpen}
+              onFiltersChange={handleFiltersChange}
+              initialFilters={{
+                category: selectedCategory,
+                brand: selectedBrand,
+                condition: selectedCondition,
+                ageGroup: selectedAgeGroup,
+                size: selectedSize,
+                priceRange: priceRange
+              }}
             />
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
           
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1"
-            onClick={() => setIsFilterDialogOpen(true)}
-          >
-            <Filter className="h-4 w-4" />
-            Filters
-          </Button>
-          
-          <MarketplaceFilterDialog 
-            open={isFilterDialogOpen} 
-            onOpenChange={setIsFilterDialogOpen}
-            onFiltersChange={handleFiltersChange}
-            initialFilters={{
-              category: selectedCategory,
-              brand: selectedBrand,
-              condition: selectedCondition,
-              ageGroup: selectedAgeGroup,
-              size: selectedSize,
-              priceRange: priceRange
-            }}
-          />
-        </div>
-        
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-6 font-playfair">Available Listings</h2>
           <MarketplaceItemsGrid items={filteredItems.length > 0 ? filteredItems : approvedListings} />
         </div>
       </main>
