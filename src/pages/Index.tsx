@@ -82,7 +82,7 @@ const Index = () => {
       <Navbar />
       
       {userInfo ? (
-        <div className="container px-4 py-12 md:py-16 max-w-5xl mx-auto">
+        <div className="container px-4 py-20 md:py-24 max-w-5xl mx-auto">
           <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
             <CardHeader className="pb-2 bg-pastel-yellow/20">
               <CardTitle className="text-2xl md:text-3xl font-playfair text-center">
@@ -95,16 +95,7 @@ const Index = () => {
             
             <CardContent className="pt-2 pb-3">
               <div className="max-w-md mx-auto">
-                <div className="bg-white/80 rounded-lg p-5 border border-pastel-yellow/20 shadow-sm relative">
-                  {/* Increased size and visibility of the ribbon */}
-                  <div className="w-full max-w-sm mx-auto -mt-12 mb-2">
-                    <img 
-                      src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
-                      alt="Decorative Ribbon" 
-                      className="w-full h-auto object-contain max-h-24"
-                    />
-                  </div>
-                  
+                <div className="bg-white/80 rounded-lg p-5 border border-pastel-yellow/20 shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <Gift className="h-5 w-5 text-pastel-yellow" />
                     <h3 className="font-medium text-base">Invite Friends & Family</h3>
