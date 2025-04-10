@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -124,15 +125,6 @@ const Index = () => {
                       <Share2 className="h-5 w-5" />
                       Share via WhatsApp
                     </Button>
-                  </div>
-                  <div className="mt-3 p-2 bg-pastel-yellow/10 rounded-md border border-pastel-yellow/20">
-                    <div className="flex items-center gap-2">
-                      <Gift className="h-5 w-5 text-pastel-yellow" />
-                      <p className="text-sm font-medium">Earn rewards for each referral!</p>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      For every friend who joins using your code, you'll receive a 5 AED MOE gift card. Start sharing now!
-                    </p>
                   </div>
                 </div>
               </div>
