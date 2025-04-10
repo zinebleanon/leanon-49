@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake, Ticket, Tent, Smile } from 'lucide-react';
+import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake, Ticket, Tent, Smile, Home } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -82,7 +82,7 @@ const MumzAsk = () => {
                       size="lg" 
                       className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                     >
-                      <RibbonIcon className="h-5 w-5 mr-2" color="#000000" />
+                      <MessageCircle className="h-5 w-5 mr-2" />
                       Ask LeanCommunity
                     </Button>
                   </DialogTrigger>
