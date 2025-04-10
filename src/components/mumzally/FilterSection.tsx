@@ -171,10 +171,9 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl md:text-2xl font-semibold font-playfair">Filter Match</h2>
             {activeFiltersCount > 0 && (
               <Badge variant="outline" className="bg-[#B8CEC2]/50 px-2 py-1">
-                {activeFiltersCount}
+                {activeFiltersCount} {activeFiltersCount === 1 ? 'filter' : 'filters'} active
               </Badge>
             )}
           </div>
