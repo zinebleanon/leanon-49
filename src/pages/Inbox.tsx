@@ -74,7 +74,7 @@ const Inbox = () => {
           participantId: 'user4',
           participantName: 'Jessica Williams',
           participantAvatar: undefined,
-          lastMessage: 'I'm interested in the toddler shoes, can you send more photos?',
+          lastMessage: "I'm interested in the toddler shoes, can you send more photos?",
           lastMessageTimestamp: '2025-04-05T14:20:00Z',
           unreadCount: 3,
           type: 'preloved'
