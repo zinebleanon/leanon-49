@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { Users, MessageCircle, Tag, ShoppingBag, BookOpen, Store, Info } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Users, MessageCircle, Tag, ShoppingBag, BookOpen, Store, Info, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import HowItWorksDialog from '@/components/HowItWorksDialog';
 
 interface HeroSectionProps {
@@ -9,6 +9,12 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
+  const navigate = useNavigate();
+  
+  const handleSignInClick = () => {
+    navigate('/sign-in');
+  };
+  
   return (
     <section className="py-4 md:py-6 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -49,12 +55,10 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           <Button 
             size="lg" 
             className="rounded-full bg-primary flex items-center"
-            asChild
+            onClick={handleSignInClick}
           >
-            <Link to="/select">
-              <BookOpen className="h-5 w-5 mr-2 flex-shrink-0" />
-              <span className="flex-1 text-center">Mumz Select</span>
-            </Link>
+            <User className="h-5 w-5 mr-2 flex-shrink-0" />
+            <span className="flex-1 text-center">Sign In / Sign Up</span>
           </Button>
           <Button 
             variant="outline" 

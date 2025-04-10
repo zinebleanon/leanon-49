@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Home, HelpCircle, Tag, ShoppingBag, Mail, Bell, Menu, Users, User } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import RibbonIcon from './ui/RibbonIcon';
@@ -23,6 +23,7 @@ const Navbar = () => {
   const [unreadCount, setUnreadCount] = useState(3);
   const [notificationCount, setNotificationCount] = useState(2);
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { userInfo } = useUserInfo();
   
@@ -48,8 +49,8 @@ const Navbar = () => {
     { name: 'Preloved', icon: <ShoppingBag className="h-5 w-5" />, path: '/marketplace' },
   ];
 
-  const handleJoinButtonClick = () => {
-    setIsJoinModalOpen(true);
+  const handleSignInClick = () => {
+    navigate('/sign-in');
   };
   
   const isPathActive = (path: string) => {
@@ -174,10 +175,10 @@ const Navbar = () => {
               variant="warm"
               size="sm"
               className="transition-all duration-300 rounded-full shadow-md hover:shadow-lg"
-              onClick={handleJoinButtonClick}
+              onClick={handleSignInClick}
             >
-              <RibbonIcon className="mr-2 h-4 w-4" fill="currentColor" />
-              Join
+              <User className="mr-2 h-4 w-4" />
+              Sign In
             </Button>
           )}
         </div>
@@ -198,7 +199,7 @@ const Navbar = () => {
               onClick={(e) => {
                 if (!userInfo && item.path !== '/') {
                   e.preventDefault();
-                  setIsJoinModalOpen(true);
+                  navigate('/sign-in');
                 }
               }}
             >

@@ -1,7 +1,8 @@
 
 import { Button } from '@/components/ui/button';
-import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
+import { HeartHandshake, BadgePercent, Info, User } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
+import { useNavigate } from 'react-router-dom';
 
 interface BrandsHeroProps {
   onOpenDialog: () => void;
@@ -9,6 +10,12 @@ interface BrandsHeroProps {
 }
 
 const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => {
+  const navigate = useNavigate();
+  
+  const handleSignInClick = () => {
+    navigate('/sign-in');
+  };
+  
   return (
     <section className="py-16 md:py-20 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -24,10 +31,10 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             <Button 
               size="md" 
               className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
-              onClick={onOpenDialog}
+              onClick={handleSignInClick}
             >
-              <HeartHandshake className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
-              <span>Support Moms Local Brands</span>
+              <User className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
+              <span>Sign In / Sign Up</span>
             </Button>
             <Button 
               size="md" 
