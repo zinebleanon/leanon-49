@@ -25,7 +25,11 @@ const MumzMarketplace = () => {
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-background">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+      </div>
+    );
   }
   
   const featuredItems = [
@@ -62,29 +66,30 @@ const MumzMarketplace = () => {
   const textStyles = "transition-all duration-700 ease-smooth";
   
   return (
-    <div className="min-h-screen bg-[#B8CEC2]/30">
+    <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
-      <main className="pt-20 pb-24 md:pb-12"> {/* Adjusted padding for mobile bottom nav */}
-        {/* Hero Section */}
-        <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
+      <main className="pt-20 md:pt-24 pb-6 md:pb-10">
+        <section className="py-3 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
-              <h1 className={`text-3xl md:text-5xl font-bold mb-4 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <h1 className={`text-3xl md:text-5xl font-bold mb-8 md:mb-10 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
                   Preloved
                   <br />
                   from Moms to Moms
                 </span>
               </h1>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-3">
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-6">
                 <Button 
                   size="lg" 
                   className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   asChild
                 >
                   <Link to="/marketplace/find">
-                    <Search className="mr-2 h-5 w-5" /> Find a Preloved Item
+                    <Search className="mr-2 h-5 w-5 flex-shrink-0 my-auto" /> 
+                    <span className="my-auto">Find a Preloved Item</span>
                   </Link>
                 </Button>
                 
@@ -94,7 +99,8 @@ const MumzMarketplace = () => {
                   asChild
                 >
                   <Link to="/marketplace/sell">
-                    <Package className="mr-2 h-5 w-5" /> List your Preloved Item
+                    <Package className="mr-2 h-5 w-5 flex-shrink-0 my-auto" />
+                    <span className="my-auto">List your Preloved Item</span>
                   </Link>
                 </Button>
 
@@ -113,8 +119,8 @@ const MumzMarketplace = () => {
           />
         </div>
         
-        <section className="py-8 px-6">
-          <div className="max-w-7xl mx-auto">
+        <section className="py-3 px-4 mt-12 bg-[#B8CEC2]">
+          <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 font-playfair">Featured Items</h2>
             <MarketplaceItemsGrid items={featuredItems} />
           </div>
