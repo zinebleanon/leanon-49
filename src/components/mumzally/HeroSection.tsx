@@ -59,7 +59,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           >
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              <span>Connection Requests</span>
+              <span>LeanOn Requests</span>
             </div>
           </Button>
           
@@ -71,7 +71,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           >
             <div className="flex items-center gap-2">
               <Search className="h-4 w-4" />
-              <span>Find LeanMoms Around</span>
+              <span>MyLeanMoms</span>
             </div>
           </Button>
         </div>
