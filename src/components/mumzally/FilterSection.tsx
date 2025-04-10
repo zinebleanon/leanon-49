@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Filter, ArrowLeft, Search } from 'lucide-react';
+import { Check, X, Filter, ArrowLeft } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -179,28 +178,23 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
               </Badge>
             )}
           </div>
-          <Button variant="ghost" size="sm" onClick={resetFilters} className="h-8 px-2">
-            <X className="h-4 w-4 mr-1" />
-            Reset
-          </Button>
-        </div>
-        
-        {/* Search field at the top */}
-        <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm mb-4">
-          <div className="mb-4">
-            <Label className="block mb-2 font-medium">Search</Label>
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="Search by name, location, interests..."
-                value={localSearchTerm}
-                onChange={(e) => setLocalSearchTerm(e.target.value)}
-                className="pl-10 bg-white/80 border-[#B8CEC2]/30"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            </div>
+          
+          <div className="flex gap-2">
+            <Button variant="ghost" size="sm" onClick={resetFilters} className="h-8 px-2">
+              <X className="h-4 w-4 mr-1" />
+              Reset
+            </Button>
+            
+            <Button 
+              onClick={applyFilters} 
+              className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
+              size="sm"
+            >
+              <Check className="h-4 w-4 mr-2" />
+              Apply Filters
+            </Button>
           </div>
-        </Card>
+        </div>
         
         <div className="space-y-3 overflow-y-auto pb-16" style={{ maxHeight: isMobile ? 'calc(100vh - 240px)' : 'none' }}>
           {/* Mother's Age */}
@@ -534,8 +528,8 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           </Collapsible>
         </div>
         
-        {/* Sticky action buttons */}
-        <div className="sticky bottom-4 mt-4 flex justify-end gap-2">
+        {/* Back button only */}
+        <div className="sticky bottom-4 mt-4 flex justify-end">
           {(onClose || onOpenChange) && (
             <Button 
               variant="outline" 
@@ -552,13 +546,6 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
               Back
             </Button>
           )}
-          <Button 
-            onClick={applyFilters} 
-            className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
-          >
-            <Check className="h-4 w-4 mr-2" />
-            Apply Filters
-          </Button>
         </div>
       </div>
     </div>
