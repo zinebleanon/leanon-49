@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -19,11 +18,9 @@ const Index = () => {
   const { userInfo } = useUserInfo();
   const [referralCode, setReferralCode] = useState('LO' + Math.random().toString(36).substring(2, 8).toUpperCase());
   
-  // Use the viewport height hook to fix iOS height issues
   useViewportHeight();
   
   useEffect(() => {
-    // Simulate loading state for smooth intro
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -37,10 +34,8 @@ const Index = () => {
       if (!permissionGranted) return;
     }
     
-    // Get user name from local storage or use a default
     const userName = userInfo?.name || localStorage.getItem('notification_user_name') || 'User';
     
-    // Send a test notification with the user's name
     sendPushNotification(
       "Welcome to LeanOn", 
       `Hello ${userName}, thanks for trying out our notification feature!`,
@@ -56,12 +51,10 @@ const Index = () => {
     });
   };
   
-  // Function to capitalize first letter of a string
   const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
   
-  // Get the first name with capitalized first letter
   const getCapitalizedFirstName = () => {
     if (!userInfo) return '';
     
@@ -94,7 +87,6 @@ const Index = () => {
             </CardHeader>
             
             <CardContent className="pt-2 pb-4">
-              {/* Reduced spacing around the ribbon */}
               <div className="w-full max-w-md mx-auto mb-2">
                 <img 
                   src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
@@ -137,7 +129,6 @@ const Index = () => {
         <Hero onJoinClick={() => {}} />
       )}
       
-      {/* Only showing the notification test button */}
       <div className="fixed bottom-8 right-8 z-10 space-y-2">
         <Button
           variant="warm"
