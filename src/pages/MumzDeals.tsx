@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -76,7 +75,7 @@ const MumzDeals = () => {
     <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
-      <main className="max-w-7xl mx-auto pt-16 pb-12 px-4">
+      <main className="max-w-7xl mx-auto pt-8 pb-12 px-4">
         <div className="mb-8">
           <Button variant="ghost" asChild className="mb-4">
             <Link to="/save">

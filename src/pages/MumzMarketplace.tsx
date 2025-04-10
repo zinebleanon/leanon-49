@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -68,7 +67,7 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
-      <main className="max-w-7xl mx-auto pt-16 pb-12 px-4">
+      <main className="max-w-7xl mx-auto pt-8 pb-12 px-4">
         <div className="text-center md:text-left">
           <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
