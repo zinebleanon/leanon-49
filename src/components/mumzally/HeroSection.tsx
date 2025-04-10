@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, ListChecks, Users, Search, Filter } from "lucide-react";
+import { Info, MapPin, ListChecks, Users, Search, Filter, SlidersHorizontal } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
@@ -100,6 +100,32 @@ const HeroSection = ({
         </div>
       </div>
       
+      {/* Prominently displayed search and filter section */}
+      <div className="mb-8 sticky top-20 z-20">
+        <div className="bg-[#9b87f5] p-4 rounded-lg shadow-lg border border-[#9b87f5]/30">
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            <div className="relative flex-1 w-full">
+              <Input
+                type="text"
+                placeholder="Search by name, location, or interests..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="pl-10 bg-white/90 border-2 border-[#9b87f5]/30 focus:border-[#9b87f5]"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+            <Button 
+              variant="outline"
+              onClick={() => setIsFiltersOpen(true)} 
+              className="h-10 w-full md:w-auto flex items-center gap-2 px-3 bg-white hover:bg-[#F97316] hover:text-white hover:border-[#F97316] transition-colors"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              <span>Advanced Filters</span>
+            </Button>
+          </div>
+        </div>
+      </div>
+      
       {!showTinderView && nearbyMoms.length > 0 && (
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
@@ -109,28 +135,6 @@ const HeroSection = ({
                 {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby
               </Badge>
             )}
-          </div>
-          
-          {/* Search and filter section right after the "Moms Near You" heading */}
-          <div className="flex items-center gap-3 mb-4 relative z-10 bg-[#B8CEC2]/30 p-3 rounded-lg">
-            <div className="relative flex-1">
-              <Input
-                type="text"
-                placeholder="Search by name, location, or interests..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            </div>
-            <Button 
-              variant="outline"
-              onClick={() => setIsFiltersOpen(true)} 
-              className="h-10 flex items-center gap-1 px-3 bg-white/80 border-2 border-[#FFD9A7]/30 hover:bg-white/90 hover:border-[#FFD9A7]"
-            >
-              <Filter className="h-4 w-4" />
-              <span>Filters</span>
-            </Button>
           </div>
           
           <RecommendedMatches profiles={nearbyMoms} />
@@ -148,30 +152,6 @@ const HeroSection = ({
             )}
           </div>
           
-          {/* Search and filter section for "Matched for You" when there are no nearby moms */}
-          {nearbyMoms.length === 0 && (
-            <div className="flex items-center gap-3 mb-4 relative z-10 bg-[#B8CEC2]/30 p-3 rounded-lg">
-              <div className="relative flex-1">
-                <Input
-                  type="text"
-                  placeholder="Search by name, location, or interests..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              </div>
-              <Button 
-                variant="outline"
-                onClick={() => setIsFiltersOpen(true)} 
-                className="h-10 flex items-center gap-1 px-3 bg-white/80 border-2 border-[#FFD9A7]/30 hover:bg-white/90 hover:border-[#FFD9A7]"
-              >
-                <Filter className="h-4 w-4" />
-                <span>Filters</span>
-              </Button>
-            </div>
-          )}
-          
           <RecommendedMatches profiles={profiles} />
         </div>
       )}
@@ -185,6 +165,7 @@ const HeroSection = ({
         open={isFiltersOpen}
         onOpenChange={setIsFiltersOpen}
         onFiltersChange={handleFiltersChange}
+        searchTerm={searchTerm}
       />
       
       <ConnectionRequests
