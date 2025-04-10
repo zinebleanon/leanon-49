@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, ListChecks, Users, Search, Filter, SlidersHorizontal } from "lucide-react";
+import { Info, MapPin, ListChecks, Users, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
@@ -134,8 +134,8 @@ const HeroSection = ({
       {/* Enhanced search and filter section */}
       <div className="mb-8 sticky top-20 z-20">
         <div className="bg-[#B8CEC2]/90 p-3 rounded-lg shadow-sm border border-[#B8CEC2] backdrop-blur-sm">
-          <div className="flex flex-col space-y-2">
-            <div className="relative flex-1 w-full">
+          <div className="flex items-center space-x-2">
+            <div className="relative flex-1">
               <Input
                 type="text"
                 placeholder="Search by name..."
@@ -144,62 +144,16 @@ const HeroSection = ({
                 className="pl-9 h-10 bg-white/80 border-pastel-green focus-visible:ring-pastel-green"
               />
               <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-pastel-green" />
-              <Button 
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsFiltersOpen(true)} 
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 w-7 text-pastel-green hover:bg-pastel-green/20 rounded-full"
-              >
-                <Filter className="h-4 w-4" />
-              </Button>
             </div>
             
-            {/* Quick filters row */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => handleQuickFilter('nearby')}
-                className={cn(
-                  "h-8 px-3 text-xs rounded-full border-pastel-green/30 bg-white/70",
-                  activeFilter === 'nearby' && "bg-pastel-green/30 border-pastel-green"
-                )}
-              >
-                <MapPin className="h-3 w-3 mr-1" />
-                Nearby
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => handleQuickFilter('kids-age')}
-                className={cn(
-                  "h-8 px-3 text-xs rounded-full border-pastel-green/30 bg-white/70",
-                  activeFilter === 'kids-age' && "bg-pastel-green/30 border-pastel-green"
-                )}
-              >
-                Ages 0-2
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => handleQuickFilter('compatibility')}
-                className={cn(
-                  "h-8 px-3 text-xs rounded-full border-pastel-green/30 bg-white/70",
-                  activeFilter === 'compatibility' && "bg-pastel-green/30 border-pastel-green"
-                )}
-              >
-                85%+ Match
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setIsFiltersOpen(true)}
-                className="h-8 px-3 text-xs rounded-full border-pastel-green/30 bg-white/70 ml-auto"
-              >
-                <SlidersHorizontal className="h-3 w-3 mr-1" />
-                All Filters
-              </Button>
-            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setIsFiltersOpen(true)}
+              className="h-10 px-4 whitespace-nowrap bg-white/80 hover:bg-white/90 border-pastel-green/30"
+            >
+              All Filters
+            </Button>
           </div>
         </div>
       </div>
