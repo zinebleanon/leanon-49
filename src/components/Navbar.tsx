@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -51,7 +50,7 @@ const Navbar = () => {
   ];
 
   const handleSignInClick = () => {
-    navigate('/sign-up'); // Changed to navigate to sign-up by default
+    navigate('/sign-in');
   };
   
   const isPathActive = (path: string) => {
@@ -179,7 +178,7 @@ const Navbar = () => {
               onClick={handleSignInClick}
             >
               <User className="mr-2 h-4 w-4" />
-              Sign Up
+              Sign In
             </Button>
           )}
         </div>
@@ -200,7 +199,7 @@ const Navbar = () => {
               onClick={(e) => {
                 if (!userInfo && item.path !== '/') {
                   e.preventDefault();
-                  navigate('/sign-up');
+                  navigate('/sign-in');
                 }
               }}
             >
