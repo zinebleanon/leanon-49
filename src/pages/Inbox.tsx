@@ -253,11 +253,17 @@ const Inbox = () => {
                 <TabsContent value="messages" className="m-0 h-full px-0">
                   <Tabs value={activeMessageTab} onValueChange={setActiveMessageTab} className="w-full">
                     <TabsList className="grid grid-cols-2 w-full rounded-none border-b">
-                      <TabsTrigger value="connect" className="flex items-center gap-1">
+                      <TabsTrigger 
+                        value="connect" 
+                        className="flex items-center gap-1 data-[state=active]:bg-pastel-yellow data-[state=active]:text-foreground"
+                      >
                         <Users className="h-4 w-4" />
                         <span>Connect</span>
                       </TabsTrigger>
-                      <TabsTrigger value="preloved" className="flex items-center gap-1">
+                      <TabsTrigger 
+                        value="preloved" 
+                        className="flex items-center gap-1 data-[state=active]:bg-pastel-yellow data-[state=active]:text-foreground"
+                      >
                         <ShoppingBag className="h-4 w-4" />
                         <span>Preloved</span>
                       </TabsTrigger>
