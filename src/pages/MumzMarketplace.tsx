@@ -5,14 +5,11 @@ import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package, Filter, PlusCircle, Edit } from 'lucide-react';
+import { Search, Package, Filter } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 import MarketplaceFilterDialog from '@/components/mumzmarketplace/MarketplaceFilterDialog';
 import { filterMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceFilterUtils';
 import { allMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceDataProvider';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import ListedItemsSection from '@/components/mumzmarketplace/ListedItemsSection';
 
 const approvedListings = [
   {
@@ -136,7 +133,6 @@ const MumzMarketplace = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("browse");
   
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -230,69 +226,46 @@ const MumzMarketplace = () => {
         </div>
         
         <div className="mt-8">
-          <Tabs defaultValue="browse" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full md:w-[400px] grid-cols-2">
-              <TabsTrigger value="browse">Browse Marketplace</TabsTrigger>
-              <TabsTrigger value="my-listings">My Listings</TabsTrigger>
-            </TabsList>
+          <h2 className="text-2xl font-bold mb-4 font-playfair">Available Listings</h2>
+          
+          <div className="mb-6 flex items-center gap-3">
+            <div className="relative flex-1 max-w-md">
+              <input
+                type="text"
+                placeholder="Search listings..."
+                className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
             
-            <TabsContent value="browse" className="mt-6">
-              <h2 className="text-2xl font-bold mb-4 font-playfair">Available Listings</h2>
-              
-              <div className="mb-6 flex items-center gap-3">
-                <div className="relative flex-1 max-w-md">
-                  <input
-                    type="text"
-                    placeholder="Search listings..."
-                    className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                </div>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-1"
-                  onClick={() => setIsFilterDialogOpen(true)}
-                >
-                  <Filter className="h-4 w-4" />
-                  Filters
-                </Button>
-                
-                <MarketplaceFilterDialog 
-                  open={isFilterDialogOpen} 
-                  onOpenChange={setIsFilterDialogOpen}
-                  onFiltersChange={handleFiltersChange}
-                  initialFilters={{
-                    category: selectedCategory,
-                    brand: selectedBrand,
-                    condition: selectedCondition,
-                    ageGroup: selectedAgeGroup,
-                    size: selectedSize,
-                    priceRange: priceRange
-                  }}
-                />
-              </div>
-              
-              <MarketplaceItemsGrid items={filteredItems.length > 0 ? filteredItems : approvedListings} />
-            </TabsContent>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-1"
+              onClick={() => setIsFilterDialogOpen(true)}
+            >
+              <Filter className="h-4 w-4" />
+              Filters
+            </Button>
             
-            <TabsContent value="my-listings" className="mt-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold font-playfair">My Listings</h2>
-                <Button asChild>
-                  <Link to="/marketplace/sell" className="flex items-center gap-2">
-                    <PlusCircle className="h-4 w-4" />
-                    Create New Listing
-                  </Link>
-                </Button>
-              </div>
-              
-              <ListedItemsSection />
-            </TabsContent>
-          </Tabs>
+            <MarketplaceFilterDialog 
+              open={isFilterDialogOpen} 
+              onOpenChange={setIsFilterDialogOpen}
+              onFiltersChange={handleFiltersChange}
+              initialFilters={{
+                category: selectedCategory,
+                brand: selectedBrand,
+                condition: selectedCondition,
+                ageGroup: selectedAgeGroup,
+                size: selectedSize,
+                priceRange: priceRange
+              }}
+            />
+          </div>
+          
+          <MarketplaceItemsGrid items={filteredItems.length > 0 ? filteredItems : approvedListings} />
         </div>
       </main>
       

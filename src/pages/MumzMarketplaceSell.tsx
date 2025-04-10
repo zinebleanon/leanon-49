@@ -4,12 +4,15 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SellItemForm from '@/components/mumzmarketplace/SellItemForm';
+import ListedItemsSection from '@/components/mumzmarketplace/ListedItemsSection';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { AlertCircle, ArrowLeft, PlusCircle, ListChecks } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const MumzMarketplaceSell = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("new-listing");
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,7 +56,32 @@ const MumzMarketplaceSell = () => {
               </p>
             </div>
           </div>
-          <SellItemForm />
+          
+          <Tabs 
+            defaultValue="new-listing" 
+            value={activeTab} 
+            onValueChange={setActiveTab} 
+            className="w-full"
+          >
+            <TabsList className="grid w-full md:w-[400px] grid-cols-2 mb-6">
+              <TabsTrigger value="new-listing" className="flex items-center gap-2">
+                <PlusCircle className="h-4 w-4" />
+                New Listing
+              </TabsTrigger>
+              <TabsTrigger value="active-listings" className="flex items-center gap-2">
+                <ListChecks className="h-4 w-4" />
+                Active Listings
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="new-listing">
+              <SellItemForm />
+            </TabsContent>
+            
+            <TabsContent value="active-listings">
+              <ListedItemsSection />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       
