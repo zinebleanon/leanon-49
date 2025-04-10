@@ -59,20 +59,16 @@ const mockProfiles = [
   }
 ];
 
-interface KidFilter {
-  ageRange?: string;
-  gender?: string;
-}
-
 interface FilterOptions {
-  searchTerm?: string;
-  age?: string;
-  kids?: KidFilter[];
   location?: string;
+  kids?: Array<{
+    ageRange?: string;
+    gender?: string;
+  }>;
+  compatibilityThreshold?: number;
+  searchTerm?: string;
   nationality?: string;
   workStatus?: string;
-  interests?: string[];
-  compatibilityThreshold?: number;
 }
 
 const MumzAlly = () => {
@@ -86,7 +82,7 @@ const MumzAlly = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    findNearbyAndMatchedMoms();
+    filterProfilesByLocationAndKids();
   }, [userInfo]);
 
   const calculateKidAgeSimilarity = (userKids, profileKids) => {
@@ -108,13 +104,13 @@ const MumzAlly = () => {
     return totalSimilarity / (userKids.length * profileKids.length);
   };
 
-  const findNearbyAndMatchedMoms = () => {
+  const filterProfilesByLocationAndKids = (filters: FilterOptions = {}) => {
     const userLocation = userInfo?.location?.latitude && userInfo?.location?.longitude ? userInfo.location : null;
     const userNeighborhood = userInfo?.neighborhood || "";
-    
+    const userKids = userInfo?.kids || [];
+
     // First, identify nearby moms based on location
     if (userLocation) {
-      // For demo purposes we're just using a fixed subset
       const nearby = mockProfiles.filter(profile => 
         profile.id === 3 || profile.id === 4
       );
@@ -125,15 +121,73 @@ const MumzAlly = () => {
       );
       setNearbyMoms(nearby);
     }
-    
-    // Sort all profiles for the default view
-    const userKids = userInfo?.kids || [];
-    sortProfilesByRelevance(mockProfiles, userKids, userNeighborhood);
-  };
 
-  const sortProfilesByRelevance = (profiles, userKids, userNeighborhood) => {
+    // Apply initial filtering
+    let matchedProfiles = [...mockProfiles];
+    
+    // Apply search term filter if provided
+    if (filters.searchTerm) {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.location.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.nationality.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.workStatus.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.interests.some(interest => interest.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
+        profile.bio.toLowerCase().includes(filters.searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply location filter if provided
+    if (filters.location && filters.location !== 'all') {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.location === filters.location
+      );
+    }
+    
+    // Apply nationality filter if provided
+    if (filters.nationality && filters.nationality !== 'all') {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.nationality === filters.nationality
+      );
+    }
+    
+    // Apply work status filter if provided
+    if (filters.workStatus && filters.workStatus !== 'all') {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.workStatus === filters.workStatus
+      );
+    }
+    
+    // Apply kids filter if provided
+    if (filters.kids && filters.kids.length > 0) {
+      matchedProfiles = matchedProfiles.filter(profile => {
+        return filters.kids.some((kidFilter) => {
+          if (!kidFilter.ageRange || kidFilter.ageRange === 'all') {
+            return true;
+          }
+          
+          return profile.kids.some(profileKid => {
+            const ageMatch = kidFilter.ageRange === 'all' || 
+              profileKid.age.toString() === kidFilter.ageRange;
+            
+            const genderMatch = !kidFilter.gender || kidFilter.gender === 'all' || 
+              profileKid.gender === kidFilter.gender;
+              
+            return ageMatch && genderMatch;
+          });
+        });
+      });
+    }
+    
+    // Apply compatibility threshold filter if provided
+    if (filters.compatibilityThreshold) {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.compatibility >= filters.compatibilityThreshold
+      );
+    }
+
     // Calculate and apply scores for sorting
-    const rankedProfiles = profiles.map(profile => {
+    const rankedProfiles = matchedProfiles.map(profile => {
       // Score based on kid age similarity
       const kidAgeSimilarityScore = calculateKidAgeSimilarity(userKids, profile.kids);
       
@@ -170,106 +224,13 @@ const MumzAlly = () => {
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
   };
 
-  const handleFiltersChange = (filters: FilterOptions) => {
-    console.log("Applying filters:", filters);
-    
-    let matchedProfiles = [...mockProfiles];
-    
-    // Apply search term filter if provided
-    if (filters.searchTerm) {
-      const searchTermLower = filters.searchTerm.toLowerCase();
-      matchedProfiles = matchedProfiles.filter(profile => 
-        profile.name.toLowerCase().includes(searchTermLower) ||
-        profile.location.toLowerCase().includes(searchTermLower) ||
-        profile.nationality.toLowerCase().includes(searchTermLower) ||
-        profile.workStatus.toLowerCase().includes(searchTermLower) ||
-        profile.interests.some(interest => interest.toLowerCase().includes(searchTermLower)) ||
-        profile.bio.toLowerCase().includes(searchTermLower)
-      );
-      
-      // Update search term state
+  const handleFiltersChange = (filters: Record<string, any>) => {
+    // Update search term if provided
+    if (filters.searchTerm !== undefined) {
       setSearchTerm(filters.searchTerm);
-    } else {
-      setSearchTerm('');
     }
     
-    // Apply age filter if provided
-    if (filters.age && filters.age !== 'all') {
-      const [minAge, maxAge] = filters.age.includes('-') 
-        ? filters.age.split('-').map(Number) 
-        : [parseInt(filters.age.replace('+', '')), 100];
-        
-      matchedProfiles = matchedProfiles.filter(profile => {
-        if (maxAge === 100) {  // Handle "41+" case
-          return profile.age >= minAge;
-        }
-        return profile.age >= minAge && profile.age <= maxAge;
-      });
-    }
-    
-    // Apply kids filter if provided
-    if (filters.kids && filters.kids.length > 0) {
-      // Only apply filters that are not 'all'
-      const activeKidFilters = filters.kids.filter(
-        kid => kid.ageRange !== 'all' || kid.gender !== 'all'
-      );
-      
-      if (activeKidFilters.length > 0) {
-        matchedProfiles = matchedProfiles.filter(profile => {
-          return activeKidFilters.some(kidFilter => {
-            return profile.kids.some(profileKid => {
-              const ageMatch = !kidFilter.ageRange || kidFilter.ageRange === 'all' || 
-                profileKid.age.toString() === kidFilter.ageRange;
-              
-              const genderMatch = !kidFilter.gender || kidFilter.gender === 'all' || 
-                profileKid.gender === kidFilter.gender;
-                
-              return ageMatch && genderMatch;
-            });
-          });
-        });
-      }
-    }
-    
-    // Apply location filter if provided
-    if (filters.location && filters.location !== 'all') {
-      matchedProfiles = matchedProfiles.filter(profile => 
-        profile.location === filters.location
-      );
-    }
-    
-    // Apply nationality filter if provided
-    if (filters.nationality && filters.nationality !== 'all') {
-      matchedProfiles = matchedProfiles.filter(profile => 
-        profile.nationality === filters.nationality
-      );
-    }
-    
-    // Apply work status filter if provided
-    if (filters.workStatus && filters.workStatus !== 'all') {
-      matchedProfiles = matchedProfiles.filter(profile => 
-        profile.workStatus === filters.workStatus
-      );
-    }
-    
-    // Apply interests filter if provided
-    if (filters.interests && filters.interests.length > 0) {
-      matchedProfiles = matchedProfiles.filter(profile => 
-        filters.interests.some(interest => profile.interests.includes(interest))
-      );
-    }
-    
-    // Apply compatibility threshold filter if provided
-    if (filters.compatibilityThreshold) {
-      matchedProfiles = matchedProfiles.filter(profile => 
-        profile.compatibility >= filters.compatibilityThreshold
-      );
-    }
-    
-    // Sort the filtered profiles by relevance
-    const userKids = userInfo?.kids || [];
-    const userNeighborhood = userInfo?.neighborhood || "";
-    sortProfilesByRelevance(matchedProfiles, userKids, userNeighborhood);
+    filterProfilesByLocationAndKids(filters);
   };
 
   const handleLeanOn = (id: number, name: string) => {
@@ -293,6 +254,7 @@ const MumzAlly = () => {
           onFiltersChange={handleFiltersChange} 
           profiles={filteredProfiles} 
           nearbyMoms={nearbyMoms}
+          showTinderView={true}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
         />
