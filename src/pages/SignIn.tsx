@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -200,13 +201,41 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     e.preventDefault();
     setIsLoading(true);
     
+    // Simulate a sign-in process
     setTimeout(() => {
       setIsLoading(false);
+      
+      // Create a mock user object for demonstration purposes
+      // In a real app, this would come from your backend
+      const userInfo = {
+        name: "Demo User",
+        firstName: "Demo",
+        lastName: "User",
+        email: signInData.email,
+        neighborhood: "Dubai Marina",
+        phone: "501234567",
+        location: {
+          latitude: "25.2048",
+          longitude: "55.2708"
+        },
+        workStatus: "working",
+        nationality: "Emirian",
+        interests: "Parenting, Cooking",
+        birthDate: "1990-01-01",
+        kids: [{ birthDate: '2020-01-01', gender: 'boy' }],
+        referralCode: 'LO' + Math.random().toString(36).substring(2, 8).toUpperCase()
+      };
+      
+      // Store user info in localStorage
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      
       toast({
         title: "Welcome back!",
         description: "You've successfully signed in.",
       });
-      navigate('/ally/subscribe');
+      
+      // Navigate to the home page, which will now show the authenticated view
+      navigate('/');
     }, 1500);
   };
   
