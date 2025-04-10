@@ -1,24 +1,41 @@
+
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Bell, Shield, Key, MapPin, LogOut } from 'lucide-react';
+import { Bell, Shield, Key, MapPin, LogOut, Save, Check } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
 import NotificationSubscriber from '@/components/NotificationSubscriber';
+import { useUserInfo } from '@/hooks/use-user-info';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('notifications');
   const { toast } = useToast();
+  const { userInfo, updateUserInfo } = useUserInfo();
+  
   const [settings, setSettings] = useState({
     pushNotifications: false,
     marketingEmails: false,
-    profileVisibility: 'public',
-    locationSharing: true,
+    profileVisibility: userInfo?.profileVisibility || 'public',
+    locationSharing: userInfo?.locationSharing || true,
   });
+  
+  // Password change state
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  
+  // Neighborhood update state
+  const [neighborhood, setNeighborhood] = useState(userInfo?.neighborhood || '');
+  const [isUpdatingNeighborhood, setIsUpdatingNeighborhood] = useState(false);
   
   const handleSettingChange = (setting: string, value: boolean | string) => {
     setSettings(prev => ({
@@ -26,10 +43,74 @@ const Settings = () => {
       [setting]: value
     }));
     
+    // Also update in user info if relevant
+    const userInfoUpdate: any = {};
+    if (setting === 'profileVisibility' || setting === 'locationSharing') {
+      userInfoUpdate[setting] = value;
+      updateUserInfo(userInfoUpdate);
+    }
+    
     toast({
       title: "Settings updated",
       description: "Your preferences have been saved.",
     });
+  };
+  
+  const handlePasswordChange = () => {
+    if (!passwordData.currentPassword) {
+      toast({
+        title: "Error",
+        description: "Please enter your current password.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast({
+        title: "Error",
+        description: "New passwords don't match.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // In a real app, we would call an API to update the password
+    // For this demo, we'll just show a success message
+    toast({
+      title: "Password updated",
+      description: "Your password has been changed successfully.",
+    });
+    
+    // Reset form and close it
+    setPasswordData({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+    setIsChangingPassword(false);
+  };
+  
+  const handleNeighborhoodUpdate = () => {
+    if (!neighborhood) {
+      toast({
+        title: "Error",
+        description: "Please enter your neighborhood.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Update user info with new neighborhood
+    updateUserInfo({ neighborhood });
+    
+    toast({
+      title: "Neighborhood updated",
+      description: "Your location information has been updated.",
+    });
+    
+    // Close the form
+    setIsUpdatingNeighborhood(false);
   };
   
   const handleLogout = () => {
@@ -99,6 +180,20 @@ const Settings = () => {
                       className="data-[state=checked]:bg-pastel-yellow"
                     />
                   </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-4"
+                    onClick={() => {
+                      toast({
+                        title: "Notification preferences saved",
+                        description: "Your notification settings have been updated.",
+                      });
+                    }}
+                  >
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Notification Preferences
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -126,6 +221,7 @@ const Settings = () => {
                         onClick={() => handleSettingChange('profileVisibility', 'public')}
                         className="justify-start"
                       >
+                        <Check className={`h-4 w-4 mr-2 ${settings.profileVisibility === 'public' ? 'opacity-100' : 'opacity-0'}`} />
                         Public
                       </Button>
                       
@@ -134,6 +230,7 @@ const Settings = () => {
                         onClick={() => handleSettingChange('profileVisibility', 'connections')}
                         className="justify-start"
                       >
+                        <Check className={`h-4 w-4 mr-2 ${settings.profileVisibility === 'connections' ? 'opacity-100' : 'opacity-0'}`} />
                         Connections Only
                       </Button>
                       
@@ -142,6 +239,7 @@ const Settings = () => {
                         onClick={() => handleSettingChange('profileVisibility', 'private')}
                         className="justify-start"
                       >
+                        <Check className={`h-4 w-4 mr-2 ${settings.profileVisibility === 'private' ? 'opacity-100' : 'opacity-0'}`} />
                         Private
                       </Button>
                     </div>
@@ -164,6 +262,20 @@ const Settings = () => {
                       className="data-[state=checked]:bg-pastel-yellow"
                     />
                   </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-4"
+                    onClick={() => {
+                      toast({
+                        title: "Privacy settings saved",
+                        description: "Your privacy preferences have been updated.",
+                      });
+                    }}
+                  >
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Privacy Settings
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -179,33 +291,105 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Change Password</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Update your account password
-                      </p>
+                  {isChangingPassword ? (
+                    <div className="border rounded-md p-4">
+                      <h4 className="font-medium mb-3">Change Your Password</h4>
+                      <div className="space-y-3 mb-4">
+                        <Input 
+                          type="password" 
+                          placeholder="Current Password" 
+                          value={passwordData.currentPassword}
+                          onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                        />
+                        <Input 
+                          type="password" 
+                          placeholder="New Password" 
+                          value={passwordData.newPassword}
+                          onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                        />
+                        <Input 
+                          type="password" 
+                          placeholder="Confirm New Password" 
+                          value={passwordData.confirmPassword}
+                          onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="warm" onClick={handlePasswordChange}>
+                          Save
+                        </Button>
+                        <Button variant="outline" onClick={() => {
+                          setIsChangingPassword(false);
+                          setPasswordData({
+                            currentPassword: '',
+                            newPassword: '',
+                            confirmPassword: '',
+                          });
+                        }}>
+                          Cancel
+                        </Button>
+                      </div>
                     </div>
-                    <Button variant="outline">
-                      <Key className="mr-2 h-4 w-4" />
-                      Change
-                    </Button>
-                  </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">Change Password</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Update your account password
+                        </p>
+                      </div>
+                      <Button 
+                        variant="outline"
+                        onClick={() => setIsChangingPassword(true)}
+                      >
+                        <Key className="mr-2 h-4 w-4" />
+                        Change
+                      </Button>
+                    </div>
+                  )}
                   
                   <Separator />
                   
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Update Neighborhood</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Change your location information
-                      </p>
+                  {isUpdatingNeighborhood ? (
+                    <div className="border rounded-md p-4">
+                      <h4 className="font-medium mb-3">Update Your Neighborhood</h4>
+                      <div className="space-y-3 mb-4">
+                        <Input 
+                          type="text" 
+                          placeholder="Enter your neighborhood" 
+                          value={neighborhood}
+                          onChange={(e) => setNeighborhood(e.target.value)}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="warm" onClick={handleNeighborhoodUpdate}>
+                          Save
+                        </Button>
+                        <Button variant="outline" onClick={() => {
+                          setIsUpdatingNeighborhood(false);
+                          setNeighborhood(userInfo?.neighborhood || '');
+                        }}>
+                          Cancel
+                        </Button>
+                      </div>
                     </div>
-                    <Button variant="outline">
-                      <MapPin className="mr-2 h-4 w-4" />
-                      Update
-                    </Button>
-                  </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">Update Neighborhood</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Change your location information
+                        </p>
+                      </div>
+                      <Button 
+                        variant="outline"
+                        onClick={() => setIsUpdatingNeighborhood(true)}
+                      >
+                        <MapPin className="mr-2 h-4 w-4" />
+                        Update
+                      </Button>
+                    </div>
+                  )}
                   
                   <Separator />
                   
