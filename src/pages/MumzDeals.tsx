@@ -11,6 +11,35 @@ import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
+import DealsHero from '@/components/mumzdeals/DealsHero';
+
+// Top brands data
+const topBrands = [
+  {
+    id: '1',
+    name: 'Bloom Baby',
+    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
+    bgColor: '#E5F4EB'
+  },
+  {
+    id: '2',
+    name: 'TinyTots',
+    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
+    bgColor: '#FFF5E1'
+  },
+  {
+    id: '3',
+    name: 'MotherCare UAE',
+    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
+    bgColor: '#FFE6E8'
+  },
+  {
+    id: '4',
+    name: 'Baby Essentials',
+    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
+    bgColor: '#FFF0E1'
+  }
+];
 
 const MumzDeals = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -85,24 +114,42 @@ const MumzDeals = () => {
             </Link>
           </Button>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-            <span className="text-black">Mumz Deals</span>
-          </h1>
-          
-          <div className="flex flex-wrap gap-4 mt-8">
-            <DealsHowItWorksDialog />
-            <Button 
-              size="md"
-              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
-            >
-              Browse Deals
-            </Button>
+          <DealsHero />
+        </div>
+        
+        {/* Top Partner Brands Section */}
+        <div className="max-w-3xl mx-auto mt-8 mb-12">
+          <h2 className="text-2xl font-semibold text-center mb-6 font-playfair">
+            Top Partner Brands
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {topBrands.map((brand) => (
+              <Link to="/brands" key={brand.id}>
+                <div 
+                  className="bg-white/80 rounded-lg p-4 shadow-sm border border-pastel-yellow/10 hover:shadow-md transition-all flex flex-col items-center justify-center h-32"
+                  style={{ backgroundColor: brand.bgColor }}
+                >
+                  <div className="bg-white/90 rounded-full p-3 w-16 h-16 flex items-center justify-center mb-2 shadow-sm">
+                    <img 
+                      src={brand.logo} 
+                      alt={brand.name} 
+                      className="h-10 w-10 object-contain"
+                    />
+                  </div>
+                  <p className="text-sm font-medium text-center">{brand.name}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-4">
             <Button 
               variant="outline" 
-              size="md" 
-              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
+              className="rounded-full border-pastel-yellow/30"
+              asChild
             >
-              Featured Brands
+              <Link to="/brands">
+                View All Partner Brands
+              </Link>
             </Button>
           </div>
         </div>

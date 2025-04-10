@@ -13,34 +13,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { toast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 
-// Top brands data
-const topBrands = [
-  {
-    id: '1',
-    name: 'Bloom Baby',
-    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
-    bgColor: '#E5F4EB'
-  },
-  {
-    id: '2',
-    name: 'TinyTots',
-    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
-    bgColor: '#FFF5E1'
-  },
-  {
-    id: '3',
-    name: 'MotherCare UAE',
-    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
-    bgColor: '#FFE6E8'
-  },
-  {
-    id: '4',
-    name: 'Baby Essentials',
-    logo: '/lovable-uploads/87341e97-733d-45f5-a260-432f58c283b8.png',
-    bgColor: '#FFF0E1'
-  }
-];
-
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -172,41 +144,17 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          {/* Top Brands Section */}
-          <div className="max-w-3xl mx-auto mt-8 mb-12">
-            <h2 className="text-2xl font-semibold text-center mb-6 font-playfair">
-              Top Partner Brands
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {topBrands.map((brand) => (
-                <Link to="/brands" key={brand.id}>
-                  <div 
-                    className="bg-white/80 rounded-lg p-4 shadow-sm border border-pastel-yellow/10 hover:shadow-md transition-all flex flex-col items-center justify-center h-32"
-                    style={{ backgroundColor: brand.bgColor }}
-                  >
-                    <div className="bg-white/90 rounded-full p-3 w-16 h-16 flex items-center justify-center mb-2 shadow-sm">
-                      <img 
-                        src={brand.logo} 
-                        alt={brand.name} 
-                        className="h-10 w-10 object-contain"
-                      />
-                    </div>
-                    <p className="text-sm font-medium text-center">{brand.name}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="text-center mt-4">
-              <Button 
-                variant="outline" 
-                className="rounded-full border-pastel-yellow/30"
-                asChild
-              >
-                <Link to="/brands">
-                  View All Partner Brands
-                </Link>
-              </Button>
-            </div>
+          {/* Top Brands Section has been moved to the Deals page */}
+          <div className="text-center mt-6">
+            <Button 
+              variant="outline" 
+              className="rounded-full border-pastel-yellow/30"
+              asChild
+            >
+              <Link to="/deals">
+                View Top Partner Brands & Deals
+              </Link>
+            </Button>
           </div>
         </div>
       ) : (
