@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface Kid {
@@ -25,7 +24,9 @@ interface UserInfo {
   birthDate?: string;
   bio?: string;
   kids?: Kid[];
-  referralCode?: string; // Added referral code field
+  referralCode?: string;
+  profileVisibility?: 'public' | 'connections' | 'private';
+  locationSharing?: boolean;
 }
 
 export const useUserInfo = () => {
@@ -104,18 +105,15 @@ export const useUserInfo = () => {
     }
   };
 
-  // Helper function to get kids' ages
   const getKidsAges = () => {
     if (!userInfo?.kids) return [];
     
     return userInfo.kids.map(kid => {
       if (kid.birthDate) {
-        // Calculate age in years
         const birthDate = new Date(kid.birthDate);
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
         
-        // Adjust age if birthday hasn't occurred yet this year
         const monthDiff = today.getMonth() - birthDate.getMonth();
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
           age--;
@@ -134,7 +132,7 @@ export const useUserInfo = () => {
     updateKid,
     addKid,
     removeKid,
-    neighborhood: userInfo?.neighborhood || 'Dubai Marina', // Default to Dubai Marina if not set
+    neighborhood: userInfo?.neighborhood || 'Dubai Marina',
     location: userInfo?.location,
     workStatus: userInfo?.workStatus,
     kids: userInfo?.kids || [],
