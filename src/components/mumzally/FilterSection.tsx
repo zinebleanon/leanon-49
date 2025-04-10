@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Filter } from 'lucide-react';
+import { Check, X, Filter, ArrowLeft } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -167,12 +167,12 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
   };
   
   const renderFilterContent = () => (
-    <div className="py-6 px-4 bg-[#FEF7CD]">
+    <div className="py-6 px-4 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             {activeFiltersCount > 0 && (
-              <Badge variant="outline" className="bg-[#FEF7CD]/50 px-2 py-1">
+              <Badge variant="outline" className="bg-[#B8CEC2]/50 px-2 py-1">
                 {activeFiltersCount} {activeFiltersCount === 1 ? 'filter' : 'filters'} active
               </Badge>
             )}
@@ -186,7 +186,7 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
             
             <Button 
               onClick={applyFilters} 
-              className="bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground"
+              className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
               size="sm"
             >
               <Check className="h-4 w-4 mr-2" />
@@ -200,20 +200,20 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'mother-age'}
             onOpenChange={() => toggleSection('mother-age')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Mother's Age</span>
-              <Badge variant={age !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#FFD9A7]/60">
+              <Badge variant={age !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#B8CEC2]/60">
                 {age !== 'all' ? age : 'All'}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <Select value={age} onValueChange={setAge}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="All Ages" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">All Ages</SelectItem>
                     <SelectItem value="20-25">20-25 years</SelectItem>
@@ -231,28 +231,28 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'child-1'}
             onOpenChange={() => toggleSection('child-1')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Child 1</span>
               <Badge 
                 variant={(kid1AgeRange !== 'all' || kid1Gender !== 'all') ? 'default' : 'outline'} 
-                className="ml-2 bg-[#FFD9A7]/60"
+                className="ml-2 bg-[#B8CEC2]/60"
               >
                 {kid1AgeRange !== 'all' ? `${kid1AgeRange}yr` : ''} 
                 {kid1Gender !== 'all' ? (kid1AgeRange !== 'all' ? ', ' : '') + kid1Gender : ''}
                 {kid1AgeRange === 'all' && kid1Gender === 'all' ? 'All' : ''}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="kid1AgeRange" className="block mb-2 text-xs">Age</Label>
                   <Select value={kid1AgeRange} onValueChange={setKid1AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
                       <ScrollArea className="h-[200px]">
                         <SelectGroup>
                           <SelectItem value="all">All Ages</SelectItem>
@@ -269,10 +269,10 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                 <div>
                   <Label htmlFor="kid1Gender" className="block mb-2 text-xs">Gender</Label>
                   <Select value={kid1Gender} onValueChange={setKid1Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">Any Gender</SelectItem>
                         <SelectItem value="Boy">Boy</SelectItem>
@@ -289,28 +289,28 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'child-2'}
             onOpenChange={() => toggleSection('child-2')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Child 2</span>
               <Badge 
                 variant={(kid2AgeRange !== 'all' || kid2Gender !== 'all') ? 'default' : 'outline'} 
-                className="ml-2 bg-[#FFD9A7]/60"
+                className="ml-2 bg-[#B8CEC2]/60"
               >
                 {kid2AgeRange !== 'all' ? `${kid2AgeRange}yr` : ''} 
                 {kid2Gender !== 'all' ? (kid2AgeRange !== 'all' ? ', ' : '') + kid2Gender : ''}
                 {kid2AgeRange === 'all' && kid2Gender === 'all' ? 'All' : ''}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="kid2AgeRange" className="block mb-2 text-xs">Age</Label>
                   <Select value={kid2AgeRange} onValueChange={setKid2AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
                       <ScrollArea className="h-[200px]">
                         <SelectGroup>
                           <SelectItem value="all">All Ages</SelectItem>
@@ -327,10 +327,10 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                 <div>
                   <Label htmlFor="kid2Gender" className="block mb-2 text-xs">Gender</Label>
                   <Select value={kid2Gender} onValueChange={setKid2Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">Any Gender</SelectItem>
                         <SelectItem value="Boy">Boy</SelectItem>
@@ -347,28 +347,28 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'child-3'}
             onOpenChange={() => toggleSection('child-3')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Child 3</span>
               <Badge 
                 variant={(kid3AgeRange !== 'all' || kid3Gender !== 'all') ? 'default' : 'outline'} 
-                className="ml-2 bg-[#FFD9A7]/60"
+                className="ml-2 bg-[#B8CEC2]/60"
               >
                 {kid3AgeRange !== 'all' ? `${kid3AgeRange}yr` : ''} 
                 {kid3Gender !== 'all' ? (kid3AgeRange !== 'all' ? ', ' : '') + kid3Gender : ''}
                 {kid3AgeRange === 'all' && kid3Gender === 'all' ? 'All' : ''}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor="kid3AgeRange" className="block mb-2 text-xs">Age</Label>
                   <Select value={kid3AgeRange} onValueChange={setKid3AgeRange}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="All Ages" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30 max-h-[200px]">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30 max-h-[200px]">
                       <ScrollArea className="h-[200px]">
                         <SelectGroup>
                           <SelectItem value="all">All Ages</SelectItem>
@@ -385,10 +385,10 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                 <div>
                   <Label htmlFor="kid3Gender" className="block mb-2 text-xs">Gender</Label>
                   <Select value={kid3Gender} onValueChange={setKid3Gender}>
-                    <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30 h-9 text-sm">
+                    <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30 h-9 text-sm">
                       <SelectValue placeholder="Any Gender" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-[#FFD9A7]/30">
+                    <SelectContent className="bg-white border-[#B8CEC2]/30">
                       <SelectGroup>
                         <SelectItem value="all">Any Gender</SelectItem>
                         <SelectItem value="Boy">Boy</SelectItem>
@@ -405,20 +405,20 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'location'}
             onOpenChange={() => toggleSection('location')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Location</span>
-              <Badge variant={location !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#FFD9A7]/60">
+              <Badge variant={location !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#B8CEC2]/60">
                 {location !== 'all' ? location : 'All'}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <Select value={location} onValueChange={setLocation}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Location" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">Any Location</SelectItem>
                     <SelectItem value="Dubai Marina">Dubai Marina</SelectItem>
@@ -436,20 +436,20 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'nationality'}
             onOpenChange={() => toggleSection('nationality')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Nationality</span>
-              <Badge variant={nationality !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#FFD9A7]/60">
+              <Badge variant={nationality !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#B8CEC2]/60">
                 {nationality !== 'all' ? nationality : 'All'}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <Select value={nationality} onValueChange={setNationality}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Nationality" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">Any Nationality</SelectItem>
                     <SelectItem value="British Expat">British Expat</SelectItem>
@@ -468,20 +468,20 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'profession'}
             onOpenChange={() => toggleSection('profession')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Profession</span>
-              <Badge variant={workStatus !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#FFD9A7]/60">
+              <Badge variant={workStatus !== 'all' ? 'default' : 'outline'} className="ml-2 bg-[#B8CEC2]/60">
                 {workStatus !== 'all' ? workStatus : 'All'}
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <Select value={workStatus} onValueChange={setWorkStatus}>
-                <SelectTrigger className="w-full bg-white/80 border-[#FFD9A7]/30">
+                <SelectTrigger className="w-full bg-white/80 border-[#B8CEC2]/30">
                   <SelectValue placeholder="Any Profession" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD9A7]/30">
+                <SelectContent className="bg-white border-[#B8CEC2]/30">
                   <SelectGroup>
                     <SelectItem value="all">Any Profession</SelectItem>
                     <SelectItem value="Full-time">Full-time</SelectItem>
@@ -499,18 +499,18 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
           <Collapsible
             open={expandedSection === 'compatibility'}
             onOpenChange={() => toggleSection('compatibility')}
-            className="bg-white/90 rounded-lg shadow-sm border border-[#FFD9A7]/30"
+            className="bg-white/90 rounded-lg shadow-sm border border-[#B8CEC2]/30"
           >
             <CollapsibleTrigger className="flex justify-between items-center w-full p-3 text-left">
               <span className="font-medium">Minimum Compatibility</span>
               <Badge 
                 variant={compatibilityThreshold[0] !== 70 ? 'default' : 'outline'} 
-                className="ml-2 bg-[#FFD9A7]/60"
+                className="ml-2 bg-[#B8CEC2]/60"
               >
                 {compatibilityThreshold[0]}%
               </Badge>
             </CollapsibleTrigger>
-            <CollapsibleContent className="p-3 pt-0 border-t border-[#FFD9A7]/30">
+            <CollapsibleContent className="p-3 pt-0 border-t border-[#B8CEC2]/30">
               <Slider
                 value={compatibilityThreshold}
                 onValueChange={setCompatibilityThreshold}
@@ -526,6 +526,26 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
             </CollapsibleContent>
           </Collapsible>
         </div>
+        
+        {/* Back button only */}
+        <div className="sticky bottom-4 mt-4 flex justify-end">
+          {(onClose || onOpenChange) && (
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                if (onOpenChange) {
+                  onOpenChange(false);
+                } else if (onClose) {
+                  onClose();
+                }
+              }} 
+              className="border-[#B8CEC2] bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -534,7 +554,7 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
   if (open !== undefined && onOpenChange) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full max-w-5xl p-0 bg-[#FEF7CD]">
+        <DialogContent className="w-full max-w-5xl p-0 bg-[#B8CEC2]">
           {renderFilterContent()}
         </DialogContent>
       </Dialog>
