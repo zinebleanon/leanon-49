@@ -103,22 +103,29 @@ const ListedItemsSection = () => {
               {pendingApprovalItems.map((item) => (
                 <div key={item.id} className="border p-4 rounded-md hover:bg-gray-50 transition-colors">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} isPending={true} />
-                  <div className="flex flex-col gap-2">
-                    <h3 className="font-semibold text-lg">{item.title}</h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
-                      <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
-                      <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
-                      {item.size !== "Not Applicable" && (
-                        <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
-                      )}
-                      <Badge variant="outline">{item.subCategory}</Badge>
-                      <Badge variant="outline">{item.brand}</Badge>
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Clock className="h-4 w-4 text-amber-500" />
-                      <span className="text-sm text-amber-700">Awaiting admin review</span>
+                  <div className="flex gap-4">
+                    {item.image && (
+                      <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-2">
+                      <h3 className="font-semibold text-lg">{item.title}</h3>
+                      <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
+                        <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
+                        <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
+                        {item.size !== "Not Applicable" && (
+                          <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
+                        )}
+                        <Badge variant="outline">{item.subCategory}</Badge>
+                        <Badge variant="outline">{item.brand}</Badge>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Clock className="h-4 w-4 text-amber-500" />
+                        <span className="text-sm text-amber-700">Awaiting admin review</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -142,18 +149,25 @@ const ListedItemsSection = () => {
                 <div key={item.id} className="border p-4 rounded-md hover:bg-gray-50 transition-colors">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} />
                   <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-lg">{item.title}</h3>
-                      <p className="text-sm text-gray-600 line-clamp-2 mt-1 mb-2">{item.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
-                        <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
-                        <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
-                        {item.size !== "Not Applicable" && (
-                          <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
-                        )}
-                        <Badge variant="outline">{item.subCategory}</Badge>
-                        <Badge variant="outline">{item.brand}</Badge>
+                    <div className="flex gap-4">
+                      {item.image && (
+                        <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="font-semibold text-lg">{item.title}</h3>
+                        <p className="text-sm text-gray-600 line-clamp-2 mt-1 mb-2">{item.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
+                          <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
+                          <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
+                          {item.size !== "Not Applicable" && (
+                            <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
+                          )}
+                          <Badge variant="outline">{item.subCategory}</Badge>
+                          <Badge variant="outline">{item.brand}</Badge>
+                        </div>
                       </div>
                     </div>
                     <div className="flex flex-col gap-2">

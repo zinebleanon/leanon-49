@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ShieldCheck, Check, X } from 'lucide-react';
+import { ShieldCheck, Check, X, Upload, Image } from 'lucide-react';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
 
 const SellItemForm = () => {
@@ -26,7 +25,6 @@ const SellItemForm = () => {
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [brand, setBrand] = useState('');
-  const [customBrand, setCustomBrand] = useState('');
   const [condition, setCondition] = useState('');
   const [pricingType, setPricingType] = useState('paid');
   const [price, setPrice] = useState('');
@@ -39,6 +37,8 @@ const SellItemForm = () => {
   const [listedItems, setListedItems] = useState<any[]>([]);
   const [pendingApprovalItems, setPendingApprovalItems] = useState<any[]>([]);
   const [isAdminMode, setIsAdminMode] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   
   const subCategories: Record<string, string[]> = {
     "baby-clothes": ["Newborn (0-3m)", "Infant (3-12m)", "Toddler (1-3y)", "Kids (3-8y)"],
@@ -52,14 +52,6 @@ const SellItemForm = () => {
     "furniture": ["Cribs", "Bassinets", "Changing Tables", "Gliders", "Storage"],
     "others": ["Diapering", "Health & Safety", "Carriers", "Travel Accessories"]
   };
-  
-  const popularBrands = [
-    "Chicco", "Avent", "Graco", "Fisher-Price", "Pampers", 
-    "Huggies", "Britax", "Medela", "Baby Einstein", "Munchkin",
-    "Cybex", "Bugaboo", "UPPAbaby", "Tommee Tippee", "Carters",
-    "Evenflo", "Skip Hop", "Gerber", "MAM", "Babybjorn",
-    "Other"
-  ];
 
   const ageGroups = [
     "Newborn (0-3m)", 
@@ -121,6 +113,25 @@ const SellItemForm = () => {
       setPrice('');
     }
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      setImage(selectedFile);
+      
+      // Create a preview
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImagePreview(event.target?.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const removeImage = () => {
+    setImage(null);
+    setImagePreview(null);
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,9 +145,7 @@ const SellItemForm = () => {
       return;
     }
     
-    const finalBrand = brand === "Other" ? customBrand : brand;
-    
-    if (!title || !description || !category || !subCategory || !finalBrand || !condition || (!isFreeItem && pricingType === 'paid' && !price) || !ageGroup) {
+    if (!title || !description || !category || !subCategory || !brand || !condition || (!isFreeItem && pricingType === 'paid' && !price) || !ageGroup) {
       toast({
         title: "Missing Information",
         description: "Please fill out all required fields.",
@@ -154,20 +163,27 @@ const SellItemForm = () => {
           ? 'Contact MomSeller' 
           : `${price} AED`;
           
+      // Convert image to base64 for storage if it exists
+      let imageData = null;
+      if (imagePreview) {
+        imageData = imagePreview;
+      }
+      
       const newItem = {
         id: Date.now().toString(),
         title,
         description,
         category,
         subCategory,
-        brand: finalBrand,
+        brand,
         ageGroup,
         size: size || 'Not Applicable',
         condition,
         price: finalPrice,
         createdDate: new Date().toISOString(),
         status: 'available',
-        approved: false
+        approved: false,
+        image: imageData
       };
       
       const existingItems = localStorage.getItem('listedItems');
@@ -192,13 +208,14 @@ const SellItemForm = () => {
       setCategory('');
       setSubCategory('');
       setBrand('');
-      setCustomBrand('');
       setCondition('');
       setPricingType('paid');
       setPrice('');
       setAgeGroup('');
       setSize('');
       setIsFreeItem(false);
+      setImage(null);
+      setImagePreview(null);
       
       setIsSubmitting(false);
     }, 1500);
@@ -292,19 +309,26 @@ const SellItemForm = () => {
               {pendingApprovalItems.map((item) => (
                 <div key={item.id} className="border p-4 rounded-md">
                   <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold">{item.title}</h3>
-                      <p className="text-sm">{item.description.substring(0, 100)}...</p>
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        <Badge variant="outline">{item.category}</Badge>
-                        <Badge variant="outline">{item.subCategory}</Badge>
-                        <Badge variant="outline">{item.brand}</Badge>
-                        <Badge variant="outline">{item.ageGroup}</Badge>
-                        {item.size !== "Not Applicable" && (
-                          <Badge variant="outline">Size: {item.size}</Badge>
-                        )}
-                        <Badge variant="outline">{item.condition}</Badge>
-                        <Badge variant="outline">{item.price}</Badge>
+                    <div className="flex gap-4">
+                      {item.image && (
+                        <div className="w-24 h-24 rounded-md overflow-hidden flex-shrink-0">
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="font-semibold">{item.title}</h3>
+                        <p className="text-sm">{item.description.substring(0, 100)}...</p>
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          <Badge variant="outline">{item.category}</Badge>
+                          <Badge variant="outline">{item.subCategory}</Badge>
+                          <Badge variant="outline">{item.brand}</Badge>
+                          <Badge variant="outline">{item.ageGroup}</Badge>
+                          {item.size !== "Not Applicable" && (
+                            <Badge variant="outline">Size: {item.size}</Badge>
+                          )}
+                          <Badge variant="outline">{item.condition}</Badge>
+                          <Badge variant="outline">{item.price}</Badge>
+                        </div>
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -451,25 +475,51 @@ const SellItemForm = () => {
                 
                 <div>
                   <Label htmlFor="brand">Brand</Label>
-                  <Select onValueChange={setBrand} value={brand} required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select brand" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {popularBrands.map((brandName) => (
-                        <SelectItem key={brandName} value={brandName}>{brandName}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  
-                  {brand === "Other" && (
-                    <div className="mt-2">
-                      <Input 
-                        placeholder="Specify brand"
-                        value={customBrand}
-                        onChange={(e) => setCustomBrand(e.target.value)}
-                        required={brand === "Other"}
+                  <Input
+                    id="brand"
+                    placeholder="Enter brand name"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="image">Item Image</Label>
+                <div className="mt-2">
+                  {!imagePreview ? (
+                    <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center">
+                      <Image className="h-8 w-8 text-gray-400 mb-2" />
+                      <label htmlFor="image-upload" className="cursor-pointer">
+                        <span className="text-blue-600 hover:text-blue-500">Upload an image</span>
+                        <input
+                          id="image-upload"
+                          name="image-upload"
+                          type="file"
+                          accept="image/*"
+                          className="sr-only"
+                          onChange={handleImageChange}
+                        />
+                      </label>
+                      <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <img 
+                        src={imagePreview} 
+                        alt="Preview" 
+                        className="w-full max-h-64 object-contain rounded-md" 
                       />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="absolute top-2 right-2 bg-white"
+                        onClick={removeImage}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -535,17 +585,24 @@ const SellItemForm = () => {
               {pendingApprovalItems.map((item) => (
                 <div key={item.id} className="border p-4 rounded-md">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} isPending={true} />
-                  <div className="flex flex-col gap-2">
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <div className="flex flex-wrap gap-1">
-                      <Badge variant="outline">{item.price}</Badge>
-                      <Badge variant="outline">{item.condition}</Badge>
-                      <Badge variant="outline">{item.ageGroup}</Badge>
-                      {item.size !== "Not Applicable" && (
-                        <Badge variant="outline">Size: {item.size}</Badge>
-                      )}
-                      <Badge variant="outline">{item.subCategory}</Badge>
-                      <Badge variant="outline">{item.brand}</Badge>
+                  <div className="flex gap-4">
+                    {item.image && (
+                      <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-2">
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <div className="flex flex-wrap gap-1">
+                        <Badge variant="outline">{item.price}</Badge>
+                        <Badge variant="outline">{item.condition}</Badge>
+                        <Badge variant="outline">{item.ageGroup}</Badge>
+                        {item.size !== "Not Applicable" && (
+                          <Badge variant="outline">Size: {item.size}</Badge>
+                        )}
+                        <Badge variant="outline">{item.subCategory}</Badge>
+                        <Badge variant="outline">{item.brand}</Badge>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -566,17 +623,24 @@ const SellItemForm = () => {
                 <div key={item.id} className="border p-4 rounded-md">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} />
                   <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold">{item.title}</h3>
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        <Badge variant="outline">{item.price}</Badge>
-                        <Badge variant="outline">{item.condition}</Badge>
-                        <Badge variant="outline">{item.ageGroup}</Badge>
-                        {item.size !== "Not Applicable" && (
-                          <Badge variant="outline">Size: {item.size}</Badge>
-                        )}
-                        <Badge variant="outline">{item.subCategory}</Badge>
-                        <Badge variant="outline">{item.brand}</Badge>
+                    <div className="flex gap-4">
+                      {item.image && (
+                        <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div>
+                        <h3 className="font-semibold">{item.title}</h3>
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          <Badge variant="outline">{item.price}</Badge>
+                          <Badge variant="outline">{item.condition}</Badge>
+                          <Badge variant="outline">{item.ageGroup}</Badge>
+                          {item.size !== "Not Applicable" && (
+                            <Badge variant="outline">Size: {item.size}</Badge>
+                          )}
+                          <Badge variant="outline">{item.subCategory}</Badge>
+                          <Badge variant="outline">{item.brand}</Badge>
+                        </div>
                       </div>
                     </div>
                     <div>
