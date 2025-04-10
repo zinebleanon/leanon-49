@@ -1,5 +1,5 @@
+
 import { Button } from '@/components/ui/button';
-import HowItWorksModal from './HowItWorksModal';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogDescription } from '@/components/ui/dialog';
@@ -223,7 +223,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
               </Link>
             </Button>
             
-            <HowItWorksModal />
+            {/* Removed HowItWorksModal component from here */}
           </div>
         </div>
         

@@ -1,10 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
 import MessageDialog from '@/components/mumzally/MessageDialog';
-import HowItWorksModal from '@/components/mumzally/HowItWorksModal';
 import { useUserInfo } from '@/hooks/use-user-info';
 
 const mockProfiles = [
@@ -175,8 +173,6 @@ const MumzAlly = () => {
       </main>
       
       <Footer />
-      
-      <HowItWorksModal />
       
       {selectedRecipient && (
         <MessageDialog 
