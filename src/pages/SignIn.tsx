@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,12 +7,13 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus, Calendar } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus, Calendar, Upload, User } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import BowRibbon from '@/components/mumzally/BowRibbon';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import RibbonIcon from '@/components/ui/RibbonIcon';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
@@ -25,6 +26,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
   const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification, 3: Profile
   const [otpValue, setOtpValue] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Set active tab based on location pathname if not explicitly provided
   useEffect(() => {
@@ -41,7 +43,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   });
   
   const [signUpData, setSignUpData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     password: '',
@@ -53,7 +56,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     nationality: '',
     interests: '',
     birthDate: '',
-    kids: [{ birthDate: '', gender: '' }]
+    kids: [{ birthDate: '', gender: '' }],
+    profilePicture: null as File | null,
+    profilePictureURL: ''
   });
   
   const neighborhoods = [
@@ -273,7 +278,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
         setIsLoading(false);
         
         const userInfo = {
-          name: signUpData.name,
+          name: `${signUpData.firstName} ${signUpData.lastName}`,
+          firstName: signUpData.firstName,
+          lastName: signUpData.lastName,
           email: signUpData.email,
           neighborhood: signUpData.neighborhood,
           phone: signUpData.phone,
@@ -285,7 +292,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           nationality: signUpData.nationality,
           interests: signUpData.interests,
           birthDate: signUpData.birthDate,
-          kids: signUpData.kids
+          kids: signUpData.kids,
+          profilePictureURL: signUpData.profilePictureURL
         };
         
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -353,6 +361,29 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       description: "For testing purposes only"
     });
     setSignupStep(3);
+  };
+  
+  // Handle profile picture upload
+  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Create URL for preview
+      const imageUrl = URL.createObjectURL(file);
+      setSignUpData(prev => ({
+        ...prev,
+        profilePicture: file,
+        profilePictureURL: imageUrl
+      }));
+      
+      toast({
+        title: "Image uploaded",
+        description: "Profile picture added successfully"
+      });
+    }
+  };
+  
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
   
   return (
@@ -476,17 +507,32 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
               <form onSubmit={handleSignUpSubmit}>
                 {signupStep === 1 && (
                   <CardContent className="space-y-4 pt-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-name">Full Name</Label>
-                      <Input 
-                        id="signup-name"
-                        name="name"
-                        placeholder="Enter your full name"
-                        className="border-secondary/30 focus:border-secondary"
-                        value={signUpData.name}
-                        onChange={handleSignUpChange}
-                        required
-                      />
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="signup-first-name">First Name</Label>
+                        <Input 
+                          id="signup-first-name"
+                          name="firstName"
+                          placeholder="First name"
+                          className="border-secondary/30 focus:border-secondary"
+                          value={signUpData.firstName}
+                          onChange={handleSignUpChange}
+                          required
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="signup-last-name">Last Name</Label>
+                        <Input 
+                          id="signup-last-name"
+                          name="lastName"
+                          placeholder="Last name"
+                          className="border-secondary/30 focus:border-secondary"
+                          value={signUpData.lastName}
+                          onChange={handleSignUpChange}
+                          required
+                        />
+                      </div>
                     </div>
                     
                     <div className="space-y-2">
@@ -639,6 +685,37 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                 
                 {signupStep === 3 && (
                   <CardContent className="space-y-4 pt-6 max-h-[60vh] overflow-y-auto pr-2">
+                    {/* Profile Picture Upload */}
+                    <div className="space-y-2 flex flex-col items-center">
+                      <Label className="self-start">Profile Picture (Optional)</Label>
+                      <Avatar className="w-24 h-24 cursor-pointer border-2 border-secondary/50" onClick={triggerFileInput}>
+                        {signUpData.profilePictureURL ? (
+                          <AvatarImage src={signUpData.profilePictureURL} alt="Profile" />
+                        ) : (
+                          <AvatarFallback className="bg-secondary/20 flex items-center justify-center">
+                            <User className="h-8 w-8 text-secondary" />
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                      <input 
+                        type="file" 
+                        ref={fileInputRef}
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleProfilePictureChange}
+                      />
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-2 text-xs flex items-center gap-1.5"
+                        onClick={triggerFileInput}
+                      >
+                        <Upload className="h-3.5 w-3.5" />
+                        {signUpData.profilePictureURL ? 'Change Photo' : 'Upload Photo'}
+                      </Button>
+                    </div>
+                    
                     <div className="space-y-2">
                       <Label htmlFor="signup-birthdate">Your Birth Date</Label>
                       <Input
