@@ -11,13 +11,16 @@ import { useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Card } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface FilterSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
   onClose?: () => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
+const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterSectionProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [age, setAge] = useState('all');
@@ -109,7 +112,9 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
       description: `${activeFiltersCount} ${activeFiltersCount === 1 ? 'filter' : 'filters'} applied to your search.`,
     });
     
-    if (onClose) {
+    if (onOpenChange) {
+      onOpenChange(false);
+    } else if (onClose) {
       onClose();
     }
   };
@@ -148,8 +153,8 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
     </div>
   );
   
-  return (
-    <section className="py-6 px-4 bg-[#B8CEC2]" id="filter-section">
+  const renderFilterContent = () => (
+    <div className="py-6 px-4 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
@@ -405,10 +410,16 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
         
         {/* Sticky action buttons */}
         <div className="sticky bottom-4 mt-4 flex justify-end gap-2">
-          {onClose && (
+          {(onClose || onOpenChange) && (
             <Button 
               variant="outline" 
-              onClick={onClose} 
+              onClick={() => {
+                if (onOpenChange) {
+                  onOpenChange(false);
+                } else if (onClose) {
+                  onClose();
+                }
+              }} 
               className="border-[#B8CEC2] bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -424,9 +435,22 @@ const FilterSection = ({ onFiltersChange, onClose }: FilterSectionProps) => {
           </Button>
         </div>
       </div>
-    </section>
+    </div>
   );
+  
+  // If open and onOpenChange props are provided, render as a dialog
+  if (open !== undefined && onOpenChange) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="w-full max-w-5xl p-0 bg-[#B8CEC2]">
+          {renderFilterContent()}
+        </DialogContent>
+      </Dialog>
+    );
+  }
+  
+  // Otherwise, render as a regular section
+  return <section id="filter-section">{renderFilterContent()}</section>;
 };
 
 export default FilterSection;
-
