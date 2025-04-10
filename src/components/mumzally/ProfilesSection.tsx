@@ -39,9 +39,7 @@ const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSec
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-semibold font-playfair">Recommended Match</h2>
-          <Badge variant="outline" className="px-3 py-1 bg-[#B8CEC2]/50 border-[#B8CEC2]">
-            {profiles.length} {profiles.length === 1 ? 'result' : 'results'} found
-          </Badge>
+          {/* Removed the "results found" badge here as well */}
         </div>
         
         {profiles.length > 0 ? (

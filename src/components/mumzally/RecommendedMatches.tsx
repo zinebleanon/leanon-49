@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, Baby, UserCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -53,8 +52,6 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   
   return (
     <div className="mb-6">
-      {/* Removed the "Moms Around You" heading */}
-      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {enhancedProfiles.map((profile) => {
           const isConnectionSent = sentConnections.includes(profile.id);

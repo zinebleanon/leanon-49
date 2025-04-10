@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -187,11 +186,6 @@ const HeroSection = ({
         <div>
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Matched for You</h2>
-            {profiles.length > 0 && (
-              <Badge variant="outline" className="px-3 py-1 bg-white/50">
-                {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
-              </Badge>
-            )}
           </div>
           
           <RecommendedMatches profiles={profiles} />
