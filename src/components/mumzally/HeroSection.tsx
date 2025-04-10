@@ -59,27 +59,6 @@ const HeroSection = ({
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
             LeanMoms<br />Around You
           </h1>
-          
-          {/* Search bar */}
-          <div className="max-w-md mx-auto mt-4 relative">
-            <Input
-              type="text"
-              placeholder="Search by name, location, or interests..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Button 
-              size="sm" 
-              variant="outline"
-              onClick={() => setIsFiltersOpen(true)} 
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 flex items-center gap-1 px-2"
-            >
-              <Filter className="h-3 w-3" />
-              <span className="text-xs">Filters</span>
-            </Button>
-          </div>
         </div>
         
         <div className="flex flex-col gap-3 items-center w-full max-w-[200px] mx-auto md:mx-0">
@@ -131,6 +110,29 @@ const HeroSection = ({
               </Badge>
             )}
           </div>
+          
+          {/* Search and filter section just before the profiles */}
+          <div className="flex items-center gap-3 mb-4 mt-2">
+            <div className="relative flex-1">
+              <Input
+                type="text"
+                placeholder="Search by name, location, or interests..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+            <Button 
+              variant="outline"
+              onClick={() => setIsFiltersOpen(true)} 
+              className="h-10 flex items-center gap-1 px-3 bg-white/80 border-2 border-[#FFD9A7]/30 hover:bg-white/90 hover:border-[#FFD9A7]"
+            >
+              <Filter className="h-4 w-4" />
+              <span>Filters</span>
+            </Button>
+          </div>
+          
           <RecommendedMatches profiles={nearbyMoms} />
         </div>
       )}
@@ -145,6 +147,31 @@ const HeroSection = ({
               </Badge>
             )}
           </div>
+          
+          {/* If we don't have "nearbyMoms", we should also show search and filter here */}
+          {nearbyMoms.length === 0 && (
+            <div className="flex items-center gap-3 mb-4 mt-2">
+              <div className="relative flex-1">
+                <Input
+                  type="text"
+                  placeholder="Search by name, location, or interests..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
+                />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              </div>
+              <Button 
+                variant="outline"
+                onClick={() => setIsFiltersOpen(true)} 
+                className="h-10 flex items-center gap-1 px-3 bg-white/80 border-2 border-[#FFD9A7]/30 hover:bg-white/90 hover:border-[#FFD9A7]"
+              >
+                <Filter className="h-4 w-4" />
+                <span>Filters</span>
+              </Button>
+            </div>
+          )}
+          
           <RecommendedMatches profiles={profiles} />
         </div>
       )}
