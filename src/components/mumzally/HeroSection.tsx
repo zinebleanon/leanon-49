@@ -111,8 +111,8 @@ const HeroSection = ({
             )}
           </div>
           
-          {/* Search and filter section with higher z-index and more visible styling */}
-          <div className="flex items-center gap-3 mb-4 mt-2 relative z-10 bg-[#B8CEC2]/30 p-3 rounded-lg">
+          {/* Search and filter section right after the "Moms Near You" heading */}
+          <div className="flex items-center gap-3 mb-4 relative z-10 bg-[#B8CEC2]/30 p-3 rounded-lg">
             <div className="relative flex-1">
               <Input
                 type="text"
@@ -148,9 +148,9 @@ const HeroSection = ({
             )}
           </div>
           
-          {/* If we don't have "nearbyMoms", we should also show search and filter here with improved visibility */}
+          {/* Search and filter section for "Matched for You" when there are no nearby moms */}
           {nearbyMoms.length === 0 && (
-            <div className="flex items-center gap-3 mb-4 mt-2 relative z-10 bg-[#B8CEC2]/30 p-3 rounded-lg">
+            <div className="flex items-center gap-3 mb-4 relative z-10 bg-[#B8CEC2]/30 p-3 rounded-lg">
               <div className="relative flex-1">
                 <Input
                   type="text"
