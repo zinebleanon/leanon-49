@@ -15,32 +15,32 @@ const MumzAllySubscribe = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden w-full">
       <Navbar />
       
-      <main className="flex flex-col items-center justify-center pt-24 pb-16 px-6 md:px-8">
-        <div className="max-w-4xl mx-auto">
-          <Card className="p-12 border-2 border-primary/20 bg-white/50 backdrop-blur-sm text-center">
+      <main className="flex flex-col items-center justify-center pt-24 pb-16 px-4 md:px-8 w-full">
+        <div className="w-full max-w-4xl mx-auto">
+          <Card className="p-6 md:p-12 border-2 border-primary/20 bg-white/50 backdrop-blur-sm text-center">
             <div className="flex items-center justify-center gap-3 mb-6">
               <RibbonIcon className="h-12 w-12 text-primary" />
             </div>
             
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 font-playfair">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 font-playfair">
               Welcome to
             </h1>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 font-playfair">
               LeanOn Community
             </h1>
             
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-playfair mb-8">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-playfair mb-8">
               Where Moms LeanOn Moms
             </p>
             
             <Button 
-              className="w-full warm-button text-lg py-6"
+              className="w-full max-w-md mx-auto warm-button text-base md:text-lg py-4 md:py-6"
               onClick={() => navigate('/ally')}
             >
-              <RibbonIcon className="mr-2 h-5 w-5" />
+              <RibbonIcon className="mr-2 h-4 w-4 md:h-5 md:w-5" />
               Explore the Community
             </Button>
           </Card>
