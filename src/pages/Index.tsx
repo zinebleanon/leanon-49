@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift, Share2, WhatsApp } from 'lucide-react';
+import { BellRing, Gift, Share2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -128,7 +128,7 @@ const Index = () => {
                       className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500"
                       onClick={shareWhatsApp}
                     >
-                      <WhatsApp className="h-5 w-5" />
+                      <Share2 className="h-5 w-5" />
                       Share via WhatsApp
                     </Button>
                   </div>
