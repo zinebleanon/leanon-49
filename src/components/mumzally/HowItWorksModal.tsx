@@ -49,7 +49,7 @@ const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
         <Button 
           variant="outline" 
           size="md" 
-          className={`rounded-full px-4 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center h-9 ${className}`}
+          className={`rounded-full px-4 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
         >
           <Info className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
           <span>How It Works</span>

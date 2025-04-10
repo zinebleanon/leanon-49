@@ -222,7 +222,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
               </Link>
             </Button>
             
-            <HowItWorksModal />
+            <HowItWorksModal className="h-9" />
           </div>
         </div>
         
