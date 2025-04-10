@@ -22,7 +22,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6 mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12 mb-12">
             <Button 
               variant="warm"
               size="sm"
