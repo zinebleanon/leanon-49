@@ -82,8 +82,8 @@ const MumzAsk = () => {
                       size="lg" 
                       className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                     >
-                      <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
-                      Ask LeanOn Community
+                      <RibbonIcon className="h-5 w-5 mr-2" color="#000000" />
+                      Ask LeanCommunity
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-lg">
