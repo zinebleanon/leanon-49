@@ -10,8 +10,9 @@ import { Search, Package, Filter } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 import MarketplaceFilterDialog from '@/components/mumzmarketplace/MarketplaceFilterDialog';
 import { filterMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceFilterUtils';
+import { allMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceDataProvider';
 
-// Approved listings data - moved to the top level
+// Define approvedListings with the required properties for the MarketplaceItem type
 const approvedListings = [
   {
     title: "Cybex Stroller (Like New)",
@@ -23,7 +24,9 @@ const approvedListings = [
     category: "Strollers",
     ageGroup: "0-3 years",
     size: "One Size",
-    status: "available"
+    status: "available",
+    priceValue: 900,
+    superMom: true
   },
   {
     title: "Plan Toys Wooden Set",
@@ -35,7 +38,9 @@ const approvedListings = [
     category: "Toys",
     ageGroup: "1-2 years",
     size: "One Size",
-    status: "available"
+    status: "available",
+    priceValue: 149,
+    superMom: false
   },
   {
     title: "Baby Clothes Bundle (0-3m)",
@@ -47,7 +52,9 @@ const approvedListings = [
     category: "Baby Clothes",
     ageGroup: "0-3 months",
     size: "0-3M",
-    status: "available"
+    status: "available",
+    priceValue: 120,
+    superMom: true
   },
   {
     title: "Avent Baby Bottles (Set of 4)",
@@ -59,7 +66,9 @@ const approvedListings = [
     category: "Feeding",
     ageGroup: "0-12 months",
     size: "One Size",
-    status: "available"
+    status: "available",
+    priceValue: 85,
+    superMom: false
   },
   {
     title: "Graco Car Seat",
@@ -71,7 +80,9 @@ const approvedListings = [
     category: "Car Seats",
     ageGroup: "0-12 months",
     size: "One Size",
-    status: "reserved"
+    status: "reserved",
+    priceValue: 350,
+    superMom: true
   },
   {
     title: "Wooden Baby Gym",
@@ -83,7 +94,9 @@ const approvedListings = [
     category: "Toys",
     ageGroup: "0-6 months",
     size: "One Size",
-    status: "available"
+    status: "available",
+    priceValue: 0,
+    superMom: false
   },
   {
     title: "Baby Walker",
@@ -95,7 +108,9 @@ const approvedListings = [
     category: "Baby Gear",
     ageGroup: "6-18 months",
     size: "One Size",
-    status: "available"
+    status: "available",
+    priceValue: null,
+    superMom: true
   },
   {
     title: "Maternity Clothes Bundle (Size M)",
@@ -107,7 +122,9 @@ const approvedListings = [
     category: "Maternity",
     ageGroup: "Adult",
     size: "M",
-    status: "available"
+    status: "available",
+    priceValue: 200,
+    superMom: false
   }
 ];
 
@@ -123,6 +140,8 @@ const MumzMarketplace = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState('all');
   const [selectedCondition, setSelectedCondition] = useState('all');
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState('all');
+  const [selectedSize, setSelectedSize] = useState('all');
   const [priceRange, setPriceRange] = useState([0, 1000]);
   
   useEffect(() => {
@@ -141,19 +160,21 @@ const MumzMarketplace = () => {
       selectedCategory,
       selectedSubCategory: 'all',
       selectedBrand,
-      selectedAgeGroup: 'all',
-      selectedSize: 'all',
+      selectedAgeGroup,
+      selectedSize,
       selectedCondition,
       priceRange,
       superMomOnly: false
     });
     setFilteredItems(filtered);
-  }, [searchQuery, selectedCategory, selectedBrand, selectedCondition, priceRange]);
+  }, [searchQuery, selectedCategory, selectedBrand, selectedAgeGroup, selectedSize, selectedCondition, priceRange]);
 
   const handleFiltersChange = (filters: any) => {
     setSelectedCategory(filters.category || 'all');
     setSelectedBrand(filters.brand || 'all');
     setSelectedCondition(filters.condition || 'all');
+    setSelectedAgeGroup(filters.ageGroup || 'all');
+    setSelectedSize(filters.size || 'all');
     setPriceRange(filters.priceRange || [0, 1000]);
   };
 
@@ -236,6 +257,8 @@ const MumzMarketplace = () => {
               category: selectedCategory,
               brand: selectedBrand,
               condition: selectedCondition,
+              ageGroup: selectedAgeGroup,
+              size: selectedSize,
               priceRange: priceRange
             }}
           />

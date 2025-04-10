@@ -4,9 +4,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Check, X } from 'lucide-react';
+import { Check, X, Baby } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { ageGroups, sizes } from '@/components/mumzmarketplace/MarketplaceDataProvider';
 
 interface FilterDialogProps {
   open: boolean;
@@ -16,6 +17,8 @@ interface FilterDialogProps {
     category: string;
     brand: string;
     condition: string;
+    ageGroup: string;
+    size: string;
     priceRange: number[];
   };
 }
@@ -29,6 +32,8 @@ const MarketplaceFilterDialog = ({
   const [category, setCategory] = useState(initialFilters.category || 'all');
   const [brand, setBrand] = useState(initialFilters.brand || 'all');
   const [condition, setCondition] = useState(initialFilters.condition || 'all');
+  const [ageGroup, setAgeGroup] = useState(initialFilters.ageGroup || 'all');
+  const [size, setSize] = useState(initialFilters.size || 'all');
   const [priceRange, setPriceRange] = useState(initialFilters.priceRange || [0, 1000]);
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
 
@@ -43,16 +48,20 @@ const MarketplaceFilterDialog = ({
     if (category !== 'all') count++;
     if (brand !== 'all') count++;
     if (condition !== 'all') count++;
+    if (ageGroup !== 'all') count++;
+    if (size !== 'all') count++;
     if (priceRange[0] > 0 || priceRange[1] < 1000) count++;
     
     setActiveFiltersCount(count);
-  }, [category, brand, condition, priceRange]);
+  }, [category, brand, condition, ageGroup, size, priceRange]);
 
   useEffect(() => {
     // Update local state when initialFilters change
     setCategory(initialFilters.category || 'all');
     setBrand(initialFilters.brand || 'all');
     setCondition(initialFilters.condition || 'all');
+    setAgeGroup(initialFilters.ageGroup || 'all');
+    setSize(initialFilters.size || 'all');
     setPriceRange(initialFilters.priceRange || [0, 1000]);
   }, [initialFilters]);
 
@@ -61,6 +70,8 @@ const MarketplaceFilterDialog = ({
       category,
       brand,
       condition,
+      ageGroup,
+      size,
       priceRange
     });
     onOpenChange(false);
@@ -70,12 +81,16 @@ const MarketplaceFilterDialog = ({
     setCategory('all');
     setBrand('all');
     setCondition('all');
+    setAgeGroup('all');
+    setSize('all');
     setPriceRange([0, 1000]);
     
     onFiltersChange({
       category: 'all',
       brand: 'all',
       condition: 'all',
+      ageGroup: 'all',
+      size: 'all',
       priceRange: [0, 1000]
     });
   };
@@ -135,6 +150,39 @@ const MarketplaceFilterDialog = ({
                 <SelectItem value="all">All Conditions</SelectItem>
                 {conditions.map(c => (
                   <SelectItem key={c} value={c}>{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="ageGroup" className="flex items-center">
+              <Baby className="h-4 w-4 mr-1" />
+              Age Group
+            </Label>
+            <Select value={ageGroup} onValueChange={setAgeGroup}>
+              <SelectTrigger id="ageGroup">
+                <SelectValue placeholder="Select age group" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Age Groups</SelectItem>
+                {ageGroups.map(age => (
+                  <SelectItem key={age} value={age}>{age}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="size">Size</Label>
+            <Select value={size} onValueChange={setSize}>
+              <SelectTrigger id="size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Sizes</SelectItem>
+                {sizes.map(s => (
+                  <SelectItem key={s} value={s}>{s}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
