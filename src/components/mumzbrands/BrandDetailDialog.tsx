@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Copy, CheckCircle, Star } from 'lucide-react';
-import BowRibbon from '@/components/mumzally/BowRibbon';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -84,16 +83,16 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md md:max-w-lg overflow-hidden max-h-[90vh] bg-gradient-to-b from-white to-pastel-yellow/10 border-pastel-yellow/30">
+      <DialogContent className="max-w-md md:max-w-lg overflow-hidden max-h-[90vh] bg-background border-border">
         <DialogHeader>
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 z-10">
-            <BowRibbon />
-          </div>
-          <div className="flex justify-center mb-4 pt-4">
+          <div 
+            className="w-full h-32 rounded-t-lg flex items-center justify-center mb-4" 
+            style={{ backgroundColor: `${brand.bgColor}50` }}
+          >
             <img 
               src={brand.logo} 
               alt={brand.name} 
-              className="h-20 object-contain"
+              className="h-24 object-contain p-4 bg-white/90 rounded-lg shadow-sm"
             />
           </div>
           <DialogTitle className="text-2xl text-center">{brand.name}</DialogTitle>
