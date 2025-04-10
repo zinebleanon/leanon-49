@@ -83,10 +83,10 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md md:max-w-lg overflow-hidden max-h-[90vh] bg-background border-border">
+      <DialogContent className="max-w-md sm:max-w-lg max-h-[90vh] overflow-hidden fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[95vw] p-6 rounded-lg bg-background border-border shadow-lg">
         <DialogHeader>
           <div 
-            className="w-full h-32 rounded-t-lg flex items-center justify-center mb-4" 
+            className="w-full h-32 rounded-lg flex items-center justify-center mb-4" 
             style={{ backgroundColor: `${brand.bgColor}50` }}
           >
             <img 
@@ -103,7 +103,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="h-[calc(80vh-140px)] pr-4 pb-4">
+        <ScrollArea className="h-[calc(90vh-220px)] pr-4 pb-4">
           <div className="space-y-6 p-1">
             <div className="flex justify-center">
               <div className="flex items-center gap-1">

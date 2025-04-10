@@ -13,16 +13,16 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
   const navigate = useNavigate();
   
   return (
-    <section className="py-2 md:py-4 px-4 md:px-8 bg-[#B8CEC2]">
+    <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center md:text-left md:max-w-3xl mx-auto">
+        <div className="text-center mx-auto max-w-3xl">
           <h1 className="text-3xl md:text-5xl font-bold mb-3 font-playfair">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
               Brands You Know<br />Or You Don't Know
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-4 mb-2">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4 mb-2">
             <BrandsHowItWorksDialog />
             
             <Button 
