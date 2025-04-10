@@ -5,13 +5,12 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift } from 'lucide-react';
+import { BellRing, Gift, Share2, WhatsApp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import BowRibbon from '@/components/mumzally/BowRibbon';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +55,12 @@ const Index = () => {
     });
   };
   
+  const shareWhatsApp = () => {
+    const message = `Join me on LeanOn with my referral code: ${referralCode}\nDownload the app now and connect with other moms!`;
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+  };
+  
   // Function to capitalize first letter of a string
   const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -85,38 +90,49 @@ const Index = () => {
         <div className="container px-4 py-20 md:py-24 max-w-5xl mx-auto">
           <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
             <CardHeader className="pb-2 bg-pastel-yellow/20">
-              <CardTitle className="text-4xl md:text-5xl font-playfair text-center">
+              <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
-              <CardDescription className="text-lg md:text-xl mb-1 text-center">
+              <CardDescription className="text-base md:text-lg mb-1 text-center">
                 It's great to see you again in the LeanOn community
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pt-4 pb-5">
+            <CardContent className="pt-3 pb-4">
               <div className="max-w-md mx-auto">
-                <div className="bg-white/80 rounded-lg p-5 border border-pastel-yellow/20 shadow-sm">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Gift className="h-8 w-8 text-pastel-yellow" />
-                    <h3 className="font-medium text-2xl">Invite Friends & Family</h3>
+                <div className="bg-white/80 rounded-lg p-4 border border-pastel-yellow/20 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Gift className="h-6 w-6 text-pastel-yellow" />
+                    <h3 className="font-medium text-xl">Invite Friends & Family</h3>
                   </div>
-                  <p className="text-base text-muted-foreground mb-4">
+                  <p className="text-sm text-muted-foreground mb-3">
                     Share your referral code with other moms and help grow our supportive community!
                   </p>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-pastel-yellow/10 px-4 py-2 rounded-md font-mono text-xl font-medium flex-1 text-center border border-pastel-yellow/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
                       {referralCode}
                     </div>
                     <Button 
                       variant="outline" 
-                      size="lg" 
-                      className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow px-4 py-2 text-lg"
+                      size="md" 
+                      className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
                       onClick={handleCopyReferralCode}
                     >
                       Copy
                     </Button>
                   </div>
-                  <div className="text-base text-muted-foreground">
+                  <div className="flex gap-2 mb-2">
+                    <Button
+                      variant="outline"
+                      size="md"
+                      className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500"
+                      onClick={shareWhatsApp}
+                    >
+                      <WhatsApp className="h-5 w-5" />
+                      Share via WhatsApp
+                    </Button>
+                  </div>
+                  <div className="text-sm text-muted-foreground">
                     Each friend who joins gets a special welcome gift! 
                   </div>
                 </div>
