@@ -1,9 +1,27 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { MessageCircle, Home } from 'lucide-react';
+import { 
+  MessageCircle, 
+  Home,
+  Users,
+  Heart,
+  Activity,
+  User,
+  UtensilsCrossed,
+  Baby,
+  ShoppingBag,
+  School,
+  CalendarDays,
+  HelpCircle,
+  HeartHandshake,
+  Ticket,
+  Tent,
+  Smile
+} from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AskHowItWorksModal from '@/components/mumzask/AskHowItWorksModal';
