@@ -1,20 +1,16 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake, Ticket, Tent, Smile, Home } from 'lucide-react';
+import { MessageCircle, Home } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
-import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AskHowItWorksModal from '@/components/mumzask/AskHowItWorksModal';
-import RibbonIcon from '@/components/ui/RibbonIcon';
 import CommunityMessages from '@/components/mumzask/CommunityMessages';
 
 const MumzAsk = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const isMobile = useIsMobile();
   

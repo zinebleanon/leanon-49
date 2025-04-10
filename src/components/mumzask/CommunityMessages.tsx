@@ -1,7 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, ThumbsUp, Clock, Filter } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { MessageCircle, ThumbsUp, Clock, Filter, Search } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -14,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// Mock data for demonstration
 const mockGeneralCommunityMessages = [
   {
     id: 1,
@@ -141,28 +140,28 @@ interface CommunityMessagesProps {
 
 const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMessagesProps) => {
   const [activeTab, setActiveTab] = useState<string>('general');
-  const [filterType, setFilterType] = useState<FilterType>('recent');
   const [filteredMessages, setFilteredMessages] = useState<MessageProps[]>(mockGeneralCommunityMessages);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   
-  // Filter messages based on tab, filter type, and category
   useEffect(() => {
     let messages = activeTab === 'general' ? mockGeneralCommunityMessages : mockNeighborhoodMessages;
     
-    // Apply category filter if selected
     if (categoryFilter) {
       messages = messages.filter(msg => msg.category === categoryFilter);
     }
     
-    // Apply filter type
-    if (filterType === 'recent') {
-      // For demo, the mock data is already in time order
-    } else if (filterType === 'popular') {
-      messages = [...messages].sort((a, b) => b.likes - a.likes);
+    if (searchQuery.trim().length > 0) {
+      const query = searchQuery.toLowerCase();
+      messages = messages.filter(msg => 
+        msg.title.toLowerCase().includes(query) || 
+        msg.content.toLowerCase().includes(query) ||
+        msg.category.toLowerCase().includes(query)
+      );
     }
     
     setFilteredMessages(messages);
-  }, [activeTab, filterType, categoryFilter]);
+  }, [activeTab, searchQuery, categoryFilter]);
 
   const handleCategoryClick = (category: string) => {
     setCategoryFilter(categoryFilter === category ? null : category);
@@ -183,7 +182,6 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
         {message.content}
       </p>
       
-      {/* Display images if present */}
       {message.images && message.images.length > 0 && (
         <div className="mb-3 flex gap-2 overflow-x-auto pb-2">
           {message.images.map((img, index) => (
@@ -225,23 +223,15 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
         </TabsList>
         
         <div className="mb-4 flex justify-between items-center">
-          <div className="flex gap-1">
-            <Button 
-              variant={filterType === 'recent' ? 'default' : 'outline'}
-              size="sm" 
-              onClick={() => setFilterType('recent')}
-              className={`text-xs px-2 h-8 ${filterType === 'recent' ? 'bg-[#B8CEC2]' : ''}`}
-            >
-              <Clock className="h-3 w-3 mr-1" /> Recent
-            </Button>
-            <Button 
-              variant={filterType === 'popular' ? 'default' : 'outline'}
-              size="sm" 
-              onClick={() => setFilterType('popular')}
-              className={`text-xs px-2 h-8 ${filterType === 'popular' ? 'bg-[#B8CEC2]' : ''}`}
-            >
-              <ThumbsUp className="h-3 w-3 mr-1" /> Popular
-            </Button>
+          <div className="relative flex-1 max-w-md">
+            <Input
+              type="text"
+              placeholder="Search messages..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
           
           <DropdownMenu>
@@ -249,7 +239,7 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
               <Button 
                 variant="outline" 
                 size="sm"
-                className={`text-xs px-2 h-8 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
+                className={`text-xs px-2 h-8 ml-2 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
               >
                 <Filter className="h-3 w-3 mr-1" /> 
                 {categoryFilter ? `${categoryFilter}` : "Filter"}
