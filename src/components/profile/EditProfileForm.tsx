@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -78,8 +79,8 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     : getFirstAndLastName();
   
   let defaultValues: Partial<ProfileFormValues> = {
-    firstName,
-    lastName,
+    firstName: firstName || '',
+    lastName: lastName || '',
     email: userInfo?.email || '',
     phone: userInfo?.phone || '',
     neighborhood: userInfo?.neighborhood || '',
@@ -101,7 +102,27 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
+    mode: "onBlur" 
   });
+  
+  // Ensure form is reset with user data when it changes
+  React.useEffect(() => {
+    if (userInfo) {
+      form.reset({
+        firstName: firstName || '',
+        lastName: lastName || '',
+        email: userInfo.email || '',
+        phone: userInfo.phone || '',
+        neighborhood: userInfo.neighborhood || '',
+        workStatus: userInfo.workStatus || '',
+        nationality: userInfo.nationality || '',
+        interests: userInfo.interests || '',
+        bio: userInfo.bio || '',
+        profilePictureURL: userInfo.profilePictureURL || '',
+        birthDate: userInfo.birthDate ? new Date(userInfo.birthDate) : undefined,
+      });
+    }
+  }, [userInfo, firstName, lastName, form]);
   
   const onSubmit = async (data: ProfileFormValues) => {
     setIsLoading(true);
