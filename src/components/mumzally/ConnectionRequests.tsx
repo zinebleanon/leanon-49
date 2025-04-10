@@ -9,6 +9,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { Link } from 'react-router-dom';
 import MessageDialog from './MessageDialog';
 import LeanMomsDialog from './LeanMomsDialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface ConnectionRequest {
   id: number;
@@ -33,9 +34,17 @@ interface ConnectionRequestsProps {
   dialogMode?: boolean;
   nearbyMoms?: NearbyMom[];
   simplifiedView?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedView = false }: ConnectionRequestsProps) => {
+const ConnectionRequests = ({ 
+  dialogMode = false, 
+  nearbyMoms = [], 
+  simplifiedView = false,
+  open,
+  onOpenChange
+}: ConnectionRequestsProps) => {
   const connectionRequests: ConnectionRequest[] = [
     {
       id: 3,
@@ -56,18 +65,12 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   ];
 
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
-  const [leanMomsDialogOpen, setLeanMomsDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [rejectedRequests, setRejectedRequests] = useState<number[]>([]);
   const [leanBackMoms, setLeanBackMoms] = useState<ConnectionRequest[]>([]);
 
   useEffect(() => {
-    const savedLeanBackMoms = localStorage.getItem('leanBackMoms');
-    if (savedLeanBackMoms) {
-      setLeanBackMoms(JSON.parse(savedLeanBackMoms));
-    }
-    
     const savedAcceptedRequests = localStorage.getItem('acceptedRequests');
     if (savedAcceptedRequests) {
       setAcceptedRequests(JSON.parse(savedAcceptedRequests));
@@ -91,13 +94,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   const handleAcceptRequest = (id: number, name: string) => {
     const acceptedMom = connectionRequests.find(request => request.id === id);
     
-    if (acceptedMom) {
-      const updatedLeanBackMoms = [...leanBackMoms, acceptedMom];
-      setLeanBackMoms(updatedLeanBackMoms);
-      
-      localStorage.setItem('leanBackMoms', JSON.stringify(updatedLeanBackMoms));
-    }
-    
     const updatedAccepted = [...acceptedRequests, id];
     setAcceptedRequests(updatedAccepted);
     localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
@@ -118,6 +114,103 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
       description: `You've declined ${name}'s connection request.`,
     });
   };
+
+  const filteredRequests = connectionRequests.filter(request => 
+    !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
+  );
+
+  const content = (
+    <div className="mb-6">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-lg font-medium">Connect Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {filteredRequests.map((request) => (
+          <Card key={request.id} className="overflow-hidden bg-white/90">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                  <UserCircle className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
+                    {request.name}
+                  </Link>
+                  <p className="text-xs text-muted-foreground">
+                    {request.age}, {request.location}
+                    {request.activeInCommunity && (
+                      <span className="ml-1 text-green-600">● Active</span>
+                    )}
+                  </p>
+                </div>
+                <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
+                  {request.compatibility}%
+                </Badge>
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => handleRejectRequest(request.id, request.name)}
+                >
+                  Decline
+                </Button>
+                <Button 
+                  variant="default" 
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => handleAcceptRequest(request.id, request.name)}
+                >
+                  <BowRibbon className="w-8 h-5 mr-1" color="#FFD9A7" />
+                  LeanBack
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      
+      {filteredRequests.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-40 text-center p-4 bg-white rounded-lg">
+          <Users className="h-10 w-10 text-muted-foreground mb-2" />
+          <h3 className="font-medium mb-1">No Connect Requests</h3>
+          <p className="text-sm text-muted-foreground">
+            You'll see new connection requests here
+          </p>
+        </div>
+      )}
+      
+      {selectedRecipient && (
+        <MessageDialog 
+          open={messageDialogOpen} 
+          onOpenChange={setMessageDialogOpen} 
+          conversation={{
+            id: `conv-${selectedRecipient.id}`,
+            participantId: selectedRecipient.id.toString(),
+            participantName: selectedRecipient.name,
+            lastMessage: "",
+            lastMessageTimestamp: new Date().toISOString(),
+            unreadCount: 0
+          }}
+          onSendMessage={handleSendMessage}
+        />
+      )}
+    </div>
+  );
+
+  if (dialogMode && open !== undefined) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[600px] p-0">
+          <div className="p-6">
+            {content}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   if (simplifiedView) {
     const pendingRequests = connectionRequests.filter(request => 
@@ -239,102 +332,9 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   }
 
   if (dialogMode) {
-    const filteredRequests = connectionRequests.filter(request => 
-      !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
-    );
-    
-    return (
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="text-lg font-medium">Connect Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {filteredRequests.map((request) => (
-            <Card key={request.id} className="overflow-hidden bg-white/90">
-              <CardContent className="p-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                    <UserCircle className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
-                      {request.name}
-                    </Link>
-                    <p className="text-xs text-muted-foreground">
-                      {request.age}, {request.location}
-                      {request.activeInCommunity && (
-                        <span className="ml-1 text-green-600">● Active</span>
-                      )}
-                    </p>
-                  </div>
-                  <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
-                    {request.compatibility}%
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-end gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="text-xs"
-                    onClick={() => handleRejectRequest(request.id, request.name)}
-                  >
-                    Decline
-                  </Button>
-                  <Button 
-                    variant="default" 
-                    size="sm"
-                    className="text-xs"
-                    onClick={() => handleAcceptRequest(request.id, request.name)}
-                  >
-                    <BowRibbon className="w-8 h-5 mr-1" color="#FFD9A7" />
-                    LeanBack
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        
-        {filteredRequests.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-40 text-center p-4 bg-white rounded-lg">
-            <Users className="h-10 w-10 text-muted-foreground mb-2" />
-            <h3 className="font-medium mb-1">No Connect Requests</h3>
-            <p className="text-sm text-muted-foreground">
-              You'll see new connection requests here
-            </p>
-          </div>
-        )}
-        
-        <LeanMomsDialog
-          open={leanMomsDialogOpen}
-          onOpenChange={setLeanMomsDialogOpen}
-          leanBackMoms={leanBackMoms}
-        />
-        
-        {selectedRecipient && (
-          <MessageDialog 
-            open={messageDialogOpen} 
-            onOpenChange={setMessageDialogOpen} 
-            conversation={{
-              id: `conv-${selectedRecipient.id}`,
-              participantId: selectedRecipient.id.toString(),
-              participantName: selectedRecipient.name,
-              lastMessage: "",
-              lastMessageTimestamp: new Date().toISOString(),
-              unreadCount: 0
-            }}
-            onSendMessage={handleSendMessage}
-          />
-        )}
-      </div>
-    );
+    return content;
   }
 
-  const filteredRequests = connectionRequests.filter(request => 
-    !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
-  );
-  
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -413,12 +413,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </div>
         )}
       </div>
-      
-      <LeanMomsDialog
-        open={leanMomsDialogOpen}
-        onOpenChange={setLeanMomsDialogOpen}
-        leanBackMoms={leanBackMoms}
-      />
       
       {selectedRecipient && (
         <MessageDialog 

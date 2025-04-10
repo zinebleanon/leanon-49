@@ -1,253 +1,150 @@
-import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
-import FilterSection from './FilterSection';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogDescription } from '@/components/ui/dialog';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useUserInfo } from '@/hooks/use-user-info';
-import { toast } from "@/hooks/use-toast";
-import RecommendedMatches from './RecommendedMatches';
-import ConnectionRequests from './ConnectionRequests';
-import { Filter, ChevronDown, ChevronUp, Users, Info, MapPin } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from "react-router-dom";
-import HowItWorksModal from './HowItWorksModal';
+
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Info, MapPin, Search, List, SwipeHorizontal, Users } from "lucide-react";
+import HowItWorksModal from "./HowItWorksModal";
+import FilterSection from "./FilterSection";
+import RecommendedMatches from "./RecommendedMatches";
+import ConnectionRequests from "./ConnectionRequests";
+import { MumzProfile } from "./ProfilesSection";
 
 interface HeroSectionProps {
-  onFiltersChange: (filters: Record<string, any>) => void;
-  profiles?: any[];
-  nearbyMoms?: any[];
+  onFiltersChange?: (filters: Record<string, any>) => void;
+  profiles: MumzProfile[];
+  nearbyMoms: MumzProfile[];
+  onViewToggle?: () => void;
+  showTinderView?: boolean;
 }
 
-const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSectionProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
-  const [activeTab, setActiveTab] = useState("nearby");
-  const isMobile = useIsMobile();
-  const { location } = useUserInfo();
-  
-  useEffect(() => {
-    setIsVisible(true);
-    if (!location || (!location.latitude && !location.longitude)) {
-      setShowLocationPrompt(true);
-    } else {
-      setShowLocationPrompt(false);
+const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle, showTinderView = false }: HeroSectionProps) => {
+  const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
+
+  const handleFiltersChange = (filters: Record<string, any>) => {
+    setIsFiltersOpen(false);
+    if (onFiltersChange) {
+      onFiltersChange(filters);
     }
-  }, [location]);
-
-  const textStyles = "transition-all duration-700 ease-smooth";
-  
-  const handleRequestLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-          userInfo.location = {
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString()
-          };
-          localStorage.setItem('userInfo', JSON.stringify(userInfo));
-          
-          setShowLocationPrompt(false);
-          toast({
-            title: "Location Updated",
-            description: "We'll now show you moms in your area!",
-          });
-        },
-        (error) => {
-          toast({
-            title: "Location Access Denied",
-            description: "You can still use filters to find moms in specific neighborhoods.",
-            variant: "destructive"
-          });
-        }
-      );
-    }
-  };
-
-  const handleShowFilters = () => {
-    setShowFilters(!showFilters);
-  };
-
-  const renderDialogContent = () => {
-    const connectionRequests = [
-      {
-        id: 3,
-        name: "Jessica Miller",
-        age: 31,
-        location: "Palm Jumeirah",
-        compatibility: 79,
-        activeInCommunity: true
-      },
-      {
-        id: 4,
-        name: "Aisha Ahmed",
-        age: 34,
-        location: "Dubai Marina",
-        compatibility: 85,
-        activeInCommunity: false
-      }
-    ];
-    
-    const pendingRequestsCount = connectionRequests.length;
-    
-    return (
-      <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="flex justify-between items-center mb-4">
-          <TabsList className="grid grid-cols-2 w-full">
-            <TabsTrigger value="nearby">Nearby Moms</TabsTrigger>
-            <TabsTrigger value="requests">Connect Requests ({pendingRequestsCount})</TabsTrigger>
-          </TabsList>
-        </div>
-        
-        <TabsContent value="nearby" className="mt-0">
-          <div className="sticky top-0 z-10 bg-[#B8CEC2] pt-2 pb-4">
-            <Button 
-              onClick={handleShowFilters} 
-              variant="outline" 
-              className="w-full bg-white text-foreground hover:bg-white/90 flex items-center justify-center gap-2"
-            >
-              <Filter className="h-4 w-4" />
-              {showFilters ? "Hide Filters" : "Show Filters"}
-            </Button>
-          </div>
-          
-          {showFilters && (
-            <div className="mb-4">
-              <FilterSection onFiltersChange={onFiltersChange} onClose={() => setShowFilters(false)} />
-            </div>
-          )}
-          
-          {!location?.latitude ? (
-            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-              <p className="text-sm text-muted-foreground">
-                Enable location to see moms in your neighborhood
-              </p>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mt-2 text-xs h-8 bg-white"
-                onClick={handleRequestLocation}
-              >
-                Share my location
-              </Button>
-            </div>
-          ) : nearbyMoms && nearbyMoms.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-              {nearbyMoms.map((mom) => (
-                <RecommendedMatches key={`nearby-${mom.id}`} profiles={[mom]} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground mb-4">
-              No moms found nearby
-            </p>
-          )}
-          
-          {profiles && profiles.length > 0 && (
-            <RecommendedMatches profiles={profiles.slice(0, 3)} />
-          )}
-        </TabsContent>
-        
-        <TabsContent value="requests" className="mt-0">
-          <ConnectionRequests dialogMode={true} />
-        </TabsContent>
-      </Tabs>
-    );
   };
 
   return (
-    <section className="py-8 md:py-8 px-4 md:px-8 bg-[#B8CEC2]">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center md:text-left md:max-w-3xl mx-auto">
-          <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-              LeanOn Moms<br />Around You
-            </span>
+    <div className="mb-8">
+      <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
+            MumzAlly
           </h1>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-6">
-            <HowItWorksModal className="h-9" />
-            
-            {isMobile ? (
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button 
-                    size="md" 
-                    className="rounded-full px-4 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
-                  >
-                    <MapPin className="h-4 w-4 mr-1.5 flex-shrink-0" />
-                    <span>Find LeanMoms Around</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
-                  <div className="flex flex-col h-full">
-                    {renderDialogContent()}
-                  </div>
-                </SheetContent>
-              </Sheet>
-            ) : (
-              <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-                <DialogTrigger asChild>
-                  <Button 
-                    size="md" 
-                    className="rounded-full px-4 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
-                  >
-                    <MapPin className="h-4 w-4 mr-1.5 flex-shrink-0" />
-                    <span>Find LeanMoms Around</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#B8CEC2] border-[#B8CEC2]/50">
-                  <DialogHeader className="relative">
-                    <DialogTitle className="text-xl font-semibold text-center mt-6">Find Your Perfect Mom Match</DialogTitle>
-                    <DialogDescription className="text-center text-muted-foreground">
-                      Recommended moms based on your preferences
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="flex flex-col gap-6">
-                    {renderDialogContent()}
-                  </div>
-                </DialogContent>
-              </Dialog>
-            )}
-
-            <Button 
-              variant="outline" 
-              size="md" 
-              className="rounded-full px-4 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center h-9"
-              asChild
-            >
-              <Link to="/connections">
-                <Users className="h-4 w-4 mr-1.5 flex-shrink-0" />
-                <span>My LeanMoms</span>
-              </Link>
-            </Button>
-          </div>
+          <p className="text-foreground/80 max-w-md">
+            Connect with other moms in your area who share similar interests and have children of similar ages.
+          </p>
         </div>
         
-        {showLocationPrompt && (
-          <Dialog open={showLocationPrompt} onOpenChange={setShowLocationPrompt}>
-            <DialogContent className="max-w-md bg-white">
-              <DialogHeader>
-                <DialogTitle>Enable Location for Better Matches</DialogTitle>
-                <DialogDescription className="pt-2">
-                  To find moms in your neighborhood, we need access to your location. This helps us connect you with moms who are nearby.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex flex-col gap-4 pt-2">
-                <Button onClick={handleRequestLocation} className="bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 text-foreground">
-                  Share My Location
-                </Button>
-                <Button variant="outline" onClick={() => setShowLocationPrompt(false)}>
-                  Not Now
-                </Button>
+        <div className="flex flex-wrap gap-3 items-start">
+          <Button
+            className="gap-2"
+            variant="warm"
+            onClick={() => setIsHowItWorksOpen(true)}
+          >
+            <div className="flex items-center gap-2">
+              <Info className="h-4 w-4" />
+              <span>How It Works</span>
+            </div>
+          </Button>
+          
+          <Button
+            variant="outline"
+            className="gap-2 bg-white/80"
+            onClick={() => setIsConnectionRequestsOpen(true)}
+          >
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span>Connection Requests</span>
+            </div>
+          </Button>
+          
+          <Button
+            variant="outline"
+            className="gap-2 bg-white/80"
+            onClick={() => setIsFiltersOpen(true)}
+          >
+            <div className="flex items-center gap-2">
+              <Search className="h-4 w-4" />
+              <span>Find LeanMoms Around</span>
+            </div>
+          </Button>
+          
+          {nearbyMoms.length > 0 && onViewToggle && (
+            <Button
+              variant="outline"
+              className="gap-2 bg-white/80"
+              onClick={onViewToggle}
+            >
+              <div className="flex items-center gap-2">
+                {showTinderView ? (
+                  <>
+                    <List className="h-4 w-4" />
+                    <span>List View</span>
+                  </>
+                ) : (
+                  <>
+                    <SwipeHorizontal className="h-4 w-4" />
+                    <span>Swipe View</span>
+                  </>
+                )}
               </div>
-            </DialogContent>
-          </Dialog>
-        )}
+            </Button>
+          )}
+        </div>
       </div>
-    </section>
+      
+      {!showTinderView && nearbyMoms.length > 0 && (
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-xl font-medium">Moms Near You</h2>
+            {nearbyMoms.length > 0 && (
+              <Badge variant="outline" className="px-3 py-1 bg-white/50">
+                {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby
+              </Badge>
+            )}
+          </div>
+          <RecommendedMatches profiles={nearbyMoms} />
+        </div>
+      )}
+      
+      {!showTinderView && (
+        <div>
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-xl font-medium">Matched for You</h2>
+            {profiles.length > 0 && (
+              <Badge variant="outline" className="px-3 py-1 bg-white/50">
+                {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
+              </Badge>
+            )}
+          </div>
+          <RecommendedMatches profiles={profiles} />
+        </div>
+      )}
+
+      <HowItWorksModal
+        open={isHowItWorksOpen}
+        onOpenChange={setIsHowItWorksOpen}
+      />
+      
+      <FilterSection
+        open={isFiltersOpen}
+        onOpenChange={setIsFiltersOpen}
+        onFiltersChange={handleFiltersChange}
+      />
+      
+      <ConnectionRequests
+        dialogMode={true}
+        nearbyMoms={nearbyMoms}
+        open={isConnectionRequestsOpen}
+        onOpenChange={setIsConnectionRequestsOpen}
+      />
+    </div>
   );
 };
 

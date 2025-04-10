@@ -4,7 +4,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/mumzally/HeroSection';
 import MessageDialog from '@/components/mumzally/MessageDialog';
+import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { toast } from '@/hooks/use-toast';
 
 const mockProfiles = [
   {
@@ -73,6 +75,8 @@ const MumzAlly = () => {
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
   const [filteredProfiles, setFilteredProfiles] = useState(mockProfiles);
   const [nearbyMoms, setNearbyMoms] = useState<typeof mockProfiles>([]);
+  const [showTinderView, setShowTinderView] = useState(false);
+  const [sentConnections, setSentConnections] = useState<number[]>([]);
 
   useEffect(() => {
     filterProfilesByLocationAndKids();
@@ -165,12 +169,45 @@ const MumzAlly = () => {
     filterProfilesByLocationAndKids(filters);
   };
 
+  const handleLeanOn = (id: number, name: string) => {
+    setSentConnections(prev => [...prev, id]);
+    toast({
+      title: "LeanOn Request Sent",
+      description: `You've sent a connection request to ${name}!`,
+    });
+  };
+  
+  const handleSkip = (id: number) => {
+    console.log("Skipped profile:", id);
+  };
+
+  const toggleView = () => {
+    setShowTinderView(prev => !prev);
+  };
+
   return (
     <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
-        <HeroSection onFiltersChange={handleFiltersChange} profiles={filteredProfiles} nearbyMoms={nearbyMoms} />
+        <HeroSection 
+          onFiltersChange={handleFiltersChange} 
+          profiles={filteredProfiles} 
+          nearbyMoms={nearbyMoms} 
+          onViewToggle={toggleView}
+          showTinderView={showTinderView}
+        />
+        
+        {showTinderView && nearbyMoms.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">Moms Near You</h2>
+            <SwipeableProfiles 
+              profiles={nearbyMoms.filter(mom => !sentConnections.includes(mom.id))} 
+              onLeanOn={handleLeanOn}
+              onSkip={handleSkip}
+            />
+          </div>
+        )}
       </main>
       
       <Footer />
