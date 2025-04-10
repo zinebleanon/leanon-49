@@ -16,18 +16,18 @@ const DealsHero = () => {
             <div className="flex flex-wrap gap-4 mt-8">
               <Button 
                 size="lg"
-                className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+                className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
               >
-                <RibbonIcon className="mr-2 h-5 w-5" fill="#FFD9A7" />
-                Browse Deals
+                <RibbonIcon className="h-5 w-5 mr-2 flex-shrink-0" fill="#FFD9A7" />
+                <span className="flex-1 text-center">Browse Deals</span>
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+                className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
               >
-                <ShoppingBag className="mr-2 h-5 w-5" />
-                Featured Brands
+                <ShoppingBag className="h-5 w-5 mr-2 flex-shrink-0" />
+                <span className="flex-1 text-center">Featured Brands</span>
               </Button>
               <DealsHowItWorksDialog />
             </div>

@@ -46,23 +46,23 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button 
             size="lg" 
-            className="rounded-full bg-primary"
+            className="rounded-full bg-primary flex items-center"
             asChild
           >
             <Link to="/select">
-              <BookOpen className="mr-2 h-4 w-4" />
-              Mumz Select
+              <BookOpen className="h-5 w-5 mr-2 flex-shrink-0" />
+              <span className="flex-1 text-center">Mumz Select</span>
             </Link>
           </Button>
           <Button 
             variant="outline" 
             size="lg" 
-            className="rounded-full"
+            className="rounded-full flex items-center"
             asChild
           >
             <Link to="/brands">
-              <Store className="mr-2 h-4 w-4" />
-              Partner Brands
+              <Store className="h-5 w-5 mr-2 flex-shrink-0" />
+              <span className="flex-1 text-center">Partner Brands</span>
             </Link>
           </Button>
         </div>

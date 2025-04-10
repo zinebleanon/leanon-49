@@ -45,9 +45,10 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
         <Button 
           variant={buttonVariant}
           size="lg" 
-          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors ${className}`}
+          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
         >
-          <Info className="mr-2 h-4 w-4" /> How It Works
+          <Info className="h-5 w-5 mr-2 flex-shrink-0" /> 
+          <span className="flex-1 text-center">How It Works</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
