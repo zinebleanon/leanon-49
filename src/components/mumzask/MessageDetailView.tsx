@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
 import CommentSection, { Comment, Reply } from '../mumzask/CommentSection';
 import ReactionBar, { Reaction } from '../mumzask/ReactionBar';
+import TopicSummary from './TopicSummary';
 
 // Sample mock data for comments and reactions
 const mockComments: Comment[] = [
@@ -172,6 +172,8 @@ const MessageDetailView = ({ message, onBack }: MessageDetailViewProps) => {
         <p className="text-muted-foreground mb-6">
           {message.content}
         </p>
+        
+        <TopicSummary content={message.content} topic={message.category} />
         
         {message.images && message.images.length > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3">
