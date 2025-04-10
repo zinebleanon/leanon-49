@@ -172,11 +172,11 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
               <Sheet>
                 <SheetTrigger asChild>
                   <Button 
-                    size="lg" 
-                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center"
+                    size="md" 
+                    className="rounded-full px-4 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
                   >
-                    <MapPin className="h-5 w-5 mr-2 flex-shrink-0" />
-                    <span className="flex-1 text-center">Find LeanMoms Around</span>
+                    <MapPin className="h-4 w-4 mr-1.5 flex-shrink-0" />
+                    <span>Find LeanMoms Around</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
@@ -189,11 +189,11 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
               <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
                 <DialogTrigger asChild>
                   <Button 
-                    size="lg" 
-                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center"
+                    size="md" 
+                    className="rounded-full px-4 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
                   >
-                    <MapPin className="h-5 w-5 mr-2 flex-shrink-0" />
-                    <span className="flex-1 text-center">Find LeanMoms Around</span>
+                    <MapPin className="h-4 w-4 mr-1.5 flex-shrink-0" />
+                    <span>Find LeanMoms Around</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#B8CEC2] border-[#B8CEC2]/50">
@@ -212,13 +212,13 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
 
             <Button 
               variant="outline" 
-              size="lg" 
-              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center"
+              size="md" 
+              className="rounded-full px-4 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center h-9"
               asChild
             >
               <Link to="/connections">
-                <Users className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span className="flex-1 text-center">My LeanMoms</span>
+                <Users className="h-4 w-4 mr-1.5 flex-shrink-0" />
+                <span>My LeanMoms</span>
               </Link>
             </Button>
             

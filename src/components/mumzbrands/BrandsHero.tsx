@@ -21,20 +21,20 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-12 mb-8">
             <Button 
-              size="lg" 
-              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
+              size="md" 
+              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
               onClick={onOpenDialog}
             >
-              <HeartHandshake className="h-5 w-5 mr-2 flex-shrink-0" /> 
-              <span className="flex-1 text-center">Support Moms Local Brands</span>
+              <HeartHandshake className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
+              <span>Support Moms Local Brands</span>
             </Button>
             <Button 
-              size="lg" 
-              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
+              size="md" 
+              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
               onClick={onOpenDiscountDialog}
             >
-              <BadgePercent className="h-5 w-5 mr-2 flex-shrink-0" /> 
-              <span className="flex-1 text-center">Browse Available Discounts</span>
+              <BadgePercent className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
+              <span>Browse Available Discounts</span>
             </Button>
             <BrandsHowItWorksDialog />
           </div>
