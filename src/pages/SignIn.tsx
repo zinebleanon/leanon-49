@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [otpValue, setOtpValue] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Set active tab based on location pathname if not explicitly provided
   useEffect(() => {
     if (location.pathname === '/sign-up' && activeTab !== 'signup') {
       setActiveTab('signup');
@@ -242,7 +240,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
         });
       }, 1500);
     } else if (signupStep === 2) {
-      // Changed from length !== 6 to length !== 4 for 4-digit OTP
       if (otpValue.length !== 4) {
         toast({
           title: "Invalid code",
@@ -348,13 +345,10 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     setActiveTab("signup");
   };
   
-  // Added this new function to handle tab changes
   const handleTabChange = (value: string) => {
-    // Explicitly cast the value to our tab type
     setActiveTab(value as 'signin' | 'signup');
   };
 
-  // Added function to skip verification for testing purposes
   const skipVerification = () => {
     toast({
       title: "Verification skipped",
@@ -363,11 +357,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     setSignupStep(3);
   };
   
-  // Handle profile picture upload
   const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Create URL for preview
       const imageUrl = URL.createObjectURL(file);
       setSignUpData(prev => ({
         ...prev,
@@ -567,7 +559,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                           required
                         />
                       </div>
-                      <p className="text-xs text-muted-foreground">Enter without leading 0</p>
                     </div>
                     
                     <div className="space-y-2">
@@ -685,7 +676,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                 
                 {signupStep === 3 && (
                   <CardContent className="space-y-4 pt-6 max-h-[60vh] overflow-y-auto pr-2">
-                    {/* Profile Picture Upload */}
                     <div className="space-y-2 flex flex-col items-center">
                       <Label className="self-start">Profile Picture (Optional)</Label>
                       <Avatar className="w-24 h-24 cursor-pointer border-2 border-secondary/50" onClick={triggerFileInput}>
