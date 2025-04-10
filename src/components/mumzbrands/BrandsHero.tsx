@@ -25,7 +25,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12 mb-12">
             <Button 
               variant="warm"
-              size="sm"
+              size="lg"
               className="rounded-full flex items-center gap-2 w-full sm:w-auto px-6"
               onClick={onOpenDialog}
             >
@@ -35,7 +35,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             
             <Button 
               variant="warm"
-              size="sm"
+              size="lg"
               className="rounded-full flex items-center gap-2 w-full sm:w-auto px-6"
               onClick={onOpenDiscountDialog}
             >
