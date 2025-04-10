@@ -173,10 +173,10 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                 <SheetTrigger asChild>
                   <Button 
                     size="lg" 
-                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center"
                   >
-                    <MapPin className="mr-2 h-5 w-5" />
-                    Find LeanMoms Around
+                    <MapPin className="h-5 w-5 mr-2 flex-shrink-0" />
+                    <span className="flex-1 text-center">Find LeanMoms Around</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[90vh] bg-[#B8CEC2] rounded-t-xl">
@@ -190,10 +190,10 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                 <DialogTrigger asChild>
                   <Button 
                     size="lg" 
-                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
+                    className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all flex items-center"
                   >
-                    <MapPin className="mr-2 h-5 w-5" />
-                    Find LeanMoms Around
+                    <MapPin className="h-5 w-5 mr-2 flex-shrink-0" />
+                    <span className="flex-1 text-center">Find LeanMoms Around</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl sm:max-w-4xl bg-[#B8CEC2] border-[#B8CEC2]/50">
@@ -213,12 +213,12 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
             <Button 
               variant="outline" 
               size="lg" 
-              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
+              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center"
               asChild
             >
               <Link to="/connections">
-                <Users className="mr-2 h-5 w-5" />
-                My LeanMoms
+                <Users className="h-5 w-5 mr-2 flex-shrink-0" />
+                <span className="flex-1 text-center">My LeanMoms</span>
               </Link>
             </Button>
             
