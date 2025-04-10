@@ -170,7 +170,7 @@ const HeroSection = ({
       {!showTinderView && nearbyMoms.length > 0 && (
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-medium">Moms Near You</h2>
+            <h2 className="text-xl font-medium">LeanMoms Near You</h2>
             {nearbyMoms.length > 0 && (
               <Badge variant="outline" className="px-3 py-1 bg-white/50">
                 {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby

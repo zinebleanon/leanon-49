@@ -242,7 +242,7 @@ const MumzAlly = () => {
         
         {nearbyMoms.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">Moms Near You</h2>
+            <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">LeanMoms Near You</h2>
             <SwipeableProfiles 
               profiles={nearbyMoms.filter(mom => !sentConnections.includes(mom.id))} 
               onLeanOn={handleLeanOn}
