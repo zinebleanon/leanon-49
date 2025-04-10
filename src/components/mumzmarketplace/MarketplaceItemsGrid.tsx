@@ -30,7 +30,7 @@ const MarketplaceItemsGrid = ({ items, isLoading = false }: MarketplaceItemsGrid
     return (
       <div className="text-center py-10">
         <p className="text-muted-foreground">No items found</p>
-        <p className="text-sm text-muted-foreground mt-2">Try adjusting your filters or check back later</p>
+        <p className="text-sm text-muted-foreground mt-2">Try adjusting your search or check back later</p>
       </div>
     );
   }
