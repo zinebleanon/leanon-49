@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -81,8 +82,8 @@ const Index = () => {
       <Navbar />
       
       {userInfo ? (
-        <div className="container px-4 py-20 md:py-24 max-w-5xl mx-auto">
-          <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
+        <div className="container px-4 py-20 md:py-24 max-w-5xl mx-auto flex items-center justify-center">
+          <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden max-w-md w-full">
             <CardHeader className="pb-2 bg-pastel-yellow/20">
               <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
@@ -93,39 +94,37 @@ const Index = () => {
             </CardHeader>
             
             <CardContent className="pt-3 pb-4">
-              <div className="max-w-md mx-auto">
-                <div className="bg-white/80 rounded-lg p-4 border border-pastel-yellow/20 shadow-sm">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Gift className="h-8 w-8 text-pastel-yellow" />
-                    <h3 className="font-medium text-xl">Refer & Get a Reward</h3>
+              <div className="bg-white/80 rounded-lg p-4 border border-pastel-yellow/20 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <Gift className="h-8 w-8 text-pastel-yellow" />
+                  <h3 className="font-medium text-xl">Refer & Get a Reward</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Share your code & get 5 AED Mall of the Emirates gift card for each Referral. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
+                </p>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
+                    {referralCode}
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Share your code & get 5 AED Mall of the Emirates gift card for each Referral. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
-                  </p>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
-                      {referralCode}
-                    </div>
-                    <Button 
-                      variant="outline" 
-                      size="md" 
-                      className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
-                      onClick={handleCopyReferralCode}
-                    >
-                      Copy
-                    </Button>
-                  </div>
-                  <div className="flex gap-2 mb-2">
-                    <Button
-                      variant="outline"
-                      size="md"
-                      className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500"
-                      onClick={shareWhatsApp}
-                    >
-                      <Share2 className="h-5 w-5" />
-                      Share via WhatsApp
-                    </Button>
-                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="md" 
+                    className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
+                    onClick={handleCopyReferralCode}
+                  >
+                    Copy
+                  </Button>
+                </div>
+                <div className="flex gap-2 mb-2">
+                  <Button
+                    variant="outline"
+                    size="md"
+                    className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500"
+                    onClick={shareWhatsApp}
+                  >
+                    <Share2 className="h-5 w-5" />
+                    Share via WhatsApp
+                  </Button>
                 </div>
               </div>
             </CardContent>
