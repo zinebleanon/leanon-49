@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, ListChecks, Users, Search } from "lucide-react";
+import { Info, ListChecks, Users, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
@@ -10,6 +11,14 @@ import ConnectionRequests from "./ConnectionRequests";
 import { MumzProfile } from "./ProfilesSection";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from "@/components/ui/command";
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -33,10 +42,40 @@ const HeroSection = ({
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
+  const [searchResults, setSearchResults] = useState<MumzProfile[]>([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setLocalSearchTerm(searchTerm);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (localSearchTerm.trim() && profiles.length > 0) {
+      const results = profiles.filter(profile => 
+        profile.name.toLowerCase().includes(localSearchTerm.toLowerCase())
+      );
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
+  }, [localSearchTerm, profiles]);
+
+  const handleSearchSelect = (profileId: number) => {
+    const selectedProfile = profiles.find(p => p.id === profileId);
+    if (selectedProfile && onSearchChange) {
+      onSearchChange(selectedProfile.name);
+      
+      if (onFiltersChange) {
+        onFiltersChange({ searchTerm: selectedProfile.name });
+      }
+    }
+    setIsSearchOpen(false);
+  };
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalSearchTerm(e.target.value);
     if (onSearchChange) {
       onSearchChange(e.target.value);
     }
@@ -49,36 +88,6 @@ const HeroSection = ({
   const handleFiltersChange = (filters: Record<string, any>) => {
     setIsFiltersOpen(false);
     if (onFiltersChange) {
-      onFiltersChange(filters);
-    }
-  };
-
-  const handleQuickFilter = (filter: string) => {
-    setActiveFilter(activeFilter === filter ? null : filter);
-    
-    if (onFiltersChange) {
-      const filters: Record<string, any> = {};
-      
-      if (activeFilter !== filter) {
-        // Apply the filter
-        switch (filter) {
-          case 'nearby':
-            filters.location = 'nearby';
-            break;
-          case 'kids-age':
-            filters.kids = [{ ageRange: '2', gender: 'all' }];
-            break;
-          case 'compatibility':
-            filters.compatibilityThreshold = 85;
-            break;
-        }
-      }
-      
-      // Keep the search term if there is one
-      if (searchTerm) {
-        filters.searchTerm = searchTerm;
-      }
-      
       onFiltersChange(filters);
     }
   };
@@ -138,9 +147,10 @@ const HeroSection = ({
             <div className="relative flex-1">
               <Input
                 type="text"
-                placeholder="Search by name..."
-                value={searchTerm}
+                placeholder="Search moms by name..."
+                value={localSearchTerm}
                 onChange={handleSearchChange}
+                onClick={() => setIsSearchOpen(true)}
                 className="pl-9 h-10 bg-white/80 border-pastel-green focus-visible:ring-pastel-green"
               />
               <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-pastel-green" />
@@ -206,6 +216,37 @@ const HeroSection = ({
         open={isConnectionRequestsOpen}
         onOpenChange={setIsConnectionRequestsOpen}
       />
+
+      <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+        <CommandInput 
+          placeholder="Search mom's name..." 
+          value={localSearchTerm} 
+          onValueChange={setLocalSearchTerm}
+        />
+        <CommandList>
+          <CommandEmpty>No moms found. Try a different name.</CommandEmpty>
+          <CommandGroup heading="Moms">
+            {searchResults.map((profile) => (
+              <CommandItem 
+                key={profile.id} 
+                onSelect={() => handleSearchSelect(profile.id)}
+                className="flex items-center gap-2 py-2"
+              >
+                <div className="w-8 h-8 rounded-full bg-pastel-green/40 flex items-center justify-center text-xs font-medium">
+                  {profile.name.charAt(0)}
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-medium">{profile.name}</span>
+                  <span className="text-xs text-muted-foreground">{profile.location}</span>
+                </div>
+                <span className="ml-auto text-xs bg-pastel-green/20 px-2 py-0.5 rounded-full">
+                  {profile.compatibility}% match
+                </span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </div>
   );
 };
