@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -99,39 +100,43 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-3 md:gap-4">
-          <Link
-            to="/inbox"
-            className={cn(
-              "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
-              isPathActive('/inbox')
-                ? "bg-primary/10 text-primary" 
-                : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
-            )}
-          >
-            <Mail className="h-5 w-5" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                {unreadCount}
-              </span>
-            )}
-          </Link>
-          
-          <Link
-            to="/notifications"
-            className={cn(
-              "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
-              isPathActive('/notifications')
-                ? "bg-primary/10 text-primary" 
-                : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
-            )}
-          >
-            <Bell className="h-5 w-5" />
-            {notificationCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                {notificationCount}
-              </span>
-            )}
-          </Link>
+          {userInfo && (
+            <>
+              <Link
+                to="/inbox"
+                className={cn(
+                  "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
+                  isPathActive('/inbox')
+                    ? "bg-primary/10 text-primary" 
+                    : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
+                )}
+              >
+                <Mail className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
+              
+              <Link
+                to="/notifications"
+                className={cn(
+                  "relative flex items-center justify-center w-10 h-10 rounded-full transition-all",
+                  isPathActive('/notifications')
+                    ? "bg-primary/10 text-primary" 
+                    : "bg-white shadow-sm hover:bg-primary/5 text-foreground/70 hover:text-foreground"
+                )}
+              >
+                <Bell className="h-5 w-5" />
+                {notificationCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
+                    {notificationCount}
+                  </span>
+                )}
+              </Link>
+            </>
+          )}
           
           {userInfo ? (
             <DropdownMenu>
