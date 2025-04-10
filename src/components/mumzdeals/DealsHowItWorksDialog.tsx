@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
 
@@ -21,13 +22,16 @@ const DealsHowItWorksDialog = () => {
           <span className="my-auto">How It Works</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg p-6 pt-8 pb-8 max-h-[95vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-center mb-6">
+          <DialogTitle className="text-2xl text-center mb-4">
             How Mumz Deals Work
           </DialogTitle>
+          <DialogDescription className="text-center text-muted-foreground">
+            Exclusive discounts for moms like you
+          </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-6">
+        <div className="grid gap-6 mt-2">
           <div className="flex items-start gap-4 p-4 rounded-lg bg-white">
             <div className="shrink-0 w-10 h-10 bg-amber-100 rounded-full p-2 flex items-center justify-center">
               <span className="font-medium text-amber-800">1</span>

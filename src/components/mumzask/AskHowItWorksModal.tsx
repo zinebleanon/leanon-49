@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { MessageCircle, Search, UserCheck, Tag, Info } from "lucide-react";
 
@@ -52,14 +53,17 @@ const AskHowItWorksModal = ({ className }: AskHowItWorksModalProps) => {
           <span className="my-auto">How It Works</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
-        <DialogHeader className="relative">
-          <DialogTitle className="text-2xl text-center mb-6">
+      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20 p-6 pt-8 pb-8 max-h-[95vh] overflow-y-auto">
+        <DialogHeader className="relative mb-2">
+          <DialogTitle className="text-2xl text-center mb-4">
             How To Use LeanOn Community
           </DialogTitle>
+          <DialogDescription className="text-center text-muted-foreground">
+            Get advice and support from other moms
+          </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-6">
+        <div className="grid gap-6 mt-2">
           {steps.map((step, index) => (
             <div
               key={index}

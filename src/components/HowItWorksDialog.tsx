@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Info } from 'lucide-react';
 import BowIcon from './ui/BowIcon';
@@ -51,14 +52,17 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
           <span className="my-auto">How It Works</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
-        <DialogHeader className="relative">
-          <DialogTitle className="text-2xl text-center mb-6">
+      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20 p-6 pt-8 pb-8 max-h-[95vh] overflow-y-auto">
+        <DialogHeader className="relative mb-2">
+          <DialogTitle className="text-2xl text-center mb-4">
             How <span className="font-adlery text-gradient">LeanOn</span> Works
           </DialogTitle>
+          <DialogDescription className="text-center text-muted-foreground">
+            Your complete mom community platform
+          </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-6">
+        <div className="grid gap-6 mt-2">
           {howItWorksSteps.map((step, index) => (
             <div
               key={index}
