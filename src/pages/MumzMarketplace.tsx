@@ -206,17 +206,6 @@ const MumzMarketplace = () => {
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
               asChild
             >
-              <Link to="/marketplace/find">
-                <Search className="mr-2 h-5 w-5 flex-shrink-0 my-auto" /> 
-                <span className="my-auto">Find a Preloved Item</span>
-              </Link>
-            </Button>
-            
-            <Button 
-              size="lg" 
-              className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
-              asChild
-            >
               <Link to="/marketplace/sell">
                 <Package className="mr-2 h-5 w-5 flex-shrink-0 my-auto" />
                 <span className="my-auto">List your Preloved Item</span>
