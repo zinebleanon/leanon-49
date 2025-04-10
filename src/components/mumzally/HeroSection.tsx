@@ -34,7 +34,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
         <div className="w-full text-center">
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
-            LeanMoms Around You
+            LeanMoms<br />Around You
           </h1>
         </div>
         
