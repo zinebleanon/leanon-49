@@ -356,10 +356,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     setActiveTab("signup");
   };
   
-  const switchToSignIn = () => {
-    setActiveTab("signin");
-  };
-  
   const handleTabChange = (value: string) => {
     setActiveTab(value as 'signin' | 'signup');
   };
@@ -929,14 +925,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                   </Button>
                   
                   {signupStep === 1 && (
-                    <div className="space-y-2 text-center">
-                      <p className="text-xs text-muted-foreground">
-                        By signing up, you agree to our Terms of Service and Privacy Policy
-                      </p>
-                      <p className="text-sm text-center text-muted-foreground">
-                        Already have an account? <Button variant="link" onClick={switchToSignIn} className="p-0 h-auto text-emerald-700 hover:text-emerald-800 font-medium">Sign in</Button>
-                      </p>
-                    </div>
+                    <p className="text-xs text-center text-muted-foreground">
+                      By signing up, you agree to our Terms of Service and Privacy Policy
+                    </p>
                   )}
                 </CardFooter>
               </form>
