@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Bell, Shield, Key, MapPin, LogOut, Save, Check } from 'lucide-react';
+import { Bell, Shield, Key, MapPin, LogOut, Save, Check, Navigation } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,13 @@ import { useUserInfo } from '@/hooks/use-user-info';
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('notifications');
   const { toast } = useToast();
-  const { userInfo, updateUserInfo, toggleManualLocationUpdate } = useUserInfo();
+  const { 
+    userInfo, 
+    updateUserInfo, 
+    toggleManualLocationUpdate, 
+    toggleGeolocationForNeighborhood,
+    updateNeighborhoodWithGeolocation
+  } = useUserInfo();
   
   const [settings, setSettings] = useState({
     pushNotifications: false,
@@ -24,6 +30,7 @@ const Settings = () => {
     profileVisibility: userInfo?.profileVisibility || 'public',
     locationSharing: userInfo?.locationSharing || true,
     manualLocationUpdate: userInfo?.manualLocationUpdate || false,
+    useGeolocationForNeighborhood: userInfo?.useGeolocationForNeighborhood || false,
   });
   
   // Password change state
@@ -52,6 +59,9 @@ const Settings = () => {
     } else if (setting === 'manualLocationUpdate') {
       // Update the manual location update setting
       toggleManualLocationUpdate(value as boolean);
+    } else if (setting === 'useGeolocationForNeighborhood') {
+      // Update the geolocation for neighborhood setting
+      toggleGeolocationForNeighborhood(value as boolean);
     }
     
     toast({
@@ -95,23 +105,33 @@ const Settings = () => {
     setIsChangingPassword(false);
   };
   
-  const handleNeighborhoodUpdate = () => {
+  const handleNeighborhoodUpdate = async () => {
     if (!neighborhood) {
       toast({
         title: "Error",
-        description: "Please enter your neighborhood.",
+        description: "Please enter your neighborhood or address.",
         variant: "destructive",
       });
       return;
     }
     
-    // Update user info with new neighborhood
-    updateUserInfo({ neighborhood });
+    // Update neighborhood and location based on settings
+    const success = await updateNeighborhoodWithGeolocation(neighborhood);
     
-    toast({
-      title: "Neighborhood updated",
-      description: "Your location information has been updated.",
-    });
+    if (success) {
+      toast({
+        title: "Neighborhood updated",
+        description: settings.useGeolocationForNeighborhood 
+          ? "Your neighborhood and location have been updated automatically."
+          : "Your neighborhood has been updated.",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "There was a problem updating your neighborhood.",
+        variant: "destructive",
+      });
+    }
     
     // Close the form
     setIsUpdatingNeighborhood(false);
@@ -378,10 +398,34 @@ const Settings = () => {
                       <div className="space-y-3 mb-4">
                         <Input 
                           type="text" 
-                          placeholder="Enter your neighborhood" 
+                          placeholder="Enter your neighborhood or address" 
                           value={neighborhood}
                           onChange={(e) => setNeighborhood(e.target.value)}
                         />
+                        
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="use-geolocation"
+                            checked={settings.useGeolocationForNeighborhood}
+                            onCheckedChange={(checked) => 
+                              handleSettingChange('useGeolocationForNeighborhood', checked)
+                            }
+                            className="data-[state=checked]:bg-pastel-yellow"
+                          />
+                          <label 
+                            htmlFor="use-geolocation" 
+                            className="text-sm cursor-pointer flex items-center"
+                          >
+                            <Navigation className="h-4 w-4 mr-2" />
+                            Automatically determine my location from address
+                          </label>
+                        </div>
+                        
+                        <p className="text-xs text-muted-foreground">
+                          {settings.useGeolocationForNeighborhood 
+                            ? "When enabled, we'll automatically set your pin location based on your address."
+                            : "When disabled, we'll only update your neighborhood name without changing your pin location."}
+                        </p>
                       </div>
                       <div className="flex gap-2">
                         <Button variant="warm" onClick={handleNeighborhoodUpdate}>
@@ -390,6 +434,10 @@ const Settings = () => {
                         <Button variant="outline" onClick={() => {
                           setIsUpdatingNeighborhood(false);
                           setNeighborhood(userInfo?.neighborhood || '');
+                          setSettings(prev => ({
+                            ...prev,
+                            useGeolocationForNeighborhood: userInfo?.useGeolocationForNeighborhood || false
+                          }));
                         }}>
                           Cancel
                         </Button>

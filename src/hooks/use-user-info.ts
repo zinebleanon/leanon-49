@@ -29,6 +29,7 @@ interface UserInfo {
   profileVisibility?: 'public' | 'connections' | 'private';
   locationSharing?: boolean;
   manualLocationUpdate?: boolean; // Flag to indicate if location should be manually updated
+  useGeolocationForNeighborhood?: boolean; // Flag to indicate if geolocation should be used for neighborhood updates
 }
 
 export const useUserInfo = () => {
@@ -89,6 +90,53 @@ export const useUserInfo = () => {
       return true;
     } catch (error) {
       console.error('Error toggling manual location update:', error);
+      return false;
+    }
+  };
+
+  // Toggle whether geolocation should be used for neighborhood updates
+  const toggleGeolocationForNeighborhood = (enabled: boolean) => {
+    try {
+      const newUserInfo = { ...userInfo, useGeolocationForNeighborhood: enabled };
+      setUserInfo(newUserInfo);
+      localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+      return true;
+    } catch (error) {
+      console.error('Error toggling geolocation for neighborhood:', error);
+      return false;
+    }
+  };
+
+  // Update neighborhood based on address and determine location automatically
+  const updateNeighborhoodWithGeolocation = async (address: string) => {
+    try {
+      if (!userInfo?.useGeolocationForNeighborhood) {
+        // Just update the neighborhood without geolocation
+        updateUserInfo({ neighborhood: address });
+        return true;
+      }
+
+      // In a real app, we would use a geocoding service here
+      // For this demo, we'll simulate getting coordinates
+      // This would normally be done with something like Google Maps Geocoding API
+      
+      // Simulated coordinates (this would come from the geocoding service)
+      const simulatedCoordinates = {
+        latitude: "25.2048" + Math.random().toString().substring(0, 6), 
+        longitude: "55.2708" + Math.random().toString().substring(0, 6)
+      };
+      
+      const newUserInfo = {
+        ...userInfo,
+        neighborhood: address,
+        location: simulatedCoordinates
+      };
+      
+      setUserInfo(newUserInfo);
+      localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+      return true;
+    } catch (error) {
+      console.error('Error updating neighborhood with geolocation:', error);
       return false;
     }
   };
@@ -166,6 +214,8 @@ export const useUserInfo = () => {
     updateUserInfo,
     updateLocation,
     toggleManualLocationUpdate,
+    toggleGeolocationForNeighborhood,
+    updateNeighborhoodWithGeolocation,
     updateKid,
     addKid,
     removeKid,
@@ -176,5 +226,6 @@ export const useUserInfo = () => {
     kidsAges: getKidsAges(),
     referralCode: userInfo?.referralCode,
     manualLocationUpdate: userInfo?.manualLocationUpdate || false,
+    useGeolocationForNeighborhood: userInfo?.useGeolocationForNeighborhood || false,
   };
 };
