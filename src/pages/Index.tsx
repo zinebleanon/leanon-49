@@ -88,14 +88,14 @@ const Index = () => {
               <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
-              <CardDescription className="text-center text-base">
+              <CardDescription className="text-center text-base mb-1">
                 It's great to see you again in the LeanOn community
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="py-6">
-              {/* Add the ribbon element here */}
-              <div className="w-full max-w-md mx-auto mb-6">
+            <CardContent className="pt-2 pb-4">
+              {/* Reduced spacing around the ribbon */}
+              <div className="w-full max-w-md mx-auto mb-2">
                 <img 
                   src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
                   alt="Decorative Ribbon" 
