@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift, ArrowRight, Users, MessageCircle, HelpCircle } from 'lucide-react';
+import { BellRing, Gift, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -80,46 +80,7 @@ const Index = () => {
             </CardHeader>
             
             <CardContent className="py-6">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <h3 className="font-medium text-xl">Your LeanOn Journey</h3>
-                  <div className="space-y-3">
-                    <Button 
-                      className="w-full justify-between bg-white hover:bg-white/90 text-pastel-green border border-pastel-green/30"
-                      variant="outline"
-                      onClick={() => navigate('/ally')}
-                    >
-                      <span className="flex items-center">
-                        <Users className="mr-2 h-4 w-4" />
-                        Find LeanMoms
-                      </span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      className="w-full justify-between bg-white hover:bg-white/90 text-pastel-green border border-pastel-green/30"
-                      variant="outline"
-                      onClick={() => navigate('/connections')}
-                    >
-                      <span className="flex items-center">
-                        <MessageCircle className="mr-2 h-4 w-4" />
-                        My Connections
-                      </span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      className="w-full justify-between bg-white hover:bg-white/90 text-pastel-green border border-pastel-green/30"
-                      variant="outline"
-                      onClick={() => navigate('/ask')}
-                    >
-                      <span className="flex items-center">
-                        <HelpCircle className="mr-2 h-4 w-4" />
-                        Ask Community
-                      </span>
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                
+              <div className="max-w-md mx-auto">
                 <div className="bg-white/80 rounded-lg p-6 border border-pastel-green/20 shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
                     <Gift className="h-6 w-6 text-pastel-green" />
