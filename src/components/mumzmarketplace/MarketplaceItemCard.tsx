@@ -47,26 +47,8 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
   };
   
   const handleContactClick = () => {
-    // Save conversation info to localStorage before navigating
-    const conversations = localStorage.getItem('conversations') 
-      ? JSON.parse(localStorage.getItem('conversations')!) 
-      : [];
-    
-    const newConversation = {
-      id: `preloved-${Date.now()}`,
-      participantId: `seller-${Date.now()}`,
-      participantName: item.seller,
-      lastMessage: `Inquiry about: ${item.title}`,
-      lastMessageTimestamp: new Date().toISOString(),
-      unreadCount: 0,
-      type: 'preloved'
-    };
-    
-    conversations.push(newConversation);
-    localStorage.setItem('conversations', JSON.stringify(conversations));
-    
-    // Navigate to inbox with preloved tab selected
-    navigate('/inbox');
+    // Open the contact dialog directly instead of just navigating
+    setIsContactDialogOpen(true);
   };
   
   return (
@@ -115,6 +97,12 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
           </Button>
         </CardFooter>
       </Card>
+      
+      <ContactSellerDialog 
+        open={isContactDialogOpen}
+        onOpenChange={setIsContactDialogOpen}
+        item={item}
+      />
     </>
   );
 };
