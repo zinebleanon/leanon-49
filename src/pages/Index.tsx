@@ -11,6 +11,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
+import BowRibbon from '@/components/mumzally/BowRibbon';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -93,6 +94,15 @@ const Index = () => {
             </CardHeader>
             
             <CardContent className="py-6">
+              {/* Add the ribbon element here */}
+              <div className="w-full max-w-md mx-auto mb-6">
+                <img 
+                  src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
+                  alt="Decorative Ribbon" 
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+              
               <div className="max-w-md mx-auto">
                 <div className="bg-white/80 rounded-lg p-6 border border-pastel-yellow/20 shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
