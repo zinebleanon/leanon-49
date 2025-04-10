@@ -6,6 +6,7 @@ import { MessageCircle, Heart } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import ContactSellerDialog from "./ContactSellerDialog";
+import { useNavigate } from 'react-router-dom';
 
 interface MarketplaceItemCardProps {
   item: {
@@ -21,6 +22,7 @@ interface MarketplaceItemCardProps {
 const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const navigate = useNavigate();
   
   const handleSaveItem = () => {
     setIsSaved(!isSaved);
@@ -42,6 +44,29 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
       default:
         return "bg-green-100 text-green-800";
     }
+  };
+  
+  const handleContactClick = () => {
+    // Save conversation info to localStorage before navigating
+    const conversations = localStorage.getItem('conversations') 
+      ? JSON.parse(localStorage.getItem('conversations')!) 
+      : [];
+    
+    const newConversation = {
+      id: `preloved-${Date.now()}`,
+      participantId: `seller-${Date.now()}`,
+      participantName: item.seller,
+      lastMessage: `Inquiry about: ${item.title}`,
+      lastMessageTimestamp: new Date().toISOString(),
+      unreadCount: 0,
+      type: 'preloved'
+    };
+    
+    conversations.push(newConversation);
+    localStorage.setItem('conversations', JSON.stringify(conversations));
+    
+    // Navigate to inbox with preloved tab selected
+    navigate('/inbox');
   };
   
   return (
@@ -74,7 +99,7 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
             variant="outline" 
             size="sm" 
             className="flex-1"
-            onClick={() => setIsContactDialogOpen(true)}
+            onClick={handleContactClick}
             disabled={item.status === "sold"}
           >
             <MessageCircle className="mr-2 h-4 w-4" />
@@ -90,12 +115,6 @@ const MarketplaceItemCard = ({ item }: MarketplaceItemCardProps) => {
           </Button>
         </CardFooter>
       </Card>
-      
-      <ContactSellerDialog 
-        open={isContactDialogOpen}
-        onOpenChange={setIsContactDialogOpen}
-        item={item}
-      />
     </>
   );
 };
