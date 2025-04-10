@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, ListChecks, Users, Filter } from "lucide-react";
+import { Info, MapPin, ListChecks, Users, Filter, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
 import ConnectionRequests from "./ConnectionRequests";
 import { MumzProfile } from "./ProfilesSection";
+import { Input } from "@/components/ui/input";
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -32,6 +33,7 @@ const HeroSection = ({
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
+  const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   const navigate = useNavigate();
 
   const handleFiltersChange = (filters: Record<string, any>) => {
@@ -93,22 +95,15 @@ const HeroSection = ({
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Moms Near You</h2>
-            <div className="flex items-center gap-2">
-              {nearbyMoms.length > 0 && (
-                <Badge variant="outline" className="px-3 py-1 bg-white/50">
-                  {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby
-                </Badge>
-              )}
-              <Button 
-                size="sm" 
-                variant="warm"
-                onClick={() => setIsFiltersOpen(true)} 
-                className="h-8 flex items-center gap-1 px-3"
-              >
-                <Filter className="h-3 w-3" />
-                <span className="text-xs font-semibold">Filters</span>
-              </Button>
-            </div>
+            <Button 
+              size="sm" 
+              variant="warm"
+              onClick={() => setIsFiltersOpen(true)} 
+              className="h-9 flex items-center gap-1 px-4 bg-pastel-yellow text-foreground shadow-sm"
+            >
+              <Filter className="h-4 w-4" />
+              <span className="font-medium">Filter</span>
+            </Button>
           </div>
           <RecommendedMatches profiles={nearbyMoms} />
         </div>
@@ -124,15 +119,6 @@ const HeroSection = ({
                   {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
                 </Badge>
               )}
-              <Button 
-                size="sm" 
-                variant="warm"
-                onClick={() => setIsFiltersOpen(true)} 
-                className="h-8 flex items-center gap-1 px-3"
-              >
-                <Filter className="h-3 w-3" />
-                <span className="text-xs font-semibold">Filters</span>
-              </Button>
             </div>
           </div>
           <RecommendedMatches profiles={profiles} />
