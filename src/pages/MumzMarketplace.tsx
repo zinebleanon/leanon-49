@@ -77,6 +77,8 @@ const MumzMarketplace = () => {
           </h1>
           
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-4">
+            <MarketplaceHowItWorksDialog />
+            
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
@@ -98,8 +100,6 @@ const MumzMarketplace = () => {
                 <span className="my-auto">List your Preloved Item</span>
               </Link>
             </Button>
-
-            <MarketplaceHowItWorksDialog />
           </div>
         </div>
         
