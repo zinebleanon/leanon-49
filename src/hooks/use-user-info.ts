@@ -8,9 +8,12 @@ interface Kid {
 
 interface UserInfo {
   name: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   neighborhood: string;
   phone: string;
+  profilePictureURL?: string;
   profileImage?: string;
   location?: {
     latitude: string;
