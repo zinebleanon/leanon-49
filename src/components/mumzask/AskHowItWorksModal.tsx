@@ -58,9 +58,7 @@ const AskHowItWorksModal = ({ className }: AskHowItWorksModalProps) => {
           <DialogTitle className="text-2xl text-center mb-4">
             How To Use LeanOn Community
           </DialogTitle>
-          <DialogDescription className="text-center text-muted-foreground">
-            Get advice and support from other moms
-          </DialogDescription>
+          {/* Removed the DialogDescription with "Get advice and support from other moms" text */}
         </DialogHeader>
         
         <div className="grid gap-6 mt-2">
