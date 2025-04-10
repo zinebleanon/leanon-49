@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
-import CommentSection, { Comment } from '../mumzask/CommentSection';
+import CommentSection, { Comment, Reply } from '../mumzask/CommentSection';
 import ReactionBar, { Reaction } from '../mumzask/ReactionBar';
 
 // Sample mock data for comments and reactions
@@ -16,7 +16,19 @@ const mockComments: Comment[] = [
     },
     timestamp: "1 hour ago",
     likes: 3,
-    userLiked: false
+    userLiked: false,
+    replies: [
+      {
+        id: 101,
+        text: "That's a great tip! I carry a small book in my bag for this exact reason.",
+        user: {
+          name: "Jessica M.",
+        },
+        timestamp: "45 minutes ago",
+        likes: 1,
+        userLiked: false
+      }
+    ]
   },
   {
     id: 2,
@@ -26,7 +38,8 @@ const mockComments: Comment[] = [
     },
     timestamp: "3 hours ago",
     likes: 2,
-    userLiked: false
+    userLiked: false,
+    replies: []
   },
   {
     id: 3,
@@ -36,7 +49,8 @@ const mockComments: Comment[] = [
     },
     timestamp: "5 hours ago",
     likes: 1,
-    userLiked: false
+    userLiked: false,
+    replies: []
   }
 ];
 
@@ -75,7 +89,8 @@ const MessageDetailView = ({ message, onBack }: MessageDetailViewProps) => {
       },
       timestamp: "Just now",
       likes: 0,
-      userLiked: false
+      userLiked: false,
+      replies: []
     };
     
     setComments([...comments, newComment]);
@@ -100,6 +115,47 @@ const MessageDetailView = ({ message, onBack }: MessageDetailViewProps) => {
         return { ...reaction, count, reacted };
       }
       return reaction;
+    }));
+  };
+
+  const handleReplyToComment = (commentId: number, text: string) => {
+    setComments(comments.map(comment => {
+      if (comment.id === commentId) {
+        const newReply: Reply = {
+          id: (comment.replies?.length || 0) + 1,
+          text,
+          user: {
+            name: "You"
+          },
+          timestamp: "Just now",
+          likes: 0,
+          userLiked: false
+        };
+        
+        return { 
+          ...comment, 
+          replies: [...(comment.replies || []), newReply]
+        };
+      }
+      return comment;
+    }));
+  };
+
+  const handleLikeReply = (commentId: number, replyId: number) => {
+    setComments(comments.map(comment => {
+      if (comment.id === commentId && comment.replies) {
+        const updatedReplies = comment.replies.map(reply => {
+          if (reply.id === replyId) {
+            const userLiked = !reply.userLiked;
+            const likesCount = userLiked ? reply.likes + 1 : Math.max(0, reply.likes - 1);
+            return { ...reply, likes: likesCount, userLiked };
+          }
+          return reply;
+        });
+        
+        return { ...comment, replies: updatedReplies };
+      }
+      return comment;
     }));
   };
 
@@ -152,6 +208,8 @@ const MessageDetailView = ({ message, onBack }: MessageDetailViewProps) => {
             comments={comments} 
             onAddComment={handleAddComment} 
             onLike={handleLikeComment}
+            onReply={handleReplyToComment}
+            onLikeReply={handleLikeReply}
           />
         )}
       </div>
