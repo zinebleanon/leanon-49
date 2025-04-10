@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, ListChecks, Users, Search, User } from "lucide-react";
+import { Info, ListChecks, Users, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
@@ -91,14 +91,6 @@ const HeroSection = ({
       onFiltersChange(filters);
     }
   };
-  
-  const handleSignInClick = () => {
-    navigate('/sign-in');
-  };
-  
-  const handleSignUpClick = () => {
-    navigate('/sign-up');
-  };
 
   return (
     <div className="mb-8">
@@ -107,25 +99,6 @@ const HeroSection = ({
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
             LeanMoms<br />Around You
           </h1>
-          
-          <div className="flex justify-center gap-2 mt-3">
-            <Button 
-              size="sm" 
-              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
-              onClick={handleSignInClick}
-            >
-              <User className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
-              <span>Sign In</span>
-            </Button>
-            <Button 
-              size="sm" 
-              className="rounded-full px-4 border border-[#FFD9A7] bg-white hover:bg-gray-50 text-foreground active:opacity-95 transition-all flex items-center h-9"
-              onClick={handleSignUpClick}
-            >
-              <User className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
-              <span>Sign Up</span>
-            </Button>
-          </div>
         </div>
         
         <div className="flex flex-col gap-3 items-center w-full max-w-[200px] mx-auto md:mx-0">
