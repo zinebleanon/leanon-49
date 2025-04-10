@@ -283,15 +283,28 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
           </TabsList>
           
           <div className="mb-4 flex flex-col md:flex-row gap-2 md:gap-3">
-            <div className="relative flex-1 max-w-md">
-              <Input
-                type="text"
-                placeholder="Search messages..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <div className="relative flex-1 max-w-md flex items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <Input
+                  type="text"
+                  placeholder="Search messages..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-[120px] border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
+                />
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 bg-[#FFD9A7]/60 hover:bg-[#FFD9A7]/80 text-foreground px-3"
+                    onClick={handleMomAiClick}
+                  >
+                    <Sparkles className="h-3.5 w-3.5 mr-1 text-[#B8CEC2]" />
+                    Ask MomAI
+                  </Button>
+                </div>
+              </div>
             </div>
             
             <div className="flex gap-2">
@@ -336,15 +349,6 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
-              
-              <Button
-                variant="ghost"
-                className="h-10 bg-[#FFD9A7]/60 hover:bg-[#FFD9A7]/80 text-foreground"
-                onClick={handleMomAiClick}
-              >
-                <Sparkles className="h-4 w-4 mr-2 text-[#B8CEC2]" />
-                Ask MomAI
-              </Button>
             </div>
           </div>
           
