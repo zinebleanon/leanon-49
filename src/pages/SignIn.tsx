@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -295,7 +294,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           birthDate: signUpData.birthDate,
           kids: signUpData.kids,
           profilePictureURL: signUpData.profilePictureURL,
-          referralCode: signUpData.referralCode
+          referralCode: signUpData.referralCode || ('LO' + Math.random().toString(36).substring(2, 8).toUpperCase())
         };
         
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -311,7 +310,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           title: "Account created!",
           description: "Your profile has been created successfully.",
         });
-        navigate('/ally/subscribe');
+        
+        navigate('/');
       }, 1500);
     }
   };

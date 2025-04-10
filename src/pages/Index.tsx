@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -34,6 +33,15 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem('userInfo')) {
+      const storedUserInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+      if (!userInfo && storedUserInfo) {
+        window.location.reload();
+      }
+    }
+  }, [userInfo]);
 
   const tryNotification = async () => {
     if (Notification.permission !== "granted") {
