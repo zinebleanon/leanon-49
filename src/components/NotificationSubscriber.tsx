@@ -99,7 +99,7 @@ const NotificationSubscriber = ({ className }: NotificationSubscriberProps) => {
   
   return (
     <Button
-      variant="outline"
+      variant={isSubscribed ? "warm" : "outline"}
       size="sm"
       className={`flex items-center gap-2 ${className}`}
       onClick={handleSubscription}

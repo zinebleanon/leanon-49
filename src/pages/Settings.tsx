@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Bell, Shield, User, Key, MapPin, LogOut } from 'lucide-react';
+import { Bell, Shield, Key, MapPin, LogOut } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,6 @@ const Settings = () => {
   const [activeTab, setActiveTab] = useState('notifications');
   const { toast } = useToast();
   const [settings, setSettings] = useState({
-    emailNotifications: true,
     pushNotifications: false,
     marketingEmails: false,
     profileVisibility: 'public',
@@ -49,7 +48,7 @@ const Settings = () => {
         </h1>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsList className="grid grid-cols-3 md:grid-cols-4 w-full">
+          <TabsList className="grid grid-cols-2 md:grid-cols-3 w-full">
             <TabsTrigger value="notifications">
               <Bell className="h-4 w-4 mr-2 md:mr-2" />
               <span className="hidden md:inline">Notifications</span>
@@ -57,10 +56,6 @@ const Settings = () => {
             <TabsTrigger value="privacy">
               <Shield className="h-4 w-4 mr-2 md:mr-2" />
               <span className="hidden md:inline">Privacy</span>
-            </TabsTrigger>
-            <TabsTrigger value="profile">
-              <User className="h-4 w-4 mr-2 md:mr-2" />
-              <span className="hidden md:inline">Profile</span>
             </TabsTrigger>
             <TabsTrigger value="account">
               <Key className="h-4 w-4 mr-2 md:mr-2" />
@@ -80,29 +75,12 @@ const Settings = () => {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium">Email Notifications</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Receive notifications via email
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.emailNotifications}
-                      onCheckedChange={(checked) => 
-                        handleSettingChange('emailNotifications', checked)
-                      }
-                    />
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
                       <h4 className="font-medium">Push Notifications</h4>
                       <p className="text-sm text-muted-foreground">
                         Receive notifications on your device
                       </p>
                     </div>
-                    <NotificationSubscriber />
+                    <NotificationSubscriber className="bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground border-pastel-yellow" />
                   </div>
                   
                   <Separator />
@@ -119,6 +97,7 @@ const Settings = () => {
                       onCheckedChange={(checked) => 
                         handleSettingChange('marketingEmails', checked)
                       }
+                      className="data-[state=checked]:bg-pastel-yellow"
                     />
                   </div>
                 </div>
@@ -144,30 +123,27 @@ const Settings = () => {
                     
                     <div className="flex flex-col gap-2">
                       <Button 
-                        variant={settings.profileVisibility === 'public' ? 'default' : 'outline'}
+                        variant={settings.profileVisibility === 'public' ? 'warm' : 'outline'}
                         onClick={() => handleSettingChange('profileVisibility', 'public')}
                         className="justify-start"
                       >
-                        <User className="mr-2 h-4 w-4" />
-                        Public - All moms can see your profile
+                        Public
                       </Button>
                       
                       <Button 
-                        variant={settings.profileVisibility === 'connections' ? 'default' : 'outline'}
+                        variant={settings.profileVisibility === 'connections' ? 'warm' : 'outline'}
                         onClick={() => handleSettingChange('profileVisibility', 'connections')}
                         className="justify-start"
                       >
-                        <User className="mr-2 h-4 w-4" />
-                        Connections Only - Only your connections can see your profile
+                        Connections Only
                       </Button>
                       
                       <Button 
-                        variant={settings.profileVisibility === 'private' ? 'default' : 'outline'}
+                        variant={settings.profileVisibility === 'private' ? 'warm' : 'outline'}
                         onClick={() => handleSettingChange('profileVisibility', 'private')}
                         className="justify-start"
                       >
-                        <User className="mr-2 h-4 w-4" />
-                        Private - Your profile is hidden from search
+                        Private
                       </Button>
                     </div>
                   </div>
@@ -186,38 +162,9 @@ const Settings = () => {
                       onCheckedChange={(checked) => 
                         handleSettingChange('locationSharing', checked)
                       }
+                      className="data-[state=checked]:bg-pastel-yellow"
                     />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
-                <CardDescription>
-                  Update your profile information
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <Button className="w-full">
-                    Edit Basic Information
-                  </Button>
-                  
-                  <Button className="w-full">
-                    Update Profile Picture
-                  </Button>
-                  
-                  <Button className="w-full">
-                    Manage Kids Information
-                  </Button>
-                  
-                  <Button className="w-full">
-                    Update Interests
-                  </Button>
                 </div>
               </CardContent>
             </Card>
