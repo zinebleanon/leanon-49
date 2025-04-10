@@ -177,24 +177,27 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   };
 
   const handleMomAiClick = () => {
-    if (searchQuery.trim().length > 0) {
-      // Set the content and topic for the AI summary
-      setAiSummaryContent(`Search query: ${searchQuery}. 
-      Please provide information about this parenting topic based on the available community messages.`);
-      setAiSummaryTopic(searchQuery);
-      
-      // Show the AI summary in a selected message view
-      const aiMessage: MessageProps = {
-        id: 999, // Use a unique ID
-        title: `MomAI: About "${searchQuery}"`,
-        content: `Here's what MomAI found about "${searchQuery}":`,
-        replies: 0,
-        likes: 0,
-        timestamp: 'Just now',
-        category: 'MomAI',
-      };
-      setSelectedMessage(aiMessage);
-    }
+    // Create AI message with summary of current community discussions
+    const discussionContent = filteredMessages.map(msg => 
+      `Topic: ${msg.title}\nCategory: ${msg.category}\nContent: ${msg.content}`
+    ).join('\n\n');
+    
+    // Set the content and topic for the AI summary
+    const summaryTopic = categoryFilter || activeTab === 'general' ? 'Community Discussions' : 'Neighborhood Discussions';
+    setAiSummaryContent(discussionContent);
+    setAiSummaryTopic(summaryTopic);
+    
+    // Show the AI summary in a selected message view
+    const aiMessage: MessageProps = {
+      id: 999, // Use a unique ID
+      title: `MomAI: Summary of ${summaryTopic}`,
+      content: `Here's what MomAI found about the current ${summaryTopic.toLowerCase()}:`,
+      replies: 0,
+      likes: 0,
+      timestamp: 'Just now',
+      category: 'MomAI',
+    };
+    setSelectedMessage(aiMessage);
   };
   
   const renderMessage = (message: MessageProps) => (
@@ -279,8 +282,8 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
             <TabsTrigger value="neighborhood" className="data-[state=active]:bg-[#B8CEC2]/50">Neighborhood</TabsTrigger>
           </TabsList>
           
-          <div className="mb-4 flex justify-between items-center">
-            <div className="relative flex-1 max-w-md flex">
+          <div className="mb-4 flex flex-col md:flex-row gap-2 md:gap-3">
+            <div className="relative flex-1 max-w-md">
               <Input
                 type="text"
                 placeholder="Search messages..."
@@ -289,59 +292,60 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
                 className="pl-10 border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+            
+            <div className="flex gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className={`text-xs h-10 px-3 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
+                  >
+                    <Filter className="h-4 w-4 mr-1" /> 
+                    {categoryFilter ? `${categoryFilter}` : "Filter"}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48 bg-white border border-[#B8CEC2]/20">
+                  <DropdownMenuLabel className="text-xs">Filter by Topic</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="max-h-[250px] overflow-y-auto">
+                    <DropdownMenuGroup>
+                      {currentCategories.map((category) => (
+                        <DropdownMenuItem 
+                          key={category.name}
+                          className={`cursor-pointer text-xs ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
+                          onClick={() => handleCategoryClick(category.name)}
+                        >
+                          {category.icon}
+                          <span>{category.name}</span>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuGroup>
+                  </div>
+                  {categoryFilter && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        className="cursor-pointer text-red-500 hover:text-red-700 text-xs"
+                        onClick={() => setCategoryFilter(null)}
+                      >
+                        Clear Filter
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
               <Button
                 variant="ghost"
-                size="sm"
-                className="ml-2 bg-[#FFD9A7]/60 hover:bg-[#FFD9A7]/80 text-foreground"
+                className="h-10 bg-[#FFD9A7]/60 hover:bg-[#FFD9A7]/80 text-foreground"
                 onClick={handleMomAiClick}
-                disabled={!searchQuery.trim()}
               >
                 <Sparkles className="h-4 w-4 mr-2 text-[#B8CEC2]" />
                 Ask MomAI
               </Button>
             </div>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className={`text-xs px-2 h-8 ml-2 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
-                >
-                  <Filter className="h-3 w-3 mr-1" /> 
-                  {categoryFilter ? `${categoryFilter}` : "Filter"}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48 bg-white border border-[#B8CEC2]/20">
-                <DropdownMenuLabel className="text-xs">Filter by Topic</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <div className="max-h-[250px] overflow-y-auto">
-                  <DropdownMenuGroup>
-                    {currentCategories.map((category) => (
-                      <DropdownMenuItem 
-                        key={category.name}
-                        className={`cursor-pointer text-xs ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
-                        onClick={() => handleCategoryClick(category.name)}
-                      >
-                        {category.icon}
-                        <span>{category.name}</span>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuGroup>
-                </div>
-                {categoryFilter && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      className="cursor-pointer text-red-500 hover:text-red-700 text-xs"
-                      onClick={() => setCategoryFilter(null)}
-                    >
-                      Clear Filter
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
           
           <TabsContent value="general">
