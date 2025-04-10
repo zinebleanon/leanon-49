@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { Settings, BellRing } from 'lucide-react';
+import { BellRing } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -26,10 +26,6 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
-  
-  const goToAdminPage = () => {
-    navigate('/admin/notifications');
-  };
 
   const tryNotification = async () => {
     if (Notification.permission !== "granted") {
@@ -61,18 +57,8 @@ const Index = () => {
       <Navbar />
       <Hero onJoinClick={() => {}} />
       
-      {/* Admin button - positioned discreetly at the bottom right */}
+      {/* Only showing the notification test button */}
       <div className="fixed bottom-8 right-8 z-10 space-y-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="rounded-full w-10 h-10 p-0 bg-background/80 backdrop-blur-sm shadow-md block"
-          onClick={goToAdminPage}
-        >
-          <Settings className="h-4 w-4" />
-          <span className="sr-only">Admin</span>
-        </Button>
-        
         <Button
           variant="warm"
           size="sm"
