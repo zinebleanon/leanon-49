@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -22,8 +22,13 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ProfileSection } from '@/pages/Profile';
+
+// Standard dimensions for profile pictures across the app
+const PROFILE_PIC_DIMENSIONS = {
+  width: 256,
+  height: 256
+};
 
 interface EditProfileFormProps {
   onSuccess: () => void;
@@ -106,7 +111,7 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
   });
   
   // Ensure form is reset with user data when it changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (userInfo) {
       form.reset({
         firstName: firstName || '',
@@ -166,16 +171,76 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     }
   };
   
-  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Function to process and resize the profile picture
+  const processProfilePicture = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = PROFILE_PIC_DIMENSIONS.width;
+          canvas.height = PROFILE_PIC_DIMENSIONS.height;
+          
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'));
+            return;
+          }
+          
+          // Draw image maintaining aspect ratio and centering
+          const scale = Math.max(
+            PROFILE_PIC_DIMENSIONS.width / img.width,
+            PROFILE_PIC_DIMENSIONS.height / img.height
+          );
+          
+          const scaledWidth = img.width * scale;
+          const scaledHeight = img.height * scale;
+          
+          const offsetX = (PROFILE_PIC_DIMENSIONS.width - scaledWidth) / 2;
+          const offsetY = (PROFILE_PIC_DIMENSIONS.height - scaledHeight) / 2;
+          
+          ctx.drawImage(img, offsetX, offsetY, scaledWidth, scaledHeight);
+          
+          // Convert to data URL
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+          resolve(dataUrl);
+        };
+        img.onerror = () => {
+          reject(new Error('Failed to load image'));
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+  
+  const handleProfilePictureChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfilePictureURL(imageUrl);
-      
-      toast({
-        title: "Image uploaded",
-        description: "Profile picture added successfully"
-      });
+      try {
+        setIsLoading(true);
+        // Process the image to ensure consistent dimensions
+        const processedImageUrl = await processProfilePicture(file);
+        setProfilePictureURL(processedImageUrl);
+        
+        toast({
+          title: "Image uploaded",
+          description: "Profile picture added successfully"
+        });
+      } catch (error) {
+        console.error('Error processing profile picture:', error);
+        toast({
+          title: "Upload failed",
+          description: "There was a problem processing your profile picture. Please try again.",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   
@@ -251,6 +316,9 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
             <Upload className="h-3.5 w-3.5" />
             {profilePictureURL || userInfo?.profilePictureURL ? 'Change Photo' : 'Upload Photo'}
           </Button>
+          <p className="text-xs text-muted-foreground text-center mt-1">
+            Your profile picture will be used consistently across the app
+          </p>
         </div>
         
         <div className="flex justify-end gap-2 pt-4">
@@ -273,11 +341,10 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-4 w-full">
+          <TabsList className="grid grid-cols-3 w-full">
             <TabsTrigger value="basic-info">Basic</TabsTrigger>
             <TabsTrigger value="contact-info">Contact</TabsTrigger>
             <TabsTrigger value="personal-details">Personal</TabsTrigger>
-            <TabsTrigger value="profile-photo">Photo</TabsTrigger>
           </TabsList>
           
           <TabsContent value="basic-info" className="space-y-4 py-2">
@@ -456,10 +523,8 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
                 </FormItem>
               )}
             />
-          </TabsContent>
-          
-          <TabsContent value="profile-photo" className="space-y-4 py-2">
-            <div className="space-y-2 flex flex-col items-center mb-4">
+            
+            <div className="space-y-2 flex flex-col items-center mt-6">
               <Avatar className="w-24 h-24 cursor-pointer border-2 border-secondary/50" onClick={triggerFileInput}>
                 {profilePictureURL || form.getValues().profilePictureURL ? (
                   <AvatarImage src={profilePictureURL || form.getValues().profilePictureURL} alt="Profile" />
@@ -468,6 +533,9 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
                     <User className="h-8 w-8 text-secondary" />
                   </AvatarFallback>
                 )}
+                <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 rounded-full flex items-center justify-center transition-opacity">
+                  <Camera className="h-8 w-8 text-white" />
+                </div>
               </Avatar>
               <input 
                 type="file" 
@@ -486,6 +554,9 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
                 <Upload className="h-3.5 w-3.5" />
                 {profilePictureURL || form.getValues().profilePictureURL ? 'Change Photo' : 'Upload Photo'}
               </Button>
+              <p className="text-xs text-muted-foreground text-center mt-1">
+                Your profile picture will be used throughout the app
+              </p>
             </div>
           </TabsContent>
         </Tabs>

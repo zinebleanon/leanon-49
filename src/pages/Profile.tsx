@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -224,10 +223,9 @@ const Profile = () => {
         </Card>
         
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="profile">About</TabsTrigger>
             <TabsTrigger value="kids">Kids</TabsTrigger>
-            <TabsTrigger value="connections">Connections</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile" className="mt-4">
@@ -355,26 +353,6 @@ const Profile = () => {
                     ))}
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="connections" className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">My Connections</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8">
-                  <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-medium mb-2">Build your mom network</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto">
-                    Connect with other moms in your neighborhood to share experiences and support.
-                  </p>
-                  <Button className="mt-4" asChild>
-                    <Link to="/ally">Find Moms</Link>
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </TabsContent>
