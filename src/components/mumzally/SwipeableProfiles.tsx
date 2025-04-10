@@ -1,11 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Baby, MapPin, Flag, Briefcase, Star, X, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { UserCircle } from 'lucide-react';
-import { toast } from "@/hooks/use-toast";
 import BowRibbon from './BowRibbon';
 import { Link } from 'react-router-dom';
 
@@ -98,14 +96,12 @@ const SwipeableProfiles: React.FC<SwipeableProfilesProps> = ({ profiles, onLeanO
       <div className={cardClass}>
         <Card className="overflow-hidden shadow-md bg-white">
           <div className="flex md:flex-row flex-col h-full">
-            {/* Profile Image Section - 40% of the card */}
             <div className="w-full md:w-2/5 bg-[#FFD9A7]/20 flex items-center justify-center p-6">
               <div className="w-32 h-32 rounded-full bg-[#FFD9A7] flex items-center justify-center">
                 <UserCircle className="h-24 w-24 text-primary" />
               </div>
             </div>
             
-            {/* Profile Details Section - 60% of the card */}
             <div className="w-full md:w-3/5 p-5">
               <div className="flex justify-between items-center mb-3">
                 <div>
@@ -170,7 +166,6 @@ const SwipeableProfiles: React.FC<SwipeableProfilesProps> = ({ profiles, onLeanO
             </div>
           </div>
           
-          {/* Action Buttons */}
           <div className="flex justify-center p-4 gap-6 bg-gray-50">
             <Button 
               variant="outline"
@@ -193,7 +188,6 @@ const SwipeableProfiles: React.FC<SwipeableProfilesProps> = ({ profiles, onLeanO
         </Card>
       </div>
       
-      {/* Progress indicator */}
       <div className="flex justify-center mt-4 gap-1">
         {profiles.slice(0, Math.min(profiles.length, 5)).map((_, index) => (
           <div 

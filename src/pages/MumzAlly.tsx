@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,7 +5,6 @@ import HeroSection from '@/components/mumzally/HeroSection';
 import MessageDialog from '@/components/mumzally/MessageDialog';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import { useUserInfo } from '@/hooks/use-user-info';
-import { toast } from '@/hooks/use-toast';
 
 const mockProfiles = [
   {
@@ -96,7 +94,6 @@ const MumzAlly = () => {
         
       profileKids.forEach(profileKid => {
         const ageDiff = Math.abs(profileKid.age - userKidAge);
-        // Give a score based on age difference: 1.0 for exact match, decreasing as difference increases
         totalSimilarity += ageDiff === 0 ? 1.0 : 1.0 / (ageDiff + 1);
       });
     });
@@ -109,7 +106,6 @@ const MumzAlly = () => {
     const userNeighborhood = userInfo?.neighborhood || "";
     const userKids = userInfo?.kids || [];
 
-    // First, identify nearby moms based on location
     if (userLocation) {
       const nearby = mockProfiles.filter(profile => 
         profile.id === 3 || profile.id === 4
@@ -122,10 +118,8 @@ const MumzAlly = () => {
       setNearbyMoms(nearby);
     }
 
-    // Apply initial filtering
     let matchedProfiles = [...mockProfiles];
     
-    // Apply search term filter if provided
     if (filters.searchTerm) {
       matchedProfiles = matchedProfiles.filter(profile => 
         profile.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
@@ -136,29 +130,25 @@ const MumzAlly = () => {
         profile.bio.toLowerCase().includes(filters.searchTerm.toLowerCase())
       );
     }
-
-    // Apply location filter if provided
+    
     if (filters.location && filters.location !== 'all') {
       matchedProfiles = matchedProfiles.filter(profile => 
         profile.location === filters.location
       );
     }
     
-    // Apply nationality filter if provided
     if (filters.nationality && filters.nationality !== 'all') {
       matchedProfiles = matchedProfiles.filter(profile => 
         profile.nationality === filters.nationality
       );
     }
     
-    // Apply work status filter if provided
     if (filters.workStatus && filters.workStatus !== 'all') {
       matchedProfiles = matchedProfiles.filter(profile => 
         profile.workStatus === filters.workStatus
       );
     }
     
-    // Apply kids filter if provided
     if (filters.kids && filters.kids.length > 0) {
       matchedProfiles = matchedProfiles.filter(profile => {
         return filters.kids.some((kidFilter) => {
@@ -179,22 +169,17 @@ const MumzAlly = () => {
       });
     }
     
-    // Apply compatibility threshold filter if provided
     if (filters.compatibilityThreshold) {
       matchedProfiles = matchedProfiles.filter(profile => 
         profile.compatibility >= filters.compatibilityThreshold
       );
     }
 
-    // Calculate and apply scores for sorting
     const rankedProfiles = matchedProfiles.map(profile => {
-      // Score based on kid age similarity
       const kidAgeSimilarityScore = calculateKidAgeSimilarity(userKids, profile.kids);
       
-      // Score based on location proximity
       const locationProximityScore = (userNeighborhood === profile.location) ? 1.0 : 0.5;
       
-      // Combined score with compatibility
       const combinedScore = (
         (kidAgeSimilarityScore * 0.4) + 
         (locationProximityScore * 0.3) + 
@@ -209,7 +194,6 @@ const MumzAlly = () => {
       };
     });
     
-    // Sort by combined score
     rankedProfiles.sort((a, b) => b.combinedScore - a.combinedScore);
     
     setFilteredProfiles(rankedProfiles);
@@ -225,7 +209,6 @@ const MumzAlly = () => {
   };
 
   const handleFiltersChange = (filters: Record<string, any>) => {
-    // Update search term if provided
     if (filters.searchTerm !== undefined) {
       setSearchTerm(filters.searchTerm);
     }
@@ -235,10 +218,6 @@ const MumzAlly = () => {
 
   const handleLeanOn = (id: number, name: string) => {
     setSentConnections(prev => [...prev, id]);
-    toast({
-      title: "LeanOn Request Sent",
-      description: `You've sent a connection request to ${name}!`,
-    });
   };
   
   const handleSkip = (id: number) => {

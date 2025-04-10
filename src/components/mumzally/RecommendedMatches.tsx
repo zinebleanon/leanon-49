@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, Baby, UserCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -7,7 +8,6 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import BowRibbon from './BowRibbon';
 import { useState } from 'react';
-import { toast } from "@/hooks/use-toast";
 
 export interface RecommendedMatchesProps {
   profiles?: MumzProfile[];
@@ -38,10 +38,7 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   
   const handleSendConnection = (id: number, name: string) => {
     setSentConnections(prev => [...prev, id]);
-    toast({
-      title: "LeanOn Request Sent",
-      description: `You've sent a connection request to ${name}!`,
-    });
+    // Removed toast notification that appeared when clicking connect
   };
 
   const handleMessageButtonClick = (id: number, name: string) => {

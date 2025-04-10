@@ -26,11 +26,7 @@ interface ProfilesSectionProps {
 
 const ProfilesSection = ({ profiles, onHeartClick, onMessageClick }: ProfilesSectionProps) => {
   const handleHeartClick = (id: number) => {
-    toast({
-      title: "LeanOn Request Sent",
-      description: "You've sent a request to LeanOn with someone in your neighborhood!",
-    });
-    
+    // Removing the toast notification that appears when clicking connect
     onHeartClick(id);
   };
   
