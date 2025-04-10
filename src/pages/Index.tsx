@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -35,28 +34,13 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // This effect ensures the page updates when user info changes in localStorage
   useEffect(() => {
-    // Check if there's userInfo in localStorage but not in state
-    const checkUserInfo = () => {
-      if (localStorage.getItem('userInfo')) {
-        const storedUserInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-        if (!userInfo && storedUserInfo) {
-          window.location.reload();
-        }
+    if (localStorage.getItem('userInfo')) {
+      const storedUserInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+      if (!userInfo && storedUserInfo) {
+        window.location.reload();
       }
-    };
-    
-    // Check immediately
-    checkUserInfo();
-    
-    // Also set up a listener for storage events
-    const handleStorageChange = () => {
-      checkUserInfo();
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    }
   }, [userInfo]);
 
   const tryNotification = async () => {
