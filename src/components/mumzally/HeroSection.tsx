@@ -101,12 +101,12 @@ const HeroSection = ({
               )}
               <Button 
                 size="sm" 
-                variant="outline"
+                variant="warm"
                 onClick={() => setIsFiltersOpen(true)} 
-                className="h-8 flex items-center gap-1 px-3 bg-white/50"
+                className="h-8 flex items-center gap-1 px-3"
               >
                 <Filter className="h-3 w-3" />
-                <span className="text-xs">Filters</span>
+                <span className="text-xs font-semibold">Filters</span>
               </Button>
             </div>
           </div>
