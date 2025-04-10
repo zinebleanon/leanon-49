@@ -76,7 +76,7 @@ const MumzDeals = () => {
     <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
-      <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
+      <main className="max-w-7xl mx-auto pt-16 pb-12 px-4">
         <div className="mb-8">
           <Button variant="ghost" asChild className="mb-4">
             <Link to="/save">
@@ -86,7 +86,7 @@ const MumzDeals = () => {
           </Button>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
-            <span className="text-black">Mumz</span> <span className="text-orange-500">Deals</span>
+            <span className="text-black">Mumz Deals</span>
           </h1>
           
           <div className="flex flex-wrap gap-4 mt-8">
