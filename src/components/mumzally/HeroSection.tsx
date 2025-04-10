@@ -32,13 +32,21 @@ const HeroSection = ({
 }: HeroSectionProps) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [showRightSideFilter, setShowRightSideFilter] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onSearchChange) {
+      onSearchChange(e.target.value);
+    }
+    
+    if (onFiltersChange) {
+      onFiltersChange({ searchTerm: e.target.value });
+    }
+  };
+
   const handleFiltersChange = (filters: Record<string, any>) => {
     setIsFiltersOpen(false);
-    setShowRightSideFilter(false);
     if (onFiltersChange) {
       onFiltersChange(filters);
     }
@@ -51,6 +59,27 @@ const HeroSection = ({
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
             LeanMoms<br />Around You
           </h1>
+          
+          {/* Search bar */}
+          <div className="max-w-md mx-auto mt-4 relative">
+            <Input
+              type="text"
+              placeholder="Search by name, location, or interests..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={() => setIsFiltersOpen(true)} 
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 flex items-center gap-1 px-2"
+            >
+              <Filter className="h-3 w-3" />
+              <span className="text-xs">Filters</span>
+            </Button>
+          </div>
         </div>
         
         <div className="flex flex-col gap-3 items-center w-full max-w-[200px] mx-auto md:mx-0">
@@ -96,50 +125,12 @@ const HeroSection = ({
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Moms Near You</h2>
-            <div className="flex items-center gap-2">
-              {nearbyMoms.length > 0 && (
-                <Badge variant="outline" className="px-3 py-1 bg-white/50">
-                  {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby
-                </Badge>
-              )}
-              <Button 
-                variant="warm"
-                size="sm"
-                onClick={() => setShowRightSideFilter(prev => !prev)} 
-                className="flex items-center gap-1 px-3"
-              >
-                <Filter className="h-4 w-4" />
-                <span>Filter</span>
-              </Button>
-            </div>
+            {nearbyMoms.length > 0 && (
+              <Badge variant="outline" className="px-3 py-1 bg-white/50">
+                {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby
+              </Badge>
+            )}
           </div>
-          
-          {/* Right side filter section that appears below the header */}
-          {showRightSideFilter && (
-            <div className="mb-4 ml-auto max-w-sm">
-              <div className="bg-white/90 rounded-lg p-4 shadow-sm border border-[#B8CEC2]/30">
-                <h3 className="text-sm font-medium mb-3">Quick Filter</h3>
-                <div className="space-y-3">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full justify-start text-sm"
-                    onClick={() => setIsFiltersOpen(true)}
-                  >
-                    <Filter className="h-3.5 w-3.5 mr-2" />
-                    View all filters
-                  </Button>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline" size="sm" className="text-xs">Kids 0-2</Button>
-                    <Button variant="outline" size="sm" className="text-xs">Kids 3-5</Button>
-                    <Button variant="outline" size="sm" className="text-xs">Full-time</Button>
-                    <Button variant="outline" size="sm" className="text-xs">Part-time</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          
           <RecommendedMatches profiles={nearbyMoms} />
         </div>
       )}
@@ -148,22 +139,11 @@ const HeroSection = ({
         <div>
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Matched for You</h2>
-            <div className="flex items-center gap-2">
-              {profiles.length > 0 && (
-                <Badge variant="outline" className="px-3 py-1 bg-white/50">
-                  {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
-                </Badge>
-              )}
-              <Button 
-                variant="warm"
-                size="sm"
-                onClick={() => setIsFiltersOpen(true)} 
-                className="flex items-center gap-1 px-3"
-              >
-                <Filter className="h-4 w-4" />
-                <span>Filter</span>
-              </Button>
-            </div>
+            {profiles.length > 0 && (
+              <Badge variant="outline" className="px-3 py-1 bg-white/50">
+                {profiles.length} {profiles.length === 1 ? 'match' : 'matches'} found
+              </Badge>
+            )}
           </div>
           <RecommendedMatches profiles={profiles} />
         </div>
