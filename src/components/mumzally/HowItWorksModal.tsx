@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,20 +20,20 @@ const steps = [
   },
   {
     icon: <MapPin className="w-6 h-6 text-primary" />,
-    title: "Find Local Moms",
-    description: "Use the 'Find Moms Around' feature to discover moms near you who share similar interests and have children of similar ages.",
+    title: "Find Moms In Your Area",
+    description: "Discover moms near you who share similar interests and have children of similar ages.",
     bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" 
   },
   {
     icon: <MessageCircle className="w-6 h-6 text-primary" />,
-    title: "Connect & Chat",
+    title: "Send Connection Requests",
     description: "Send a LeanOn request to moms you'd like to connect with, then start a conversation to plan meetups.",
     bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" 
   },
   {
     icon: <Heart className="w-6 h-6 text-primary" />,
-    title: "Meet In Person",
-    description: "Arrange playdates, coffee meetups, or other activities to build real-world connections with local moms.",
+    title: "Build Your Community",
+    description: "Create meaningful connections with local moms through playdates, coffee meetups, or other activities.",
     bgColor: "from-[#FFF8E7] to-[#FFF8E7]/80" 
   }
 ];
@@ -50,7 +51,7 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
         <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
           <DialogHeader className="relative">
             <DialogTitle className="text-2xl text-center mb-6">
-              How To Find Moms Near You
+              How To Connect With Moms Near You
             </DialogTitle>
           </DialogHeader>
           
@@ -90,7 +91,7 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
         <DialogHeader className="relative">
           <DialogTitle className="text-2xl text-center mb-6">
-            How To Find Moms Near You
+            How To Connect With Moms Near You
           </DialogTitle>
         </DialogHeader>
         
