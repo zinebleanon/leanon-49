@@ -25,6 +25,7 @@ interface UserInfo {
   birthDate?: string;
   bio?: string;
   kids?: Kid[];
+  referralCode?: string; // Added referral code field
 }
 
 export const useUserInfo = () => {
@@ -138,5 +139,6 @@ export const useUserInfo = () => {
     workStatus: userInfo?.workStatus,
     kids: userInfo?.kids || [],
     kidsAges: getKidsAges(),
+    referralCode: userInfo?.referralCode,
   };
 };

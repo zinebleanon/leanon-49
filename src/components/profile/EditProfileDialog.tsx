@@ -9,6 +9,8 @@ import {
 import EditProfileForm from "./EditProfileForm";
 import EditKidForm from "./EditKidForm";
 import { ProfileSection } from "@/pages/Profile";
+import { useEffect } from "react";
+import { useUserInfo } from "@/hooks/use-user-info";
 
 interface EditProfileDialogProps {
   isOpen: boolean;
@@ -29,6 +31,17 @@ const EditProfileDialog = ({
   description,
   section = 'all',
 }: EditProfileDialogProps) => {
+  const { userInfo, updateUserInfo } = useUserInfo();
+  
+  // Check if user has a referral code, if not, create one
+  useEffect(() => {
+    if (isOpen && userInfo && !userInfo.referralCode) {
+      // Generate a referral code if the user doesn't have one
+      const newReferralCode = 'LO' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      updateUserInfo({ referralCode: newReferralCode });
+    }
+  }, [isOpen, userInfo, updateUserInfo]);
+
   const handleSuccess = () => {
     onOpenChange(false);
   };

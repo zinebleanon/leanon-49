@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -16,10 +15,16 @@ import { Link } from 'react-router-dom';
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { userInfo } = useUserInfo();
-  const [referralCode, setReferralCode] = useState('LO' + Math.random().toString(36).substring(2, 8).toUpperCase());
+  const { userInfo, updateUserInfo } = useUserInfo();
   
   useViewportHeight();
+  
+  useEffect(() => {
+    if (userInfo && !userInfo.referralCode) {
+      const newReferralCode = 'LO' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      updateUserInfo({ referralCode: newReferralCode });
+    }
+  }, [userInfo, updateUserInfo]);
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -45,17 +50,21 @@ const Index = () => {
   };
 
   const handleCopyReferralCode = () => {
-    navigator.clipboard.writeText(referralCode);
-    toast({
-      title: "Referral code copied!",
-      description: "Share it with your friends to invite them to LeanOn"
-    });
+    if (userInfo?.referralCode) {
+      navigator.clipboard.writeText(userInfo.referralCode);
+      toast({
+        title: "Referral code copied!",
+        description: "Share it with your friends to invite them to LeanOn"
+      });
+    }
   };
   
   const shareWhatsApp = () => {
-    const message = `Join me on LeanOn with my referral code: ${referralCode}\nDownload the app now, connect with other moms, and get a 5 AED MOE gift card!`;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+    if (userInfo?.referralCode) {
+      const message = `Join me on LeanOn with my referral code: ${userInfo.referralCode}\nDownload the app now, connect with other moms, and get a 5 AED MOE gift card!`;
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+    }
   };
   
   const capitalizeFirstLetter = (str: string) => {
@@ -104,7 +113,7 @@ const Index = () => {
                 </p>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
-                    {referralCode}
+                    {userInfo?.referralCode || 'Loading...'}
                   </div>
                   <Button 
                     variant="outline" 

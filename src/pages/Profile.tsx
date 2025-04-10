@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users, Plus, Trash2, Camera } from 'lucide-react';
+import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users, Plus, Trash2, Camera, Share2 } from 'lucide-react';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Separator } from '@/components/ui/separator';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
@@ -22,7 +21,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-// Profile section types for the edit dialog
 export type ProfileSection = 'basic' | 'contact' | 'personal' | 'photo' | 'all';
 
 const Profile = () => {
@@ -30,7 +28,6 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const { toast } = useToast();
   
-  // Edit dialog states
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editDialogMode, setEditDialogMode] = useState<'profile' | 'kid'>('profile');
   const [editingKidIndex, setEditingKidIndex] = useState<number | undefined>(undefined);
@@ -38,11 +35,9 @@ const Profile = () => {
   const [editDialogDescription, setEditDialogDescription] = useState('');
   const [activeProfileSection, setActiveProfileSection] = useState<ProfileSection>('all');
   
-  // Delete kid dialog
   const [deleteKidDialogOpen, setDeleteKidDialogOpen] = useState(false);
   const [deletingKidIndex, setDeletingKidIndex] = useState<number | undefined>(undefined);
   
-  // File input ref for avatar upload
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   
   const openEditProfileDialog = (section: ProfileSection = 'all') => {
@@ -117,6 +112,24 @@ const Profile = () => {
     setDeleteKidDialogOpen(false);
   };
   
+  const handleCopyReferralCode = () => {
+    if (userInfo?.referralCode) {
+      navigator.clipboard.writeText(userInfo.referralCode);
+      toast({
+        title: "Referral code copied!",
+        description: "Share it with your friends to invite them to LeanOn"
+      });
+    }
+  };
+  
+  const shareWhatsApp = () => {
+    if (userInfo?.referralCode) {
+      const message = `Join me on LeanOn with my referral code: ${userInfo.referralCode}\nDownload the app now, connect with other moms, and get a 5 AED MOE gift card!`;
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+    }
+  };
+  
   const getInitials = (name: string) => {
     if (!name) return 'U';
     return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
@@ -136,7 +149,6 @@ const Profile = () => {
     }
   };
   
-  // Handle avatar click to open profile photo editing
   const handleAvatarClick = () => {
     openEditProfileDialog('photo');
   };
@@ -218,6 +230,39 @@ const Profile = () => {
                   </p>
                 </div>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="mb-8">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xl">My Referral Code</CardTitle>
+            <CardDescription>Share your code & get 5 AED Mall of the Emirates gift card for each Referral</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
+                {userInfo?.referralCode || 'Loading...'}
+              </div>
+              <Button 
+                variant="outline" 
+                size="md" 
+                className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
+                onClick={handleCopyReferralCode}
+              >
+                Copy
+              </Button>
+            </div>
+            <div className="flex gap-2 mb-2">
+              <Button
+                variant="outline"
+                size="md"
+                className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500"
+                onClick={shareWhatsApp}
+              >
+                <Share2 className="h-5 w-5" />
+                Share via WhatsApp
+              </Button>
             </div>
           </CardContent>
         </Card>
