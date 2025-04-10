@@ -97,10 +97,10 @@ const Index = () => {
                 <div className="bg-white/80 rounded-lg p-4 border border-pastel-yellow/20 shadow-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <Gift className="h-6 w-6 text-pastel-yellow" />
-                    <h3 className="font-medium text-xl">Earn Rewards for Each Referral</h3>
+                    <h3 className="font-medium text-xl">Share your code with other moms</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Share your referral code with other moms and help grow our supportive community!
+                    Share your referral code and get a 5 AED Mall of the Emirates gift card. Conditions apply.
                   </p>
                   <div className="flex items-center gap-2 mb-3">
                     <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
