@@ -9,7 +9,7 @@ import { BellRing, Gift } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -82,8 +82,8 @@ const Index = () => {
       
       {userInfo ? (
         <div className="container px-4 py-16 md:py-24 max-w-5xl mx-auto">
-          <Card className="bg-gradient-to-br from-pastel-green/20 to-background border-pastel-green/30 shadow-md overflow-hidden">
-            <CardHeader className="pb-2">
+          <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
+            <CardHeader className="pb-2 bg-pastel-yellow/20">
               <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
@@ -94,22 +94,22 @@ const Index = () => {
             
             <CardContent className="py-6">
               <div className="max-w-md mx-auto">
-                <div className="bg-white/80 rounded-lg p-6 border border-pastel-green/20 shadow-sm">
+                <div className="bg-white/80 rounded-lg p-6 border border-pastel-yellow/20 shadow-sm">
                   <div className="flex items-center gap-3 mb-3">
-                    <Gift className="h-6 w-6 text-pastel-green" />
+                    <Gift className="h-6 w-6 text-pastel-yellow" />
                     <h3 className="font-medium text-lg">Invite Friends & Family</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-5">
                     Share your referral code with other moms and help grow our supportive community!
                   </p>
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-pastel-green/10 px-4 py-2 rounded-md font-mono text-sm font-medium flex-1 text-center border border-pastel-green/20">
+                    <div className="bg-pastel-yellow/10 px-4 py-2 rounded-md font-mono text-sm font-medium flex-1 text-center border border-pastel-yellow/20">
                       {referralCode}
                     </div>
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="flex-shrink-0 bg-pastel-green text-white hover:bg-pastel-green/90 hover:text-white border-pastel-green"
+                      className="flex-shrink-0 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
                       onClick={handleCopyReferralCode}
                     >
                       Copy Code
