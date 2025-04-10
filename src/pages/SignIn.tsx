@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus, Calendar, Upload, User } from 'lucide-react';
+import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus, Calendar, Upload, User, Gift } from 'lucide-react';
 import BowIcon from '@/components/ui/BowIcon';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import BowRibbon from '@/components/mumzally/BowRibbon';
@@ -22,10 +22,12 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
   const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification, 3: Profile
   const [otpValue, setOtpValue] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const referralCodeFromParams = searchParams.get('referral') || '';
   
   useEffect(() => {
     if (location.pathname === '/sign-up' && activeTab !== 'signup') {
@@ -56,7 +58,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     birthDate: '',
     kids: [{ birthDate: '', gender: '' }],
     profilePicture: null as File | null,
-    profilePictureURL: ''
+    profilePictureURL: '',
+    referralCode: referralCodeFromParams
   });
   
   const neighborhoods = [
@@ -290,10 +293,18 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           interests: signUpData.interests,
           birthDate: signUpData.birthDate,
           kids: signUpData.kids,
-          profilePictureURL: signUpData.profilePictureURL
+          profilePictureURL: signUpData.profilePictureURL,
+          referralCode: signUpData.referralCode
         };
         
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        
+        if (signUpData.referralCode) {
+          toast({
+            title: "Referral applied!",
+            description: `You signed up using referral code: ${signUpData.referralCode}`,
+          });
+        }
         
         toast({
           title: "Account created!",
@@ -625,6 +636,24 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                         showPasswordToggle={true}
                         required
                       />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-referral">Referral Code (Optional)</Label>
+                      <Input 
+                        id="signup-referral"
+                        name="referralCode"
+                        placeholder="Enter referral code if you have one"
+                        className="border-secondary/30 focus:border-secondary"
+                        icon={<Gift className="h-4 w-4" />}
+                        value={signUpData.referralCode}
+                        onChange={handleSignUpChange}
+                      />
+                      {signUpData.referralCode && (
+                        <p className="text-xs text-emerald-600 mt-1">
+                          <Check className="h-3 w-3 inline-block mr-1" /> Referral code applied
+                        </p>
+                      )}
                     </div>
                   </CardContent>
                 )}

@@ -82,7 +82,7 @@ const Index = () => {
       <Navbar />
       
       {userInfo ? (
-        <div className="container px-4 py-20 md:py-24 max-w-5xl mx-auto flex items-center justify-center">
+        <div className="container px-4 py-20 pt-32 md:pt-36 min-h-screen flex items-center justify-center">
           <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden max-w-md w-full">
             <CardHeader className="pb-2 bg-pastel-yellow/20">
               <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
