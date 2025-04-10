@@ -1,8 +1,8 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Bell, Shield, Key, MapPin, LogOut, Save, Check, Navigation } from 'lucide-react';
+import { Bell, Shield, Key, MapPin, LogOut, Save, Check, Navigation, MapPinOff } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,8 @@ const Settings = () => {
     updateUserInfo, 
     toggleManualLocationUpdate, 
     toggleGeolocationForNeighborhood,
-    updateNeighborhoodWithGeolocation
+    updateNeighborhoodWithGeolocation,
+    neighborhood
   } = useUserInfo();
   
   const [settings, setSettings] = useState({
@@ -42,8 +43,22 @@ const Settings = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   
   // Neighborhood update state
-  const [neighborhood, setNeighborhood] = useState(userInfo?.neighborhood || '');
+  const [neighborhoodInput, setNeighborhoodInput] = useState(neighborhood || '');
   const [isUpdatingNeighborhood, setIsUpdatingNeighborhood] = useState(false);
+  
+  // Update settings from userInfo when it loads
+  useEffect(() => {
+    if (userInfo) {
+      setSettings(prev => ({
+        ...prev,
+        profileVisibility: userInfo.profileVisibility || 'public',
+        locationSharing: userInfo.locationSharing || true,
+        manualLocationUpdate: userInfo.manualLocationUpdate || false,
+        useGeolocationForNeighborhood: userInfo.useGeolocationForNeighborhood || false,
+      }));
+      setNeighborhoodInput(userInfo.neighborhood || '');
+    }
+  }, [userInfo]);
   
   const handleSettingChange = (setting: string, value: boolean | string) => {
     setSettings(prev => ({
@@ -106,7 +121,7 @@ const Settings = () => {
   };
   
   const handleNeighborhoodUpdate = async () => {
-    if (!neighborhood) {
+    if (!neighborhoodInput) {
       toast({
         title: "Error",
         description: "Please enter your neighborhood or address.",
@@ -116,7 +131,7 @@ const Settings = () => {
     }
     
     // Update neighborhood and location based on settings
-    const success = await updateNeighborhoodWithGeolocation(neighborhood);
+    const success = await updateNeighborhoodWithGeolocation(neighborhoodInput);
     
     if (success) {
       toast({
@@ -135,6 +150,61 @@ const Settings = () => {
     
     // Close the form
     setIsUpdatingNeighborhood(false);
+  };
+  
+  const handleActivateGeolocation = () => {
+    if (navigator.geolocation) {
+      toast({
+        title: "Accessing your location",
+        description: "Please allow location access when prompted.",
+      });
+      
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const latitude = position.coords.latitude.toString();
+          const longitude = position.coords.longitude.toString();
+          
+          // In a real app, we would use reverse geocoding here to get the address
+          // For this demo, we'll update with coordinates and a placeholder
+          const result = await updateUserInfo({
+            location: { latitude, longitude },
+            useGeolocationForNeighborhood: true
+          });
+          
+          if (result) {
+            setSettings(prev => ({
+              ...prev,
+              useGeolocationForNeighborhood: true
+            }));
+            
+            toast({
+              title: "Location updated",
+              description: "Your current location has been saved. You can now use automatic geolocation for neighborhood updates.",
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: "There was a problem updating your location.",
+              variant: "destructive",
+            });
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          toast({
+            title: "Geolocation error",
+            description: "Unable to access your location. Please check your browser permissions.",
+            variant: "destructive",
+          });
+        }
+      );
+    } else {
+      toast({
+        title: "Geolocation not supported",
+        description: "Your browser doesn't support geolocation services.",
+        variant: "destructive",
+      });
+    }
   };
   
   const handleLogout = () => {
@@ -305,9 +375,38 @@ const Settings = () => {
                     />
                   </div>
                   
+                  <Separator />
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Geolocation for Address</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically determine location from your address
+                      </p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        checked={settings.useGeolocationForNeighborhood}
+                        onCheckedChange={(checked) => 
+                          handleSettingChange('useGeolocationForNeighborhood', checked)
+                        }
+                        className="data-[state=checked]:bg-pastel-yellow"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    variant="warm" 
+                    className="w-full mt-4"
+                    onClick={handleActivateGeolocation}
+                  >
+                    <Navigation className="mr-2 h-4 w-4" />
+                    Activate Current Location
+                  </Button>
+                  
                   <Button 
                     variant="outline" 
-                    className="w-full mt-4"
+                    className="w-full mt-2"
                     onClick={() => {
                       toast({
                         title: "Privacy settings saved",
@@ -399,8 +498,8 @@ const Settings = () => {
                         <Input 
                           type="text" 
                           placeholder="Enter your neighborhood or address" 
-                          value={neighborhood}
-                          onChange={(e) => setNeighborhood(e.target.value)}
+                          value={neighborhoodInput}
+                          onChange={(e) => setNeighborhoodInput(e.target.value)}
                         />
                         
                         <div className="flex items-center space-x-2">
@@ -433,7 +532,7 @@ const Settings = () => {
                         </Button>
                         <Button variant="outline" onClick={() => {
                           setIsUpdatingNeighborhood(false);
-                          setNeighborhood(userInfo?.neighborhood || '');
+                          setNeighborhoodInput(userInfo?.neighborhood || '');
                           setSettings(prev => ({
                             ...prev,
                             useGeolocationForNeighborhood: userInfo?.useGeolocationForNeighborhood || false
