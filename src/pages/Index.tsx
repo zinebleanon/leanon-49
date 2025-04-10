@@ -76,19 +76,19 @@ const Index = () => {
       <Navbar />
       
       {userInfo ? (
-        <div className="container px-4 pt-6 pb-2 md:pt-8 md:pb-4 max-w-5xl mx-auto">
+        <div className="container px-4 pt-2 pb-2 md:pt-4 md:pb-4 max-w-5xl mx-auto">
           <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
-            <CardHeader className="pb-0 pt-3 bg-pastel-yellow/20">
-              <CardTitle className="text-2xl md:text-3xl font-playfair text-center">
+            <CardHeader className="pb-1 pt-3 bg-pastel-yellow/20">
+              <CardTitle className="text-xl md:text-2xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
-              <CardDescription className="text-center text-sm mb-0">
+              <CardDescription className="text-center text-xs mb-0">
                 It's great to see you again in the LeanOn community
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pt-1 pb-2">
-              <div className="w-full max-w-md mx-auto" style={{ maxHeight: "60px" }}>
+            <CardContent className="pt-0 pb-2">
+              <div className="w-full max-w-md mx-auto" style={{ maxHeight: "40px" }}>
                 <img 
                   src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
                   alt="Decorative Ribbon" 
@@ -101,12 +101,12 @@ const Index = () => {
                 <div className="bg-white/80 rounded-lg p-3 border border-pastel-yellow/20 shadow-sm">
                   <div className="flex items-center gap-2 mb-1">
                     <Gift className="h-5 w-5 text-pastel-yellow" />
-                    <h3 className="font-medium text-lg">Invite Friends & Family</h3>
+                    <h3 className="font-medium text-md">Invite Friends & Family</h3>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-2">
+                  <p className="text-xs text-muted-foreground mb-1">
                     Share your referral code with other moms and help grow our supportive community!
                   </p>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-1">
                     <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-sm font-medium flex-1 text-center border border-pastel-yellow/20">
                       {referralCode}
                     </div>
