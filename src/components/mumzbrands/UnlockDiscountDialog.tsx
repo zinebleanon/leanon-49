@@ -17,20 +17,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+interface Brand {
+  id: string;
+  name: string;
+  logo: string;
+  category: 'local' | 'international';
+  description: string;
+  website: string;
+  discountCode: string;
+  discountValue: string;
+  bgColor: string;
+}
+
 interface UnlockDiscountDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  brands?: Array<{
-    id: string;
-    name: string;
-    logo: string;
-    category: 'local' | 'international';
-    description: string;
-    website: string;
-    discountCode: string;
-    discountValue: string;
-    bgColor: string;
-  }>;
+  brands?: Array<Brand>;
+  onBrandSelect?: (brand: Brand) => void;
 }
 
 // Product categories commonly used for baby products
@@ -49,7 +52,7 @@ const productCategories = [
   "Other"
 ];
 
-const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDialogProps) => {
+const UnlockDiscountDialog = ({ isOpen, onClose, brands = [], onBrandSelect }: UnlockDiscountDialogProps) => {
   const [codeCopied, setCodeCopied] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("discounts");
   const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
@@ -67,7 +70,8 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
     expiry: "December 31, 2025",
     category: brand.category,
     website: brand.website,
-    bgColor: brand.bgColor || '#fff'
+    bgColor: brand.bgColor || '#fff',
+    originalBrand: brand // Keep reference to original brand object
   }));
 
   // If no brands are passed, use default ones
@@ -148,9 +152,16 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
   
   // Filter discount codes based on selected filters
   const filteredDiscountCodes = discountCodes.filter(discount => {
-    // Filter by brand type if needed
+    // Filter by brand type
     if (brandType !== 'all' && discount.category !== brandType) {
       return false;
+    }
+    
+    // Filter by category (when implemented with real data)
+    if (selectedCategory !== "All Categories") {
+      // This would filter by category if we had category data
+      // For now, just show all since we don't have category data in the sample
+      // return discount.productCategory === selectedCategory;
     }
     
     // Filter by search term if provided
@@ -173,6 +184,13 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
     setTimeout(() => {
       setCodeCopied(null);
     }, 2000);
+  };
+  
+  const handleBrandSelect = (discount: any) => {
+    if (onBrandSelect && discount.originalBrand) {
+      onBrandSelect(discount.originalBrand);
+      onClose(); // Close this dialog as we're opening another one
+    }
   };
   
   const visitWebsite = (url: string) => {
@@ -256,8 +274,9 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                   filteredDiscountCodes.map((discount) => (
                     <div 
                       key={discount.id} 
-                      className="flex flex-col gap-3 p-4 rounded-lg border border-primary/20 hover:shadow-md transition-shadow"
+                      className="flex flex-col gap-3 p-4 rounded-lg border border-primary/20 hover:shadow-md transition-shadow cursor-pointer"
                       style={{ background: `${discount.bgColor}10` }}
+                      onClick={() => handleBrandSelect(discount)}
                     >
                       <div className="flex gap-3">
                         <div className="bg-white/90 p-2 rounded-md w-20 h-20 flex items-center justify-center shadow-sm">
@@ -294,7 +313,10 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                             size="sm" 
                             variant="ghost" 
                             className="h-6 w-6 p-0 rounded-full ml-1" 
-                            onClick={() => handleCopyCode(discount.code)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCopyCode(discount.code);
+                            }}
                           >
                             {codeCopied === discount.code ? (
                               <svg width="14" height="14" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-green-500">
@@ -309,7 +331,10 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                           size="sm" 
                           variant="outline" 
                           className="rounded-full text-xs px-3 py-1 h-7"
-                          onClick={() => visitWebsite(discount.website)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            visitWebsite(discount.website);
+                          }}
                         >
                           Visit <ExternalLink className="ml-1 h-3 w-3" />
                         </Button>
@@ -349,8 +374,9 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                     {discountCodes.filter(d => ['1', '3', '5'].includes(d.id)).map((discount) => (
                       <CarouselItem key={discount.id} className="md:basis-1/2 lg:basis-1/3 p-1">
                         <div 
-                          className="flex flex-col gap-3 p-4 rounded-lg border border-primary/30 h-full"
+                          className="flex flex-col gap-3 p-4 rounded-lg border border-primary/30 h-full cursor-pointer"
                           style={{ background: `${discount.bgColor}20` }}
+                          onClick={() => handleBrandSelect(discount)}
                         >
                           <div className="flex justify-center mb-2">
                             <img 
@@ -378,7 +404,10 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                               size="sm" 
                               variant="ghost" 
                               className="h-7 w-7 p-0 rounded-full" 
-                              onClick={() => handleCopyCode(discount.code)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopyCode(discount.code);
+                              }}
                             >
                               {codeCopied === discount.code ? (
                                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-green-500">
@@ -394,7 +423,10 @@ const UnlockDiscountDialog = ({ isOpen, onClose, brands = [] }: UnlockDiscountDi
                             className="mt-auto mx-auto rounded-full"
                             variant="outline"
                             size="sm"
-                            onClick={() => visitWebsite(discount.website)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              visitWebsite(discount.website);
+                            }}
                           >
                             Visit Website <ExternalLink className="ml-1 h-3.5 w-3.5" />
                           </Button>

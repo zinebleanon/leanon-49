@@ -9,6 +9,8 @@ import BrandsHero from '@/components/mumzbrands/BrandsHero';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import SupportLocalBrandsDialog from '@/components/mumzbrands/SupportLocalBrandsDialog';
 import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
+import BrandFilterSection from '@/components/mumzbrands/BrandFilterSection';
+import BrandDetailDialog from '@/components/mumzbrands/BrandDetailDialog';
 
 interface Brand {
   id: string;
@@ -29,6 +31,11 @@ const MumzBrands = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [isLocalBrandsDialogOpen, setIsLocalBrandsDialogOpen] = useState(false);
   const [isDiscountDialogOpen, setIsDiscountDialogOpen] = useState(false);
+  const [isBrandDetailDialogOpen, setIsBrandDetailDialogOpen] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+  const [activeCategory, setActiveCategory] = useState("All Categories");
+  const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
+  
   const navigate = useNavigate();
   
   // Use the viewport height hook to fix iOS height issues
@@ -115,6 +122,11 @@ const MumzBrands = () => {
       }
     ]);
   }, []);
+
+  const handleOpenBrandDetail = (brand: Brand) => {
+    setSelectedBrand(brand);
+    setIsBrandDetailDialogOpen(true);
+  };
   
   if (isLoading) {
     return <LoadingSpinner />;
@@ -129,6 +141,12 @@ const MumzBrands = () => {
         <BrandsHero 
           onOpenDialog={() => setIsLocalBrandsDialogOpen(true)} 
           onOpenDiscountDialog={() => setIsDiscountDialogOpen(true)}
+        />
+        
+        {/* Filter section - shown when browsing brands */}
+        <BrandFilterSection 
+          onCategoryChange={setActiveCategory}
+          onTypeChange={setBrandType}
         />
         
         {/* Centered ribbon tag image - moved higher with greater negative margin */}
@@ -152,6 +170,14 @@ const MumzBrands = () => {
           isOpen={isDiscountDialogOpen}
           onClose={() => setIsDiscountDialogOpen(false)}
           brands={brands}
+          onBrandSelect={handleOpenBrandDetail}
+        />
+        
+        {/* Brand Detail Dialog */}
+        <BrandDetailDialog
+          brand={selectedBrand}
+          isOpen={isBrandDetailDialogOpen}
+          onClose={() => setIsBrandDetailDialogOpen(false)}
         />
       </main>
       

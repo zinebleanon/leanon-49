@@ -13,7 +13,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
   const navigate = useNavigate();
   
   return (
-    <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
+    <section className="py-2 md:py-4 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center md:text-left md:max-w-3xl mx-auto">
           <h1 className="text-3xl md:text-5xl font-bold mb-3 font-playfair">
