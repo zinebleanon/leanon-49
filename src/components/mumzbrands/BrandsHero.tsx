@@ -22,20 +22,24 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4 mb-10">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6 mb-12">
             <Button 
-              className="rounded-full px-4 border bg-white hover:bg-white/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
+              variant="outline"
+              size="sm"
+              className="rounded-full bg-white hover:bg-white/90 text-foreground flex items-center gap-2"
               onClick={onOpenDialog}
             >
-              <Info className="h-4 w-4 mr-1.5 flex-shrink-0" />
+              <Info className="h-4 w-4 flex-shrink-0" />
               <span>How It Works</span>
             </Button>
             
             <Button 
-              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
+              variant="warm"
+              size="sm"
+              className="rounded-full flex items-center gap-2"
               onClick={onOpenDiscountDialog}
             >
-              <BadgePercent className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
+              <BadgePercent className="h-4 w-4 flex-shrink-0" /> 
               <span>Browse Available Discounts</span>
             </Button>
           </div>
