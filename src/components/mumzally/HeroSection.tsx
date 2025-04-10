@@ -32,11 +32,13 @@ const HeroSection = ({
 }: HeroSectionProps) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [showRightSideFilter, setShowRightSideFilter] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setIsFiltersOpen(false);
+    setShowRightSideFilter(false);
     if (onFiltersChange) {
       onFiltersChange(filters);
     }
@@ -103,7 +105,7 @@ const HeroSection = ({
               <Button 
                 variant="warm"
                 size="sm"
-                onClick={() => setIsFiltersOpen(true)} 
+                onClick={() => setShowRightSideFilter(prev => !prev)} 
                 className="flex items-center gap-1 px-3"
               >
                 <Filter className="h-4 w-4" />
@@ -111,6 +113,33 @@ const HeroSection = ({
               </Button>
             </div>
           </div>
+          
+          {/* Right side filter section that appears below the header */}
+          {showRightSideFilter && (
+            <div className="mb-4 ml-auto max-w-sm">
+              <div className="bg-white/90 rounded-lg p-4 shadow-sm border border-[#B8CEC2]/30">
+                <h3 className="text-sm font-medium mb-3">Quick Filter</h3>
+                <div className="space-y-3">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full justify-start text-sm"
+                    onClick={() => setIsFiltersOpen(true)}
+                  >
+                    <Filter className="h-3.5 w-3.5 mr-2" />
+                    View all filters
+                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button variant="outline" size="sm" className="text-xs">Kids 0-2</Button>
+                    <Button variant="outline" size="sm" className="text-xs">Kids 3-5</Button>
+                    <Button variant="outline" size="sm" className="text-xs">Full-time</Button>
+                    <Button variant="outline" size="sm" className="text-xs">Part-time</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <RecommendedMatches profiles={nearbyMoms} />
         </div>
       )}
