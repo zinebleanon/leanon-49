@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
@@ -73,9 +74,11 @@ interface MessageDetailViewProps {
     images?: string[];
   };
   onBack: () => void;
+  aiSummaryContent?: string | null;
+  aiSummaryTopic?: string | null;
 }
 
-const MessageDetailView = ({ message, onBack }: MessageDetailViewProps) => {
+const MessageDetailView = ({ message, onBack, aiSummaryContent, aiSummaryTopic }: MessageDetailViewProps) => {
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [showComments, setShowComments] = useState(true);
   const [reactions, setReactions] = useState<Reaction[]>(mockReactions);
@@ -173,7 +176,11 @@ const MessageDetailView = ({ message, onBack }: MessageDetailViewProps) => {
           {message.content}
         </p>
         
-        <TopicSummary content={message.content} topic={message.category} />
+        {aiSummaryContent && aiSummaryTopic ? (
+          <TopicSummary content={aiSummaryContent} topic={aiSummaryTopic} />
+        ) : (
+          <TopicSummary content={message.content} topic={message.category} />
+        )}
         
         {message.images && message.images.length > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3">

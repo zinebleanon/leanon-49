@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MessageCircle, ThumbsUp, Clock, Filter, Search } from 'lucide-react';
+import { MessageCircle, ThumbsUp, Clock, Filter, Search, Sparkles } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -146,6 +146,8 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMessage, setSelectedMessage] = useState<MessageProps | null>(null);
+  const [aiSummaryContent, setAiSummaryContent] = useState<string | null>(null);
+  const [aiSummaryTopic, setAiSummaryTopic] = useState<string | null>(null);
   
   useEffect(() => {
     let messages = activeTab === 'general' ? mockGeneralCommunityMessages : mockNeighborhoodMessages;
@@ -172,6 +174,27 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
 
   const handleMessageClick = (message: MessageProps) => {
     setSelectedMessage(message);
+  };
+
+  const handleMomAiClick = () => {
+    if (searchQuery.trim().length > 0) {
+      // Set the content and topic for the AI summary
+      setAiSummaryContent(`Search query: ${searchQuery}. 
+      Please provide information about this parenting topic based on the available community messages.`);
+      setAiSummaryTopic(searchQuery);
+      
+      // Show the AI summary in a selected message view
+      const aiMessage: MessageProps = {
+        id: 999, // Use a unique ID
+        title: `MomAI: About "${searchQuery}"`,
+        content: `Here's what MomAI found about "${searchQuery}":`,
+        replies: 0,
+        likes: 0,
+        timestamp: 'Just now',
+        category: 'MomAI',
+      };
+      setSelectedMessage(aiMessage);
+    }
   };
   
   const renderMessage = (message: MessageProps) => (
@@ -230,13 +253,23 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
             variant="outline" 
             size="sm" 
             className="mb-4"
-            onClick={() => setSelectedMessage(null)}
+            onClick={() => {
+              setSelectedMessage(null);
+              setAiSummaryContent(null);
+              setAiSummaryTopic(null);
+            }}
           >
             ← Back to messages
           </Button>
           <MessageDetailView 
             message={selectedMessage} 
-            onBack={() => setSelectedMessage(null)} 
+            onBack={() => {
+              setSelectedMessage(null);
+              setAiSummaryContent(null);
+              setAiSummaryTopic(null);
+            }}
+            aiSummaryContent={aiSummaryContent}
+            aiSummaryTopic={aiSummaryTopic}
           />
         </div>
       ) : (
@@ -247,7 +280,7 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
           </TabsList>
           
           <div className="mb-4 flex justify-between items-center">
-            <div className="relative flex-1 max-w-md">
+            <div className="relative flex-1 max-w-md flex">
               <Input
                 type="text"
                 placeholder="Search messages..."
@@ -256,6 +289,16 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
                 className="pl-10 border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 bg-[#FFD9A7]/60 hover:bg-[#FFD9A7]/80 text-foreground"
+                onClick={handleMomAiClick}
+                disabled={!searchQuery.trim()}
+              >
+                <Sparkles className="h-4 w-4 mr-2 text-[#B8CEC2]" />
+                Ask MomAI
+              </Button>
             </div>
             
             <DropdownMenu>
