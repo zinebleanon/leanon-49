@@ -26,7 +26,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             <Button 
               variant="warm"
               size="lg"
-              className="rounded-full flex items-center gap-2 w-full sm:w-auto px-6"
+              className="rounded-full flex items-center gap-2 w-full sm:w-auto h-11 px-8"
               onClick={onOpenDialog}
             >
               <Info className="h-4 w-4 flex-shrink-0" />
@@ -36,7 +36,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             <Button 
               variant="warm"
               size="lg"
-              className="rounded-full flex items-center gap-2 w-full sm:w-auto px-6"
+              className="rounded-full flex items-center gap-2 w-full sm:w-auto h-11 px-8"
               onClick={onOpenDiscountDialog}
             >
               <BadgePercent className="h-4 w-4 flex-shrink-0" /> 

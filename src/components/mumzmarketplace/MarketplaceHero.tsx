@@ -19,7 +19,7 @@ const MarketplaceHero = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
-                className="rounded-full bg-primary"
+                className="rounded-full bg-primary h-11 px-8 w-full sm:w-auto"
                 asChild
               >
                 <Link to="/marketplace/find">
@@ -30,7 +30,7 @@ const MarketplaceHero = () => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="rounded-full"
+                className="rounded-full h-11 px-8 w-full sm:w-auto"
                 asChild
               >
                 <Link to="/marketplace/sell">
