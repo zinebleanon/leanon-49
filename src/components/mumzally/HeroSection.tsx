@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, Search, Users } from "lucide-react";
+import { Info, MapPin, ListChecks, Users } from "lucide-react";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
@@ -38,9 +38,9 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           </h1>
         </div>
         
-        <div className="flex flex-wrap gap-3 items-start justify-center w-full">
+        <div className="flex flex-col gap-3 items-center w-full max-w-[200px] mx-auto md:mx-0">
           <Button
-            className="gap-2"
+            className="w-full gap-2"
             variant="warm"
             size="md"
             onClick={() => setIsHowItWorksOpen(true)}
@@ -54,7 +54,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           <Button
             variant="warm"
             size="md"
-            className="gap-2"
+            className="w-full gap-2"
             onClick={() => setIsConnectionRequestsOpen(true)}
           >
             <div className="flex items-center gap-2">
@@ -66,12 +66,12 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           <Button
             variant="warm"
             size="md"
-            className="gap-2"
+            className="w-full gap-2"
             onClick={() => setIsFiltersOpen(true)}
           >
             <div className="flex items-center gap-2">
-              <Search className="h-4 w-4" />
-              <span>MyLeanMoms</span>
+              <ListChecks className="h-4 w-4" />
+              <span>My LeanMoms</span>
             </div>
           </Button>
         </div>
