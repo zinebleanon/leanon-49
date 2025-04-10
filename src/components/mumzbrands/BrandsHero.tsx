@@ -23,10 +23,15 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           </h1>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4 mb-10">
-            <BrandsHowItWorksDialog />
+            <Button 
+              className="rounded-full px-4 border bg-white hover:bg-white/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
+              onClick={onOpenDialog}
+            >
+              <Info className="h-4 w-4 mr-1.5 flex-shrink-0" />
+              <span>How It Works</span>
+            </Button>
             
             <Button 
-              size="md" 
               className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
               onClick={onOpenDiscountDialog}
             >
