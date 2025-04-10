@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Mail, Users } from 'lucide-react';
+import { Search, Mail, Users, ShoppingBag } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserInfo } from '@/hooks/use-user-info';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
@@ -22,10 +22,12 @@ interface Conversation {
   lastMessage: string;
   lastMessageTimestamp: string;
   unreadCount: number;
+  type: 'connect' | 'preloved';
 }
 
 const Inbox = () => {
-  const [activeTab, setActiveTab] = useState('conversations');
+  const [activeTab, setActiveTab] = useState('messages');
+  const [activeMessageTab, setActiveMessageTab] = useState('connect');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
@@ -44,7 +46,8 @@ const Inbox = () => {
           participantAvatar: undefined,
           lastMessage: 'Hi there! How are you doing today?',
           lastMessageTimestamp: '2025-04-08T10:30:00Z',
-          unreadCount: 2
+          unreadCount: 2,
+          type: 'connect'
         },
         {
           id: 'conv2',
@@ -53,16 +56,28 @@ const Inbox = () => {
           participantAvatar: undefined,
           lastMessage: 'Thanks for the playdate recommendation!',
           lastMessageTimestamp: '2025-04-07T15:45:00Z',
-          unreadCount: 0
+          unreadCount: 0,
+          type: 'connect'
         },
         {
           id: 'conv3',
           participantId: 'user3',
           participantName: 'Michelle Lee',
           participantAvatar: undefined,
-          lastMessage: 'Can you send me that recipe we talked about?',
-          lastMessageTimestamp: '2025-04-05T09:15:00Z',
-          unreadCount: 1
+          lastMessage: 'Is the baby carrier still available?',
+          lastMessageTimestamp: '2025-04-06T09:15:00Z',
+          unreadCount: 1,
+          type: 'preloved'
+        },
+        {
+          id: 'conv4',
+          participantId: 'user4',
+          participantName: 'Jessica Williams',
+          participantAvatar: undefined,
+          lastMessage: 'I'm interested in the toddler shoes, can you send more photos?',
+          lastMessageTimestamp: '2025-04-05T14:20:00Z',
+          unreadCount: 3,
+          type: 'preloved'
         }
       ];
       
@@ -74,12 +89,24 @@ const Inbox = () => {
   }, []);
   
   const filteredConversations = useMemo(() => {
-    if (!searchQuery.trim()) return conversations;
+    let filtered = conversations;
     
-    return conversations.filter(conversation => 
-      conversation.participantName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [conversations, searchQuery]);
+    // First filter by message type if on a specific message tab
+    if (activeTab === 'messages') {
+      filtered = conversations.filter(conversation => 
+        conversation.type === activeMessageTab
+      );
+    }
+    
+    // Then apply search filter if there's a search query
+    if (searchQuery.trim()) {
+      filtered = filtered.filter(conversation => 
+        conversation.participantName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [conversations, searchQuery, activeTab, activeMessageTab]);
   
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -218,72 +245,89 @@ const Inbox = () => {
             
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
               <TabsList className="grid grid-cols-2 px-4 pt-3 bg-transparent">
-                <TabsTrigger value="conversations">Conversations</TabsTrigger>
+                <TabsTrigger value="messages">Messages</TabsTrigger>
                 <TabsTrigger value="leanmoms">My LeanMoms</TabsTrigger>
               </TabsList>
               
-              <div className="flex-1 overflow-y-auto px-2 py-3">
-                <TabsContent value="conversations" className="m-0 h-full">
-                  {isLoading ? (
-                    <div className="flex justify-center items-center h-full">
-                      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  ) : filteredConversations.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-center p-4">
-                      <Mail className="h-12 w-12 text-muted-foreground mb-3" />
-                      <h3 className="font-medium text-lg mb-1">No conversations found</h3>
-                      <p className="text-muted-foreground text-sm">
-                        Try searching with a different name
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      {filteredConversations.map((conversation) => (
-                        <div 
-                          key={conversation.id}
-                          className={`p-3 rounded-md cursor-pointer transition-colors ${
-                            selectedConversation?.id === conversation.id && messageDialogOpen
-                              ? 'bg-primary/20' 
-                              : 'hover:bg-muted/50'
-                          }`}
-                          onClick={() => handleConversationClick(conversation)}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="relative">
-                              <Avatar className="bg-[#FFD9A7] text-primary">
-                                <AvatarImage src={conversation.participantAvatar} />
-                                <AvatarFallback className="bg-[#FFD9A7] text-primary font-medium">
-                                  {getInitials(conversation.participantName)}
-                                </AvatarFallback>
-                              </Avatar>
-                              {conversation.unreadCount > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                                  {conversation.unreadCount}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex justify-between items-baseline">
-                                <h3 className={`font-medium truncate ${conversation.unreadCount > 0 ? 'font-semibold' : ''}`}>
-                                  {conversation.participantName}
-                                </h3>
-                                <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
-                                  {formatDate(conversation.lastMessageTimestamp)}
-                                </span>
-                              </div>
-                              <p className={`text-sm truncate ${
-                                conversation.unreadCount > 0 
-                                  ? 'text-foreground font-medium' 
-                                  : 'text-muted-foreground'
-                              }`}>
-                                {conversation.lastMessage}
-                              </p>
-                            </div>
-                          </div>
+              <div className="flex-1 overflow-y-auto">
+                <TabsContent value="messages" className="m-0 h-full px-0">
+                  <Tabs value={activeMessageTab} onValueChange={setActiveMessageTab} className="w-full">
+                    <TabsList className="grid grid-cols-2 w-full rounded-none border-b">
+                      <TabsTrigger value="connect" className="flex items-center gap-1">
+                        <Users className="h-4 w-4" />
+                        <span>Connect</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="preloved" className="flex items-center gap-1">
+                        <ShoppingBag className="h-4 w-4" />
+                        <span>Preloved</span>
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <div className="px-2 py-3">
+                      {isLoading ? (
+                        <div className="flex justify-center items-center h-40">
+                          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                         </div>
-                      ))}
+                      ) : filteredConversations.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center h-40 text-center p-4">
+                          <Mail className="h-12 w-12 text-muted-foreground mb-3" />
+                          <h3 className="font-medium text-lg mb-1">No {activeMessageTab} messages</h3>
+                          <p className="text-muted-foreground text-sm">
+                            {activeMessageTab === 'connect' 
+                              ? 'Connect with other moms to start chatting' 
+                              : 'No marketplace messages found'}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-1">
+                          {filteredConversations.map((conversation) => (
+                            <div 
+                              key={conversation.id}
+                              className={`p-3 rounded-md cursor-pointer transition-colors ${
+                                selectedConversation?.id === conversation.id && messageDialogOpen
+                                  ? 'bg-primary/20' 
+                                  : 'hover:bg-muted/50'
+                              }`}
+                              onClick={() => handleConversationClick(conversation)}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="relative">
+                                  <Avatar className="bg-[#FFD9A7] text-primary">
+                                    <AvatarImage src={conversation.participantAvatar} />
+                                    <AvatarFallback className="bg-[#FFD9A7] text-primary font-medium">
+                                      {getInitials(conversation.participantName)}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  {conversation.unreadCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                      {conversation.unreadCount}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex justify-between items-baseline">
+                                    <h3 className={`font-medium truncate ${conversation.unreadCount > 0 ? 'font-semibold' : ''}`}>
+                                      {conversation.participantName}
+                                    </h3>
+                                    <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
+                                      {formatDate(conversation.lastMessageTimestamp)}
+                                    </span>
+                                  </div>
+                                  <p className={`text-sm truncate ${
+                                    conversation.unreadCount > 0 
+                                      ? 'text-foreground font-medium' 
+                                      : 'text-muted-foreground'
+                                  }`}>
+                                    {conversation.lastMessage}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </Tabs>
                 </TabsContent>
                 
                 <TabsContent value="leanmoms" className="m-0 h-full">

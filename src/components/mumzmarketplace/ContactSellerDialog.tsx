@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { MessageCircle, ArrowLeft, SendIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import BowRibbon from '../mumzally/BowRibbon';
+import { useNavigate } from 'react-router-dom';
 
 interface ContactSellerDialogProps {
   open: boolean;
@@ -24,6 +25,7 @@ type ContactFormValues = {
 
 const ContactSellerDialog = ({ open, onOpenChange, item }: ContactSellerDialogProps) => {
   const [isSending, setIsSending] = useState(false);
+  const navigate = useNavigate();
   
   const form = useForm<ContactFormValues>({
     defaultValues: {
@@ -38,9 +40,31 @@ const ContactSellerDialog = ({ open, onOpenChange, item }: ContactSellerDialogPr
     setTimeout(() => {
       setIsSending(false);
       
+      // Save the conversation in localStorage
+      const conversations = localStorage.getItem('conversations') ? 
+        JSON.parse(localStorage.getItem('conversations')!) : [];
+      
+      const newConversation = {
+        id: `preloved-${Date.now()}`,
+        participantId: `seller-${Date.now()}`,
+        participantName: item.seller,
+        lastMessage: data.message,
+        lastMessageTimestamp: new Date().toISOString(),
+        unreadCount: 0,
+        type: 'preloved'
+      };
+      
+      conversations.push(newConversation);
+      localStorage.setItem('conversations', JSON.stringify(conversations));
+      
       toast({
         title: "Message sent",
         description: `Your message about "${item.title}" has been sent to ${item.seller}.`,
+        action: (
+          <Button variant="outline" size="sm" onClick={() => navigate('/inbox')}>
+            View in Inbox
+          </Button>
+        )
       });
       
       form.reset();

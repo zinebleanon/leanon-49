@@ -12,11 +12,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
-import { Check, Clock, X, Tag, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Check, Clock, X, Tag, AlertTriangle, CheckCircle2, MessageSquare } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ListedItemsSection = () => {
   const [listedItems, setListedItems] = useState<any[]>([]);
   const [pendingApprovalItems, setPendingApprovalItems] = useState<any[]>([]);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const items = localStorage.getItem('listedItems');
@@ -88,6 +90,13 @@ const ListedItemsSection = () => {
     }
   };
   
+  const viewMessages = () => {
+    navigate('/inbox');
+    // Select the preloved tab when navigating
+    localStorage.setItem('inboxActiveTab', 'messages');
+    localStorage.setItem('inboxMessageTab', 'preloved');
+  };
+  
   return (
     <div className="space-y-8">
       {pendingApprovalItems.length > 0 && (
@@ -137,11 +146,20 @@ const ListedItemsSection = () => {
       
       {listedItems.length > 0 ? (
         <Card>
-          <CardHeader className="bg-green-50 border-b">
+          <CardHeader className="bg-green-50 border-b flex flex-row justify-between items-center">
             <CardTitle className="text-xl flex items-center gap-2">
               <Check className="h-5 w-5 text-green-500" />
               Your Approved Listings
             </CardTitle>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-xs"
+              onClick={viewMessages}
+            >
+              <MessageSquare className="mr-2 h-3 w-3" />
+              View Messages
+            </Button>
           </CardHeader>
           <CardContent className="p-4">
             <div className="space-y-4">
