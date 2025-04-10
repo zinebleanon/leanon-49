@@ -78,6 +78,10 @@ const Index = () => {
     return capitalizeFirstLetter(firstName);
   };
   
+  const handleJoinClick = () => {
+    navigate('/sign-in');
+  };
+  
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
@@ -140,7 +144,7 @@ const Index = () => {
           </Card>
         </div>
       ) : (
-        <Hero onJoinClick={() => {}} />
+        <Hero onJoinClick={handleJoinClick} />
       )}
       
       <div className="fixed bottom-8 right-8 z-10 space-y-2">
