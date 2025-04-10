@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -79,7 +80,7 @@ const Index = () => {
   };
   
   const handleJoinClick = () => {
-    navigate('/sign-in');
+    navigate('/sign-up');
   };
   
   if (isLoading) {
@@ -88,7 +89,7 @@ const Index = () => {
         <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
       </div>
     );
-  }
+  };
   
   return (
     <div className="min-h-screen bg-background">
