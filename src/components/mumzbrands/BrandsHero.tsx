@@ -24,9 +24,9 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6 mb-12">
             <Button 
-              variant="outline"
+              variant="warm"
               size="sm"
-              className="rounded-full bg-white hover:bg-white/90 text-foreground flex items-center gap-2"
+              className="rounded-full flex items-center gap-2"
               onClick={onOpenDialog}
             >
               <Info className="h-4 w-4 flex-shrink-0" />
