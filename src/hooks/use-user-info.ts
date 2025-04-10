@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 interface Kid {
@@ -27,6 +28,7 @@ interface UserInfo {
   referralCode?: string;
   profileVisibility?: 'public' | 'connections' | 'private';
   locationSharing?: boolean;
+  manualLocationUpdate?: boolean; // Flag to indicate if location should be manually updated
 }
 
 export const useUserInfo = () => {
@@ -54,6 +56,39 @@ export const useUserInfo = () => {
       return true;
     } catch (error) {
       console.error('Error updating user info:', error);
+      return false;
+    }
+  };
+
+  // Function to update location only when explicitly requested
+  const updateLocation = (latitude: string, longitude: string) => {
+    try {
+      if (!userInfo?.manualLocationUpdate) {
+        return false; // If manual location update is not enabled, don't update
+      }
+      
+      const newUserInfo = {
+        ...userInfo,
+        location: { latitude, longitude }
+      };
+      setUserInfo(newUserInfo);
+      localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+      return true;
+    } catch (error) {
+      console.error('Error updating location:', error);
+      return false;
+    }
+  };
+
+  // Toggle whether location should be manually updated
+  const toggleManualLocationUpdate = (enabled: boolean) => {
+    try {
+      const newUserInfo = { ...userInfo, manualLocationUpdate: enabled };
+      setUserInfo(newUserInfo);
+      localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+      return true;
+    } catch (error) {
+      console.error('Error toggling manual location update:', error);
       return false;
     }
   };
@@ -129,6 +164,8 @@ export const useUserInfo = () => {
     userInfo,
     isLoading,
     updateUserInfo,
+    updateLocation,
+    toggleManualLocationUpdate,
     updateKid,
     addKid,
     removeKid,
@@ -138,5 +175,6 @@ export const useUserInfo = () => {
     kids: userInfo?.kids || [],
     kidsAges: getKidsAges(),
     referralCode: userInfo?.referralCode,
+    manualLocationUpdate: userInfo?.manualLocationUpdate || false,
   };
 };

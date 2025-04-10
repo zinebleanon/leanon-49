@@ -16,13 +16,14 @@ import { useUserInfo } from '@/hooks/use-user-info';
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('notifications');
   const { toast } = useToast();
-  const { userInfo, updateUserInfo } = useUserInfo();
+  const { userInfo, updateUserInfo, toggleManualLocationUpdate } = useUserInfo();
   
   const [settings, setSettings] = useState({
     pushNotifications: false,
     marketingEmails: false,
     profileVisibility: userInfo?.profileVisibility || 'public',
     locationSharing: userInfo?.locationSharing || true,
+    manualLocationUpdate: userInfo?.manualLocationUpdate || false,
   });
   
   // Password change state
@@ -48,6 +49,9 @@ const Settings = () => {
     if (setting === 'profileVisibility' || setting === 'locationSharing') {
       userInfoUpdate[setting] = value;
       updateUserInfo(userInfoUpdate);
+    } else if (setting === 'manualLocationUpdate') {
+      // Update the manual location update setting
+      toggleManualLocationUpdate(value as boolean);
     }
     
     toast({
@@ -258,6 +262,24 @@ const Settings = () => {
                       checked={settings.locationSharing}
                       onCheckedChange={(checked) => 
                         handleSettingChange('locationSharing', checked)
+                      }
+                      className="data-[state=checked]:bg-pastel-yellow"
+                    />
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Manual Location Updates</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Only update location when you tap the location pin
+                      </p>
+                    </div>
+                    <Switch
+                      checked={settings.manualLocationUpdate}
+                      onCheckedChange={(checked) => 
+                        handleSettingChange('manualLocationUpdate', checked)
                       }
                       className="data-[state=checked]:bg-pastel-yellow"
                     />
