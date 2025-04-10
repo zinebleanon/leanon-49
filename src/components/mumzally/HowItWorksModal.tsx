@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,9 +39,42 @@ const steps = [
 
 interface HowItWorksModalProps {
   className?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const HowItWorksModal = ({ className }: HowItWorksModalProps) => {
+const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps) => {
+  if (open !== undefined && onOpenChange) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
+          <DialogHeader className="relative">
+            <DialogTitle className="text-2xl text-center mb-6">
+              How To Find Moms Near You
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid gap-6">
+            {steps.map((step, index) => (
+              <div
+                key={index}
+                className={`flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br ${step.bgColor} border border-[#FFF8E7] shadow-sm`}
+              >
+                <div className="shrink-0 w-10 h-10 bg-[#FFD9A7] rounded-full p-2 flex items-center justify-center shadow-sm">
+                  <span className="font-medium text-foreground">{index + 1}</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+  
   return (
     <Dialog>
       <DialogTrigger asChild>

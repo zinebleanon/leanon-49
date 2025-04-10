@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, Search, List, SwipeHorizontal, Users } from "lucide-react";
+import { Info, MapPin, Search, List, MoveHorizontal, Users } from "lucide-react";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
@@ -89,7 +89,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
                   </>
                 ) : (
                   <>
-                    <SwipeHorizontal className="h-4 w-4" />
+                    <MoveHorizontal className="h-4 w-4" />
                     <span>Swipe View</span>
                   </>
                 )}
