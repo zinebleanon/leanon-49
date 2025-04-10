@@ -1,15 +1,15 @@
+
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogDescription } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
-import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { toast } from "@/hooks/use-toast";
 import RecommendedMatches from './RecommendedMatches';
 import ConnectionRequests from './ConnectionRequests';
-import { Filter, ChevronDown, ChevronUp, Users, Info } from 'lucide-react';
+import { Filter, ChevronDown, ChevronUp, Users, Info, Users2, MapPin } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import HowItWorksModal from './HowItWorksModal';
@@ -176,7 +176,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     size="lg" 
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
-                    <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
+                    <MapPin className="mr-2 h-5 w-5" />
                     Find LeanMoms Around
                   </Button>
                 </SheetTrigger>
@@ -193,7 +193,7 @@ const HeroSection = ({ onFiltersChange, profiles = [], nearbyMoms = [] }: HeroSe
                     size="lg" 
                     className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
                   >
-                    <RibbonIcon className="mr-2 h-5 w-5" color="#000000" />
+                    <MapPin className="mr-2 h-5 w-5" />
                     Find LeanMoms Around
                   </Button>
                 </DialogTrigger>
