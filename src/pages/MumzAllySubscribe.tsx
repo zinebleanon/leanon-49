@@ -16,8 +16,11 @@ const MumzAllySubscribe = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Get the first name from userInfo
-  const firstName = userInfo?.firstName || userInfo?.name?.split(' ')[0] || '';
+  // Get the first name from userInfo and capitalize the first letter
+  let firstName = userInfo?.firstName || userInfo?.name?.split(' ')[0] || '';
+  if (firstName) {
+    firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+  }
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden w-full">
@@ -28,7 +31,8 @@ const MumzAllySubscribe = () => {
           <Card className="p-6 md:p-12 border-2 border-primary/20 bg-white/50 backdrop-blur-sm text-center">
             {firstName ? (
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 font-playfair">
-                {firstName}, We Love to See You Here
+                {firstName},<br />
+                We Love to See You Here
               </h1>
             ) : (
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 font-playfair">
