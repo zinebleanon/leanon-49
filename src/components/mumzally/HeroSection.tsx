@@ -32,16 +32,13 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
   return (
     <div className="mb-8">
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-        <div>
+        <div className="w-full text-center">
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
-            MumzAlly
+            LeanMoms Around You
           </h1>
-          <p className="text-foreground/80 max-w-md">
-            Connect with other moms in your area who share similar interests and have children of similar ages.
-          </p>
         </div>
         
-        <div className="flex flex-wrap gap-3 items-start">
+        <div className="flex flex-wrap gap-3 items-start justify-center w-full">
           <Button
             className="gap-2"
             variant="warm"
