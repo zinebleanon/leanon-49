@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -297,7 +298,7 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
                 <Input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Search messages..."
+                  placeholder="What do you need?"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={handleSearchFocus}
@@ -393,3 +394,4 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
 };
 
 export default CommunityMessages;
+
