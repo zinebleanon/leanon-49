@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -26,6 +25,7 @@ import {
 interface AskQuestionFormProps {
   categories: { name: string; icon: JSX.Element }[];
   onClose?: () => void;
+  isNeighborhood?: boolean;
 }
 
 const categoryKeywords: Record<string, string[]> = {
@@ -40,10 +40,15 @@ const categoryKeywords: Record<string, string[]> = {
   'Schools & Nurseries': ['preschool', 'daycare', 'school', 'nursery', 'education', 'learning', 'kindergarten'],
   'Nannies': ['nanny', 'babysitter', 'childcare', 'au pair', 'caregiver', 'sitter', 'childminder'],
   'Entertainment & Birthday': ['party', 'activity', 'birthday', 'holiday', 'event', 'celebration', 'gift', 'present'],
+  'Meetups': ['meetup', 'group', 'playdate', 'community', 'gathering', 'together', 'social'],
+  'Help & Support': ['help', 'support', 'assistance', 'volunteer', 'babysit', 'neighbor', 'favour', 'favor'],
+  'Events': ['event', 'festival', 'fair', 'concert', 'community', 'local', 'happening'],
+  'Kids Camps': ['camp', 'summer', 'holiday', 'vacation', 'program', 'activity'],
+  'Kids Activities': ['activity', 'class', 'lesson', 'sport', 'swimming', 'dance', 'music'],
   'Others': [] // Empty array for Others category - will catch any unmatched keywords
 };
 
-const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
+const AskQuestionForm = ({ categories, onClose, isNeighborhood = false }: AskQuestionFormProps) => {
   const [details, setDetails] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [suggestedCategories, setSuggestedCategories] = useState<string[]>([]);
@@ -61,16 +66,21 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
       const text = details.toLowerCase();
       
       const suggestions = Object.entries(categoryKeywords)
-        .filter(([_, keywords]) => 
-          keywords.some(keyword => text.includes(keyword.toLowerCase()))
-        )
+        .filter(([category]) => {
+          return categories.some(c => c.name === category) && 
+                 categoryKeywords[category].some(keyword => 
+                   text.includes(keyword.toLowerCase())
+                 );
+        })
         .map(([category]) => category);
       
-      const finalSuggestions = suggestions.length > 0 ? suggestions : ['Others'];
+      const finalSuggestions = suggestions.length > 0 
+        ? suggestions 
+        : categories.some(c => c.name === 'Others') ? ['Others'] : [];
       
       setSuggestedCategories([...new Set(finalSuggestions)]);
     }
-  }, [details]);
+  }, [details, categories]);
 
   useEffect(() => {
     return () => {
@@ -168,7 +178,7 @@ const AskQuestionForm = ({ categories, onClose }: AskQuestionFormProps) => {
             </Button>
           )}
         </div>
-        <DialogTitle>Ask the Community</DialogTitle>
+        <DialogTitle>{isNeighborhood ? "Ask Your Neighborhood" : "Ask the Community"}</DialogTitle>
         <DialogDescription>
           Your question will be reviewed by our admins before being published to the community.
         </DialogDescription>

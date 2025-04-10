@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Search, Filter, MessageCircle, Baby, ShoppingBag, UtensilsCrossed, School, Heart, CalendarDays, Users, User, Activity, HelpCircle, MessagesSquare, X, HeartHandshake, Ticket, Tent, Smile, Home } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import NeighborhoodCommunity from '@/components/mumzask/NeighborhoodCommunity';
@@ -49,6 +48,7 @@ const MumzAsk = () => {
     { name: 'Events', icon: <Ticket className="h-4 w-4 mr-2" /> },
     { name: 'Kids Camps', icon: <Tent className="h-4 w-4 mr-2" /> },
     { name: 'Kids Activities', icon: <Smile className="h-4 w-4 mr-2" /> },
+    { name: 'Others', icon: <HelpCircle className="h-4 w-4 mr-2" /> }
   ];
   
   const textStyles = "transition-all duration-700 ease-smooth";
@@ -89,12 +89,15 @@ const MumzAsk = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-lg">
-                    <AskQuestionForm categories={categories} onClose={() => {
-                      const closeButton = document.querySelector('[aria-label="Close"]');
-                      if (closeButton instanceof HTMLElement) {
-                        closeButton.click();
-                      }
-                    }} />
+                    <AskQuestionForm 
+                      categories={categories} 
+                      onClose={() => {
+                        const closeButton = document.querySelector('[aria-label="Close"]');
+                        if (closeButton instanceof HTMLElement) {
+                          closeButton.click();
+                        }
+                      }} 
+                    />
                   </DialogContent>
                 </Dialog>
                 
@@ -110,12 +113,16 @@ const MumzAsk = () => {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-lg">
-                    <AskQuestionForm categories={neighborhoodCategories} onClose={() => {
-                      const closeButton = document.querySelector('[aria-label="Close"]');
-                      if (closeButton instanceof HTMLElement) {
-                        closeButton.click();
-                      }
-                    }} />
+                    <AskQuestionForm 
+                      categories={neighborhoodCategories} 
+                      isNeighborhood={true}
+                      onClose={() => {
+                        const closeButton = document.querySelector('[aria-label="Close"]');
+                        if (closeButton instanceof HTMLElement) {
+                          closeButton.click();
+                        }
+                      }} 
+                    />
                   </DialogContent>
                 </Dialog>
               </div>
