@@ -23,7 +23,7 @@ const MumzAllySubscribe = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden w-full">
+    <div className="min-h-screen bg-[#B8CEC2] overflow-x-hidden w-full">
       <Navbar />
       
       <main className="flex flex-col items-center justify-center pt-24 pb-16 px-4 md:px-8 w-full">

@@ -6,7 +6,7 @@ import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog'
 
 const DealsHero = () => {
   return (
-    <section className="py-12 md:py-20 px-6 md:px-8 bg-gradient-to-b from-orange-50 to-white">
+    <section className="py-12 md:py-20 px-6 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>

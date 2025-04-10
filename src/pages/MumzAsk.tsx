@@ -62,7 +62,7 @@ const MumzAsk = () => {
   }
   
   return (
-    <div className="min-h-screen bg-[#B8CEC2]/30">
+    <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-6 md:pb-10">
@@ -123,7 +123,7 @@ const MumzAsk = () => {
           </div>
         </section>
         
-        <section className="py-3 px-4 mt-12">
+        <section className="py-3 px-4 mt-12 bg-[#B8CEC2]">
           <div className="max-w-4xl mx-auto">
             <CommunityMessages 
               categories={categories}

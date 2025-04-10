@@ -73,7 +73,7 @@ const MumzDeals = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
       <main className="pt-24 pb-16">
@@ -88,7 +88,7 @@ const MumzDeals = () => {
         
         <DealsHero />
         
-        <div className="flex justify-center items-center bg-pastel-green px-4 md:px-8 py-0 -mt-12">
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 -mt-12">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
             alt="Discount tag ribbon" 

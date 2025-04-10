@@ -24,7 +24,7 @@ const MumzMarketplaceSell = () => {
   }
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
       <main className="pt-24 pb-16 px-4">
