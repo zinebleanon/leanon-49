@@ -100,27 +100,27 @@ const HeroSection = ({
         </div>
       </div>
       
-      {/* Prominently displayed search and filter section */}
+      {/* Minimalist search and filter section */}
       <div className="mb-8 sticky top-20 z-20">
-        <div className="bg-[#9b87f5] p-4 rounded-lg shadow-lg border border-[#9b87f5]/30">
-          <div className="flex flex-col md:flex-row items-center gap-3">
+        <div className="bg-[#B8CEC2]/90 p-3 rounded-lg shadow-sm border border-[#B8CEC2] backdrop-blur-sm">
+          <div className="flex flex-col md:flex-row items-center gap-2">
             <div className="relative flex-1 w-full">
               <Input
                 type="text"
-                placeholder="Search by name, location, or interests..."
+                placeholder="Search moms..."
                 value={searchTerm}
                 onChange={handleSearchChange}
-                className="pl-10 bg-white/90 border-2 border-[#9b87f5]/30 focus:border-[#9b87f5]"
+                className="pl-9 h-9 bg-white/80 border-pastel-green focus-visible:ring-pastel-green"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-pastel-green" />
             </div>
             <Button 
-              variant="outline"
+              variant="ghost"
               onClick={() => setIsFiltersOpen(true)} 
-              className="h-10 w-full md:w-auto flex items-center gap-2 px-3 bg-white hover:bg-[#F97316] hover:text-white hover:border-[#F97316] transition-colors"
+              className="h-9 w-full md:w-auto flex items-center gap-2 px-3 text-foreground hover:bg-pastel-green/20 border border-transparent hover:border-pastel-green/30"
             >
               <SlidersHorizontal className="h-4 w-4" />
-              <span>Advanced Filters</span>
+              <span className="text-sm">Filters</span>
             </Button>
           </div>
         </div>
