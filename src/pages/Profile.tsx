@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users, Plus, Trash2 } from 'lucide-react';
+import { Calendar, Edit, MapPin, User, Cake, Briefcase, Heart, Users, Plus, Trash2, Camera } from 'lucide-react';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Separator } from '@/components/ui/separator';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
@@ -23,8 +23,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+// Profile section types for the edit dialog
+export type ProfileSection = 'basic' | 'contact' | 'personal' | 'photo' | 'all';
+
 const Profile = () => {
-  const { userInfo, removeKid } = useUserInfo();
+  const { userInfo, removeKid, updateUserInfo } = useUserInfo();
   const [activeTab, setActiveTab] = useState('profile');
   const { toast } = useToast();
   
@@ -34,15 +37,43 @@ const Profile = () => {
   const [editingKidIndex, setEditingKidIndex] = useState<number | undefined>(undefined);
   const [editDialogTitle, setEditDialogTitle] = useState('');
   const [editDialogDescription, setEditDialogDescription] = useState('');
+  const [activeProfileSection, setActiveProfileSection] = useState<ProfileSection>('all');
   
   // Delete kid dialog
   const [deleteKidDialogOpen, setDeleteKidDialogOpen] = useState(false);
   const [deletingKidIndex, setDeletingKidIndex] = useState<number | undefined>(undefined);
   
-  const openEditProfileDialog = () => {
+  // File input ref for avatar upload
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  
+  const openEditProfileDialog = (section: ProfileSection = 'all') => {
     setEditDialogMode('profile');
-    setEditDialogTitle('Edit Profile');
-    setEditDialogDescription('Update your personal information');
+    setActiveProfileSection(section);
+    
+    let title = 'Edit Profile';
+    let description = 'Update your personal information';
+    
+    switch (section) {
+      case 'basic':
+        title = 'Edit Basic Info';
+        description = 'Update your name and basic information';
+        break;
+      case 'contact':
+        title = 'Edit Contact Info';
+        description = 'Update your email and phone information';
+        break;
+      case 'personal':
+        title = 'Edit Personal Details';
+        description = 'Update your bio, interests and work status';
+        break;
+      case 'photo':
+        title = 'Change Profile Photo';
+        description = 'Upload a new profile picture';
+        break;
+    }
+    
+    setEditDialogTitle(title);
+    setEditDialogDescription(description);
     setEditDialogOpen(true);
   };
   
@@ -106,6 +137,11 @@ const Profile = () => {
     }
   };
   
+  // Handle avatar click to open profile photo editing
+  const handleAvatarClick = () => {
+    openEditProfileDialog('photo');
+  };
+  
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -115,18 +151,30 @@ const Profile = () => {
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex flex-col items-center">
-                <Avatar className="h-24 w-24 md:h-32 md:w-32">
-                  <AvatarImage src={userInfo?.profileImage} alt={userInfo?.name || "User"} />
-                  <AvatarFallback className="text-2xl bg-primary/20 text-primary">
-                    {getInitials(userInfo?.name || '')}
-                  </AvatarFallback>
+                <Avatar 
+                  className="h-24 w-24 md:h-32 md:w-32 cursor-pointer relative group"
+                  onClick={handleAvatarClick}
+                >
+                  {userInfo?.profilePictureURL ? (
+                    <AvatarImage src={userInfo.profilePictureURL} alt={userInfo?.name || "User"} />
+                  ) : (
+                    <>
+                      <AvatarImage src={userInfo?.profileImage} alt={userInfo?.name || "User"} />
+                      <AvatarFallback className="text-2xl bg-primary/20 text-primary">
+                        {getInitials(userInfo?.name || '')}
+                      </AvatarFallback>
+                    </>
+                  )}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 rounded-full flex items-center justify-center transition-opacity">
+                    <Camera className="h-8 w-8 text-white" />
+                  </div>
                 </Avatar>
                 
                 <Button 
                   variant="outline" 
                   size="sm" 
                   className="mt-4"
-                  onClick={openEditProfileDialog}
+                  onClick={() => openEditProfileDialog('all')}
                 >
                   <Edit className="mr-2 h-4 w-4" />
                   Edit Profile
@@ -186,10 +234,12 @@ const Profile = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-xl">About Me</CardTitle>
-                <Button variant="ghost" size="sm" onClick={openEditProfileDialog}>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit
-                </Button>
+                <div className="flex space-x-2">
+                  <Button variant="ghost" size="sm" onClick={() => openEditProfileDialog('personal')}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit Bio
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -202,26 +252,32 @@ const Profile = () => {
                   
                   <Separator />
                   
-                  <div>
-                    <h3 className="font-medium mb-2">Nationality</h3>
-                    <p className="text-muted-foreground">
-                      {userInfo?.nationality || 'Not specified'}
-                    </p>
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-medium">Nationality</h3>
+                    <Button variant="ghost" size="sm" onClick={() => openEditProfileDialog('basic')}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
                   </div>
+                  <p className="text-muted-foreground">
+                    {userInfo?.nationality || 'Not specified'}
+                  </p>
                   
                   <Separator />
                   
-                  <div>
-                    <h3 className="font-medium mb-2">Contact Information</h3>
-                    <div className="space-y-2">
-                      <div>
-                        <span className="text-muted-foreground">Email: </span>
-                        <span>{userInfo?.email || 'Not specified'}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Phone: </span>
-                        <span>{userInfo?.phone || 'Not specified'}</span>
-                      </div>
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-medium">Contact Information</h3>
+                    <Button variant="ghost" size="sm" onClick={() => openEditProfileDialog('contact')}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-muted-foreground">Email: </span>
+                      <span>{userInfo?.email || 'Not specified'}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Phone: </span>
+                      <span>{userInfo?.phone || 'Not specified'}</span>
                     </div>
                   </div>
                 </div>
@@ -332,6 +388,7 @@ const Profile = () => {
         kidIndex={editingKidIndex}
         title={editDialogTitle}
         description={editDialogDescription}
+        section={activeProfileSection}
       />
       
       <AlertDialog open={deleteKidDialogOpen} onOpenChange={setDeleteKidDialogOpen}>

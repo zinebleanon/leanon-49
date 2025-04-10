@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import EditProfileForm from "./EditProfileForm";
 import EditKidForm from "./EditKidForm";
+import { ProfileSection } from "@/pages/Profile";
 
 interface EditProfileDialogProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ interface EditProfileDialogProps {
   kidIndex?: number; // Only used when mode is "kid"
   title: string;
   description: string;
+  section?: ProfileSection; // New prop for specific section editing
 }
 
 const EditProfileDialog = ({
@@ -25,6 +27,7 @@ const EditProfileDialog = ({
   kidIndex,
   title,
   description,
+  section = 'all',
 }: EditProfileDialogProps) => {
   const handleSuccess = () => {
     onOpenChange(false);
@@ -39,7 +42,7 @@ const EditProfileDialog = ({
         </DialogHeader>
         
         {mode === "profile" && (
-          <EditProfileForm onSuccess={handleSuccess} />
+          <EditProfileForm onSuccess={handleSuccess} section={section} />
         )}
         
         {mode === "kid" && (
