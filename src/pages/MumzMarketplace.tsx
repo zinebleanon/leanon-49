@@ -9,6 +9,106 @@ import { Button } from '@/components/ui/button';
 import { Search, Package } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 
+// Approved listings data - moved to the top level
+const approvedListings = [
+  {
+    title: "Cybex Stroller (Like New)",
+    seller: "Emma's Shop in Dubai Marina",
+    price: "900 AED",
+    condition: "Barely Used",
+    image: "walker",
+    brand: "Cybex",
+    category: "Strollers",
+    ageGroup: "0-3 years",
+    size: "One Size",
+    status: "available"
+  },
+  {
+    title: "Plan Toys Wooden Set",
+    seller: "Natural Kids Al Ain",
+    price: "149 AED",
+    condition: "New",
+    image: "toys",
+    brand: "Plan Toys",
+    category: "Toys",
+    ageGroup: "1-2 years",
+    size: "One Size",
+    status: "available"
+  },
+  {
+    title: "Baby Clothes Bundle (0-3m)",
+    seller: "Second Life Sharjah",
+    price: "120 AED",
+    condition: "Good",
+    image: "clothes",
+    brand: "Carter's",
+    category: "Baby Clothes",
+    ageGroup: "0-3 months",
+    size: "0-3M",
+    status: "available"
+  },
+  {
+    title: "Avent Baby Bottles (Set of 4)",
+    seller: "Mom's Corner Abu Dhabi",
+    price: "85 AED",
+    condition: "Like New",
+    image: "walker",
+    brand: "Avent",
+    category: "Feeding",
+    ageGroup: "0-12 months",
+    size: "One Size",
+    status: "available"
+  },
+  {
+    title: "Graco Car Seat",
+    seller: "Baby World Dubai",
+    price: "350 AED",
+    condition: "Good",
+    image: "clothes",
+    brand: "Graco",
+    category: "Car Seats",
+    ageGroup: "0-12 months",
+    size: "One Size",
+    status: "reserved"
+  },
+  {
+    title: "Wooden Baby Gym",
+    seller: "Eco Mom Dubai",
+    price: "Free",
+    condition: "Good",
+    image: "toys",
+    brand: "Handmade",
+    category: "Toys",
+    ageGroup: "0-6 months",
+    size: "One Size",
+    status: "available"
+  },
+  {
+    title: "Baby Walker",
+    seller: "Quality Kids Abu Dhabi",
+    price: "Contact Seller",
+    condition: "Like New",
+    image: "walker",
+    brand: "Chicco",
+    category: "Baby Gear",
+    ageGroup: "6-18 months",
+    size: "One Size",
+    status: "available"
+  },
+  {
+    title: "Maternity Clothes Bundle (Size M)",
+    seller: "Maternity Closet Dubai",
+    price: "200 AED",
+    condition: "Like New",
+    image: "clothes",
+    brand: "Mixed",
+    category: "Maternity",
+    ageGroup: "Adult",
+    size: "M",
+    status: "available"
+  }
+];
+
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
@@ -42,106 +142,6 @@ const MumzMarketplace = () => {
       </div>
     );
   }
-  
-  // Approved listings data
-  const approvedListings = [
-    {
-      title: "Cybex Stroller (Like New)",
-      seller: "Emma's Shop in Dubai Marina",
-      price: "900 AED",
-      condition: "Barely Used",
-      image: "walker",
-      brand: "Cybex",
-      category: "Strollers",
-      ageGroup: "0-3 years",
-      size: "One Size",
-      status: "available"
-    },
-    {
-      title: "Plan Toys Wooden Set",
-      seller: "Natural Kids Al Ain",
-      price: "149 AED",
-      condition: "New",
-      image: "toys",
-      brand: "Plan Toys",
-      category: "Toys",
-      ageGroup: "1-2 years",
-      size: "One Size",
-      status: "available"
-    },
-    {
-      title: "Baby Clothes Bundle (0-3m)",
-      seller: "Second Life Sharjah",
-      price: "120 AED",
-      condition: "Good",
-      image: "clothes",
-      brand: "Carter's",
-      category: "Baby Clothes",
-      ageGroup: "0-3 months",
-      size: "0-3M",
-      status: "available"
-    },
-    {
-      title: "Avent Baby Bottles (Set of 4)",
-      seller: "Mom's Corner Abu Dhabi",
-      price: "85 AED",
-      condition: "Like New",
-      image: "walker",
-      brand: "Avent",
-      category: "Feeding",
-      ageGroup: "0-12 months",
-      size: "One Size",
-      status: "available"
-    },
-    {
-      title: "Graco Car Seat",
-      seller: "Baby World Dubai",
-      price: "350 AED",
-      condition: "Good",
-      image: "clothes",
-      brand: "Graco",
-      category: "Car Seats",
-      ageGroup: "0-12 months",
-      size: "One Size",
-      status: "reserved"
-    },
-    {
-      title: "Wooden Baby Gym",
-      seller: "Eco Mom Dubai",
-      price: "Free",
-      condition: "Good",
-      image: "toys",
-      brand: "Handmade",
-      category: "Toys",
-      ageGroup: "0-6 months",
-      size: "One Size",
-      status: "available"
-    },
-    {
-      title: "Baby Walker",
-      seller: "Quality Kids Abu Dhabi",
-      price: "Contact Seller",
-      condition: "Like New",
-      image: "walker",
-      brand: "Chicco",
-      category: "Baby Gear",
-      ageGroup: "6-18 months",
-      size: "One Size",
-      status: "available"
-    },
-    {
-      title: "Maternity Clothes Bundle (Size M)",
-      seller: "Maternity Closet Dubai",
-      price: "200 AED",
-      condition: "Like New",
-      image: "clothes",
-      brand: "Mixed",
-      category: "Maternity",
-      ageGroup: "Adult",
-      size: "M",
-      status: "available"
-    }
-  ];
   
   const textStyles = "transition-all duration-700 ease-smooth";
   
