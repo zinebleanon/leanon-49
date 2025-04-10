@@ -140,8 +140,8 @@ const MumzBrands = () => {
           onOpenDiscountDialog={() => setIsDiscountDialogOpen(true)}
         />
         
-        {/* Centered ribbon tag image - moved much higher with larger negative margin */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 mt-[-60px]">
+        {/* Centered ribbon tag image - moved even higher with larger negative margin */}
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 mt-[-90px]">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
             alt="Discount tag ribbon" 
