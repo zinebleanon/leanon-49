@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -37,7 +36,6 @@ interface ConnectionRequestsProps {
 }
 
 const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedView = false }: ConnectionRequestsProps) => {
-  // Connection requests (profiles that have sent you connection requests)
   const connectionRequests: ConnectionRequest[] = [
     {
       id: 3,
@@ -64,7 +62,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   const [rejectedRequests, setRejectedRequests] = useState<number[]>([]);
   const [leanBackMoms, setLeanBackMoms] = useState<ConnectionRequest[]>([]);
 
-  // Load accepted moms from localStorage on component mount
   useEffect(() => {
     const savedLeanBackMoms = localStorage.getItem('leanBackMoms');
     if (savedLeanBackMoms) {
@@ -88,24 +85,19 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
   };
   
   const handleSendMessage = (text: string, image: string | null) => {
-    // This would typically send the message to the backend
     console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
   };
 
   const handleAcceptRequest = (id: number, name: string) => {
-    // Find the mom details from the requests
     const acceptedMom = connectionRequests.find(request => request.id === id);
     
     if (acceptedMom) {
-      // Add to lean back moms list
       const updatedLeanBackMoms = [...leanBackMoms, acceptedMom];
       setLeanBackMoms(updatedLeanBackMoms);
       
-      // Save to localStorage for persistence
       localStorage.setItem('leanBackMoms', JSON.stringify(updatedLeanBackMoms));
     }
     
-    // Update the accepted list
     const updatedAccepted = [...acceptedRequests, id];
     setAcceptedRequests(updatedAccepted);
     localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
@@ -127,17 +119,13 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     });
   };
 
-  // If in simplified view mode (most straightforward UI) - used in Inbox page
   if (simplifiedView) {
-    // Get pending requests (not accepted or rejected)
     const pendingRequests = connectionRequests.filter(request => 
       !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
     );
     
-    // Show accepted moms in the LeanMoms tab
     return (
       <div className="space-y-2">
-        {/* Show pending requests */}
         {pendingRequests.length > 0 && (
           <div className="mb-4">
             <h3 className="text-sm font-medium text-muted-foreground mb-2">Pending Requests</h3>
@@ -194,7 +182,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </div>
         )}
         
-        {/* Show accepted moms (lean back) */}
         {leanBackMoms.length > 0 ? (
           <div>
             <h3 className="text-sm font-medium text-muted-foreground mb-2">My LeanMoms</h3>
@@ -251,7 +238,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     );
   }
 
-  // If in dialog mode, use a more compact layout
   if (dialogMode) {
     const filteredRequests = connectionRequests.filter(request => 
       !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
@@ -261,17 +247,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
       <div className="mb-6">
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-lg font-medium">Connect Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
-          {leanBackMoms.length > 0 && (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setLeanMomsDialogOpen(true)}
-              className="text-xs flex items-center gap-1"
-            >
-              <Users className="h-4 w-4 mr-1" />
-              My LeanMoms ({leanBackMoms.length})
-            </Button>
-          )}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -331,7 +306,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
           </div>
         )}
         
-        {/* LeanMoms Dialog */}
         <LeanMomsDialog
           open={leanMomsDialogOpen}
           onOpenChange={setLeanMomsDialogOpen}
@@ -357,7 +331,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
     );
   }
 
-  // Regular full view for the main page
   const filteredRequests = connectionRequests.filter(request => 
     !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
   );
@@ -367,18 +340,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold font-playfair">Connect Requests <span className="text-lg font-normal text-primary-foreground/80">({filteredRequests.length})</span></h2>
-          
-          {leanBackMoms.length > 0 && (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setLeanMomsDialogOpen(true)}
-              className="bg-white hover:bg-white/90 flex items-center gap-1"
-            >
-              <Users className="h-4 w-4 mr-1" />
-              My LeanMoms ({leanBackMoms.length})
-            </Button>
-          )}
         </div>
         
         {filteredRequests.length === 0 ? (
@@ -453,7 +414,6 @@ const ConnectionRequests = ({ dialogMode = false, nearbyMoms = [], simplifiedVie
         )}
       </div>
       
-      {/* LeanMoms Dialog */}
       <LeanMomsDialog
         open={leanMomsDialogOpen}
         onOpenChange={setLeanMomsDialogOpen}
