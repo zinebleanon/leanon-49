@@ -96,12 +96,12 @@ const Index = () => {
             <CardContent className="pt-2 pb-3">
               <div className="max-w-md mx-auto">
                 <div className="bg-white/80 rounded-lg p-5 border border-pastel-yellow/20 shadow-sm relative">
-                  {/* Ribbon placed inside the referral frame at the top */}
-                  <div className="w-full max-w-xs mx-auto -mt-8 mb-1">
+                  {/* Increased size and visibility of the ribbon */}
+                  <div className="w-full max-w-sm mx-auto -mt-12 mb-2">
                     <img 
                       src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
                       alt="Decorative Ribbon" 
-                      className="w-full h-auto object-contain max-h-16"
+                      className="w-full h-auto object-contain max-h-24"
                     />
                   </div>
                   
