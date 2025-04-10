@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -75,7 +74,6 @@ const MumzAlly = () => {
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
   const [filteredProfiles, setFilteredProfiles] = useState(mockProfiles);
   const [nearbyMoms, setNearbyMoms] = useState<typeof mockProfiles>([]);
-  const [showTinderView, setShowTinderView] = useState(false);
   const [sentConnections, setSentConnections] = useState<number[]>([]);
 
   useEffect(() => {
@@ -181,10 +179,6 @@ const MumzAlly = () => {
     console.log("Skipped profile:", id);
   };
 
-  const toggleView = () => {
-    setShowTinderView(prev => !prev);
-  };
-
   return (
     <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
@@ -193,12 +187,11 @@ const MumzAlly = () => {
         <HeroSection 
           onFiltersChange={handleFiltersChange} 
           profiles={filteredProfiles} 
-          nearbyMoms={nearbyMoms} 
-          onViewToggle={toggleView}
-          showTinderView={showTinderView}
+          nearbyMoms={nearbyMoms}
+          showTinderView={true}
         />
         
-        {showTinderView && nearbyMoms.length > 0 && (
+        {nearbyMoms.length > 0 && (
           <div className="mt-8">
             <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">Moms Near You</h2>
             <SwipeableProfiles 

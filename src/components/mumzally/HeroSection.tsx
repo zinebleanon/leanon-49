@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, Search, List, MoveHorizontal, Users } from "lucide-react";
+import { Info, MapPin, Search, Users } from "lucide-react";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
@@ -42,6 +42,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           <Button
             className="gap-2"
             variant="warm"
+            size="md"
             onClick={() => setIsHowItWorksOpen(true)}
           >
             <div className="flex items-center gap-2">
@@ -51,8 +52,9 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           </Button>
           
           <Button
-            variant="outline"
-            className="gap-2 bg-white/80"
+            variant="warm"
+            size="md"
+            className="gap-2"
             onClick={() => setIsConnectionRequestsOpen(true)}
           >
             <div className="flex items-center gap-2">
@@ -62,8 +64,9 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           </Button>
           
           <Button
-            variant="outline"
-            className="gap-2 bg-white/80"
+            variant="warm"
+            size="md"
+            className="gap-2"
             onClick={() => setIsFiltersOpen(true)}
           >
             <div className="flex items-center gap-2">
@@ -71,28 +74,6 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
               <span>Find LeanMoms Around</span>
             </div>
           </Button>
-          
-          {nearbyMoms.length > 0 && onViewToggle && (
-            <Button
-              variant="outline"
-              className="gap-2 bg-white/80"
-              onClick={onViewToggle}
-            >
-              <div className="flex items-center gap-2">
-                {showTinderView ? (
-                  <>
-                    <List className="h-4 w-4" />
-                    <span>List View</span>
-                  </>
-                ) : (
-                  <>
-                    <MoveHorizontal className="h-4 w-4" />
-                    <span>Swipe View</span>
-                  </>
-                )}
-              </div>
-            </Button>
-          )}
         </div>
       </div>
       
