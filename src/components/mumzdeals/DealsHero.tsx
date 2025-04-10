@@ -1,5 +1,5 @@
 
-import { ShoppingBag, Tag, Info } from 'lucide-react';
+import { Tag, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
@@ -18,14 +18,6 @@ const DealsHero = () => {
         >
           <RibbonIcon className="h-5 w-5 mr-2 flex-shrink-0" fill="#FFD9A7" />
           <span>Browse Deals</span>
-        </Button>
-        <Button 
-          variant="outline" 
-          size="md" 
-          className="rounded-full h-11 px-8 w-full sm:w-auto border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
-        >
-          <ShoppingBag className="h-5 w-5 mr-2 flex-shrink-0" />
-          <span>Featured Brands</span>
         </Button>
       </div>
     </div>
