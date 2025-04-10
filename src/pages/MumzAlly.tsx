@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -65,6 +66,9 @@ interface FilterOptions {
     gender?: string;
   }>;
   compatibilityThreshold?: number;
+  searchTerm?: string;
+  nationality?: string;
+  workStatus?: string;
 }
 
 const MumzAlly = () => {
@@ -75,18 +79,37 @@ const MumzAlly = () => {
   const [filteredProfiles, setFilteredProfiles] = useState(mockProfiles);
   const [nearbyMoms, setNearbyMoms] = useState<typeof mockProfiles>([]);
   const [sentConnections, setSentConnections] = useState<number[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     filterProfilesByLocationAndKids();
   }, [userInfo]);
+
+  const calculateKidAgeSimilarity = (userKids, profileKids) => {
+    if (!userKids.length || !profileKids.length) return 0;
+    
+    let totalSimilarity = 0;
+    userKids.forEach(userKid => {
+      const userKidAge = userKid.birthDate 
+        ? Math.floor((new Date().getTime() - new Date(userKid.birthDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000)) 
+        : 0;
+        
+      profileKids.forEach(profileKid => {
+        const ageDiff = Math.abs(profileKid.age - userKidAge);
+        // Give a score based on age difference: 1.0 for exact match, decreasing as difference increases
+        totalSimilarity += ageDiff === 0 ? 1.0 : 1.0 / (ageDiff + 1);
+      });
+    });
+    
+    return totalSimilarity / (userKids.length * profileKids.length);
+  };
 
   const filterProfilesByLocationAndKids = (filters: FilterOptions = {}) => {
     const userLocation = userInfo?.location?.latitude && userInfo?.location?.longitude ? userInfo.location : null;
     const userNeighborhood = userInfo?.neighborhood || "";
     const userKids = userInfo?.kids || [];
 
-    let locationMatches = [...mockProfiles];
-    
+    // First, identify nearby moms based on location
     if (userLocation) {
       const nearby = mockProfiles.filter(profile => 
         profile.id === 3 || profile.id === 4
@@ -99,59 +122,97 @@ const MumzAlly = () => {
       setNearbyMoms(nearby);
     }
 
-    if (userKids.length > 0) {
-      locationMatches = locationMatches.filter(profile => {
-        const hasKidsMatch = userKids.some(userKid => {
-          const userKidAge = userKid.birthDate 
-            ? Math.floor((new Date().getTime() - new Date(userKid.birthDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000)) 
-            : 0;
-            
+    // Apply initial filtering
+    let matchedProfiles = [...mockProfiles];
+    
+    // Apply search term filter if provided
+    if (filters.searchTerm) {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.location.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.nationality.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.workStatus.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        profile.interests.some(interest => interest.toLowerCase().includes(filters.searchTerm.toLowerCase())) ||
+        profile.bio.toLowerCase().includes(filters.searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply location filter if provided
+    if (filters.location && filters.location !== 'all') {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.location === filters.location
+      );
+    }
+    
+    // Apply nationality filter if provided
+    if (filters.nationality && filters.nationality !== 'all') {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.nationality === filters.nationality
+      );
+    }
+    
+    // Apply work status filter if provided
+    if (filters.workStatus && filters.workStatus !== 'all') {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.workStatus === filters.workStatus
+      );
+    }
+    
+    // Apply kids filter if provided
+    if (filters.kids && filters.kids.length > 0) {
+      matchedProfiles = matchedProfiles.filter(profile => {
+        return filters.kids.some((kidFilter) => {
+          if (!kidFilter.ageRange || kidFilter.ageRange === 'all') {
+            return true;
+          }
+          
           return profile.kids.some(profileKid => {
-            return Math.abs(profileKid.age - userKidAge) <= 1;
+            const ageMatch = kidFilter.ageRange === 'all' || 
+              profileKid.age.toString() === kidFilter.ageRange;
+            
+            const genderMatch = !kidFilter.gender || kidFilter.gender === 'all' || 
+              profileKid.gender === kidFilter.gender;
+              
+            return ageMatch && genderMatch;
           });
         });
-        
-        return hasKidsMatch;
       });
     }
-
-    if (Object.keys(filters).length > 0) {
-      if (filters.location && filters.location !== 'all') {
-        locationMatches = locationMatches.filter(profile => 
-          profile.location === filters.location
-        );
-      }
-      
-      if (filters.kids && filters.kids.length > 0) {
-        locationMatches = locationMatches.filter(profile => {
-          return filters.kids.some((kidFilter) => {
-            if (!kidFilter.ageRange || kidFilter.ageRange === 'all') {
-              return true;
-            }
-            
-            return profile.kids.some(profileKid => {
-              const ageMatch = kidFilter.ageRange === 'all' || 
-                profileKid.age.toString() === kidFilter.ageRange;
-              
-              const genderMatch = !kidFilter.gender || kidFilter.gender === 'all' || 
-                profileKid.gender === kidFilter.gender;
-                
-              return ageMatch && genderMatch;
-            });
-          });
-        });
-      }
-      
-      if (filters.compatibilityThreshold) {
-        locationMatches = locationMatches.filter(profile => 
-          profile.compatibility >= filters.compatibilityThreshold
-        );
-      }
+    
+    // Apply compatibility threshold filter if provided
+    if (filters.compatibilityThreshold) {
+      matchedProfiles = matchedProfiles.filter(profile => 
+        profile.compatibility >= filters.compatibilityThreshold
+      );
     }
 
-    locationMatches.sort((a, b) => b.compatibility - a.compatibility);
+    // Calculate and apply scores for sorting
+    const rankedProfiles = matchedProfiles.map(profile => {
+      // Score based on kid age similarity
+      const kidAgeSimilarityScore = calculateKidAgeSimilarity(userKids, profile.kids);
+      
+      // Score based on location proximity
+      const locationProximityScore = (userNeighborhood === profile.location) ? 1.0 : 0.5;
+      
+      // Combined score with compatibility
+      const combinedScore = (
+        (kidAgeSimilarityScore * 0.4) + 
+        (locationProximityScore * 0.3) + 
+        (profile.compatibility / 100 * 0.3)
+      );
+      
+      return {
+        ...profile,
+        kidAgeSimilarityScore,
+        locationProximityScore,
+        combinedScore
+      };
+    });
     
-    setFilteredProfiles(locationMatches);
+    // Sort by combined score
+    rankedProfiles.sort((a, b) => b.combinedScore - a.combinedScore);
+    
+    setFilteredProfiles(rankedProfiles);
   };
 
   const handleMessageClick = (id: number, name: string) => {
@@ -164,6 +225,11 @@ const MumzAlly = () => {
   };
 
   const handleFiltersChange = (filters: Record<string, any>) => {
+    // Update search term if provided
+    if (filters.searchTerm !== undefined) {
+      setSearchTerm(filters.searchTerm);
+    }
+    
     filterProfilesByLocationAndKids(filters);
   };
 
@@ -189,6 +255,8 @@ const MumzAlly = () => {
           profiles={filteredProfiles} 
           nearbyMoms={nearbyMoms}
           showTinderView={true}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
         />
         
         {nearbyMoms.length > 0 && (

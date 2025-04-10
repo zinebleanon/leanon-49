@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, MapPin, ListChecks, Users } from "lucide-react";
+import { Info, MapPin, ListChecks, Users, Search, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
 import ConnectionRequests from "./ConnectionRequests";
 import { MumzProfile } from "./ProfilesSection";
+import { Input } from "@/components/ui/input";
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -16,13 +17,33 @@ interface HeroSectionProps {
   nearbyMoms: MumzProfile[];
   onViewToggle?: () => void;
   showTinderView?: boolean;
+  searchTerm?: string;
+  onSearchChange?: (term: string) => void;
 }
 
-const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle, showTinderView = false }: HeroSectionProps) => {
+const HeroSection = ({ 
+  onFiltersChange, 
+  profiles, 
+  nearbyMoms = [], 
+  onViewToggle, 
+  showTinderView = false,
+  searchTerm = '',
+  onSearchChange
+}: HeroSectionProps) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onSearchChange) {
+      onSearchChange(e.target.value);
+    }
+    
+    if (onFiltersChange) {
+      onFiltersChange({ searchTerm: e.target.value });
+    }
+  };
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setIsFiltersOpen(false);
@@ -38,6 +59,27 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
           <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
             LeanMoms<br />Around You
           </h1>
+          
+          {/* Search bar */}
+          <div className="max-w-md mx-auto mt-4 relative">
+            <Input
+              type="text"
+              placeholder="Search by name, location, or interests..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="pl-10 bg-white/80 border-2 border-[#FFD9A7]/30 focus:border-[#FFD9A7]"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Button 
+              size="sm" 
+              variant="outline"
+              onClick={() => setIsFiltersOpen(true)} 
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 flex items-center gap-1 px-2"
+            >
+              <Filter className="h-3 w-3" />
+              <span className="text-xs">Filters</span>
+            </Button>
+          </div>
         </div>
         
         <div className="flex flex-col gap-3 items-center w-full max-w-[200px] mx-auto md:mx-0">

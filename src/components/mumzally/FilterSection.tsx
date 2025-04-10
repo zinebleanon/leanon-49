@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -5,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Filter, ArrowLeft } from 'lucide-react';
+import { Check, X, Filter, ArrowLeft, Search } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -18,12 +19,14 @@ interface FilterSectionProps {
   onClose?: () => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  searchTerm?: string;
 }
 
-const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterSectionProps) => {
+const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTerm = '' }: FilterSectionProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [age, setAge] = useState('all');
+  const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   
   // First child
   const [kid1AgeRange, setKid1AgeRange] = useState('all');
@@ -43,6 +46,11 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
   const [compatibilityThreshold, setCompatibilityThreshold] = useState([70]);
   
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+
+  // Update local search term when prop changes
+  useEffect(() => {
+    setLocalSearchTerm(searchTerm);
+  }, [searchTerm]);
   
   useEffect(() => {
     const activeFilters = {
@@ -64,7 +72,8 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
       location: location !== 'all' ? location : null,
       nationality: nationality !== 'all' ? nationality : null,
       workStatus: workStatus !== 'all' ? workStatus : null,
-      compatibilityThreshold: compatibilityThreshold[0]
+      compatibilityThreshold: compatibilityThreshold[0],
+      searchTerm: localSearchTerm.trim() !== '' ? localSearchTerm : null
     };
     
     // Count active filters
@@ -77,11 +86,12 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
     if (activeFilters.nationality) count++;
     if (activeFilters.workStatus) count++;
     if (activeFilters.compatibilityThreshold !== 70) count++;
+    if (activeFilters.searchTerm) count++;
     
     setActiveFiltersCount(count);
     
   }, [age, kid1AgeRange, kid1Gender, kid2AgeRange, kid2Gender, kid3AgeRange, kid3Gender, 
-      location, nationality, workStatus, compatibilityThreshold]);
+      location, nationality, workStatus, compatibilityThreshold, localSearchTerm]);
   
   const applyFilters = () => {
     const filters = {
@@ -103,7 +113,8 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
       location,
       nationality,
       workStatus,
-      compatibilityThreshold: compatibilityThreshold[0]
+      compatibilityThreshold: compatibilityThreshold[0],
+      searchTerm: localSearchTerm
     };
     
     onFiltersChange(filters);
@@ -131,6 +142,7 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
     setNationality('all');
     setWorkStatus('all');
     setCompatibilityThreshold([70]);
+    setLocalSearchTerm('');
     
     onFiltersChange({});
     
@@ -170,6 +182,22 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
             Reset
           </Button>
         </div>
+        
+        {/* Search field at the top */}
+        <Card className="p-3 bg-white/90 border-[#B8CEC2]/30 shadow-sm mb-4">
+          {renderFilterItem("Search", (
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="Search by name, location, interests..."
+                value={localSearchTerm}
+                onChange={(e) => setLocalSearchTerm(e.target.value)}
+                className="pl-10 bg-white/80 border-[#B8CEC2]/30"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+          ))}
+        </Card>
         
         <div className="space-y-4 overflow-y-auto pb-16" style={{ maxHeight: isMobile ? 'calc(100vh - 240px)' : 'none' }}>
           {/* Mother's Age */}
@@ -356,7 +384,7 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange }: FilterS
                     <SelectItem value="all">Any Nationality</SelectItem>
                     <SelectItem value="British Expat">British Expat</SelectItem>
                     <SelectItem value="American Expat">American Expat</SelectItem>
-                    <SelectItem value="Chinese Expat">Chinese Expat</SelectItem>
+                    <SelectItem value="Chinese-American">Chinese-American</SelectItem>
                     <SelectItem value="Indian Expat">Indian Expat</SelectItem>
                     <SelectItem value="Lebanese">Lebanese</SelectItem>
                     <SelectItem value="UAE">UAE</SelectItem>
