@@ -39,6 +39,9 @@ const MumzMarketplaceFind = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSubCategory, setSelectedSubCategory] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState('all');
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState('all');
+  const [selectedSize, setSelectedSize] = useState('all');
+  const [selectedCondition, setSelectedCondition] = useState('all');
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [superMomOnly, setSuperMomOnly] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -74,6 +77,23 @@ const MumzMarketplaceFind = () => {
     "Others": ["Diapering", "Health & Safety", "Carriers", "Travel Accessories"]
   };
   
+  // Added age groups and sizes
+  const ageGroups = [
+    "Newborn", "0-3 months", "3-6 months", "6-12 months", 
+    "1-2 years", "2-3 years", "3-4 years", "4-5 years",
+    "5-6 years", "6-8 years", "8-10 years", "10+ years"
+  ];
+  
+  const sizes = [
+    "Preemie", "Newborn", "0-3M", "3-6M", "6-9M", "9-12M",
+    "12-18M", "18-24M", "2T", "3T", "4T", "5T",
+    "XS", "S", "M", "L", "XL", "One Size"
+  ];
+  
+  const conditions = [
+    "New with Tags", "Like New", "Good", "Well Used", "Needs Repair"
+  ];
+  
   // Get the appropriate subcategories based on selected main category
   const getSubCategories = () => {
     if (selectedCategory === 'all') {
@@ -84,7 +104,8 @@ const MumzMarketplaceFind = () => {
   
   const popularBrands = [
     "Chicco", "Avent", "Graco", "Fisher-Price", "Pampers", 
-    "Huggies", "Britax", "Medela", "Baby Einstein", "Munchkin"
+    "Huggies", "Britax", "Medela", "Baby Einstein", "Munchkin",
+    "Uppababy", "Bugaboo", "Other"
   ];
   
   const allItems = [
@@ -96,7 +117,10 @@ const MumzMarketplaceFind = () => {
       image: "walker",
       brand: "Cybex",
       priceValue: 900,
-      superMom: true
+      superMom: true,
+      ageGroup: "0-3 years",
+      category: "Strollers",
+      size: "One Size"
     },
     {
       title: "Plan Toys Wooden Set",
@@ -106,7 +130,10 @@ const MumzMarketplaceFind = () => {
       image: "toys",
       brand: "Plan Toys",
       priceValue: 149,
-      superMom: false
+      superMom: false,
+      ageGroup: "1-2 years",
+      category: "Toys",
+      size: "One Size"
     },
     {
       title: "Baby Clothes Bundle (0-3m)",
@@ -116,7 +143,10 @@ const MumzMarketplaceFind = () => {
       image: "clothes",
       brand: "Carter's",
       priceValue: 120,
-      superMom: true
+      superMom: true,
+      ageGroup: "0-3 months",
+      category: "Baby Clothes",
+      size: "0-3M"
     },
     {
       title: "Avent Baby Bottles (Set of 4)",
@@ -126,7 +156,10 @@ const MumzMarketplaceFind = () => {
       image: "walker",
       brand: "Avent",
       priceValue: 85,
-      superMom: false
+      superMom: false,
+      ageGroup: "0-12 months",
+      category: "Feeding",
+      size: "One Size"
     },
     {
       title: "Graco Car Seat",
@@ -136,7 +169,10 @@ const MumzMarketplaceFind = () => {
       image: "clothes",
       brand: "Graco",
       priceValue: 350,
-      superMom: true
+      superMom: true,
+      ageGroup: "0-12 months",
+      category: "Car Seats",
+      size: "One Size"
     },
     {
       title: "Fisher-Price Play Gym",
@@ -146,7 +182,36 @@ const MumzMarketplaceFind = () => {
       image: "toys",
       brand: "Fisher-Price",
       priceValue: 120,
-      superMom: false
+      superMom: false,
+      ageGroup: "0-6 months",
+      category: "Toys",
+      size: "One Size"
+    },
+    {
+      title: "Baby Clothes Bundle (6-9m)",
+      seller: "Mom2Mom Dubai",
+      price: "Free",
+      condition: "Good",
+      image: "clothes",
+      brand: "Mixed",
+      priceValue: 0,
+      superMom: true,
+      ageGroup: "6-9 months",
+      category: "Baby Clothes",
+      size: "6-9M"
+    },
+    {
+      title: "Baby Bath Tub",
+      seller: "Baby Essentials Abu Dhabi",
+      price: "Contact Seller",
+      condition: "Good",
+      image: "toys",
+      brand: "Summer Infant",
+      priceValue: null,
+      superMom: false,
+      ageGroup: "0-12 months",
+      category: "Home",
+      size: "One Size"
     }
   ];
   
@@ -157,7 +222,7 @@ const MumzMarketplaceFind = () => {
       item.seller.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesCategory = selectedCategory === 'all' || 
-      (item.title.toLowerCase().includes(selectedCategory.toLowerCase()));
+      (item.category?.toLowerCase() === selectedCategory.toLowerCase());
     
     const matchesSubCategory = selectedSubCategory === 'all' || 
       (item.title.toLowerCase().includes(selectedSubCategory.toLowerCase()));
@@ -165,11 +230,22 @@ const MumzMarketplaceFind = () => {
     const matchesBrand = selectedBrand === 'all' || 
       (item.brand?.toLowerCase() === selectedBrand.toLowerCase());
     
-    const matchesPrice = item.priceValue >= priceRange[0] && item.priceValue <= priceRange[1];
+    const matchesAgeGroup = selectedAgeGroup === 'all' ||
+      (item.ageGroup?.includes(selectedAgeGroup));
+      
+    const matchesSize = selectedSize === 'all' ||
+      (item.size === selectedSize);
+      
+    const matchesCondition = selectedCondition === 'all' ||
+      (item.condition?.includes(selectedCondition));
+    
+    const matchesPrice = item.priceValue !== null ? 
+      (item.priceValue >= priceRange[0] && item.priceValue <= priceRange[1]) : true;
     
     const matchesSuperMom = !superMomOnly || item.superMom;
     
-    return matchesSearch && matchesCategory && matchesSubCategory && matchesBrand && matchesPrice && matchesSuperMom;
+    return matchesSearch && matchesCategory && matchesSubCategory && matchesBrand && 
+           matchesPrice && matchesSuperMom && matchesAgeGroup && matchesSize && matchesCondition;
   });
   
   // Count active filters
@@ -178,6 +254,9 @@ const MumzMarketplaceFind = () => {
     if (selectedCategory !== 'all') count++;
     if (selectedSubCategory !== 'all') count++;
     if (selectedBrand !== 'all') count++;
+    if (selectedAgeGroup !== 'all') count++;
+    if (selectedSize !== 'all') count++;
+    if (selectedCondition !== 'all') count++;
     if (priceRange[0] > 0 || priceRange[1] < 1000) count++;
     if (superMomOnly) count++;
     if (searchQuery) count++;
@@ -191,6 +270,9 @@ const MumzMarketplaceFind = () => {
     setSelectedCategory('all');
     setSelectedSubCategory('all');
     setSelectedBrand('all');
+    setSelectedAgeGroup('all');
+    setSelectedSize('all');
+    setSelectedCondition('all');
     setPriceRange([0, 1000]);
     setSuperMomOnly(false);
   };
@@ -317,6 +399,54 @@ const MumzMarketplaceFind = () => {
                   </Select>
                 </div>
               )}
+              
+              {/* Age Group filter */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Age Group</label>
+                <Select value={selectedAgeGroup} onValueChange={setSelectedAgeGroup}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select age group" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Age Groups</SelectItem>
+                    {ageGroups.map((age) => (
+                      <SelectItem key={age} value={age}>{age}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Size filter */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Size</label>
+                <Select value={selectedSize} onValueChange={setSelectedSize}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Sizes</SelectItem>
+                    {sizes.map((size) => (
+                      <SelectItem key={size} value={size}>{size}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Condition filter */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Condition</label>
+                <Select value={selectedCondition} onValueChange={setSelectedCondition}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select condition" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Conditions</SelectItem>
+                    {conditions.map((condition) => (
+                      <SelectItem key={condition} value={condition}>{condition}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               
               {/* Price range slider */}
               <div>

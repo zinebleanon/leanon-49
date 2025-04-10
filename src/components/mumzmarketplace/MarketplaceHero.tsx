@@ -20,9 +20,12 @@ const MarketplaceHero = () => {
               <Button 
                 size="lg" 
                 className="rounded-full bg-primary"
+                asChild
               >
-                <ShoppingBag className="mr-2 h-4 w-4" />
-                Browse Items
+                <Link to="/marketplace/find">
+                  <ShoppingBag className="mr-2 h-4 w-4" />
+                  Browse Items
+                </Link>
               </Button>
               <Button 
                 variant="outline" 
