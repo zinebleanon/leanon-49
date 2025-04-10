@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -354,9 +355,20 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
 
   const switchToSignUp = () => {
     setActiveTab("signup");
+    navigate('/sign-up');
+  };
+  
+  const switchToSignIn = () => {
+    setActiveTab("signin");
+    navigate('/sign-in');
   };
   
   const handleTabChange = (value: string) => {
+    if (value === "signin") {
+      navigate('/sign-in');
+    } else {
+      navigate('/sign-up');
+    }
     setActiveTab(value as 'signin' | 'signup');
   };
 
@@ -482,7 +494,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                     Sign In
                   </Button>
                   <p className="text-sm text-center text-muted-foreground">
-                    No account? <Button variant="link" onClick={switchToSignUp} className="p-0 h-auto text-emerald-700 hover:text-emerald-800 font-medium">Sign up</Button>
+                    No account? <Button type="button" variant="link" onClick={switchToSignUp} className="p-0 h-auto text-emerald-700 hover:text-emerald-800 font-medium">Sign up</Button>
                   </p>
                 </CardFooter>
               </form>
@@ -926,7 +938,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                   
                   {signupStep === 1 && (
                     <p className="text-xs text-center text-muted-foreground">
-                      By signing up, you agree to our Terms of Service and Privacy Policy
+                      Already have an account? <Button type="button" variant="link" onClick={switchToSignIn} className="p-0 h-auto text-emerald-700 hover:text-emerald-800 font-medium">Sign in</Button>
                     </p>
                   )}
                 </CardFooter>

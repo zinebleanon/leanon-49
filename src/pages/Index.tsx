@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -79,7 +80,7 @@ const Index = () => {
   };
   
   const handleJoinClick = () => {
-    navigate('/sign-in');
+    navigate('/sign-up');
   };
   
   if (isLoading) {

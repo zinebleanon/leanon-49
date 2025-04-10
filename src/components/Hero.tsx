@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -37,7 +38,7 @@ const Hero = ({ onJoinClick }: HeroProps) => {
   }, []);
   
   const handleJoinClick = () => {
-    navigate('/sign-in');
+    navigate('/sign-up');
   };
   
   const textStyles = "transition-all duration-700 ease-smooth";

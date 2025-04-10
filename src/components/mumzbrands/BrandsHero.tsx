@@ -16,6 +16,10 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
     navigate('/sign-in');
   };
   
+  const handleSignUpClick = () => {
+    navigate('/sign-up');
+  };
+  
   return (
     <section className="py-16 md:py-20 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -28,14 +32,24 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-12 mb-8">
             <BrandsHowItWorksDialog />
-            <Button 
-              size="md" 
-              className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
-              onClick={handleSignInClick}
-            >
-              <User className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
-              <span>Sign In / Sign Up</span>
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                size="md" 
+                className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"
+                onClick={handleSignInClick}
+              >
+                <User className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
+                <span>Sign In</span>
+              </Button>
+              <Button 
+                size="md" 
+                className="rounded-full px-4 border border-[#FFD9A7] bg-white hover:bg-gray-50 text-foreground active:opacity-95 transition-all flex items-center h-9"
+                onClick={handleSignUpClick}
+              >
+                <User className="h-4 w-4 mr-1.5 flex-shrink-0" /> 
+                <span>Sign Up</span>
+              </Button>
+            </div>
             <Button 
               size="md" 
               className="rounded-full px-4 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center h-9"

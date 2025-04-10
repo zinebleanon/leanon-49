@@ -15,6 +15,10 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
     navigate('/sign-in');
   };
   
+  const handleSignUpClick = () => {
+    navigate('/sign-up');
+  };
+  
   return (
     <section className="py-4 md:py-6 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
@@ -52,14 +56,25 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
         </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <HowItWorksDialog className="flex-shrink-0" />
-          <Button 
-            size="lg" 
-            className="rounded-full bg-primary flex items-center"
-            onClick={handleSignInClick}
-          >
-            <User className="h-5 w-5 mr-2 flex-shrink-0" />
-            <span className="flex-1 text-center">Sign In / Sign Up</span>
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              size="lg" 
+              className="rounded-full bg-primary flex items-center"
+              onClick={handleSignInClick}
+            >
+              <User className="h-5 w-5 mr-2 flex-shrink-0" />
+              <span className="flex-1 text-center">Sign In</span>
+            </Button>
+            <Button 
+              size="lg" 
+              variant="secondary"
+              className="rounded-full flex items-center"
+              onClick={handleSignUpClick}
+            >
+              <User className="h-5 w-5 mr-2 flex-shrink-0" />
+              <span className="flex-1 text-center">Sign Up</span>
+            </Button>
+          </div>
           <Button 
             variant="outline" 
             size="lg" 
