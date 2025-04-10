@@ -46,7 +46,7 @@ const HowItWorksDialog = ({ className, buttonVariant = "outline" }: HowItWorksDi
         <Button 
           variant={buttonVariant}
           size="lg" 
-          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
+          className={`rounded-full h-11 px-8 w-full sm:w-auto border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
         >
           <Info className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
           <span className="my-auto">How It Works</span>

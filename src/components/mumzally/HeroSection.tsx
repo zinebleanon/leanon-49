@@ -117,7 +117,7 @@ const HeroSection = ({
           <Button
             variant="warm"
             size="md"
-            className="w-full gap-2"
+            className="w-full gap-2 h-11 px-8"
             onClick={() => setIsConnectionRequestsOpen(true)}
           >
             <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ const HeroSection = ({
           <Button
             variant="warm"
             size="md"
-            className="w-full gap-2"
+            className="w-full gap-2 h-11 px-8"
             onClick={() => navigate('/connections')}
           >
             <div className="flex items-center gap-2">
