@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -48,7 +47,7 @@ const Settings = () => {
         </h1>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsList className="grid grid-cols-2 md:grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-3 w-full">
             <TabsTrigger value="notifications">
               <Bell className="h-4 w-4 mr-2 md:mr-2" />
               <span className="hidden md:inline">Notifications</span>
@@ -180,15 +179,33 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <Button variant="outline" className="w-full">
-                    <Key className="mr-2 h-4 w-4" />
-                    Change Password
-                  </Button>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Change Password</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Update your account password
+                      </p>
+                    </div>
+                    <Button variant="outline">
+                      <Key className="mr-2 h-4 w-4" />
+                      Change
+                    </Button>
+                  </div>
                   
-                  <Button variant="outline" className="w-full">
-                    <MapPin className="mr-2 h-4 w-4" />
-                    Update Neighborhood
-                  </Button>
+                  <Separator />
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Update Neighborhood</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Change your location information
+                      </p>
+                    </div>
+                    <Button variant="outline">
+                      <MapPin className="mr-2 h-4 w-4" />
+                      Update
+                    </Button>
+                  </div>
                   
                   <Separator />
                   
