@@ -143,19 +143,6 @@ const Index = () => {
               </div>
             </CardContent>
           </Card>
-          
-          {/* Top Brands Section has been moved to the Deals page */}
-          <div className="text-center mt-6">
-            <Button 
-              variant="outline" 
-              className="rounded-full border-pastel-yellow/30"
-              asChild
-            >
-              <Link to="/deals">
-                View Top Partner Brands & Deals
-              </Link>
-            </Button>
-          </div>
         </div>
       ) : (
         <Hero onJoinClick={handleJoinClick} />
