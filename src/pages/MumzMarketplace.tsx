@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
-import { Search, Package } from 'lucide-react';
+import { Search, Package, Filter } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
+import MarketplaceFilterDialog from '@/components/mumzmarketplace/MarketplaceFilterDialog';
+import { filterMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceFilterUtils';
 
 // Approved listings data - moved to the top level
 const approvedListings = [
@@ -115,6 +117,13 @@ const MumzMarketplace = () => {
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
+  
+  // Filter states
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedBrand, setSelectedBrand] = useState('all');
+  const [selectedCondition, setSelectedCondition] = useState('all');
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   
   useEffect(() => {
     setIsVisible(true);
@@ -126,14 +135,27 @@ const MumzMarketplace = () => {
   }, []);
 
   useEffect(() => {
-    // Filter items based on search query
-    const filtered = approvedListings.filter(item => 
-      searchQuery === '' || 
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.seller.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // Filter items based on search query and other filters
+    const filtered = filterMarketplaceItems(approvedListings, {
+      searchQuery,
+      selectedCategory,
+      selectedSubCategory: 'all',
+      selectedBrand,
+      selectedAgeGroup: 'all',
+      selectedSize: 'all',
+      selectedCondition,
+      priceRange,
+      superMomOnly: false
+    });
     setFilteredItems(filtered);
-  }, [searchQuery]);
+  }, [searchQuery, selectedCategory, selectedBrand, selectedCondition, priceRange]);
+
+  const handleFiltersChange = (filters: any) => {
+    setSelectedCategory(filters.category || 'all');
+    setSelectedBrand(filters.brand || 'all');
+    setSelectedCondition(filters.condition || 'all');
+    setPriceRange(filters.priceRange || [0, 1000]);
+  };
 
   if (isLoading) {
     return (
@@ -184,13 +206,38 @@ const MumzMarketplace = () => {
           </div>
         </div>
         
-        <div className="mt-8 mb-6">
-          <input
-            type="text"
-            placeholder="Search listings..."
-            className="w-full max-w-md px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+        <div className="mt-8 mb-6 flex items-center gap-3">
+          <div className="relative flex-1 max-w-md">
+            <input
+              type="text"
+              placeholder="Search listings..."
+              className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          </div>
+          
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1"
+            onClick={() => setIsFilterDialogOpen(true)}
+          >
+            <Filter className="h-4 w-4" />
+            Filters
+          </Button>
+          
+          <MarketplaceFilterDialog 
+            open={isFilterDialogOpen} 
+            onOpenChange={setIsFilterDialogOpen}
+            onFiltersChange={handleFiltersChange}
+            initialFilters={{
+              category: selectedCategory,
+              brand: selectedBrand,
+              condition: selectedCondition,
+              priceRange: priceRange
+            }}
           />
         </div>
         
