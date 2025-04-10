@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -77,17 +78,17 @@ const Index = () => {
       {userInfo ? (
         <div className="container px-4 py-16 md:py-24 max-w-5xl mx-auto">
           <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden">
-            <CardHeader className="pb-2 bg-pastel-yellow/20">
+            <CardHeader className="pb-0 bg-pastel-yellow/20">
               <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
                 Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
-              <CardDescription className="text-center text-base mb-1">
+              <CardDescription className="text-center text-base mb-0">
                 It's great to see you again in the LeanOn community
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pt-2 pb-4">
-              <div className="w-full max-w-md mx-auto mb-2">
+            <CardContent className="pt-0 pb-3">
+              <div className="w-full max-w-md mx-auto my-0">
                 <img 
                   src="/lovable-uploads/3d91f1e7-6ad1-4ec9-abda-346a1a9dc39d.png" 
                   alt="Decorative Ribbon" 
