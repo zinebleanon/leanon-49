@@ -76,6 +76,8 @@ const MumzAsk = () => {
               </h1>
               
               <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-6">
+                <AskHowItWorksModal />
+                
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button 
@@ -103,7 +105,7 @@ const MumzAsk = () => {
                       size="lg" 
                       className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
                     >
-                      <Users className="mr-2 h-5 w-5" />
+                      <Home className="mr-2 h-5 w-5" />
                       Ask Your Neighborhood
                     </Button>
                   </DialogTrigger>
@@ -116,8 +118,6 @@ const MumzAsk = () => {
                     }} />
                   </DialogContent>
                 </Dialog>
-                
-                <AskHowItWorksModal />
               </div>
             </div>
           </div>
