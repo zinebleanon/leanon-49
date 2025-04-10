@@ -29,7 +29,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
               className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2"
               onClick={onOpenDialog}
             >
-              <Info className="h-4 w-4 flex-shrink-0" />
+              <Info className="h-5 w-5 flex-shrink-0" />
               <span>How It Works</span>
             </Button>
             
@@ -39,7 +39,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
               className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2"
               onClick={onOpenDiscountDialog}
             >
-              <BadgePercent className="h-4 w-4 flex-shrink-0" /> 
+              <BadgePercent className="h-5 w-5 flex-shrink-0" /> 
               <span>Browse Available Discounts</span>
             </Button>
           </div>
