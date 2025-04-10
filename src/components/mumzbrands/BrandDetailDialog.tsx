@@ -83,7 +83,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md sm:max-w-lg max-h-[90vh] overflow-hidden fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[95vw] p-6 rounded-lg bg-background border-border shadow-lg">
+      <DialogContent className="max-w-md sm:max-w-lg max-h-[90vh] overflow-hidden fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full md:w-[95vw] p-4 md:p-6 rounded-lg bg-background border-border shadow-lg">
         <DialogHeader>
           <div 
             className="w-full h-32 rounded-lg flex items-center justify-center mb-4" 
@@ -103,7 +103,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="h-[calc(90vh-220px)] pr-4 pb-4">
+        <ScrollArea className="h-[calc(90vh-220px)] pr-2 md:pr-4 pb-4">
           <div className="space-y-6 p-1">
             <div className="flex justify-center">
               <div className="flex items-center gap-1">
@@ -121,25 +121,25 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
               <p className="text-foreground">{brand.description}</p>
               <p className="font-medium">As a LeanOn community member, you get access to exclusive discounts:</p>
               <div className="my-6 relative">
-                <div className="bg-pastel-yellow/20 rounded-lg p-6 text-center border border-pastel-yellow">
+                <div className="bg-pastel-yellow/20 rounded-lg p-4 md:p-6 text-center border border-pastel-yellow">
                   <p className="text-lg font-bold mb-2">{brand.discountValue}</p>
-                  <div className="flex items-center justify-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm mx-auto max-w-[200px]">
-                    <code className="font-bold">{brand.discountCode}</code>
+                  <div className="flex items-center justify-center gap-2 bg-white rounded-full px-3 py-1.5 shadow-sm mx-auto max-w-[200px]">
+                    <code className="font-bold text-sm">{brand.discountCode}</code>
                     <Button 
                       size="sm" 
                       variant="ghost" 
-                      className="h-8 w-8 p-0 rounded-full" 
+                      className="h-6 w-6 p-0 rounded-full" 
                       onClick={handleCopyCode}
                       aria-label="Copy discount code"
                     >
-                      {codeCopied ? <CheckCircle className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                      {codeCopied ? <CheckCircle className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="flex flex-col md:flex-row justify-center items-center gap-3">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-3 px-2">
               <Button 
                 onClick={visitWebsite} 
                 className="rounded-full w-full md:w-auto bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground"
@@ -173,7 +173,7 @@ const BrandDetailDialog = ({ brand, isOpen, onClose }: BrandDetailDialogProps) =
                             <RadioGroup
                               onValueChange={field.onChange}
                               defaultValue={field.value}
-                              className="flex space-x-4 py-2"
+                              className="flex space-x-2 py-2 overflow-x-auto"
                               aria-label="Rating"
                             >
                               {[1, 2, 3, 4, 5].map((rating) => (
