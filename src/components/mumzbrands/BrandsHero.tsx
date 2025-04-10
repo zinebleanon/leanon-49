@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { HeartHandshake, BadgePercent } from 'lucide-react';
+import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
 
 interface BrandsHeroProps {
@@ -22,17 +22,19 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-12 mb-8">
             <Button 
               size="lg" 
-              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
               onClick={onOpenDialog}
             >
-              <HeartHandshake className="mr-2 h-5 w-5" /> Support Moms Local Brands
+              <HeartHandshake className="h-5 w-5 mr-2 flex-shrink-0" /> 
+              <span className="flex-1 text-center">Support Moms Local Brands</span>
             </Button>
             <Button 
               size="lg" 
-              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all"
+              className="rounded-full px-6 border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
               onClick={onOpenDiscountDialog}
             >
-              <BadgePercent className="mr-2 h-5 w-5" /> Browse Available Discounts
+              <BadgePercent className="h-5 w-5 mr-2 flex-shrink-0" /> 
+              <span className="flex-1 text-center">Browse Available Discounts</span>
             </Button>
             <BrandsHowItWorksDialog />
           </div>
