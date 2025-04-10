@@ -26,6 +26,7 @@ import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Inbox from "./pages/Inbox";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,9 @@ const AppContent = () => {
       {/* Both sign-in and sign-up routes use the same component with appropriate default tabs */}
       <Route path="/sign-in" element={<SignIn defaultTab="signin" />} />
       <Route path="/sign-up" element={<SignIn defaultTab="signup" />} />
+      
+      {/* Terms & Conditions Page */}
+      <Route path="/terms" element={<Terms />} />
       
       {/* Admin Routes */}
       <Route path="/admin/notifications" element={<AdminNotifications />} />

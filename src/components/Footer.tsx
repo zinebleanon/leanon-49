@@ -1,5 +1,6 @@
 
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -13,7 +14,13 @@ const Footer = () => {
           </p>
           
           <div className="flex space-x-6 mt-4 md:mt-0">
-            {['Terms', 'Privacy', 'Contact', 'About'].map((item) => (
+            <Link 
+              to="/terms" 
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors animated-underline"
+            >
+              Terms
+            </Link>
+            {['Privacy', 'Contact', 'About'].map((item) => (
               <a 
                 key={item} 
                 href="#" 

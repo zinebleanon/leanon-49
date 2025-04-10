@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -11,6 +10,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -100,7 +100,7 @@ const Index = () => {
                     <h3 className="font-medium text-xl">Share your code with other moms</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Share your referral code and get a 5 AED Mall of the Emirates gift card. Conditions apply.
+                    Share your referral code and get a 5 AED Mall of the Emirates gift card. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
                   </p>
                   <div className="flex items-center gap-2 mb-3">
                     <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
