@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Info, MapPin, ListChecks, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
@@ -21,6 +22,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setIsFiltersOpen(false);
@@ -67,7 +69,7 @@ const HeroSection = ({ onFiltersChange, profiles, nearbyMoms = [], onViewToggle,
             variant="warm"
             size="md"
             className="w-full gap-2"
-            onClick={() => setIsFiltersOpen(true)}
+            onClick={() => navigate('/connections')}
           >
             <div className="flex items-center gap-2">
               <ListChecks className="h-4 w-4" />
