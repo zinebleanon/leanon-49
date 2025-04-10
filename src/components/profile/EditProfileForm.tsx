@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -7,7 +6,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Camera, Upload, User } from 'lucide-react';
+import { Calendar as CalendarIcon, Camera, Upload, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Form, 
@@ -18,7 +17,7 @@ import {
   FormMessage 
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -64,7 +63,6 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     }
   }
   
-  // Extract first and last name from the full name
   const getFirstAndLastName = () => {
     if (!userInfo?.name) return { firstName: '', lastName: '' };
     
@@ -75,12 +73,10 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     return { firstName, lastName };
   };
   
-  // Get first name and last name from existing name field
   const { firstName, lastName } = userInfo?.firstName && userInfo?.lastName 
     ? { firstName: userInfo.firstName, lastName: userInfo.lastName }
     : getFirstAndLastName();
   
-  // Prepare default values for the form
   let defaultValues: Partial<ProfileFormValues> = {
     firstName,
     lastName,
@@ -94,7 +90,6 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     profilePictureURL: userInfo?.profilePictureURL || '',
   };
   
-  // Handle the birthDate field which needs to be a Date object
   if (userInfo?.birthDate) {
     try {
       defaultValues.birthDate = new Date(userInfo.birthDate);
@@ -112,10 +107,8 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     setIsLoading(true);
     
     try {
-      // Combine first name and last name into full name
       const name = `${data.firstName} ${data.lastName}`;
       
-      // Convert birthDate to ISO string if it exists
       const formattedData = {
         ...data,
         name,
@@ -155,7 +148,6 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
   const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Create URL for preview
       const imageUrl = URL.createObjectURL(file);
       setProfilePictureURL(imageUrl);
       
@@ -170,7 +162,6 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     fileInputRef.current?.click();
   };
   
-  // Handle saving just the profile photo
   const handleSavePhoto = () => {
     if (profilePictureURL) {
       setIsLoading(true);
@@ -206,7 +197,6 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
     }
   };
   
-  // If only editing photo, show a simplified interface
   if (section === 'photo') {
     return (
       <div className="space-y-4">
@@ -332,12 +322,12 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
                           ) : (
                             <span>Pick a date</span>
                           )}
-                          <Calendar className="ml-auto h-4 w-4 opacity-50" />
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <CalendarComponent
+                      <Calendar
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
@@ -345,6 +335,7 @@ const EditProfileForm = ({ onSuccess, section = 'all' }: EditProfileFormProps) =
                           date > new Date() || date < new Date("1900-01-01")
                         }
                         initialFocus
+                        className="p-3 pointer-events-auto"
                       />
                     </PopoverContent>
                   </Popover>
