@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MessageCircle, ThumbsUp, Clock, Filter, Search, Sparkles } from 'lucide-react';
@@ -148,6 +147,8 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   const [selectedMessage, setSelectedMessage] = useState<MessageProps | null>(null);
   const [aiSummaryContent, setAiSummaryContent] = useState<string | null>(null);
   const [aiSummaryTopic, setAiSummaryTopic] = useState<string | null>(null);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
     let messages = activeTab === 'general' ? mockGeneralCommunityMessages : mockNeighborhoodMessages;
@@ -177,19 +178,16 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   };
 
   const handleMomAiClick = () => {
-    // Create AI message with summary of current community discussions
     const discussionContent = filteredMessages.map(msg => 
       `Topic: ${msg.title}\nCategory: ${msg.category}\nContent: ${msg.content}`
     ).join('\n\n');
     
-    // Set the content and topic for the AI summary
     const summaryTopic = categoryFilter || activeTab === 'general' ? 'Community Discussions' : 'Neighborhood Discussions';
     setAiSummaryContent(discussionContent);
     setAiSummaryTopic(summaryTopic);
     
-    // Show the AI summary in a selected message view
     const aiMessage: MessageProps = {
-      id: 999, // Use a unique ID
+      id: 999,
       title: `MomAI: Summary of ${summaryTopic}`,
       content: `Here's what MomAI found about the current ${summaryTopic.toLowerCase()}:`,
       replies: 0,
@@ -199,7 +197,17 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
     };
     setSelectedMessage(aiMessage);
   };
-  
+
+  const handleSearchFocus = () => {
+    setIsSearchFocused(true);
+  };
+
+  const handleSearchBlur = () => {
+    if (!searchQuery) {
+      setIsSearchFocused(false);
+    }
+  };
+
   const renderMessage = (message: MessageProps) => (
     <div 
       key={message.id} 
@@ -283,15 +291,18 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
           </TabsList>
           
           <div className="mb-4 flex flex-col md:flex-row gap-2 md:gap-3">
-            <div className="relative flex-1 max-w-md flex items-center">
+            <div className={`relative flex-1 ${isSearchFocused ? 'md:max-w-2xl' : 'md:max-w-md'} transition-all duration-300 ease-in-out flex items-center`}>
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 <Input
+                  ref={searchInputRef}
                   type="text"
                   placeholder="Search messages..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-[120px] border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                  className={`pl-10 pr-[120px] border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2] transition-all duration-300`}
                 />
                 <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                   <Button
