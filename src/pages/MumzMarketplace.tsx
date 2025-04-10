@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
-import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import MarketplaceItemsGrid from '@/components/mumzmarketplace/MarketplaceItemsGrid';
 import { Button } from '@/components/ui/button';
 import { Search, Package } from 'lucide-react';
@@ -69,9 +68,9 @@ const MumzMarketplace = () => {
     <div className="min-h-screen bg-[#B8CEC2]">
       <Navbar />
       
-      <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
-        <div>
-          <h1 className={`text-3xl md:text-5xl font-bold mb-8 md:mb-10 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+      <main className="max-w-7xl mx-auto pt-16 pb-12 px-4">
+        <div className="text-center md:text-left">
+          <h1 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
               Preloved
               <br />
@@ -79,7 +78,7 @@ const MumzMarketplace = () => {
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-3 justify-start mt-6">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mt-4">
             <Button 
               size="lg" 
               className="rounded-full px-6 border bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground active:opacity-95 transition-all"
