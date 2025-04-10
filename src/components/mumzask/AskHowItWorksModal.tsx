@@ -50,7 +50,7 @@ const AskHowItWorksModal = ({ className }: AskHowItWorksModalProps) => {
           className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
         >
           <Info className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
-          <span className="flex-1 text-center my-auto">How It Works</span>
+          <span className="my-auto">How It Works</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20">
