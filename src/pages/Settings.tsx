@@ -179,27 +179,52 @@ const Settings = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <Button variant="outline" className="w-full">
-                    <Key className="mr-2 h-4 w-4" />
-                    Change Password
-                  </Button>
-                  
-                  <Button variant="outline" className="w-full">
-                    <MapPin className="mr-2 h-4 w-4" />
-                    Update Neighborhood
-                  </Button>
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Change Password</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Update your account password
+                      </p>
+                    </div>
+                    <Button variant="outline">
+                      <Key className="h-4 w-4 mr-2" />
+                      Change
+                    </Button>
+                  </div>
                   
                   <Separator />
                   
-                  <Button 
-                    variant="destructive" 
-                    className="w-full"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log Out
-                  </Button>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Update Neighborhood</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Change your neighborhood location
+                      </p>
+                    </div>
+                    <Button variant="outline">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      Update
+                    </Button>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Log Out</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Sign out from your account
+                      </p>
+                    </div>
+                    <Button 
+                      variant="destructive" 
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Log Out
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
