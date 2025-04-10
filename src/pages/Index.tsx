@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift, ArrowRight } from 'lucide-react';
+import { BellRing, Gift } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -55,6 +55,19 @@ const Index = () => {
     });
   };
   
+  // Function to capitalize first letter of a string
+  const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+  
+  // Get the first name with capitalized first letter
+  const getCapitalizedFirstName = () => {
+    if (!userInfo) return '';
+    
+    const firstName = userInfo.firstName || userInfo.name.split(' ')[0];
+    return capitalizeFirstLetter(firstName);
+  };
+  
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
@@ -72,7 +85,7 @@ const Index = () => {
           <Card className="bg-gradient-to-br from-pastel-green/20 to-background border-pastel-green/30 shadow-md overflow-hidden">
             <CardHeader className="pb-2">
               <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
-                Welcome back, {userInfo.firstName || userInfo.name.split(' ')[0]}!
+                Welcome back, {getCapitalizedFirstName()}!
               </CardTitle>
               <CardDescription className="text-center text-base">
                 It's great to see you again in the LeanOn community
@@ -108,17 +121,6 @@ const Index = () => {
                 </div>
               </div>
             </CardContent>
-            
-            <CardFooter className="pt-2 pb-6 flex justify-center">
-              <Button 
-                variant="warm" 
-                size="lg" 
-                onClick={() => navigate('/brands')}
-                className="px-8"
-              >
-                Explore Exclusive Deals
-              </Button>
-            </CardFooter>
           </Card>
         </div>
       ) : (
