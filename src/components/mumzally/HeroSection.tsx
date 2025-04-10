@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
@@ -9,7 +8,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { toast } from "@/hooks/use-toast";
 import RecommendedMatches from './RecommendedMatches';
 import ConnectionRequests from './ConnectionRequests';
-import { Filter, ChevronDown, ChevronUp, Users, Info, Users2, MapPin } from 'lucide-react';
+import { Filter, ChevronDown, ChevronUp, Users, Info, MapPin } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import HowItWorksModal from './HowItWorksModal';
