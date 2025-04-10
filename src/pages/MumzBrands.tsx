@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -9,7 +8,6 @@ import BrandsHero from '@/components/mumzbrands/BrandsHero';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import SupportLocalBrandsDialog from '@/components/mumzbrands/SupportLocalBrandsDialog';
 import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
-import BrandFilterSection from '@/components/mumzbrands/BrandFilterSection';
 import BrandDetailDialog from '@/components/mumzbrands/BrandDetailDialog';
 
 interface Brand {
@@ -33,8 +31,6 @@ const MumzBrands = () => {
   const [isDiscountDialogOpen, setIsDiscountDialogOpen] = useState(false);
   const [isBrandDetailDialogOpen, setIsBrandDetailDialogOpen] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
-  const [activeCategory, setActiveCategory] = useState("All Categories");
-  const [brandType, setBrandType] = useState<'all' | 'local' | 'international'>('all');
   
   const navigate = useNavigate();
   
@@ -143,14 +139,8 @@ const MumzBrands = () => {
           onOpenDiscountDialog={() => setIsDiscountDialogOpen(true)}
         />
         
-        {/* Filter section - shown when browsing brands */}
-        <BrandFilterSection 
-          onCategoryChange={setActiveCategory}
-          onTypeChange={setBrandType}
-        />
-        
         {/* Centered ribbon tag image - moved higher with greater negative margin */}
-        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 -mt-24">
+        <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 mt-8">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
             alt="Discount tag ribbon" 
