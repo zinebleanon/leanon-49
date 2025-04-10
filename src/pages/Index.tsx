@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -101,7 +100,7 @@ const Index = () => {
                     <h3 className="font-medium text-xl">Refer & Get a Reward</h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Share your referral code and get a 5 AED Mall of the Emirates gift card. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
+                    Share your code & get 5 AED Mall of the Emirates gift card for each Referral. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
                   </p>
                   <div className="flex items-center gap-2 mb-3">
                     <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
