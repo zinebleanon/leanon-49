@@ -9,8 +9,10 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
+import { Check, Clock, X, Tag, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const ListedItemsSection = () => {
   const [listedItems, setListedItems] = useState<any[]>([]);
@@ -20,8 +22,8 @@ const ListedItemsSection = () => {
     const items = localStorage.getItem('listedItems');
     if (items) {
       const parsedItems = JSON.parse(items);
-      const approved = parsedItems.filter((item: any) => item.approved);
-      const pending = parsedItems.filter((item: any) => !item.approved);
+      const approved = parsedItems.filter((item: any) => item.approved && !item.closed);
+      const pending = parsedItems.filter((item: any) => !item.approved && !item.closed);
       setListedItems(approved);
       setPendingApprovalItems(pending);
     }
@@ -41,7 +43,7 @@ const ListedItemsSection = () => {
     
     localStorage.setItem('listedItems', JSON.stringify(updatedItems));
     
-    const updatedApproved = updatedItems.filter((item: any) => item.approved);
+    const updatedApproved = updatedItems.filter((item: any) => item.approved && !item.closed);
     setListedItems(updatedApproved);
     
     toast({
@@ -50,29 +52,73 @@ const ListedItemsSection = () => {
     });
   };
   
+  const closeItem = (itemId: string) => {
+    const allItems = localStorage.getItem('listedItems');
+    if (!allItems) return;
+    
+    const parsedItems = JSON.parse(allItems);
+    const updatedItems = parsedItems.map((item: any) => {
+      if (item.id === itemId) {
+        return { ...item, closed: true, status: 'sold' };
+      }
+      return item;
+    });
+    
+    localStorage.setItem('listedItems', JSON.stringify(updatedItems));
+    
+    const updatedApproved = updatedItems.filter((item: any) => item.approved && !item.closed);
+    setListedItems(updatedApproved);
+    
+    toast({
+      title: "Listing Closed",
+      description: "Your item has been marked as sold and the listing is now closed."
+    });
+  };
+  
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'available':
+        return <Tag className="h-4 w-4 text-green-500" />;
+      case 'sold':
+        return <CheckCircle2 className="h-4 w-4 text-red-500" />;
+      case 'reserved':
+        return <Clock className="h-4 w-4 text-amber-500" />;
+      default:
+        return <Tag className="h-4 w-4" />;
+    }
+  };
+  
   return (
     <div className="space-y-8">
       {pendingApprovalItems.length > 0 && (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Pending Approval</CardTitle>
+          <CardHeader className="bg-amber-50 border-b">
+            <CardTitle className="text-xl flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              Pending Approval
+            </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4">
             <div className="space-y-4">
               {pendingApprovalItems.map((item) => (
-                <div key={item.id} className="border p-4 rounded-md">
+                <div key={item.id} className="border p-4 rounded-md hover:bg-gray-50 transition-colors">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} isPending={true} />
                   <div className="flex flex-col gap-2">
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <div className="flex flex-wrap gap-1">
-                      <Badge variant="outline">{item.price}</Badge>
-                      <Badge variant="outline">{item.condition}</Badge>
-                      <Badge variant="outline">{item.ageGroup}</Badge>
+                    <h3 className="font-semibold text-lg">{item.title}</h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
+                      <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
+                      <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
                       {item.size !== "Not Applicable" && (
-                        <Badge variant="outline">Size: {item.size}</Badge>
+                        <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
                       )}
                       <Badge variant="outline">{item.subCategory}</Badge>
                       <Badge variant="outline">{item.brand}</Badge>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Clock className="h-4 w-4 text-amber-500" />
+                      <span className="text-sm text-amber-700">Awaiting admin review</span>
                     </div>
                   </div>
                 </div>
@@ -84,42 +130,58 @@ const ListedItemsSection = () => {
       
       {listedItems.length > 0 ? (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Your Approved Listings</CardTitle>
+          <CardHeader className="bg-green-50 border-b">
+            <CardTitle className="text-xl flex items-center gap-2">
+              <Check className="h-5 w-5 text-green-500" />
+              Your Approved Listings
+            </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4">
             <div className="space-y-4">
               {listedItems.map((item) => (
-                <div key={item.id} className="border p-4 rounded-md">
+                <div key={item.id} className="border p-4 rounded-md hover:bg-gray-50 transition-colors">
                   <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} />
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-semibold">{item.title}</h3>
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        <Badge variant="outline">{item.price}</Badge>
-                        <Badge variant="outline">{item.condition}</Badge>
-                        <Badge variant="outline">{item.ageGroup}</Badge>
+                      <h3 className="font-semibold text-lg">{item.title}</h3>
+                      <p className="text-sm text-gray-600 line-clamp-2 mt-1 mb-2">{item.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
+                        <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
+                        <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
                         {item.size !== "Not Applicable" && (
-                          <Badge variant="outline">Size: {item.size}</Badge>
+                          <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
                         )}
                         <Badge variant="outline">{item.subCategory}</Badge>
                         <Badge variant="outline">{item.brand}</Badge>
                       </div>
                     </div>
-                    <div>
-                      <Select 
-                        value={item.status} 
-                        onValueChange={(value) => handleStatusChange(item.id, value)}
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(item.status)}
+                        <Select 
+                          value={item.status} 
+                          onValueChange={(value) => handleStatusChange(item.id, value)}
+                        >
+                          <SelectTrigger className="h-8 w-[140px]">
+                            <SelectValue placeholder="Status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="available">Available</SelectItem>
+                            <SelectItem value="sold">Sold</SelectItem>
+                            <SelectItem value="reserved">Reserved</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-2 text-red-600 border-red-200 hover:bg-red-50"
+                        onClick={() => closeItem(item.id)}
                       >
-                        <SelectTrigger className="h-8 w-32">
-                          <SelectValue placeholder="Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="available">Available</SelectItem>
-                          <SelectItem value="sold">Sold</SelectItem>
-                          <SelectItem value="reserved">Reserved</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <X className="h-4 w-4 mr-1" />
+                        Close Listing
+                      </Button>
                     </div>
                   </div>
                 </div>
