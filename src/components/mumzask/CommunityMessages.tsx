@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import MessageDetailView from './MessageDetailView';
 
 const mockGeneralCommunityMessages = [
   {
@@ -143,6 +145,7 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   const [filteredMessages, setFilteredMessages] = useState<MessageProps[]>(mockGeneralCommunityMessages);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedMessage, setSelectedMessage] = useState<MessageProps | null>(null);
   
   useEffect(() => {
     let messages = activeTab === 'general' ? mockGeneralCommunityMessages : mockNeighborhoodMessages;
@@ -166,11 +169,16 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   const handleCategoryClick = (category: string) => {
     setCategoryFilter(categoryFilter === category ? null : category);
   };
+
+  const handleMessageClick = (message: MessageProps) => {
+    setSelectedMessage(message);
+  };
   
   const renderMessage = (message: MessageProps) => (
     <div 
       key={message.id} 
-      className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 hover:shadow-md transition-shadow"
+      className="p-5 bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20 hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => handleMessageClick(message)}
     >
       <div className="flex justify-between items-start mb-2">
         <h3 className="font-semibold">{message.title}</h3>
@@ -216,91 +224,108 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   
   return (
     <div className="space-y-4">
-      <Tabs defaultValue="general" className="w-full" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2 bg-muted mb-4">
-          <TabsTrigger value="general" className="data-[state=active]:bg-[#B8CEC2]/50">LeanOn Community</TabsTrigger>
-          <TabsTrigger value="neighborhood" className="data-[state=active]:bg-[#B8CEC2]/50">Neighborhood</TabsTrigger>
-        </TabsList>
-        
-        <div className="mb-4 flex justify-between items-center">
-          <div className="relative flex-1 max-w-md">
-            <Input
-              type="text"
-              placeholder="Search messages..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      {selectedMessage ? (
+        <div className="space-y-4">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="mb-4"
+            onClick={() => setSelectedMessage(null)}
+          >
+            ← Back to messages
+          </Button>
+          <MessageDetailView 
+            message={selectedMessage} 
+            onBack={() => setSelectedMessage(null)} 
+          />
+        </div>
+      ) : (
+        <Tabs defaultValue="general" className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-2 bg-muted mb-4">
+            <TabsTrigger value="general" className="data-[state=active]:bg-[#B8CEC2]/50">LeanOn Community</TabsTrigger>
+            <TabsTrigger value="neighborhood" className="data-[state=active]:bg-[#B8CEC2]/50">Neighborhood</TabsTrigger>
+          </TabsList>
+          
+          <div className="mb-4 flex justify-between items-center">
+            <div className="relative flex-1 max-w-md">
+              <Input
+                type="text"
+                placeholder="Search messages..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 border-[#B8CEC2]/50 focus-visible:ring-[#B8CEC2]"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className={`text-xs px-2 h-8 ml-2 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
+                >
+                  <Filter className="h-3 w-3 mr-1" /> 
+                  {categoryFilter ? `${categoryFilter}` : "Filter"}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48 bg-white border border-[#B8CEC2]/20">
+                <DropdownMenuLabel className="text-xs">Filter by Topic</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="max-h-[250px] overflow-y-auto">
+                  <DropdownMenuGroup>
+                    {currentCategories.map((category) => (
+                      <DropdownMenuItem 
+                        key={category.name}
+                        className={`cursor-pointer text-xs ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
+                        onClick={() => handleCategoryClick(category.name)}
+                      >
+                        {category.icon}
+                        <span>{category.name}</span>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
+                </div>
+                {categoryFilter && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      className="cursor-pointer text-red-500 hover:text-red-700 text-xs"
+                      onClick={() => setCategoryFilter(null)}
+                    >
+                      Clear Filter
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className={`text-xs px-2 h-8 ml-2 ${categoryFilter ? "bg-[#FFD9A7] text-foreground border-[#FFD9A7]" : ""}`}
-              >
-                <Filter className="h-3 w-3 mr-1" /> 
-                {categoryFilter ? `${categoryFilter}` : "Filter"}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-48 bg-white border border-[#B8CEC2]/20">
-              <DropdownMenuLabel className="text-xs">Filter by Topic</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <div className="max-h-[250px] overflow-y-auto">
-                <DropdownMenuGroup>
-                  {currentCategories.map((category) => (
-                    <DropdownMenuItem 
-                      key={category.name}
-                      className={`cursor-pointer text-xs ${categoryFilter === category.name ? 'bg-[#FFD9A7]/30' : ''}`}
-                      onClick={() => handleCategoryClick(category.name)}
-                    >
-                      {category.icon}
-                      <span>{category.name}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuGroup>
-              </div>
-              {categoryFilter && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem 
-                    className="cursor-pointer text-red-500 hover:text-red-700 text-xs"
-                    onClick={() => setCategoryFilter(null)}
-                  >
-                    Clear Filter
-                  </DropdownMenuItem>
-                </>
+          <TabsContent value="general">
+            <div className="space-y-3">
+              {filteredMessages.length > 0 ? (
+                filteredMessages.map(renderMessage)
+              ) : (
+                <div className="p-8 text-center text-muted-foreground bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+                  No messages found for the selected filter.
+                </div>
               )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        
-        <TabsContent value="general">
-          <div className="space-y-3">
-            {filteredMessages.length > 0 ? (
-              filteredMessages.map(renderMessage)
-            ) : (
-              <div className="p-8 text-center text-muted-foreground bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                No messages found for the selected filter.
-              </div>
-            )}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="neighborhood">
-          <div className="space-y-3">
-            {filteredMessages.length > 0 ? (
-              filteredMessages.map(renderMessage)
-            ) : (
-              <div className="p-8 text-center text-muted-foreground bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
-                No messages found for the selected filter.
-              </div>
-            )}
-          </div>
-        </TabsContent>
-      </Tabs>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="neighborhood">
+            <div className="space-y-3">
+              {filteredMessages.length > 0 ? (
+                filteredMessages.map(renderMessage)
+              ) : (
+                <div className="p-8 text-center text-muted-foreground bg-white rounded-lg shadow-sm border border-[#B8CEC2]/20">
+                  No messages found for the selected filter.
+                </div>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 };
