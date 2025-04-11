@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -130,7 +129,7 @@ const Index = () => {
                     Copy
                   </Button>
                 </div>
-                <div className="flex gap-2 mb-1">
+                <div className="flex gap-2">
                   <Button
                     variant="outline"
                     size="md"
@@ -139,15 +138,6 @@ const Index = () => {
                   >
                     <Share2 className="h-5 w-5" />
                     Share via WhatsApp
-                  </Button>
-                </div>
-                <div className="mt-4 pt-3 border-t border-pastel-yellow/20">
-                  <Button 
-                    variant="secondary"
-                    className="w-full" 
-                    onClick={() => navigate('/ally')}
-                  >
-                    Explore the Community
                   </Button>
                 </div>
               </div>
