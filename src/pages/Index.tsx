@@ -20,6 +20,7 @@ const Index = () => {
   
   useViewportHeight();
   
+  // Generate a referral code if user doesn't have one
   useEffect(() => {
     if (userInfo && !userInfo.referralCode) {
       const newReferralCode = 'LO' + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -107,14 +108,14 @@ const Index = () => {
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pt-3 pb-4">
+            <CardContent className="pt-4 pb-5">
               <div className="bg-white/80 rounded-lg p-4 border border-pastel-yellow/20 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <Gift className="h-8 w-8 text-pastel-yellow" />
-                  <h3 className="font-medium text-xl">Refer & Get a Reward</h3>
+                  <h3 className="font-medium text-xl">Share Your Referral Code</h3>
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Share your code & get 5 AED Mall of the Emirates gift card for each Referral. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
+                  Share your code & get 5 AED Mall of the Emirates gift card for each friend who joins. <Link to="/terms" className="text-primary hover:underline">Conditions apply</Link>.
                 </p>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="bg-pastel-yellow/10 px-3 py-1.5 rounded-md font-mono text-lg font-medium flex-1 text-center border border-pastel-yellow/20">
@@ -129,7 +130,7 @@ const Index = () => {
                     Copy
                   </Button>
                 </div>
-                <div className="flex gap-2 mb-2">
+                <div className="flex gap-2 mb-1">
                   <Button
                     variant="outline"
                     size="md"
@@ -138,6 +139,15 @@ const Index = () => {
                   >
                     <Share2 className="h-5 w-5" />
                     Share via WhatsApp
+                  </Button>
+                </div>
+                <div className="mt-4 pt-3 border-t border-pastel-yellow/20">
+                  <Button 
+                    variant="secondary"
+                    className="w-full" 
+                    onClick={() => navigate('/ally')}
+                  >
+                    Explore the Community
                   </Button>
                 </div>
               </div>
