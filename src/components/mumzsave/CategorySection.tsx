@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Tag, ShoppingBag, Store } from 'lucide-react';
+import { Tag, ShoppingBag, Store, Package } from 'lucide-react';
 
 interface CategorySectionProps {
   activeTab: 'deals' | 'marketplace';
@@ -27,15 +27,15 @@ const CategorySection = ({ activeTab, dealCategories, marketplaceCategories }: C
           
           <div className="flex space-x-2 mt-2 sm:mt-0">
             <Button variant="outline" size="sm" asChild className="text-sm">
-              <Link to="/brands">
-                <Tag className="mr-1 h-4 w-4" />
-                All Brands
+              <Link to="/marketplace">
+                <Package className="mr-1 h-4 w-4" />
+                <span>Preloved Items</span>
               </Link>
             </Button>
             <Button variant="outline" size="sm" asChild className="text-sm">
               <Link to="/brands">
                 <Store className="mr-1 h-4 w-4" />
-                All Brands
+                <span>Partner Brands</span>
               </Link>
             </Button>
           </div>

@@ -62,8 +62,8 @@ const AppContent = () => {
       
       {/* LeanOn Routes - All Protected */}
       <Route path="/" element={<ProtectedRoute><MumzShoppingHub /></ProtectedRoute>}>
-        <Route path="save" element={<Navigate to="/brands" replace />} />
         <Route path="marketplace" element={<MumzMarketplace />} />
+        <Route path="save" element={<Navigate to="/marketplace" replace />} />
         <Route path="select" element={<MumzSelect />} />
       </Route>
       <Route path="/marketplace/sell" element={<ProtectedRoute><MumzMarketplaceSell /></ProtectedRoute>} />

@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
+import { HeartHandshake, BadgePercent, Info, Package } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,10 @@ interface BrandsHeroProps {
 const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => {
   const navigate = useNavigate();
   
+  const goToMarketplace = () => {
+    navigate('/marketplace');
+  };
+  
   return (
     <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
@@ -22,7 +26,19 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12 mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12 mb-6">
+            <Button 
+              variant="outline"
+              size="lg"
+              className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2 bg-white/80 hover:bg-white"
+              onClick={goToMarketplace}
+            >
+              <Package className="h-5 w-5 flex-shrink-0" />
+              <span>Browse Preloved Items</span>
+            </Button>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button 
               variant="warm"
               size="lg"
