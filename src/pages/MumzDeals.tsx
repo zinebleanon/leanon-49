@@ -7,15 +7,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import FeaturedDealsSection from '@/components/mumzsave/FeaturedDealsSection';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
 import DealsHero from '@/components/mumzdeals/DealsHero';
+import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
 
 const MumzDeals = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [isDiscountDialogOpen, setIsDiscountDialogOpen] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -30,8 +31,8 @@ const MumzDeals = () => {
     setIsJoinModalOpen(true);
   };
 
-  const handleGetDeal = () => {
-    window.open('#', '_blank');
+  const handleOpenDiscountDialog = () => {
+    setIsDiscountDialogOpen(true);
   };
 
   if (isLoading) {
@@ -41,36 +42,6 @@ const MumzDeals = () => {
   const dealCategories = [
     "Baby Gear", "Clothing", "Toys", "Feeding", "Diapers", 
     "Health", "Maternity", "Books", "Home", "Services"
-  ];
-  
-  const featuredDeals = [
-    {
-      title: "30% Off Babyzen YOYO Stroller",
-      brand: "Mumzworld",
-      discount: "30%",
-      originalPrice: "2,499 AED",
-      salePrice: "1,749 AED",
-      image: "stroller",
-      isExclusive: true
-    },
-    {
-      title: "Buy One Get One Free Baby Clothes",
-      brand: "Mothercare",
-      discount: "50%",
-      originalPrice: "199 AED",
-      salePrice: "99 AED",
-      image: "clothes",
-      isExclusive: false
-    },
-    {
-      title: "Nanit Pro Baby Monitor Bundle",
-      brand: "FirstCry",
-      discount: "25%",
-      originalPrice: "999 AED",
-      salePrice: "749 AED",
-      image: "monitor",
-      isExclusive: true
-    }
   ];
   
   return (
@@ -86,7 +57,7 @@ const MumzDeals = () => {
             </Link>
           </Button>
           
-          <DealsHero />
+          <DealsHero onOpenDiscountDialog={handleOpenDiscountDialog} />
         </div>
         
         <div className="flex justify-center items-center mt-8">
@@ -104,14 +75,13 @@ const MumzDeals = () => {
           marketplaceCategories={[]}
         />
         
-        <FeaturedDealsSection 
-          activeTab="deals"
-          featuredDeals={featuredDeals}
-          featuredItems={[]}
-          handleGetDeal={handleGetDeal}
-        />
-        
         <HowToJoinSection onJoinClick={handleJoinButtonClick} />
+        
+        {/* Browse Discounts Dialog */}
+        <UnlockDiscountDialog
+          isOpen={isDiscountDialogOpen}
+          onClose={() => setIsDiscountDialogOpen(false)}
+        />
       </main>
       
       <Footer />

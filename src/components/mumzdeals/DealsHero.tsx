@@ -4,7 +4,11 @@ import { Button } from '@/components/ui/button';
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
 
-const DealsHero = () => {
+interface DealsHeroProps {
+  onOpenDiscountDialog?: () => void;
+}
+
+const DealsHero = ({ onOpenDiscountDialog }: DealsHeroProps) => {
   return (
     <div>
       <h1 className="text-4xl md:text-5xl font-bold mb-6 font-playfair">
@@ -14,7 +18,8 @@ const DealsHero = () => {
         <DealsHowItWorksDialog />
         <Button 
           size="md"
-          className="rounded-full h-11 px-8 w-full sm:w-auto border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center"
+          className="rounded-full h-11 px-8 w-full sm:w-auto border bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground active:opacity-95 transition-all flex items-center active:scale-95"
+          onClick={onOpenDiscountDialog}
         >
           <RibbonIcon className="h-5 w-5 mr-2 flex-shrink-0" fill="#FFD9A7" />
           <span>Browse Deals</span>

@@ -36,7 +36,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             <Button 
               variant="warm"
               size="lg"
-              className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2"
+              className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform"
               onClick={onOpenDiscountDialog}
             >
               <BadgePercent className="h-5 w-5 flex-shrink-0" /> 
