@@ -5,6 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BrandFilterSectionProps {
   onCategoryChange: (category: string) => void;
@@ -18,6 +19,7 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
   
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [searchTerm, setSearchTerm] = useState("");
+  const isMobile = useIsMobile();
   
   const handleCategoryChange = (value: string) => {
     if (value) {
@@ -55,9 +57,9 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
               className="border rounded-lg overflow-hidden p-0.5 bg-muted/20"
             >
               <TabsList className="grid w-full grid-cols-3 bg-transparent">
-                <TabsTrigger value="all" className="rounded-md data-[state=active]:bg-white">All Brands</TabsTrigger>
-                <TabsTrigger value="local" className="rounded-md data-[state=active]:bg-white">Local</TabsTrigger>
-                <TabsTrigger value="international" className="rounded-md data-[state=active]:bg-white">International</TabsTrigger>
+                <TabsTrigger value="all" className="rounded-md data-[state=active]:bg-white text-xs md:text-sm px-2 md:px-4">All Brands</TabsTrigger>
+                <TabsTrigger value="local" className="rounded-md data-[state=active]:bg-white text-xs md:text-sm px-2 md:px-4">Local</TabsTrigger>
+                <TabsTrigger value="international" className="rounded-md data-[state=active]:bg-white text-xs md:text-sm px-2 md:px-4">International</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -74,15 +76,15 @@ const BrandFilterSection = ({ onCategoryChange, onTypeChange }: BrandFilterSecti
           />
         </div>
         
-        <ScrollArea className="w-full">
+        <ScrollArea className="w-full" type="scroll">
           <div className="mb-2 pb-2 overflow-x-auto">
-            <ToggleGroup type="single" value={selectedCategory} onValueChange={handleCategoryChange}>
+            <ToggleGroup type="single" value={selectedCategory} onValueChange={handleCategoryChange} className="flex flex-nowrap">
               <div className="flex space-x-2 pb-1">
                 {categories.map((category) => (
                   <ToggleGroupItem 
                     key={category} 
                     value={category}
-                    className="rounded-full text-sm whitespace-nowrap bg-background data-[state=on]:bg-[#B8CEC2]/60 data-[state=on]:text-foreground"
+                    className="rounded-full text-sm whitespace-nowrap bg-background data-[state=on]:bg-[#B8CEC2]/60 data-[state=on]:text-foreground flex-shrink-0"
                   >
                     {category}
                   </ToggleGroupItem>

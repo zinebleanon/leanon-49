@@ -33,11 +33,23 @@ export function useViewportHeight() {
         setTimeout(setVh, 100);
       });
     }
+    
+    // Add a listener for viewport changes (iOS Safari address bar)
+    if ('visualViewport' in window) {
+      window.visualViewport?.addEventListener('resize', setVh);
+      window.visualViewport?.addEventListener('scroll', setVh);
+    }
 
     return () => {
       window.removeEventListener('resize', setVh);
       window.removeEventListener('orientationchange', setVh);
       window.removeEventListener('scroll', setVh);
+      
+      if ('visualViewport' in window) {
+        window.visualViewport?.removeEventListener('resize', setVh);
+        window.visualViewport?.removeEventListener('scroll', setVh);
+      }
+      
       if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) {
         document.removeEventListener('focusin', setVh);
         document.removeEventListener('focusout', setVh);

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BrandsHeroProps {
   onOpenDialog: () => void;
@@ -11,6 +12,7 @@ interface BrandsHeroProps {
 
 const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   
   return (
     <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
@@ -22,24 +24,24 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             </span>
           </h1>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12 mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8 md:mt-12 md:mb-12">
             <Button 
               variant="warm"
-              size="lg"
-              className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2"
+              size={isMobile ? "default" : "lg"}
+              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2"
               onClick={onOpenDialog}
             >
-              <Info className="h-5 w-5 flex-shrink-0" />
+              <Info className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
               <span>How It Works</span>
             </Button>
             
             <Button 
               variant="warm"
-              size="lg"
-              className="rounded-full h-11 px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform"
+              size={isMobile ? "default" : "lg"}
+              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform"
               onClick={onOpenDiscountDialog}
             >
-              <BadgePercent className="h-5 w-5 flex-shrink-0" /> 
+              <BadgePercent className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> 
               <span>Browse Available Discounts</span>
             </Button>
           </div>
