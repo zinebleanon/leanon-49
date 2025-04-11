@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Users, MessageCircle, Tag, Package, BookOpen, Store, Info, User } from 'lucide-react';
+import { Users, MessageCircle, Tag, ShoppingBag, BookOpen, Store, Info, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import HowItWorksDialog from '@/components/HowItWorksDialog';
 
@@ -43,8 +43,8 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
           </div>
           <div className="p-4 bg-white/50 rounded-lg shadow-sm">
             <div className="flex items-center gap-3">
-              <Package className="h-8 w-8 text-primary bg-[#FFD9A7] p-1 rounded-full" />
-              <h3 className="font-medium">Preloved</h3>
+              <Tag className="h-8 w-8 text-primary bg-[#FFD9A7] p-1 rounded-full" />
+              <h3 className="font-medium">Deals</h3>
             </div>
           </div>
           <div className="p-4 bg-white/50 rounded-lg shadow-sm">
@@ -81,9 +81,9 @@ const HeroSection = ({ handleBrowseDeals }: HeroSectionProps) => {
             className="rounded-full flex items-center"
             asChild
           >
-            <Link to="/marketplace">
-              <Package className="h-5 w-5 mr-2 flex-shrink-0" />
-              <span className="flex-1 text-center">Preloved Items</span>
+            <Link to="/brands">
+              <Store className="h-5 w-5 mr-2 flex-shrink-0" />
+              <span className="flex-1 text-center">Partner Brands</span>
             </Link>
           </Button>
         </div>
