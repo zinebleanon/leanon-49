@@ -9,7 +9,7 @@ import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Lock, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
 
@@ -193,9 +193,9 @@ const MumzAlly = () => {
           <Alert className="mb-4 bg-amber-50 border-amber-200">
             <AlertDescription className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
-                <span className="font-semibold mb-1 block">Limited Access Mode</span>
+                <span className="font-semibold mb-1 block">Complete Your Profile</span>
                 <span className="text-muted-foreground">
-                  Complete your profile to unlock full access to messaging and nearby moms features.
+                  Add more information to your profile to help us connect you with compatible moms.
                 </span>
               </div>
               <Button 
@@ -218,14 +218,12 @@ const MumzAlly = () => {
           onSearchChange={setSearchTerm}
         />
 
-        {isProfileComplete() && (
-          <SwipeableProfiles
-            profiles={filteredProfiles}
-            onLeanOn={handleLeanOn}
-            onSkip={handleSkip}
-            disableConnections={!isProfileComplete()}
-          />
-        )}
+        <SwipeableProfiles
+          profiles={filteredProfiles}
+          onLeanOn={handleLeanOn}
+          onSkip={handleSkip}
+          disableConnections={false}
+        />
       </div>
       
       {/* Important: Making dialog render at the top level with fixed props */}

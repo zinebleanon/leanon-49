@@ -8,9 +8,8 @@ import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import RecommendedMatches from "./RecommendedMatches";
 import ConnectionRequests from "./ConnectionRequests";
-import { MumzProfile } from "./ProfilesSection";
+import { MumzProfile } from "@/pages/MumzAlly";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 import {
   CommandDialog,
   CommandEmpty,
@@ -47,15 +46,6 @@ const HeroSection = ({
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   const [searchResults, setSearchResults] = useState<MumzProfile[]>([]);
   const navigate = useNavigate();
-  const { userInfo } = useUserInfo();
-
-  // Check if profile is complete
-  const isProfileComplete = !!(
-    userInfo?.name && 
-    userInfo?.neighborhood && 
-    userInfo?.kids && 
-    userInfo?.kids.length > 0
-  );
 
   useEffect(() => {
     setLocalSearchTerm(searchTerm);
@@ -177,8 +167,7 @@ const HeroSection = ({
         </div>
       </div>
       
-      {/* Only show nearby moms section if profile is complete and not in Tinder view */}
-      {isProfileComplete && !showTinderView && nearbyMoms.length > 0 && (
+      {!showTinderView && nearbyMoms.length > 0 && (
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">LeanMoms Near You</h2>
@@ -191,22 +180,6 @@ const HeroSection = ({
           
           <RecommendedMatches 
             profiles={nearbyMoms} 
-            disableConnections={!isProfileComplete}
-            maxConnections={2}
-          />
-        </div>
-      )}
-      
-      {!showTinderView && (
-        <div>
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-medium">Matched for You</h2>
-          </div>
-          
-          <RecommendedMatches 
-            profiles={profiles} 
-            disableConnections={!isProfileComplete}
-            maxConnections={2}
           />
         </div>
       )}

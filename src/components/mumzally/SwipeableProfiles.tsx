@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Baby, MapPin, Flag, Briefcase, Star, X, Tag, Lock } from 'lucide-react';
+import { Baby, MapPin, Flag, Briefcase, Star, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { UserCircle } from 'lucide-react';
 import BowRibbon from './BowRibbon';
@@ -187,23 +188,12 @@ const SwipeableProfiles: React.FC<SwipeableProfilesProps> = ({
             <Button 
               variant="default"
               size="lg"
-              className={`rounded-full h-14 w-14 p-0 ${disableConnections ? 'bg-gray-300 cursor-not-allowed' : ''}`}
+              className="rounded-full h-14 w-14 p-0"
               onClick={handleLeanOn}
-              disabled={disableConnections}
             >
-              {disableConnections ? (
-                <Lock className="h-5 w-5 text-gray-500" />
-              ) : (
-                <BowRibbon className="w-9 h-9" color="#FFD9A7" />
-              )}
+              <BowRibbon className="w-9 h-9" color="#FFD9A7" />
             </Button>
           </div>
-          
-          {disableConnections && (
-            <div className="bg-amber-50 p-3 text-center text-sm text-amber-800 border-t border-amber-100">
-              Complete your profile to connect with more moms
-            </div>
-          )}
         </Card>
       </div>
       
