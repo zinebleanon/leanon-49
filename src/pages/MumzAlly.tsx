@@ -190,7 +190,7 @@ const MumzAlly = () => {
               <div>
                 <span className="font-semibold mb-1 block">Complete Your Profile</span>
                 <span className="text-muted-foreground">
-                  Add more information to your profile to help us connect you with compatible moms.
+                  Add more information to your profile to help us connect you with compatible LeanMoms and make LeanMoms trust your Profile.
                 </span>
               </div>
               <Button 
@@ -227,7 +227,7 @@ const MumzAlly = () => {
         onOpenChange={setEditProfileDialogOpen}
         mode="profile"
         title="Complete Your Profile"
-        description="Fill in your profile details to connect with more moms"
+        description="Fill in your profile details to connect with more LeanMoms"
         section="all"
       />
       
