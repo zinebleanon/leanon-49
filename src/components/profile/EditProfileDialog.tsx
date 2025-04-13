@@ -46,6 +46,8 @@ const EditProfileDialog = ({
     onOpenChange(false);
   };
 
+  console.log("EditProfileDialog rendering with isOpen:", isOpen);
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">

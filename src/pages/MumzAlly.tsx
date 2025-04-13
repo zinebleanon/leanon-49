@@ -176,6 +176,7 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
+    console.log("Opening profile dialog");
     setEditProfileDialogOpen(true);
   };
 
