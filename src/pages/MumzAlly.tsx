@@ -6,6 +6,11 @@ import HeroSection from '@/components/mumzally/HeroSection';
 import MessageDialog from '@/components/mumzally/MessageDialog';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { User, AlertCircle } from "lucide-react";
+import { Link } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
 
 const mockProfiles = [
   {
@@ -79,6 +84,26 @@ const MumzAlly = () => {
   const [nearbyMoms, setNearbyMoms] = useState<typeof mockProfiles>([]);
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { toast } = useToast();
+
+  // Check if user profile is complete (has minimum required fields)
+  const isProfileComplete = () => {
+    if (!userInfo) return false;
+    
+    // Check for minimum required profile information
+    return !!(
+      userInfo.name && 
+      userInfo.neighborhood && 
+      userInfo.kids && 
+      userInfo.kids.length > 0
+    );
+  };
+
+  const profileCompleteStatus = isProfileComplete();
+
+  // Limit the number of connections for incomplete profiles
+  const MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE = 2;
+  const hasReachedConnectionLimit = !profileCompleteStatus && sentConnections.length >= MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE;
 
   useEffect(() => {
     filterProfilesByLocationAndKids();
@@ -201,6 +226,15 @@ const MumzAlly = () => {
   };
 
   const handleMessageClick = (id: number, name: string) => {
+    if (!profileCompleteStatus) {
+      toast({
+        title: "Profile Update Required",
+        description: "Please complete your profile to unlock messaging.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setSelectedRecipient({ id, name });
     setMessageDialogOpen(true);
   };
@@ -218,8 +252,25 @@ const MumzAlly = () => {
   };
 
   const handleLeanOn = (id: number, name: string) => {
+    if (hasReachedConnectionLimit) {
+      toast({
+        title: "Connection Limit Reached",
+        description: `You can connect with up to ${MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE} moms before completing your profile.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setSentConnections(prev => [...prev, id]);
-    // Removed toast notification here
+    
+    if (!profileCompleteStatus && sentConnections.length === MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE - 1) {
+      // This is their last allowed connection
+      toast({
+        title: "Connection limit approaching",
+        description: "Complete your profile to connect with more moms!",
+        variant: "warning"
+      });
+    }
   };
   
   const handleSkip = (id: number) => {
@@ -231,6 +282,33 @@ const MumzAlly = () => {
       <Navbar />
       
       <main className="max-w-7xl mx-auto pt-24 pb-12 px-4">
+        {!profileCompleteStatus && (
+          <Card className="mb-6 bg-white/90 border-amber-200 shadow-md">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row items-center gap-4">
+                <div className="bg-amber-100 rounded-full p-3">
+                  <AlertCircle className="h-8 w-8 text-amber-500" />
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-lg font-semibold mb-1">Limited Access Mode</h3>
+                  <p className="text-muted-foreground mb-3">
+                    You have limited access to the Connect features. Complete your profile to unlock
+                    full access to messaging and unlimited connections.
+                  </p>
+                  <div className="flex justify-center md:justify-start">
+                    <Button asChild variant="warm" className="gap-2">
+                      <Link to="/profile">
+                        <User className="h-4 w-4" />
+                        Complete Your Profile
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      
         <HeroSection 
           onFiltersChange={handleFiltersChange} 
           profiles={filteredProfiles} 
@@ -242,11 +320,19 @@ const MumzAlly = () => {
         
         {nearbyMoms.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">LeanMoms Near You</h2>
+            <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">
+              LeanMoms Near You
+              {!profileCompleteStatus && (
+                <span className="text-sm font-normal text-amber-600 block mt-1">
+                  {MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE - sentConnections.length} connections remaining
+                </span>
+              )}
+            </h2>
             <SwipeableProfiles 
               profiles={nearbyMoms.filter(mom => !sentConnections.includes(mom.id))} 
               onLeanOn={handleLeanOn}
               onSkip={handleSkip}
+              disableConnections={hasReachedConnectionLimit}
             />
           </div>
         )}

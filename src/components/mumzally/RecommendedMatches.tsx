@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Baby, UserCircle } from 'lucide-react';
+import { MapPin, Baby, UserCircle, Lock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { MumzProfile } from './ProfilesSection';
 import { Link } from 'react-router-dom';
@@ -8,16 +8,32 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import BowRibbon from './BowRibbon';
 import { useState } from 'react';
+import { useToast } from "@/hooks/use-toast";
 
 export interface RecommendedMatchesProps {
   profiles?: MumzProfile[];
   onMessageClick?: (id: number, name: string) => void;
+  disableConnections?: boolean; // Added for limited profile access
+  maxConnections?: number; // Define maximum connections for limited accounts
 }
 
-const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatchesProps) => {
-  const { neighborhood } = useUserInfo();
+const RecommendedMatches = ({ 
+  profiles = [], 
+  onMessageClick,
+  disableConnections = false,
+  maxConnections = 2 // Default limit for incomplete profiles
+}: RecommendedMatchesProps) => {
+  const { neighborhood, userInfo } = useUserInfo();
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [acceptedConnections, setAcceptedConnections] = useState<number[]>([2]); // Example: Mom with ID 2 has accepted
+  const { toast } = useToast();
+  
+  const isProfileComplete = !!(
+    userInfo?.name && 
+    userInfo?.neighborhood && 
+    userInfo?.kids && 
+    userInfo?.kids.length > 0
+  );
   
   if (!profiles || profiles.length === 0) {
     return (
@@ -37,8 +53,24 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   }));
   
   const handleSendConnection = (id: number, name: string) => {
+    if (!isProfileComplete && sentConnections.length >= maxConnections) {
+      toast({
+        title: "Connection Limit Reached",
+        description: `Complete your profile to connect with more than ${maxConnections} moms.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setSentConnections(prev => [...prev, id]);
-    // No toast notification here
+    
+    if (!isProfileComplete && sentConnections.length === maxConnections - 1) {
+      toast({
+        title: "Connection limit approaching",
+        description: "Complete your profile to connect with more moms!",
+        variant: "warning"
+      });
+    }
   };
 
   const handleMessageButtonClick = (id: number, name: string) => {
@@ -49,11 +81,18 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
   
   return (
     <div className="mb-6">
+      {!isProfileComplete && (
+        <div className="mb-4 p-2 bg-amber-50 border border-amber-200 rounded-md text-center text-sm text-amber-800">
+          Limited access mode: You can connect with up to {maxConnections} moms before completing your profile
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {enhancedProfiles.map((profile) => {
           const isConnectionSent = sentConnections.includes(profile.id);
           const isConnectionAccepted = acceptedConnections.includes(profile.id);
           const isFullyConnected = isConnectionSent && isConnectionAccepted;
+          const isConnectionDisabled = !isProfileComplete && sentConnections.length >= maxConnections && !isConnectionSent;
           
           return (
             <Card key={profile.id} className="bg-white/90 hover:shadow-md transition-all">
@@ -106,7 +145,11 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                       size="sm"
                       className="text-xs py-1 px-0 h-8 text-primary hover:text-primary/80"
                       onClick={() => handleMessageButtonClick(profile.id, profile.name)}
+                      disabled={!isProfileComplete}
                     >
+                      {!isProfileComplete ? (
+                        <Lock className="h-3 w-3 mr-1 text-muted-foreground" />
+                      ) : null}
                       Message
                     </Button>
                   )}
@@ -124,20 +167,25 @@ const RecommendedMatches = ({ profiles = [], onMessageClick }: RecommendedMatche
                   <Button
                     variant="default"
                     size="sm"
-                    className="text-xs py-1 h-8"
+                    className={`text-xs py-1 h-8 ${isConnectionDisabled ? 'bg-gray-300' : ''}`}
                     onClick={() => handleSendConnection(profile.id, profile.name)}
-                    disabled={isConnectionSent || isFullyConnected}
+                    disabled={isConnectionSent || isFullyConnected || isConnectionDisabled}
                   >
-                    <BowRibbon 
-                      className="w-8 h-5 mr-1" 
-                      isLeftActive={isConnectionSent} 
-                      isRightActive={isConnectionAccepted} 
-                      isActive={isFullyConnected}
-                      color="#FFD9A7"
-                    />
+                    {isConnectionDisabled ? (
+                      <Lock className="h-3 w-3 mr-1 text-gray-500" />
+                    ) : (
+                      <BowRibbon 
+                        className="w-8 h-5 mr-1" 
+                        isLeftActive={isConnectionSent} 
+                        isRightActive={isConnectionAccepted} 
+                        isActive={isFullyConnected}
+                        color="#FFD9A7"
+                      />
+                    )}
                     {isFullyConnected ? 'Connected' : 
                      isConnectionSent ? 'Request Sent' : 
-                     isConnectionAccepted ? 'LeanBack' : 'LeanOn'}
+                     isConnectionAccepted ? 'LeanBack' : 
+                     isConnectionDisabled ? 'Locked' : 'LeanOn'}
                   </Button>
                 </div>
               </CardContent>
