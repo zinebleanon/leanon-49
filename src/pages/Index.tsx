@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -120,61 +121,50 @@ const Index = () => {
   }
   
   return (
-    
-    
+    <div>
       <Navbar />
       <Hero />
       
       {userInfo?.profileNeedsUpdate && showProfileUpdate && (
-        
-          
-            
-              👋 Welcome {getCapitalizedFirstName()}!
-            
-            
+        <Card className="max-w-md mx-auto mt-8 mb-8 shadow-lg">
+          <CardHeader>
+            <CardTitle>👋 Welcome {getCapitalizedFirstName()}!</CardTitle>
+            <CardDescription>
               Please take a moment to complete your profile to get the most out of LeanOn.
-            
-          
-          
-            
-              
-                
-                  
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form className="space-y-4">
+              <div className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="firstName">
                     First Name
-                  
-                  
-                    <Input type="text" name="firstName" value={profileData.firstName} onChange={handleChange} />
-                  
-                
-                
-                  
+                  </Label>
+                  <Input type="text" name="firstName" value={profileData.firstName} onChange={handleChange} />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="lastName">
                     Last Name
-                  
-                  
-                    <Input type="text" name="lastName" value={profileData.lastName} onChange={handleChange} />
-                  
-                
-                
-                  
+                  </Label>
+                  <Input type="text" name="lastName" value={profileData.lastName} onChange={handleChange} />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="neighborhood">
                     Neighborhood
-                  
-                  
-                    <Input type="text" name="neighborhood" value={profileData.neighborhood} onChange={handleChange} />
-                  
-                
-              
-            
-            
-              <Button onClick={handleUpdateProfile}>Update Profile</Button>
-            
-          
-        
+                  </Label>
+                  <Input type="text" name="neighborhood" value={profileData.neighborhood} onChange={handleChange} />
+                </div>
+              </div>
+            </form>
+          </CardContent>
+          <CardFooter>
+            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+          </CardFooter>
+        </Card>
       )}
 
-      
-        <Footer />
-      
-    
+      <Footer />
+    </div>
   );
 };
 

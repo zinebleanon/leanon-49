@@ -21,7 +21,6 @@ import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
 import AdminNotifications from "./pages/AdminNotifications";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useNotificationInit } from "./hooks/use-notification-init";
 import Connections from "./pages/Connections";
 import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
