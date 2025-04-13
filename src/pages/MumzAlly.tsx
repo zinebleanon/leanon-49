@@ -171,7 +171,7 @@ const MumzAlly = () => {
   const handleCompleteProfile = () => {
     navigate('/', { 
       state: { 
-        openProfileUpdate: false, 
+        openProfileUpdate: true, 
         fromMumzAlly: true 
       } 
     });
@@ -181,7 +181,7 @@ const MumzAlly = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <div className="flex-grow container mx-auto px-4 py-8 pb-16">
+      <div className="flex-grow container mx-auto px-4 py-8">
         {!isProfileComplete() && (
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-center">
             <div className="max-w-md mx-auto">
@@ -193,8 +193,8 @@ const MumzAlly = () => {
               <div className="flex justify-center md:justify-start">
                 <Button 
                   onClick={handleCompleteProfile}
-                  variant="outline" 
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#F97316] text-white hover:bg-[#F97316]/90 hover:text-white border-[#F97316]"
+                  variant="warm"
+                  className="flex-1 flex items-center justify-center gap-2 bg-pantone-yellow text-foreground hover:bg-pantone-yellow/90 hover:text-foreground border-pantone-yellow"
                 >
                   <User className="h-4 w-4" />
                   Complete Your Profile
@@ -220,18 +220,6 @@ const MumzAlly = () => {
             disableConnections={!isProfileComplete()}
           />
         )}
-        
-        <div className="mb-12">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-medium">Moms in the Community</h2>
-          </div>
-          
-          <RecommendedMatches 
-            profiles={filteredProfiles} 
-            disableConnections={!isProfileComplete()}
-            maxConnections={2}
-          />
-        </div>
       </div>
       
       <Footer />
