@@ -4,7 +4,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift, Share2, User } from 'lucide-react';
+import { BellRing, Gift, Share2, User, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -188,6 +188,17 @@ const Index = () => {
                 <CardDescription className="text-base md:text-lg mb-1 text-center">
                   Help us find Moms Around You
                 </CardDescription>
+                <div className="flex justify-center mt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full text-sm max-w-[200px]"
+                    onClick={handleSkipProfileUpdate}
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    Do this later
+                  </Button>
+                </div>
               </CardHeader>
               
               <form onSubmit={handleCompleteProfile}>
@@ -297,14 +308,6 @@ const Index = () => {
                     className="w-full warm-button"
                   >
                     Complete My Profile
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full text-sm"
-                    onClick={handleSkipProfileUpdate}
-                  >
-                    Do this later
                   </Button>
                 </CardFooter>
               </form>
