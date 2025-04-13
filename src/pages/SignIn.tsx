@@ -7,13 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Mail, Lock, ArrowLeft, Check, MapPin, Search, Plus, Minus, Calendar, Upload, User, Gift } from 'lucide-react';
-import BowIcon from '@/components/ui/BowIcon';
+import { Mail, Lock, ArrowLeft, Check, MapPin, Gift } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import BowRibbon from '@/components/mumzally/BowRibbon';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import RibbonIcon from '@/components/ui/RibbonIcon';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
@@ -25,9 +22,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
-  const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification, 3: Profile
+  const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification
   const [otpValue, setOtpValue] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const referralCodeFromParams = searchParams.get('referral') || '';
   
   useEffect(() => {
@@ -50,16 +46,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     phone: '',
     password: '',
     confirmPassword: '',
-    neighborhood: '', 
-    latitude: '',
-    longitude: '',
-    workStatus: 'stay-home',
-    nationality: '',
-    interests: '',
-    birthDate: '',
-    kids: [{ birthDate: '', gender: '' }],
-    profilePicture: null as File | null,
-    profilePictureURL: '',
+    neighborhood: 'Dubai Marina', 
     referralCode: referralCodeFromParams
   });
   
@@ -70,59 +57,19 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     "Jumeirah", "Umm Suqeim", "Discovery Gardens", "International City"
   ];
   
-  const nationalities = [
-    "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
-    "Austrian", "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean",
-    "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Botswanan", "Brazilian", "British", "Bruneian", "Bulgarian", "Burkinabe",
-    "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian", "Cape Verdean", "Central African", "Chadian", "Chilean",
-    "Chinese", "Colombian", "Comoran", "Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian",
-    "Dominican", "Dutch", "East Timorese", "Ecuadorean", "Egyptian", "Emirian", "Equatorial Guinean", "Eritrean", "Estonian",
-    "Ethiopian", "Fijian", "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek",
-    "Grenadian", "Guatemalan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelandic", "Indian", "Indonesian",
-    "Iranian", "Iraqi", "Irish", "Israeli", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan",
-    "Kiribati", "North Korean", "South Korean", "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Lesothan", "Liberian",
-    "Libyan", "Liechtensteiner", "Lithuanian", "Luxembourgish", "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivian",
-    "Malian", "Maltese", "Marshallese", "Mauritanian", "Mauritian", "Mexican", "Micronesian", "Moldovan", "Monacan", "Mongolian",
-    "Montenegrin", "Moroccan", "Mozambican", "Namibian", "Nauruan", "Nepalese", "New Zealand", "Nicaraguan", "Nigerian", "Nigerien",
-    "Norwegian", "Omani", "Pakistani", "Palauan", "Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese",
-    "Qatari", "Romanian", "Russian", "Rwandan", "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Sao Tomean", "Saudi",
-    "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Solomon Islander", "Somali",
-    "South African", "Spanish", "Sri Lankan", "Sudanese", "Surinamese", "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik",
-    "Tanzanian", "Thai", "Togolese", "Tongan", "Trinidadian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan", "Ugandan", "Ukrainian",
-    "Uruguayan", "Uzbek", "Vanuatuan", "Vatican", "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean"
-  ].sort((a, b) => a.localeCompare(b));
-  
-  const [nationalitySearch, setNationalitySearch] = useState('');
-  const [filteredNationalities, setFilteredNationalities] = useState(nationalities);
-
-  useEffect(() => {
-    if (nationalitySearch.trim() === '') {
-      setFilteredNationalities(nationalities);
-    } else {
-      const filtered = nationalities.filter(nationality => 
-        nationality.toLowerCase().includes(nationalitySearch.toLowerCase())
-      );
-      setFilteredNationalities(filtered);
-    }
-  }, [nationalitySearch]);
-
   const getLocation = () => {
     if (navigator.geolocation) {
       setIsLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setSignUpData(prev => ({
-            ...prev,
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString(),
-          }));
-          
           const randomIndex = Math.floor(Math.random() * neighborhoods.length);
           const autoDetectedNeighborhood = neighborhoods[randomIndex];
           
           setSignUpData(prev => ({
             ...prev,
-            neighborhood: autoDetectedNeighborhood
+            neighborhood: autoDetectedNeighborhood,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
           }));
           
           toast({
@@ -174,27 +121,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     }
     
     setSignUpData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleKidChange = (index: number, field: 'birthDate' | 'gender', value: string) => {
-    const newKids = [...signUpData.kids];
-    newKids[index] = { ...newKids[index], [field]: value };
-    setSignUpData(prev => ({ ...prev, kids: newKids }));
-  };
-
-  const addKid = () => {
-    setSignUpData(prev => ({
-      ...prev, 
-      kids: [...prev.kids, { birthDate: '', gender: '' }]
-    }));
-  };
-
-  const removeKid = (index: number) => {
-    if (signUpData.kids.length > 1) {
-      const newKids = [...signUpData.kids];
-      newKids.splice(index, 1);
-      setSignUpData(prev => ({ ...prev, kids: newKids }));
-    }
   };
   
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
@@ -257,27 +183,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       
       setTimeout(() => {
         setIsLoading(false);
-        setSignupStep(3);
-        toast({
-          title: "Phone verified",
-          description: "Now, let's complete your profile"
-        });
-      }, 1500);
-    } else if (signupStep === 3) {
-      if (!signUpData.neighborhood || !signUpData.workStatus) {
-        toast({
-          title: "Missing information",
-          description: "Please fill out all required fields.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      setIsLoading(true);
-      
-      setTimeout(() => {
-        setIsLoading(false);
         
+        // Create basic user account with minimal information
         const userInfo = {
           name: `${signUpData.firstName} ${signUpData.lastName}`,
           firstName: signUpData.firstName,
@@ -289,12 +196,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
             latitude: signUpData.latitude,
             longitude: signUpData.longitude
           },
-          workStatus: signUpData.workStatus,
-          nationality: signUpData.nationality,
-          interests: signUpData.interests,
-          birthDate: signUpData.birthDate,
-          kids: signUpData.kids,
-          profilePictureURL: signUpData.profilePictureURL,
+          // Set default values for required fields
+          workStatus: 'stay-home',
+          profileNeedsUpdate: true, // Flag to indicate profile needs to be completed
           referralCode: signUpData.referralCode
         };
         
@@ -309,9 +213,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
         
         toast({
           title: "Account created!",
-          description: "Your profile has been created successfully.",
+          description: "Welcome to LeanOn! Let's complete your profile.",
         });
-        navigate('/ally/subscribe');
+        navigate('/');
       }, 1500);
     }
   };
@@ -377,28 +281,35 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       title: "Verification skipped",
       description: "For testing purposes only"
     });
-    setSignupStep(3);
-  };
-  
-  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSignUpData(prev => ({
-        ...prev,
-        profilePicture: file,
-        profilePictureURL: imageUrl
-      }));
-      
+    
+    // Create basic user account with minimal information
+    const userInfo = {
+      name: `${signUpData.firstName} ${signUpData.lastName}`,
+      firstName: signUpData.firstName,
+      lastName: signUpData.lastName,
+      email: signUpData.email,
+      neighborhood: signUpData.neighborhood,
+      phone: signUpData.phone,
+      // Set default values for required fields
+      workStatus: 'stay-home',
+      profileNeedsUpdate: true, // Flag to indicate profile needs to be completed
+      referralCode: signUpData.referralCode
+    };
+    
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    
+    if (signUpData.referralCode) {
       toast({
-        title: "Image uploaded",
-        description: "Profile picture added successfully"
+        title: "Referral applied!",
+        description: `You signed up using referral code: ${signUpData.referralCode}`,
       });
     }
-  };
-  
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
+    
+    toast({
+      title: "Account created!",
+      description: "Welcome to LeanOn! Let's complete your profile.",
+    });
+    navigate('/');
   };
   
   return (
@@ -505,18 +416,11 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
             <Card className="border-secondary/20 shadow-md">
               <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
                 <CardTitle>
-                  {signupStep === 1 ? "Create an Account" : 
-                   signupStep === 2 ? "Verify Your Phone" : 
-                   "Complete Your Profile"}
+                  {signupStep === 1 ? "Create an Account" : "Verify Your Phone"}
                 </CardTitle>
                 {signupStep === 2 && (
                   <CardDescription>
                     Enter the 4-digit code sent to +971 {formatPhoneDisplay(signUpData.phone)}
-                  </CardDescription>
-                )}
-                {signupStep === 3 && (
-                  <CardDescription>
-                    Tell us more about you to find the right matches
                   </CardDescription>
                 )}
               </CardHeader>
@@ -718,197 +622,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                   </CardContent>
                 )}
                 
-                {signupStep === 3 && (
-                  <CardContent className="space-y-4 pt-6 max-h-[60vh] overflow-y-auto pr-2">
-                    <div className="space-y-2 flex flex-col items-center">
-                      <Label className="self-start">Profile Picture (Optional)</Label>
-                      <Avatar className="w-24 h-24 cursor-pointer border-2 border-secondary/50" onClick={triggerFileInput}>
-                        {signUpData.profilePictureURL ? (
-                          <AvatarImage src={signUpData.profilePictureURL} alt="Profile" />
-                        ) : (
-                          <AvatarFallback className="bg-secondary/20 flex items-center justify-center">
-                            <User className="h-8 w-8 text-secondary" />
-                          </AvatarFallback>
-                        )}
-                      </Avatar>
-                      <input 
-                        type="file" 
-                        ref={fileInputRef}
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleProfilePictureChange}
-                      />
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        size="sm" 
-                        className="mt-2 text-xs flex items-center gap-1.5"
-                        onClick={triggerFileInput}
-                      >
-                        <Upload className="h-3.5 w-3.5" />
-                        {signUpData.profilePictureURL ? 'Change Photo' : 'Upload Photo'}
-                      </Button>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-birthdate">Your Birth Date</Label>
-                      <Input
-                        id="signup-birthdate"
-                        name="birthDate"
-                        type="date"
-                        className="border-secondary/30 focus:border-secondary"
-                        value={signUpData.birthDate}
-                        onChange={handleSignUpChange}
-                        required
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-nationality">Your Nationality</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start text-left font-normal"
-                          >
-                            {signUpData.nationality || "Select your nationality"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0" align="start">
-                          <div className="p-2">
-                            <div className="flex items-center border rounded-md px-2">
-                              <Search className="h-4 w-4 text-muted-foreground mr-2" />
-                              <Input
-                                placeholder="Search..."
-                                value={nationalitySearch}
-                                onChange={(e) => setNationalitySearch(e.target.value)}
-                                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 h-9"
-                              />
-                            </div>
-                          </div>
-                          <div className="max-h-[200px] overflow-y-auto">
-                            {filteredNationalities.length > 0 ? (
-                              filteredNationalities.map((nationality) => (
-                                <div
-                                  key={nationality}
-                                  className="px-3 py-2 text-sm cursor-pointer hover:bg-secondary"
-                                  onClick={() => {
-                                    const newSignUpData = {...signUpData, nationality};
-                                    setSignUpData(newSignUpData);
-                                    setNationalitySearch('');
-                                  }}
-                                >
-                                  {nationality}
-                                </div>
-                              ))
-                            ) : (
-                              <div className="px-3 py-2 text-sm text-muted-foreground">
-                                No results found
-                              </div>
-                            )}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label>Work Status</Label>
-                      <div className="flex gap-4">
-                        <div className="flex items-center">
-                          <input
-                            type="radio"
-                            id="work-status-stay-home"
-                            name="workStatus"
-                            value="stay-home"
-                            checked={signUpData.workStatus === 'stay-home'}
-                            onChange={handleSignUpChange}
-                            className="mr-2"
-                          />
-                          <Label htmlFor="work-status-stay-home">Stay-at-home Mom</Label>
-                        </div>
-                        <div className="flex items-center">
-                          <input
-                            type="radio"
-                            id="work-status-working"
-                            name="workStatus"
-                            value="working"
-                            checked={signUpData.workStatus === 'working'}
-                            onChange={handleSignUpChange}
-                            className="mr-2"
-                          />
-                          <Label htmlFor="work-status-working">Working Mom</Label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label>Your Kids</Label>
-                      {signUpData.kids.map((kid, index) => (
-                        <div key={index} className="flex gap-2 items-end mt-2">
-                          <div className="flex-1">
-                            <Label htmlFor={`kid-birthdate-${index}`} className="text-xs">Birth Date</Label>
-                            <Input
-                              id={`kid-birthdate-${index}`}
-                              type="date"
-                              value={kid.birthDate}
-                              onChange={(e) => handleKidChange(index, 'birthDate', e.target.value)}
-                              className="border-secondary/30 focus:border-secondary"
-                              required
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <Label htmlFor={`kid-gender-${index}`} className="text-xs">Gender</Label>
-                            <select
-                              id={`kid-gender-${index}`}
-                              value={kid.gender}
-                              onChange={(e) => handleKidChange(index, 'gender', e.target.value)}
-                              className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
-                              required
-                            >
-                              <option value="" disabled>Select</option>
-                              <option value="boy">Boy</option>
-                              <option value="girl">Girl</option>
-                            </select>
-                          </div>
-                          {index > 0 && (
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="icon"
-                              className="h-10 w-10"
-                              onClick={() => removeKid(index)}
-                            >
-                              <Minus className="h-4 w-4" />
-                            </Button>
-                          )}
-                        </div>
-                      ))}
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={addKid}
-                        className="mt-2"
-                      >
-                        <Plus className="h-4 w-4 mr-2" /> Add Child
-                      </Button>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-interests">Your Interests</Label>
-                      <textarea
-                        id="signup-interests"
-                        name="interests"
-                        rows={3}
-                        placeholder="What are you interested in? (e.g., Cooking, Fitness, Reading)"
-                        className="w-full rounded-md border-secondary/30 focus:border-secondary px-3 py-2"
-                        value={signUpData.interests}
-                        onChange={handleSignUpChange}
-                      ></textarea>
-                    </div>
-                  </CardContent>
-                )}
-                
                 <CardFooter className="flex-col space-y-4 bg-gradient-to-t from-secondary/20 to-transparent pt-4">
                   <Button 
                     type="submit" 
@@ -923,14 +636,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                         <RibbonIcon className="mr-2 h-4 w-4" color="currentColor" />
                         Continue
                       </>
-                    ) : signupStep === 2 ? (
-                      <>
-                        <Check className="mr-2 h-4 w-4" />
-                        Verify Phone
-                      </>
                     ) : (
                       <>
-                        <RibbonIcon className="mr-2 h-4 w-4" color="currentColor" />
+                        <Check className="mr-2 h-4 w-4" />
                         Create Account
                       </>
                     )}
