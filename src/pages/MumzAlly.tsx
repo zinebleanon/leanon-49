@@ -205,7 +205,7 @@ const MumzAlly = () => {
               <Button 
                 onClick={handleCompleteProfile}
                 variant="outline" 
-                className="w-full md:w-auto flex items-center justify-center gap-2 bg-pantone-yellow text-foreground hover:bg-pantone-yellow/90 hover:text-foreground border-pantone-yellow"
+                className="w-full md:w-auto flex items-center justify-center gap-2 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
               >
                 <User className="h-4 w-4" />
                 Complete Your Profile
