@@ -169,7 +169,11 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    navigate('/profile', { state: { openProfileUpdate: true } });
+    navigate('/profile', { 
+      state: { 
+        openProfileUpdate: true 
+      } 
+    });
   };
 
   return (
