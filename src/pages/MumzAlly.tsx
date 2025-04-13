@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -193,8 +192,8 @@ const MumzAlly = () => {
               <div className="flex justify-center md:justify-start">
                 <Button 
                   onClick={handleCompleteProfile}
-                  variant="warm"
-                  className="flex-1 flex items-center justify-center gap-2 bg-pantone-yellow text-foreground hover:bg-pantone-yellow/90 hover:text-foreground border-pantone-yellow"
+                  variant="outline" 
+                  className="flex-1 flex items-center justify-center gap-2 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
                 >
                   <User className="h-4 w-4" />
                   Complete Your Profile
