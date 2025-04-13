@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
@@ -28,7 +29,8 @@ const Index = () => {
   const navigate = useNavigate();
   const { userInfo, updateUserInfo } = useUserInfo();
   const [showProfileUpdate, setShowProfileUpdate] = useState(false);
-  
+  const location = useLocation();
+
   const [profileData, setProfileData] = useState({
     workStatus: 'full-time',
     nationality: '',
@@ -53,6 +55,15 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Check if navigation state includes openProfileUpdate
+    if (location.state?.openProfileUpdate) {
+      openProfileUpdateForm();
+      // Clear the state to prevent repeated opening
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const tryNotification = async () => {
     if (Notification.permission !== "granted") {
