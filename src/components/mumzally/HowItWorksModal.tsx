@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,9 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogClose,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import { UserCircle, MapPin, MessageCircle, Heart, ArrowLeft, Info } from "lucide-react";
+import { UserCircle, MapPin, MessageCircle, Heart, Info, X } from "lucide-react";
 
 const steps = [
   {
@@ -53,6 +52,10 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
             <DialogTitle className="text-2xl text-center mb-4">
               How to Connect with Moms Around You
             </DialogTitle>
+            <DialogClose className="absolute top-0 right-0 p-2 z-50">
+              <X className="h-6 w-6 text-foreground hover:text-muted-foreground" />
+              <span className="sr-only">Close dialog</span>
+            </DialogClose>
           </DialogHeader>
           
           <div className="grid gap-6 mt-2">
@@ -92,6 +95,10 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
           <DialogTitle className="text-2xl text-center mb-4">
             How to Connect with Moms Around You
           </DialogTitle>
+          <DialogClose className="absolute top-0 right-0 p-2 z-50">
+            <X className="h-6 w-6 text-foreground hover:text-muted-foreground" />
+            <span className="sr-only">Close dialog</span>
+          </DialogClose>
         </DialogHeader>
         
         <div className="grid gap-6 mt-2">
