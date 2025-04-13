@@ -20,6 +20,7 @@ import {
   CommandList
 } from "@/components/ui/command";
 import { useUserInfo } from "@/hooks/use-user-info";
+import EditProfileDialog from "@/components/profile/EditProfileDialog";
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -48,6 +49,7 @@ const HeroSection = ({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   const [searchResults, setSearchResults] = useState<MumzProfile[]>([]);
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { userInfo } = useUserInfo();
 
@@ -106,9 +108,7 @@ const HeroSection = ({
 
   // Handler for "Complete Your Profile" button
   const handleCompleteProfile = () => {
-    if (onCompleteProfile) {
-      onCompleteProfile();
-    }
+    setIsProfileDialogOpen(true);
   };
 
   return (
@@ -283,6 +283,16 @@ const HeroSection = ({
           </CommandGroup>
         </CommandList>
       </CommandDialog>
+
+      {/* Add the EditProfileDialog component */}
+      <EditProfileDialog
+        isOpen={isProfileDialogOpen}
+        onOpenChange={setIsProfileDialogOpen}
+        mode="profile"
+        title="Complete Your Profile"
+        description="Fill in your details to connect with other moms"
+        section="all"
+      />
     </div>
   );
 };

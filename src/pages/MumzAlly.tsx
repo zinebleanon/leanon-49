@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -5,11 +6,11 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { useToast } from '@/hooks/use-toast';
 import HeroSection from '@/components/mumzally/HeroSection';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
-import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import EditProfileDialog from '@/components/profile/EditProfileDialog';
 
 interface Kid {
   age: number;
@@ -37,6 +38,7 @@ const MumzAlly = () => {
   const [filteredProfiles, setFilteredProfiles] = useState<MumzProfile[]>([]);
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -169,11 +171,7 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    navigate('/profile', { 
-      state: { 
-        openProfileUpdate: true 
-      } 
-    });
+    setIsProfileDialogOpen(true);
   };
 
   return (
@@ -220,6 +218,15 @@ const MumzAlly = () => {
           />
         )}
       </div>
+      
+      <EditProfileDialog
+        isOpen={isProfileDialogOpen}
+        onOpenChange={setIsProfileDialogOpen}
+        mode="profile"
+        title="Complete Your Profile"
+        description="Fill in your details to connect with other moms"
+        section="all"
+      />
       
       <Footer />
     </div>
