@@ -6,11 +6,9 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { useToast } from '@/hooks/use-toast';
 import HeroSection from '@/components/mumzally/HeroSection';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
-import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
 
 interface Kid {
@@ -40,7 +38,6 @@ const MumzAlly = () => {
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
-  const navigate = useNavigate();
   const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -122,8 +119,11 @@ const MumzAlly = () => {
 
     setProfiles(exampleProfiles);
 
-    // Simulate fetching nearby moms based on neighborhood
-    const nearby = exampleProfiles.filter(profile => profile.location === neighborhood);
+    // Show all moms regardless of neighborhood for users without complete profiles
+    const nearby = isProfileComplete() 
+      ? exampleProfiles.filter(profile => profile.location === neighborhood)
+      : exampleProfiles;
+      
     setNearbyMoms(nearby);
     setFilteredProfiles(exampleProfiles);
   }, [neighborhood]);
@@ -179,10 +179,6 @@ const MumzAlly = () => {
     console.log("Opening profile dialog");
     setEditProfileDialogOpen(true);
   };
-
-  useEffect(() => {
-    console.log("Dialog state changed:", editProfileDialogOpen);
-  }, [editProfileDialogOpen]);
 
   return (
     <div className="min-h-screen flex flex-col">
