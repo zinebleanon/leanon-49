@@ -47,24 +47,6 @@ const Index = () => {
   }, [userInfo, updateUserInfo]);
   
   useEffect(() => {
-    if (userInfo?.profileNeedsUpdate) {
-      setShowProfileUpdate(true);
-      
-      const kids = userInfo.kids && userInfo.kids.length > 0 
-        ? userInfo.kids.map(kid => ({ birthDate: kid.birthDate || '', gender: kid.gender || 'boy' }))
-        : [{ birthDate: '', gender: 'boy' }];
-      
-      setProfileData({
-        workStatus: userInfo.workStatus || 'full-time',
-        nationality: userInfo.nationality || '',
-        birthDate: userInfo.birthDate || '',
-        interests: userInfo.interests || '',
-        kids
-      });
-    }
-  }, [userInfo]);
-  
-  useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
