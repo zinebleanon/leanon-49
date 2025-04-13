@@ -90,7 +90,7 @@ const Index = () => {
   
   const shareWhatsApp = () => {
     if (userInfo?.referralCode) {
-      const message = `Join me on LeanOn with my referral code: ${userInfo.referralCode}\nDownload the app now, connect with other moms, and get a 5 AED MOE gift card!`;
+      const message = `Join Me on LeanOn, the new supportive Online Community for Moms. Use my Referral code: ${userInfo.referralCode}. You can get yours also, Refer & Earn.`;
       const encodedMessage = encodeURIComponent(message);
       window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
     }
