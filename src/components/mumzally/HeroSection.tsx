@@ -29,6 +29,7 @@ interface HeroSectionProps {
   showTinderView?: boolean;
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
+  onCompleteProfile?: () => void; // New prop for profile completion action
 }
 
 const HeroSection = ({ 
@@ -38,7 +39,8 @@ const HeroSection = ({
   onViewToggle, 
   showTinderView = false,
   searchTerm = '',
-  onSearchChange
+  onSearchChange,
+  onCompleteProfile
 }: HeroSectionProps) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -102,6 +104,13 @@ const HeroSection = ({
     }
   };
 
+  // Handler for "Complete Your Profile" button
+  const handleCompleteProfile = () => {
+    if (onCompleteProfile) {
+      onCompleteProfile();
+    }
+  };
+
   return (
     <div className="mb-8">
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
@@ -124,17 +133,31 @@ const HeroSection = ({
             </div>
           </Button>
           
-          <Button
-            variant="warm"
-            size="md"
-            className="w-full gap-2 h-11 px-8"
-            onClick={() => setIsConnectionRequestsOpen(true)}
-          >
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span>LeanOn Requests</span>
-            </div>
-          </Button>
+          {!isProfileComplete ? (
+            <Button
+              variant="warm"
+              size="md"
+              className="w-full gap-2 h-11 px-8"
+              onClick={handleCompleteProfile}
+            >
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                <span>Complete Profile</span>
+              </div>
+            </Button>
+          ) : (
+            <Button
+              variant="warm"
+              size="md"
+              className="w-full gap-2 h-11 px-8"
+              onClick={() => setIsConnectionRequestsOpen(true)}
+            >
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                <span>LeanOn Requests</span>
+              </div>
+            </Button>
+          )}
           
           <Button
             variant="warm"
