@@ -20,7 +20,6 @@ import {
   CommandList
 } from "@/components/ui/command";
 import { useUserInfo } from "@/hooks/use-user-info";
-import EditProfileDialog from "@/components/profile/EditProfileDialog";
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -30,7 +29,6 @@ interface HeroSectionProps {
   showTinderView?: boolean;
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
-  onCompleteProfile?: () => void; // New prop for profile completion action
 }
 
 const HeroSection = ({ 
@@ -40,8 +38,7 @@ const HeroSection = ({
   onViewToggle, 
   showTinderView = false,
   searchTerm = '',
-  onSearchChange,
-  onCompleteProfile
+  onSearchChange
 }: HeroSectionProps) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -49,7 +46,6 @@ const HeroSection = ({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   const [searchResults, setSearchResults] = useState<MumzProfile[]>([]);
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { userInfo } = useUserInfo();
 
@@ -106,11 +102,6 @@ const HeroSection = ({
     }
   };
 
-  // Handler for "Complete Your Profile" button
-  const handleCompleteProfile = () => {
-    setIsProfileDialogOpen(true);
-  };
-
   return (
     <div className="mb-8">
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
@@ -133,31 +124,17 @@ const HeroSection = ({
             </div>
           </Button>
           
-          {!isProfileComplete ? (
-            <Button
-              variant="warm"
-              size="md"
-              className="w-full gap-2 h-11 px-8"
-              onClick={handleCompleteProfile}
-            >
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                <span>Complete Profile</span>
-              </div>
-            </Button>
-          ) : (
-            <Button
-              variant="warm"
-              size="md"
-              className="w-full gap-2 h-11 px-8"
-              onClick={() => setIsConnectionRequestsOpen(true)}
-            >
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                <span>LeanOn Requests</span>
-              </div>
-            </Button>
-          )}
+          <Button
+            variant="warm"
+            size="md"
+            className="w-full gap-2 h-11 px-8"
+            onClick={() => setIsConnectionRequestsOpen(true)}
+          >
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span>LeanOn Requests</span>
+            </div>
+          </Button>
           
           <Button
             variant="warm"
@@ -283,16 +260,6 @@ const HeroSection = ({
           </CommandGroup>
         </CommandList>
       </CommandDialog>
-
-      {/* Add the EditProfileDialog component */}
-      <EditProfileDialog
-        isOpen={isProfileDialogOpen}
-        onOpenChange={setIsProfileDialogOpen}
-        mode="profile"
-        title="Complete Your Profile"
-        description="Fill in your details to connect with other moms"
-        section="all"
-      />
     </div>
   );
 };

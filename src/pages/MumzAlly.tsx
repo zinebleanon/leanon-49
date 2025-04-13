@@ -6,11 +6,11 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { useToast } from '@/hooks/use-toast';
 import HeroSection from '@/components/mumzally/HeroSection';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
+import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import EditProfileDialog from '@/components/profile/EditProfileDialog';
 
 interface Kid {
   age: number;
@@ -38,11 +38,11 @@ const MumzAlly = () => {
   const [filteredProfiles, setFilteredProfiles] = useState<MumzProfile[]>([]);
   const [sentConnections, setSentConnections] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Example profiles - replace with actual data fetching
     const exampleProfiles: MumzProfile[] = [
       {
         id: 1,
@@ -120,12 +120,14 @@ const MumzAlly = () => {
 
     setProfiles(exampleProfiles);
 
+    // Simulate fetching nearby moms based on neighborhood
     const nearby = exampleProfiles.filter(profile => profile.location === neighborhood);
     setNearbyMoms(nearby);
     setFilteredProfiles(exampleProfiles);
   }, [neighborhood]);
 
   useEffect(() => {
+    // Apply search filter
     if (searchTerm) {
       const searchResults = profiles.filter(profile =>
         profile.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -158,6 +160,7 @@ const MumzAlly = () => {
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setSearchTerm(filters.searchTerm || '');
+    // Apply other filters as needed
     console.log('filters', filters);
   };
 
@@ -171,7 +174,8 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    setIsProfileDialogOpen(true);
+    // Redirect to profile page with edit dialog open
+    navigate('/profile', { state: { openProfileUpdate: true } });
   };
 
   return (
@@ -206,7 +210,6 @@ const MumzAlly = () => {
           nearbyMoms={nearbyMoms}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
-          onCompleteProfile={handleCompleteProfile}
         />
 
         {isProfileComplete() && (
@@ -218,15 +221,6 @@ const MumzAlly = () => {
           />
         )}
       </div>
-      
-      <EditProfileDialog
-        isOpen={isProfileDialogOpen}
-        onOpenChange={setIsProfileDialogOpen}
-        mode="profile"
-        title="Complete Your Profile"
-        description="Fill in your details to connect with other moms"
-        section="all"
-      />
       
       <Footer />
     </div>
