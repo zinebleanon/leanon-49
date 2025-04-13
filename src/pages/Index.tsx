@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Clock } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
-import { Button } from '@/components/ui/button';
 import { BellRing, Gift, Share2, User, Clock, Plus, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
@@ -57,10 +58,8 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Check if navigation state includes openProfileUpdate
     if (location.state?.openProfileUpdate) {
       openProfileUpdateForm();
-      // Clear the state to prevent repeated opening
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -147,7 +146,7 @@ const Index = () => {
   };
   
   const handleRemoveChild = (index: number) => {
-    if (profileData.kids.length <= 1) return; // Keep at least one child
+    if (profileData.kids.length <= 1) return;
     
     setProfileData(prev => {
       const updatedKids = prev.kids.filter((_, i) => i !== index);
@@ -216,8 +215,6 @@ const Index = () => {
   
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      
       {userInfo ? (
         <div className="container px-4 py-20 pt-32 md:pt-36 min-h-screen">
           {showProfileUpdate ? (
@@ -232,8 +229,8 @@ const Index = () => {
                 <div className="flex justify-center mt-2">
                   <Button
                     type="button"
-                    variant="outline"
-                    className="w-full text-sm max-w-[200px]"
+                    variant="warm"
+                    className="w-full text-sm max-w-[200px] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80"
                     onClick={handleSkipProfileUpdate}
                   >
                     <Clock className="h-4 w-4 mr-2" />
