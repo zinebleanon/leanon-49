@@ -197,6 +197,22 @@ const Index = () => {
     });
   };
   
+  const openProfileUpdateForm = () => {
+    setShowProfileUpdate(true);
+    
+    const kids = userInfo?.kids && userInfo.kids.length > 0 
+      ? userInfo.kids.map(kid => ({ birthDate: kid.birthDate || '', gender: kid.gender || 'boy' }))
+      : [{ birthDate: '', gender: 'boy' }];
+    
+    setProfileData({
+      workStatus: userInfo?.workStatus || 'full-time',
+      nationality: userInfo?.nationality || '',
+      birthDate: userInfo?.birthDate || '',
+      interests: userInfo?.interests || '',
+      kids
+    });
+  };
+  
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
@@ -558,12 +574,25 @@ const Index = () => {
                 </CardHeader>
                 
                 <CardContent className="pt-5 pb-6 text-center">
-                  <Link to="/profile" className="block mb-5">
-                    <Button variant="warm" className="px-6">
-                      <User className="h-4 w-4 mr-2" />
-                      View & Edit Profile
-                    </Button>
-                  </Link>
+                  <div className="flex flex-col gap-3">
+                    <Link to="/profile" className="block">
+                      <Button variant="warm" className="px-6">
+                        <User className="h-4 w-4 mr-2" />
+                        View & Edit Profile
+                      </Button>
+                    </Link>
+                    
+                    {(!userInfo.birthDate || !userInfo.nationality || !userInfo.kids || userInfo.kids.length === 0) && (
+                      <Button 
+                        variant="outline" 
+                        onClick={openProfileUpdateForm}
+                        className="bg-pastel-yellow/10 hover:bg-pastel-yellow/20 border-pastel-yellow/30"
+                      >
+                        <User className="h-4 w-4 mr-2" />
+                        Complete Your Profile
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
               
