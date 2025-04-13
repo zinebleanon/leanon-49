@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift, Share2, User, CalendarDays, Users2, Building, Flag, Calendar, AlertTriangle } from 'lucide-react';
+import { BellRing, Gift, Share2, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -15,7 +15,6 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -327,44 +326,9 @@ const Index = () => {
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="pt-5 pb-6">
-                  <div className="flex justify-center mb-5">
-                    <Avatar className="w-20 h-20 border-2 border-pastel-yellow/40">
-                      {userInfo?.profilePictureURL ? (
-                        <AvatarImage src={userInfo.profilePictureURL} alt="Profile" />
-                      ) : (
-                        <AvatarFallback className="bg-pastel-yellow/20 text-foreground">
-                          <User className="h-10 w-10 text-pastel-yellow" />
-                        </AvatarFallback>
-                      )}
-                    </Avatar>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex gap-3 items-center text-sm">
-                      <Building className="h-4 w-4 text-primary/70" />
-                      <span>Lives in <strong>{userInfo?.neighborhood || 'Dubai'}</strong></span>
-                    </div>
-                    {userInfo?.workStatus && (
-                      <div className="flex gap-3 items-center text-sm">
-                        <CalendarDays className="h-4 w-4 text-primary/70" />
-                        <span>{userInfo.workStatus === 'stay-home' ? 'Stay-at-home mom' : 'Working mom'}</span>
-                      </div>
-                    )}
-                    {userInfo?.kids && userInfo.kids.length > 0 && (
-                      <div className="flex gap-3 items-center text-sm">
-                        <Users2 className="h-4 w-4 text-primary/70" />
-                        <span>
-                          {userInfo.kids.length} {userInfo.kids.length === 1 ? 'child' : 'children'}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <Separator className="my-5" />
-                  
+                <CardContent className="pt-5 pb-6 text-center">
                   <Link to="/profile" className="block mb-5">
-                    <Button variant="outline" className="w-full">
+                    <Button variant="warm" className="px-6">
                       <User className="h-4 w-4 mr-2" />
                       View & Edit Profile
                     </Button>

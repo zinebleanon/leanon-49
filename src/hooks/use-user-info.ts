@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface Kid {
@@ -30,6 +29,7 @@ interface UserInfo {
   locationSharing?: boolean;
   manualLocationUpdate?: boolean; // Flag to indicate if location should be manually updated
   useGeolocationForNeighborhood?: boolean; // Flag to indicate if geolocation should be used for neighborhood updates
+  profileNeedsUpdate?: boolean; // Flag to indicate if profile needs to be updated
 }
 
 export const useUserInfo = () => {
@@ -61,7 +61,6 @@ export const useUserInfo = () => {
     }
   };
 
-  // Function to update location only when explicitly requested
   const updateLocation = (latitude: string, longitude: string) => {
     try {
       if (!userInfo?.manualLocationUpdate) {
@@ -81,7 +80,6 @@ export const useUserInfo = () => {
     }
   };
 
-  // Toggle whether location should be manually updated
   const toggleManualLocationUpdate = (enabled: boolean) => {
     try {
       const newUserInfo = { ...userInfo, manualLocationUpdate: enabled };
@@ -94,7 +92,6 @@ export const useUserInfo = () => {
     }
   };
 
-  // Toggle whether geolocation should be used for neighborhood updates
   const toggleGeolocationForNeighborhood = (enabled: boolean) => {
     try {
       const newUserInfo = { ...userInfo, useGeolocationForNeighborhood: enabled };
@@ -107,7 +104,6 @@ export const useUserInfo = () => {
     }
   };
 
-  // Update neighborhood based on address and determine location automatically
   const updateNeighborhoodWithGeolocation = async (address: string) => {
     try {
       if (!userInfo?.useGeolocationForNeighborhood) {
@@ -227,5 +223,6 @@ export const useUserInfo = () => {
     referralCode: userInfo?.referralCode,
     manualLocationUpdate: userInfo?.manualLocationUpdate || false,
     useGeolocationForNeighborhood: userInfo?.useGeolocationForNeighborhood || false,
+    profileNeedsUpdate: userInfo?.profileNeedsUpdate || false,
   };
 };

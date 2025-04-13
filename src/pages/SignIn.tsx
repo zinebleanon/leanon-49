@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -184,25 +183,27 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       setTimeout(() => {
         setIsLoading(false);
         
-        // Create basic user account with minimal information
-        const userInfo = {
-          name: `${signUpData.firstName} ${signUpData.lastName}`,
+        const formData = {
           firstName: signUpData.firstName,
           lastName: signUpData.lastName,
           email: signUpData.email,
-          neighborhood: signUpData.neighborhood,
           phone: signUpData.phone,
-          location: {
-            latitude: signUpData.latitude,
-            longitude: signUpData.longitude
-          },
-          // Set default values for required fields
-          workStatus: 'stay-home',
-          profileNeedsUpdate: true, // Flag to indicate profile needs to be completed
+          neighborhood: signUpData.neighborhood,
           referralCode: signUpData.referralCode
         };
         
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        const createUser = {
+          name: `${formData.firstName} ${formData.lastName}`,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          neighborhood: formData.neighborhood,
+          referralCode: formData.referralCode,
+          profileNeedsUpdate: true
+        };
+        
+        localStorage.setItem('userInfo', JSON.stringify(createUser));
         
         if (signUpData.referralCode) {
           toast({
@@ -282,21 +283,17 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       description: "For testing purposes only"
     });
     
-    // Create basic user account with minimal information
-    const userInfo = {
+    const createUser = {
       name: `${signUpData.firstName} ${signUpData.lastName}`,
       firstName: signUpData.firstName,
       lastName: signUpData.lastName,
       email: signUpData.email,
       neighborhood: signUpData.neighborhood,
       phone: signUpData.phone,
-      // Set default values for required fields
-      workStatus: 'stay-home',
-      profileNeedsUpdate: true, // Flag to indicate profile needs to be completed
-      referralCode: signUpData.referralCode
+      profileNeedsUpdate: true
     };
     
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    localStorage.setItem('userInfo', JSON.stringify(createUser));
     
     if (signUpData.referralCode) {
       toast({
