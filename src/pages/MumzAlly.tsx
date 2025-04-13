@@ -40,6 +40,7 @@ const MumzAlly = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Example profiles - replace with actual data fetching
     const exampleProfiles: MumzProfile[] = [
       {
         id: 1,
@@ -117,12 +118,14 @@ const MumzAlly = () => {
 
     setProfiles(exampleProfiles);
 
+    // Simulate fetching nearby moms based on neighborhood
     const nearby = exampleProfiles.filter(profile => profile.location === neighborhood);
     setNearbyMoms(nearby);
     setFilteredProfiles(exampleProfiles);
   }, [neighborhood]);
 
   useEffect(() => {
+    // Apply search filter
     if (searchTerm) {
       const searchResults = profiles.filter(profile =>
         profile.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -155,6 +158,7 @@ const MumzAlly = () => {
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setSearchTerm(filters.searchTerm || '');
+    // Apply other filters as needed
     console.log('filters', filters);
   };
 
@@ -168,12 +172,8 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    navigate('/', { 
-      state: { 
-        openProfileUpdate: true, 
-        fromMumzAlly: true 
-      } 
-    });
+    // Redirect to home page with profile update form
+    navigate('/', { state: { openProfileUpdate: true } });
   };
 
   return (
@@ -192,8 +192,8 @@ const MumzAlly = () => {
               <div className="flex justify-center md:justify-start">
                 <Button 
                   onClick={handleCompleteProfile}
-                  variant="outline" 
-                  className="flex-1 flex items-center justify-center gap-2 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
+                  variant="warm" 
+                  className="gap-2"
                 >
                   <User className="h-4 w-4" />
                   Complete Your Profile
