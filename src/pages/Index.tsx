@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
-import { Button } from '@/components/ui/button';
 import { BellRing, Gift, Share2, User, Clock, Plus, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
@@ -57,10 +57,8 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Check if navigation state includes openProfileUpdate
     if (location.state?.openProfileUpdate) {
       openProfileUpdateForm();
-      // Clear the state to prevent repeated opening
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -147,7 +145,7 @@ const Index = () => {
   };
   
   const handleRemoveChild = (index: number) => {
-    if (profileData.kids.length <= 1) return; // Keep at least one child
+    if (profileData.kids.length <= 1) return;
     
     setProfileData(prev => {
       const updatedKids = prev.kids.filter((_, i) => i !== index);
