@@ -44,7 +44,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (location.state?.openProfileUpdate) {
-      openEditProfileDialog('all');
+      const section = location.state?.section || 'all';
+      openEditProfileDialog(section);
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -72,6 +73,10 @@ const Profile = () => {
       case 'photo':
         title = 'Change Profile Photo';
         description = 'Upload a new profile picture';
+        break;
+      case 'all':
+        title = 'Complete Your Profile';
+        description = 'Fill in your profile details to connect with more moms';
         break;
     }
     

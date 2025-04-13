@@ -174,8 +174,8 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    // Redirect to profile page with edit dialog open
-    navigate('/profile', { state: { openProfileUpdate: true } });
+    // Redirect to profile page with state to open the full profile update form
+    navigate('/profile', { state: { openProfileUpdate: true, section: 'all' } });
   };
 
   return (
