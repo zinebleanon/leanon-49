@@ -557,13 +557,6 @@ const Index = () => {
                 
                 <CardContent className="pt-5 pb-6 text-center">
                   <div className="flex flex-col gap-3">
-                    <Link to="/profile" className="block">
-                      <Button variant="warm" className="px-6">
-                        <User className="h-4 w-4 mr-2" />
-                        View & Edit Profile
-                      </Button>
-                    </Link>
-                    
                     {(!userInfo.birthDate || !userInfo.nationality || !userInfo.kids || userInfo.kids.length === 0) && (
                       <Button 
                         variant="outline" 
