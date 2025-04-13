@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -27,6 +28,7 @@ const Profile = () => {
   const { userInfo, removeKid, updateUserInfo } = useUserInfo();
   const [activeTab, setActiveTab] = useState('profile');
   const { toast } = useToast();
+  const location = useLocation();
   
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editDialogMode, setEditDialogMode] = useState<'profile' | 'kid'>('profile');
@@ -39,6 +41,13 @@ const Profile = () => {
   const [deletingKidIndex, setDeletingKidIndex] = useState<number | undefined>(undefined);
   
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (location.state?.openProfileUpdate) {
+      openEditProfileDialog('all');
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
   
   const openEditProfileDialog = (section: ProfileSection = 'all') => {
     setEditDialogMode('profile');

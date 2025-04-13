@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,6 +8,7 @@ import HeroSection from '@/components/mumzally/HeroSection';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -172,8 +174,8 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    // Redirect to home page with profile update form
-    navigate('/', { state: { openProfileUpdate: true } });
+    // Redirect to profile page with edit dialog open
+    navigate('/profile', { state: { openProfileUpdate: true } });
   };
 
   return (
@@ -182,25 +184,24 @@ const MumzAlly = () => {
       
       <div className="flex-grow container mx-auto px-4 py-8">
         {!isProfileComplete() && (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-center">
-            <div className="max-w-md mx-auto">
-              <h3 className="text-lg font-semibold mb-1">Limited Access Mode</h3>
-              <p className="text-muted-foreground mb-3">
-                You have limited access to the Connect features. Complete your profile to unlock
-                full access to messaging and nearby moms features.
-              </p>
-              <div className="flex justify-center md:justify-start">
-                <Button 
-                  onClick={handleCompleteProfile}
-                  variant="warm" 
-                  className="gap-2"
-                >
-                  <User className="h-4 w-4" />
-                  Complete Your Profile
-                </Button>
+          <Alert className="mb-4 bg-amber-50 border-amber-200">
+            <AlertDescription className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <span className="font-semibold mb-1 block">Limited Access Mode</span>
+                <span className="text-muted-foreground">
+                  Complete your profile to unlock full access to messaging and nearby moms features.
+                </span>
               </div>
-            </div>
-          </div>
+              <Button 
+                onClick={handleCompleteProfile}
+                variant="warm" 
+                className="whitespace-nowrap bg-pastel-yellow hover:bg-pastel-yellow/90 gap-2"
+              >
+                <User className="h-4 w-4" />
+                Complete Your Profile
+              </Button>
+            </AlertDescription>
+          </Alert>
         )}
 
         <HeroSection
