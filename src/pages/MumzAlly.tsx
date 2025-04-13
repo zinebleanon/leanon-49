@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -86,11 +85,9 @@ const MumzAlly = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
 
-  // Check if user profile is complete (has minimum required fields)
   const isProfileComplete = () => {
     if (!userInfo) return false;
     
-    // Check for minimum required profile information
     return !!(
       userInfo.name && 
       userInfo.neighborhood && 
@@ -101,7 +98,6 @@ const MumzAlly = () => {
 
   const profileCompleteStatus = isProfileComplete();
 
-  // Limit the number of connections for incomplete profiles
   const MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE = 2;
   const hasReachedConnectionLimit = !profileCompleteStatus && sentConnections.length >= MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE;
 
@@ -264,7 +260,6 @@ const MumzAlly = () => {
     setSentConnections(prev => [...prev, id]);
     
     if (!profileCompleteStatus && sentConnections.length === MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE - 1) {
-      // This is their last allowed connection
       toast({
         title: "Connection limit approaching",
         description: "Complete your profile to connect with more moms!",
@@ -293,7 +288,7 @@ const MumzAlly = () => {
                   <h3 className="text-lg font-semibold mb-1">Limited Access Mode</h3>
                   <p className="text-muted-foreground mb-3">
                     You have limited access to the Connect features. Complete your profile to unlock
-                    full access to messaging and unlimited connections.
+                    full access to messaging and nearby moms features.
                   </p>
                   <div className="flex justify-center md:justify-start">
                     <Button asChild variant="warm" className="gap-2">
@@ -312,7 +307,7 @@ const MumzAlly = () => {
         <HeroSection 
           onFiltersChange={handleFiltersChange} 
           profiles={filteredProfiles} 
-          nearbyMoms={profileCompleteStatus ? nearbyMoms : []} // Only show nearby moms if profile is complete
+          nearbyMoms={[]} // Always pass empty array to HeroSection - we'll show nearby moms in separate section only for complete profiles
           showTinderView={true}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -322,11 +317,6 @@ const MumzAlly = () => {
           <div className="mt-8">
             <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">
               LeanMoms Near You
-              {!profileCompleteStatus && (
-                <span className="text-sm font-normal text-amber-600 block mt-1">
-                  {MAX_CONNECTIONS_FOR_INCOMPLETE_PROFILE - sentConnections.length} connections remaining
-                </span>
-              )}
             </h2>
             <SwipeableProfiles 
               profiles={nearbyMoms.filter(mom => !sentConnections.includes(mom.id))} 
