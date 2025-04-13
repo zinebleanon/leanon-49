@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -59,7 +60,11 @@ const Index = () => {
   useEffect(() => {
     // Check if navigation state includes openProfileUpdate
     if (location.state?.openProfileUpdate) {
-      openProfileUpdateForm();
+      // Only open profile update if not coming from MumzAlly
+      if (!location.state?.fromMumzAlly) {
+        openProfileUpdateForm();
+      }
+      
       // Clear the state to prevent repeated opening
       window.history.replaceState({}, document.title);
     }

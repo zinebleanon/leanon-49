@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -41,7 +40,6 @@ const MumzAlly = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Example profiles - replace with actual data fetching
     const exampleProfiles: MumzProfile[] = [
       {
         id: 1,
@@ -119,14 +117,12 @@ const MumzAlly = () => {
 
     setProfiles(exampleProfiles);
 
-    // Simulate fetching nearby moms based on neighborhood
     const nearby = exampleProfiles.filter(profile => profile.location === neighborhood);
     setNearbyMoms(nearby);
     setFilteredProfiles(exampleProfiles);
   }, [neighborhood]);
 
   useEffect(() => {
-    // Apply search filter
     if (searchTerm) {
       const searchResults = profiles.filter(profile =>
         profile.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -159,7 +155,6 @@ const MumzAlly = () => {
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setSearchTerm(filters.searchTerm || '');
-    // Apply other filters as needed
     console.log('filters', filters);
   };
 
@@ -173,8 +168,12 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    // Redirect to home page with profile update form
-    navigate('/', { state: { openProfileUpdate: true } });
+    navigate('/', { 
+      state: { 
+        openProfileUpdate: true, 
+        fromMumzAlly: true 
+      } 
+    });
   };
 
   return (
