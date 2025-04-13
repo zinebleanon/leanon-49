@@ -180,6 +180,10 @@ const MumzAlly = () => {
     setEditProfileDialogOpen(true);
   };
 
+  useEffect(() => {
+    console.log("Dialog state changed:", editProfileDialogOpen);
+  }, [editProfileDialogOpen]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -224,6 +228,7 @@ const MumzAlly = () => {
         )}
       </div>
       
+      {/* Important: Making dialog render at the top level with fixed props */}
       <EditProfileDialog
         isOpen={editProfileDialogOpen}
         onOpenChange={setEditProfileDialogOpen}

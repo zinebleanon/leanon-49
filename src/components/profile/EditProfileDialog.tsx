@@ -48,6 +48,7 @@ const EditProfileDialog = ({
 
   console.log("EditProfileDialog rendering with isOpen:", isOpen);
 
+  // Force the dialog to be a controlled component
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
