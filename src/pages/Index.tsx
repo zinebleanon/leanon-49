@@ -1,12 +1,20 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Clock } from 'lucide-react';
+import { 
+  BellRing, 
+  Gift, 
+  Share2, 
+  User, 
+  Clock, 
+  Plus, 
+  Trash2 
+} from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
-import { BellRing, Gift, Share2, User, Clock, Plus, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
