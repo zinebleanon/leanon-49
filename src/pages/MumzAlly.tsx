@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -8,11 +7,8 @@ import HeroSection from '@/components/mumzally/HeroSection';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
-import { Lock, User, AlertTriangle } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import useViewportHeight from '@/hooks/use-viewport-height';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import HeroSectionContainer from '@/components/mumzally/HeroSectionContainer';
+import { Lock, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Kid {
   age: number;
@@ -34,8 +30,6 @@ export interface MumzProfile {
 }
 
 const MumzAlly = () => {
-  // Use the viewport height hook for proper mobile sizing
-  useViewportHeight();
   const { userInfo, neighborhood } = useUserInfo();
   const [nearbyMoms, setNearbyMoms] = useState<MumzProfile[]>([]);
   const [profiles, setProfiles] = useState<MumzProfile[]>([]);
@@ -44,12 +38,6 @@ const MumzAlly = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Scroll to top when the component mounts or location changes
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
 
   useEffect(() => {
     const exampleProfiles: MumzProfile[] = [
@@ -189,53 +177,39 @@ const MumzAlly = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow container mx-auto px-4 py-6 mt-[60px]">
+      <div className="flex-grow container mx-auto px-4 py-8">
         {!isProfileComplete() && (
-          <Alert className="bg-amber-50 border-amber-200 mb-6">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <AlertTitle className="text-amber-800">Limited Access Mode</AlertTitle>
-            <AlertDescription className="text-amber-700">
-              <p className="mb-3">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-center">
+            <div className="max-w-md mx-auto">
+              <h3 className="text-lg font-semibold mb-1">Limited Access Mode</h3>
+              <p className="text-muted-foreground mb-3">
                 You have limited access to the Connect features. Complete your profile to unlock
                 full access to messaging and nearby moms features.
               </p>
-              <Button 
-                onClick={handleCompleteProfile}
-                variant="outline" 
-                className="w-full md:w-auto flex items-center justify-center gap-2 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
-              >
-                <User className="h-4 w-4" />
-                Complete Your Profile
-              </Button>
-            </AlertDescription>
-          </Alert>
+              <div className="flex justify-center md:justify-start">
+                <Button 
+                  onClick={handleCompleteProfile}
+                  variant="outline" 
+                  className="flex-1 flex items-center justify-center gap-2 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
+                >
+                  <User className="h-4 w-4" />
+                  Complete Your Profile
+                </Button>
+              </div>
+            </div>
+          </div>
         )}
 
-        <HeroSectionContainer>
-          <HeroSection
-            onFiltersChange={handleFiltersChange}
-            profiles={filteredProfiles}
-            nearbyMoms={nearbyMoms}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-          />
-        </HeroSectionContainer>
-
-        {/* Bring the community moms section closer to the warning message */}
-        <div className="mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-medium">Moms in the Community</h2>
-          </div>
-          
-          <RecommendedMatches 
-            profiles={filteredProfiles} 
-            disableConnections={!isProfileComplete()}
-            maxConnections={2}
-          />
-        </div>
+        <HeroSection
+          onFiltersChange={handleFiltersChange}
+          profiles={filteredProfiles}
+          nearbyMoms={nearbyMoms}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
 
         {isProfileComplete() && (
           <SwipeableProfiles
@@ -245,7 +219,7 @@ const MumzAlly = () => {
             disableConnections={!isProfileComplete()}
           />
         )}
-      </main>
+      </div>
       
       <Footer />
     </div>
