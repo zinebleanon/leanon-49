@@ -8,9 +8,11 @@ import HeroSection from '@/components/mumzally/HeroSection';
 import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
-import { Lock, User } from 'lucide-react';
+import { Lock, User, AlertTriangle } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useViewportHeight from '@/hooks/use-viewport-height';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import HeroSectionContainer from '@/components/mumzally/HeroSectionContainer';
 
 interface Kid {
   age: number;
@@ -187,42 +189,43 @@ const MumzAlly = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       
-      <div className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-6 mt-[60px]">
         {!isProfileComplete() && (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-center">
-            <div className="max-w-md mx-auto">
-              <h3 className="text-lg font-semibold mb-1">Limited Access Mode</h3>
-              <p className="text-muted-foreground mb-3">
+          <Alert className="bg-amber-50 border-amber-200 mb-6">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertTitle className="text-amber-800">Limited Access Mode</AlertTitle>
+            <AlertDescription className="text-amber-700">
+              <p className="mb-3">
                 You have limited access to the Connect features. Complete your profile to unlock
                 full access to messaging and nearby moms features.
               </p>
-              <div className="flex justify-center md:justify-start">
-                <Button 
-                  onClick={handleCompleteProfile}
-                  variant="outline" 
-                  className="flex-1 flex items-center justify-center gap-2 bg-pastel-yellow text-foreground hover:bg-pastel-yellow/90 hover:text-foreground border-pastel-yellow"
-                >
-                  <User className="h-4 w-4" />
-                  Complete Your Profile
-                </Button>
-              </div>
-            </div>
-          </div>
+              <Button 
+                onClick={handleCompleteProfile}
+                variant="outline" 
+                className="w-full md:w-auto flex items-center justify-center gap-2 bg-pantone-yellow text-foreground hover:bg-pantone-yellow/90 hover:text-foreground border-pantone-yellow"
+              >
+                <User className="h-4 w-4" />
+                Complete Your Profile
+              </Button>
+            </AlertDescription>
+          </Alert>
         )}
 
-        <HeroSection
-          onFiltersChange={handleFiltersChange}
-          profiles={filteredProfiles}
-          nearbyMoms={nearbyMoms}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-        />
+        <HeroSectionContainer>
+          <HeroSection
+            onFiltersChange={handleFiltersChange}
+            profiles={filteredProfiles}
+            nearbyMoms={nearbyMoms}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+          />
+        </HeroSectionContainer>
 
         {/* Show community moms section regardless of profile completion status */}
-        <div>
+        <div className="mt-6">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Moms in the Community</h2>
           </div>
@@ -242,7 +245,7 @@ const MumzAlly = () => {
             disableConnections={!isProfileComplete()}
           />
         )}
-      </div>
+      </main>
       
       <Footer />
     </div>
