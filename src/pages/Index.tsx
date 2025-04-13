@@ -4,7 +4,7 @@ import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import useViewportHeight from '@/hooks/use-viewport-height';
 import { Button } from '@/components/ui/button';
-import { BellRing, Gift, Share2, User, Clock } from 'lucide-react';
+import { BellRing, Gift, Share2, User, Clock, Plus, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
@@ -14,6 +14,14 @@ import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,11 +30,11 @@ const Index = () => {
   const [showProfileUpdate, setShowProfileUpdate] = useState(false);
   
   const [profileData, setProfileData] = useState({
-    workStatus: 'stay-home',
+    workStatus: 'full-time',
     nationality: '',
     birthDate: '',
     interests: '',
-    kid: { birthDate: '', gender: 'boy' }
+    kids: [{ birthDate: '', gender: 'boy' }]
   });
   
   useViewportHeight();
@@ -42,14 +50,16 @@ const Index = () => {
     if (userInfo?.profileNeedsUpdate) {
       setShowProfileUpdate(true);
       
+      const kids = userInfo.kids && userInfo.kids.length > 0 
+        ? userInfo.kids.map(kid => ({ birthDate: kid.birthDate || '', gender: kid.gender || 'boy' }))
+        : [{ birthDate: '', gender: 'boy' }];
+      
       setProfileData({
-        workStatus: userInfo.workStatus || 'stay-home',
+        workStatus: userInfo.workStatus || 'full-time',
         nationality: userInfo.nationality || '',
         birthDate: userInfo.birthDate || '',
         interests: userInfo.interests || '',
-        kid: userInfo.kids && userInfo.kids.length > 0 
-          ? { birthDate: userInfo.kids[0].birthDate || '', gender: userInfo.kids[0].gender || 'boy' }
-          : { birthDate: '', gender: 'boy' }
+        kids
       });
     }
   }, [userInfo]);
@@ -114,20 +124,42 @@ const Index = () => {
     const { name, value } = e.target;
     
     if (name.startsWith('kid.')) {
-      const kidField = name.split('.')[1];
-      setProfileData(prev => ({
-        ...prev,
-        kid: {
-          ...prev.kid,
-          [kidField]: value
-        }
-      }));
+      const [_, kidIndex, kidField] = name.split('.');
+      setProfileData(prev => {
+        const updatedKids = [...prev.kids];
+        updatedKids[parseInt(kidIndex)][kidField] = value;
+        return { ...prev, kids: updatedKids };
+      });
     } else {
       setProfileData(prev => ({
         ...prev,
         [name]: value
       }));
     }
+  };
+  
+  const handleKidInputChange = (index: number, field: string, value: string) => {
+    setProfileData(prev => {
+      const updatedKids = [...prev.kids];
+      updatedKids[index] = { ...updatedKids[index], [field]: value };
+      return { ...prev, kids: updatedKids };
+    });
+  };
+  
+  const handleAddChild = () => {
+    setProfileData(prev => ({
+      ...prev,
+      kids: [...prev.kids, { birthDate: '', gender: 'boy' }]
+    }));
+  };
+  
+  const handleRemoveChild = (index: number) => {
+    if (profileData.kids.length <= 1) return; // Keep at least one child
+    
+    setProfileData(prev => {
+      const updatedKids = prev.kids.filter((_, i) => i !== index);
+      return { ...prev, kids: updatedKids };
+    });
   };
   
   const handleCompleteProfile = (e: React.FormEvent<HTMLFormElement>) => {
@@ -139,10 +171,10 @@ const Index = () => {
       nationality: profileData.nationality,
       birthDate: profileData.birthDate,
       interests: profileData.interests,
-      kids: [{ 
-        birthDate: profileData.kid.birthDate, 
-        gender: profileData.kid.gender 
-      }],
+      kids: profileData.kids.map(kid => ({ 
+        birthDate: kid.birthDate, 
+        gender: kid.gender 
+      })),
       profileNeedsUpdate: false
     };
     
@@ -205,44 +237,215 @@ const Index = () => {
                 <CardContent className="pt-4 pb-5 space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="workStatus">I am a:</Label>
-                    <div className="flex gap-4">
-                      <div className="flex items-center">
-                        <input
-                          type="radio"
-                          id="work-status-stay-home"
-                          name="workStatus"
-                          value="stay-home"
-                          checked={profileData.workStatus === 'stay-home'}
-                          onChange={handleProfileInputChange}
-                          className="mr-2"
-                        />
-                        <Label htmlFor="work-status-stay-home">Stay-at-home Mom</Label>
+                    <RadioGroup
+                      value={profileData.workStatus}
+                      onValueChange={(value) => setProfileData(prev => ({ ...prev, workStatus: value }))}
+                      className="flex gap-4"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="full-time" id="work-status-full-time" />
+                        <Label htmlFor="work-status-full-time">Full Time Mom</Label>
                       </div>
-                      <div className="flex items-center">
-                        <input
-                          type="radio"
-                          id="work-status-working"
-                          name="workStatus"
-                          value="working"
-                          checked={profileData.workStatus === 'working'}
-                          onChange={handleProfileInputChange}
-                          className="mr-2"
-                        />
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="working" id="work-status-working" />
                         <Label htmlFor="work-status-working">Working Mom</Label>
                       </div>
-                    </div>
+                    </RadioGroup>
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="nationality">Your Nationality</Label>
-                    <Input
-                      id="nationality"
-                      name="nationality"
-                      placeholder="e.g., American, Indian, Filipino"
-                      value={profileData.nationality}
-                      onChange={handleProfileInputChange}
-                      required
-                    />
+                    <Select 
+                      value={profileData.nationality} 
+                      onValueChange={(value) => setProfileData(prev => ({ ...prev, nationality: value }))}
+                    >
+                      <SelectTrigger id="nationality">
+                        <SelectValue placeholder="Select your nationality" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Afghan">Afghan</SelectItem>
+                        <SelectItem value="Albanian">Albanian</SelectItem>
+                        <SelectItem value="Algerian">Algerian</SelectItem>
+                        <SelectItem value="American">American</SelectItem>
+                        <SelectItem value="Andorran">Andorran</SelectItem>
+                        <SelectItem value="Angolan">Angolan</SelectItem>
+                        <SelectItem value="Antiguan">Antiguan</SelectItem>
+                        <SelectItem value="Argentine">Argentine</SelectItem>
+                        <SelectItem value="Armenian">Armenian</SelectItem>
+                        <SelectItem value="Australian">Australian</SelectItem>
+                        <SelectItem value="Austrian">Austrian</SelectItem>
+                        <SelectItem value="Azerbaijani">Azerbaijani</SelectItem>
+                        <SelectItem value="Bahamian">Bahamian</SelectItem>
+                        <SelectItem value="Bahraini">Bahraini</SelectItem>
+                        <SelectItem value="Bangladeshi">Bangladeshi</SelectItem>
+                        <SelectItem value="Barbadian">Barbadian</SelectItem>
+                        <SelectItem value="Belarusian">Belarusian</SelectItem>
+                        <SelectItem value="Belgian">Belgian</SelectItem>
+                        <SelectItem value="Belizean">Belizean</SelectItem>
+                        <SelectItem value="Beninese">Beninese</SelectItem>
+                        <SelectItem value="Bhutanese">Bhutanese</SelectItem>
+                        <SelectItem value="Bolivian">Bolivian</SelectItem>
+                        <SelectItem value="Bosnian">Bosnian</SelectItem>
+                        <SelectItem value="Brazilian">Brazilian</SelectItem>
+                        <SelectItem value="British">British</SelectItem>
+                        <SelectItem value="Bruneian">Bruneian</SelectItem>
+                        <SelectItem value="Bulgarian">Bulgarian</SelectItem>
+                        <SelectItem value="Burkinabe">Burkinabe</SelectItem>
+                        <SelectItem value="Burmese">Burmese</SelectItem>
+                        <SelectItem value="Burundian">Burundian</SelectItem>
+                        <SelectItem value="Cambodian">Cambodian</SelectItem>
+                        <SelectItem value="Cameroonian">Cameroonian</SelectItem>
+                        <SelectItem value="Canadian">Canadian</SelectItem>
+                        <SelectItem value="Cape Verdean">Cape Verdean</SelectItem>
+                        <SelectItem value="Central African">Central African</SelectItem>
+                        <SelectItem value="Chadian">Chadian</SelectItem>
+                        <SelectItem value="Chilean">Chilean</SelectItem>
+                        <SelectItem value="Chinese">Chinese</SelectItem>
+                        <SelectItem value="Colombian">Colombian</SelectItem>
+                        <SelectItem value="Comoran">Comoran</SelectItem>
+                        <SelectItem value="Congolese">Congolese</SelectItem>
+                        <SelectItem value="Costa Rican">Costa Rican</SelectItem>
+                        <SelectItem value="Croatian">Croatian</SelectItem>
+                        <SelectItem value="Cuban">Cuban</SelectItem>
+                        <SelectItem value="Cypriot">Cypriot</SelectItem>
+                        <SelectItem value="Czech">Czech</SelectItem>
+                        <SelectItem value="Danish">Danish</SelectItem>
+                        <SelectItem value="Djiboutian">Djiboutian</SelectItem>
+                        <SelectItem value="Dominican">Dominican</SelectItem>
+                        <SelectItem value="Dutch">Dutch</SelectItem>
+                        <SelectItem value="East Timorese">East Timorese</SelectItem>
+                        <SelectItem value="Ecuadorean">Ecuadorean</SelectItem>
+                        <SelectItem value="Egyptian">Egyptian</SelectItem>
+                        <SelectItem value="Emirian">Emirian</SelectItem>
+                        <SelectItem value="Equatorial Guinean">Equatorial Guinean</SelectItem>
+                        <SelectItem value="Eritrean">Eritrean</SelectItem>
+                        <SelectItem value="Estonian">Estonian</SelectItem>
+                        <SelectItem value="Ethiopian">Ethiopian</SelectItem>
+                        <SelectItem value="Fijian">Fijian</SelectItem>
+                        <SelectItem value="Filipino">Filipino</SelectItem>
+                        <SelectItem value="Finnish">Finnish</SelectItem>
+                        <SelectItem value="French">French</SelectItem>
+                        <SelectItem value="Gabonese">Gabonese</SelectItem>
+                        <SelectItem value="Gambian">Gambian</SelectItem>
+                        <SelectItem value="Georgian">Georgian</SelectItem>
+                        <SelectItem value="German">German</SelectItem>
+                        <SelectItem value="Ghanaian">Ghanaian</SelectItem>
+                        <SelectItem value="Greek">Greek</SelectItem>
+                        <SelectItem value="Grenadian">Grenadian</SelectItem>
+                        <SelectItem value="Guatemalan">Guatemalan</SelectItem>
+                        <SelectItem value="Guinean">Guinean</SelectItem>
+                        <SelectItem value="Guyanese">Guyanese</SelectItem>
+                        <SelectItem value="Haitian">Haitian</SelectItem>
+                        <SelectItem value="Honduran">Honduran</SelectItem>
+                        <SelectItem value="Hungarian">Hungarian</SelectItem>
+                        <SelectItem value="Icelandic">Icelandic</SelectItem>
+                        <SelectItem value="Indian">Indian</SelectItem>
+                        <SelectItem value="Indonesian">Indonesian</SelectItem>
+                        <SelectItem value="Iranian">Iranian</SelectItem>
+                        <SelectItem value="Iraqi">Iraqi</SelectItem>
+                        <SelectItem value="Irish">Irish</SelectItem>
+                        <SelectItem value="Israeli">Israeli</SelectItem>
+                        <SelectItem value="Italian">Italian</SelectItem>
+                        <SelectItem value="Ivorian">Ivorian</SelectItem>
+                        <SelectItem value="Jamaican">Jamaican</SelectItem>
+                        <SelectItem value="Japanese">Japanese</SelectItem>
+                        <SelectItem value="Jordanian">Jordanian</SelectItem>
+                        <SelectItem value="Kazakhstani">Kazakhstani</SelectItem>
+                        <SelectItem value="Kenyan">Kenyan</SelectItem>
+                        <SelectItem value="Kiribati">Kiribati</SelectItem>
+                        <SelectItem value="Korean">Korean</SelectItem>
+                        <SelectItem value="Kuwaiti">Kuwaiti</SelectItem>
+                        <SelectItem value="Kyrgyz">Kyrgyz</SelectItem>
+                        <SelectItem value="Laotian">Laotian</SelectItem>
+                        <SelectItem value="Latvian">Latvian</SelectItem>
+                        <SelectItem value="Lebanese">Lebanese</SelectItem>
+                        <SelectItem value="Liberian">Liberian</SelectItem>
+                        <SelectItem value="Libyan">Libyan</SelectItem>
+                        <SelectItem value="Liechtensteiner">Liechtensteiner</SelectItem>
+                        <SelectItem value="Lithuanian">Lithuanian</SelectItem>
+                        <SelectItem value="Luxembourger">Luxembourger</SelectItem>
+                        <SelectItem value="Macedonian">Macedonian</SelectItem>
+                        <SelectItem value="Malagasy">Malagasy</SelectItem>
+                        <SelectItem value="Malawian">Malawian</SelectItem>
+                        <SelectItem value="Malaysian">Malaysian</SelectItem>
+                        <SelectItem value="Maldivian">Maldivian</SelectItem>
+                        <SelectItem value="Malian">Malian</SelectItem>
+                        <SelectItem value="Maltese">Maltese</SelectItem>
+                        <SelectItem value="Marshallese">Marshallese</SelectItem>
+                        <SelectItem value="Mauritanian">Mauritanian</SelectItem>
+                        <SelectItem value="Mauritian">Mauritian</SelectItem>
+                        <SelectItem value="Mexican">Mexican</SelectItem>
+                        <SelectItem value="Micronesian">Micronesian</SelectItem>
+                        <SelectItem value="Moldovan">Moldovan</SelectItem>
+                        <SelectItem value="Monacan">Monacan</SelectItem>
+                        <SelectItem value="Mongolian">Mongolian</SelectItem>
+                        <SelectItem value="Moroccan">Moroccan</SelectItem>
+                        <SelectItem value="Mozambican">Mozambican</SelectItem>
+                        <SelectItem value="Namibian">Namibian</SelectItem>
+                        <SelectItem value="Nauruan">Nauruan</SelectItem>
+                        <SelectItem value="Nepalese">Nepalese</SelectItem>
+                        <SelectItem value="New Zealander">New Zealander</SelectItem>
+                        <SelectItem value="Nicaraguan">Nicaraguan</SelectItem>
+                        <SelectItem value="Nigerian">Nigerian</SelectItem>
+                        <SelectItem value="Norwegian">Norwegian</SelectItem>
+                        <SelectItem value="Omani">Omani</SelectItem>
+                        <SelectItem value="Pakistani">Pakistani</SelectItem>
+                        <SelectItem value="Palauan">Palauan</SelectItem>
+                        <SelectItem value="Panamanian">Panamanian</SelectItem>
+                        <SelectItem value="Papua New Guinean">Papua New Guinean</SelectItem>
+                        <SelectItem value="Paraguayan">Paraguayan</SelectItem>
+                        <SelectItem value="Peruvian">Peruvian</SelectItem>
+                        <SelectItem value="Polish">Polish</SelectItem>
+                        <SelectItem value="Portuguese">Portuguese</SelectItem>
+                        <SelectItem value="Qatari">Qatari</SelectItem>
+                        <SelectItem value="Romanian">Romanian</SelectItem>
+                        <SelectItem value="Russian">Russian</SelectItem>
+                        <SelectItem value="Rwandan">Rwandan</SelectItem>
+                        <SelectItem value="Saint Lucian">Saint Lucian</SelectItem>
+                        <SelectItem value="Salvadoran">Salvadoran</SelectItem>
+                        <SelectItem value="Samoan">Samoan</SelectItem>
+                        <SelectItem value="San Marinese">San Marinese</SelectItem>
+                        <SelectItem value="Sao Tomean">Sao Tomean</SelectItem>
+                        <SelectItem value="Saudi">Saudi</SelectItem>
+                        <SelectItem value="Senegalese">Senegalese</SelectItem>
+                        <SelectItem value="Serbian">Serbian</SelectItem>
+                        <SelectItem value="Seychellois">Seychellois</SelectItem>
+                        <SelectItem value="Sierra Leonean">Sierra Leonean</SelectItem>
+                        <SelectItem value="Singaporean">Singaporean</SelectItem>
+                        <SelectItem value="Slovakian">Slovakian</SelectItem>
+                        <SelectItem value="Slovenian">Slovenian</SelectItem>
+                        <SelectItem value="Solomon Islander">Solomon Islander</SelectItem>
+                        <SelectItem value="Somali">Somali</SelectItem>
+                        <SelectItem value="South African">South African</SelectItem>
+                        <SelectItem value="Spanish">Spanish</SelectItem>
+                        <SelectItem value="Sri Lankan">Sri Lankan</SelectItem>
+                        <SelectItem value="Sudanese">Sudanese</SelectItem>
+                        <SelectItem value="Surinamer">Surinamer</SelectItem>
+                        <SelectItem value="Swazi">Swazi</SelectItem>
+                        <SelectItem value="Swedish">Swedish</SelectItem>
+                        <SelectItem value="Swiss">Swiss</SelectItem>
+                        <SelectItem value="Syrian">Syrian</SelectItem>
+                        <SelectItem value="Taiwanese">Taiwanese</SelectItem>
+                        <SelectItem value="Tajik">Tajik</SelectItem>
+                        <SelectItem value="Tanzanian">Tanzanian</SelectItem>
+                        <SelectItem value="Thai">Thai</SelectItem>
+                        <SelectItem value="Togolese">Togolese</SelectItem>
+                        <SelectItem value="Tongan">Tongan</SelectItem>
+                        <SelectItem value="Trinidadian">Trinidadian</SelectItem>
+                        <SelectItem value="Tunisian">Tunisian</SelectItem>
+                        <SelectItem value="Turkish">Turkish</SelectItem>
+                        <SelectItem value="Tuvaluan">Tuvaluan</SelectItem>
+                        <SelectItem value="Ugandan">Ugandan</SelectItem>
+                        <SelectItem value="Ukrainian">Ukrainian</SelectItem>
+                        <SelectItem value="Uruguayan">Uruguayan</SelectItem>
+                        <SelectItem value="Uzbekistani">Uzbekistani</SelectItem>
+                        <SelectItem value="Venezuelan">Venezuelan</SelectItem>
+                        <SelectItem value="Vietnamese">Vietnamese</SelectItem>
+                        <SelectItem value="Yemeni">Yemeni</SelectItem>
+                        <SelectItem value="Zambian">Zambian</SelectItem>
+                        <SelectItem value="Zimbabwean">Zimbabwean</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   
                   <div className="space-y-2">
@@ -258,34 +461,64 @@ const Index = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label>Your Child</Label>
-                    <div className="flex gap-2 items-end">
-                      <div className="flex-1">
-                        <Label htmlFor="kid-birthdate" className="text-xs">Birth Date</Label>
-                        <Input
-                          id="kid-birthdate"
-                          name="kid.birthDate"
-                          type="date"
-                          value={profileData.kid.birthDate}
-                          onChange={handleProfileInputChange}
-                          required
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <Label htmlFor="kid-gender" className="text-xs">Gender</Label>
-                        <select
-                          id="kid-gender"
-                          name="kid.gender"
-                          value={profileData.kid.gender}
-                          onChange={handleProfileInputChange}
-                          className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
-                          required
-                        >
-                          <option value="boy">Boy</option>
-                          <option value="girl">Girl</option>
-                        </select>
-                      </div>
+                    <div className="flex items-center justify-between">
+                      <Label>Your Children</Label>
+                      <Button 
+                        type="button" 
+                        size="sm" 
+                        variant="outline" 
+                        className="h-8 px-2"
+                        onClick={handleAddChild}
+                      >
+                        <Plus className="h-4 w-4 mr-1" /> Add Child
+                      </Button>
                     </div>
+                    
+                    {profileData.kids.map((kid, index) => (
+                      <div key={index} className="border rounded-md p-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">Child {index + 1}</span>
+                          {profileData.kids.length > 1 && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0"
+                              onClick={() => handleRemoveChild(index)}
+                            >
+                              <Trash2 className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                          )}
+                        </div>
+                        <div className="flex gap-2 items-end">
+                          <div className="flex-1">
+                            <Label htmlFor={`kid-birthdate-${index}`} className="text-xs">Birth Date</Label>
+                            <Input
+                              id={`kid-birthdate-${index}`}
+                              type="date"
+                              value={kid.birthDate}
+                              onChange={(e) => handleKidInputChange(index, 'birthDate', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <Label htmlFor={`kid-gender-${index}`} className="text-xs">Gender</Label>
+                            <Select
+                              value={kid.gender}
+                              onValueChange={(value) => handleKidInputChange(index, 'gender', value)}
+                            >
+                              <SelectTrigger id={`kid-gender-${index}`}>
+                                <SelectValue placeholder="Select gender" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="boy">Boy</SelectItem>
+                                <SelectItem value="girl">Girl</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                   
                   <div className="space-y-2">
