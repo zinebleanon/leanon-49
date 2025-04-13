@@ -268,7 +268,7 @@ const MumzAlly = () => {
       toast({
         title: "Connection limit approaching",
         description: "Complete your profile to connect with more moms!",
-        variant: "warning"
+        variant: "default"
       });
     }
   };
@@ -312,13 +312,13 @@ const MumzAlly = () => {
         <HeroSection 
           onFiltersChange={handleFiltersChange} 
           profiles={filteredProfiles} 
-          nearbyMoms={nearbyMoms}
+          nearbyMoms={profileCompleteStatus ? nearbyMoms : []} // Only show nearby moms if profile is complete
           showTinderView={true}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
         />
         
-        {nearbyMoms.length > 0 && (
+        {profileCompleteStatus && nearbyMoms.length > 0 && (
           <div className="mt-8">
             <h2 className="text-2xl font-semibold font-playfair mb-6 text-center">
               LeanMoms Near You

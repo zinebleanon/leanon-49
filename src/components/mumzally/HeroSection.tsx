@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,7 @@ import {
   CommandItem,
   CommandList
 } from "@/components/ui/command";
+import { useUserInfo } from "@/hooks/use-user-info";
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -45,6 +47,15 @@ const HeroSection = ({
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
   const [searchResults, setSearchResults] = useState<MumzProfile[]>([]);
   const navigate = useNavigate();
+  const { userInfo } = useUserInfo();
+
+  // Check if profile is complete
+  const isProfileComplete = !!(
+    userInfo?.name && 
+    userInfo?.neighborhood && 
+    userInfo?.kids && 
+    userInfo?.kids.length > 0
+  );
 
   useEffect(() => {
     setLocalSearchTerm(searchTerm);
@@ -166,7 +177,8 @@ const HeroSection = ({
         </div>
       </div>
       
-      {!showTinderView && nearbyMoms.length > 0 && (
+      {/* Only show nearby moms section if profile is complete and not in Tinder view */}
+      {isProfileComplete && !showTinderView && nearbyMoms.length > 0 && (
         <div className="mb-6">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">LeanMoms Near You</h2>
@@ -177,7 +189,11 @@ const HeroSection = ({
             )}
           </div>
           
-          <RecommendedMatches profiles={nearbyMoms} />
+          <RecommendedMatches 
+            profiles={nearbyMoms} 
+            disableConnections={!isProfileComplete}
+            maxConnections={2}
+          />
         </div>
       )}
       
@@ -187,7 +203,11 @@ const HeroSection = ({
             <h2 className="text-xl font-medium">Matched for You</h2>
           </div>
           
-          <RecommendedMatches profiles={profiles} />
+          <RecommendedMatches 
+            profiles={profiles} 
+            disableConnections={!isProfileComplete}
+            maxConnections={2}
+          />
         </div>
       )}
 

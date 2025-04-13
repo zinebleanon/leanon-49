@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, Baby, UserCircle, Lock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -68,7 +67,7 @@ const RecommendedMatches = ({
       toast({
         title: "Connection limit approaching",
         description: "Complete your profile to connect with more moms!",
-        variant: "warning"
+        variant: "default"
       });
     }
   };
