@@ -576,9 +576,6 @@ const Index = () => {
                   <CardTitle className="text-xl md:text-2xl font-playfair">
                     Share Your Referral Code
                   </CardTitle>
-                  <CardDescription className="text-sm mb-1">
-                    Invite friends & get a 5 AED Mall of the Emirates gift card
-                  </CardDescription>
                 </CardHeader>
                 
                 <CardContent className="pt-4 pb-5">
