@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import EditProfileDialog from '@/components/profile/EditProfileDialog';
 
 interface Kid {
   age: number;
@@ -40,6 +41,7 @@ const MumzAlly = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
 
   useEffect(() => {
     // Example profiles - replace with actual data fetching
@@ -174,8 +176,7 @@ const MumzAlly = () => {
   };
 
   const handleCompleteProfile = () => {
-    // Redirect to profile page with state to open the full profile update form
-    navigate('/profile', { state: { openProfileUpdate: true, section: 'all' } });
+    setEditProfileDialogOpen(true);
   };
 
   return (
@@ -221,6 +222,15 @@ const MumzAlly = () => {
           />
         )}
       </div>
+      
+      <EditProfileDialog
+        isOpen={editProfileDialogOpen}
+        onOpenChange={setEditProfileDialogOpen}
+        mode="profile"
+        title="Complete Your Profile"
+        description="Fill in your profile details to connect with more moms"
+        section="all"
+      />
       
       <Footer />
     </div>
