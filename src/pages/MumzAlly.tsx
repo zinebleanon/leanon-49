@@ -224,8 +224,8 @@ const MumzAlly = () => {
           />
         </HeroSectionContainer>
 
-        {/* Show community moms section regardless of profile completion status */}
-        <div className="mt-6">
+        {/* Bring the community moms section closer to the warning message */}
+        <div className="mt-4">
           <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-medium">Moms in the Community</h2>
           </div>
