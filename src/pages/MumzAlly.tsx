@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -8,7 +9,8 @@ import SwipeableProfiles from '@/components/mumzally/SwipeableProfiles';
 import RecommendedMatches from '@/components/mumzally/RecommendedMatches';
 import { Button } from '@/components/ui/button';
 import { Lock, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import useViewportHeight from '@/hooks/use-viewport-height';
 
 interface Kid {
   age: number;
@@ -30,6 +32,8 @@ export interface MumzProfile {
 }
 
 const MumzAlly = () => {
+  // Use the viewport height hook for proper mobile sizing
+  useViewportHeight();
   const { userInfo, neighborhood } = useUserInfo();
   const [nearbyMoms, setNearbyMoms] = useState<MumzProfile[]>([]);
   const [profiles, setProfiles] = useState<MumzProfile[]>([]);
@@ -38,6 +42,12 @@ const MumzAlly = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Scroll to top when the component mounts or location changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   useEffect(() => {
     const exampleProfiles: MumzProfile[] = [
@@ -210,6 +220,19 @@ const MumzAlly = () => {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
         />
+
+        {/* Show community moms section regardless of profile completion status */}
+        <div>
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-xl font-medium">Moms in the Community</h2>
+          </div>
+          
+          <RecommendedMatches 
+            profiles={filteredProfiles} 
+            disableConnections={!isProfileComplete()}
+            maxConnections={2}
+          />
+        </div>
 
         {isProfileComplete() && (
           <SwipeableProfiles
