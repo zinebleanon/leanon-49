@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -22,7 +21,6 @@ const Index = () => {
   const { userInfo, updateUserInfo } = useUserInfo();
   const [showProfileUpdate, setShowProfileUpdate] = useState(false);
   
-  // Profile update state
   const [profileData, setProfileData] = useState({
     workStatus: 'stay-home',
     nationality: '',
@@ -33,7 +31,6 @@ const Index = () => {
   
   useViewportHeight();
   
-  // Generate a referral code if user doesn't have one
   useEffect(() => {
     if (userInfo && !userInfo.referralCode) {
       const newReferralCode = 'LO' + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -41,12 +38,10 @@ const Index = () => {
     }
   }, [userInfo, updateUserInfo]);
   
-  // Check if profile needs to be updated
   useEffect(() => {
     if (userInfo?.profileNeedsUpdate) {
       setShowProfileUpdate(true);
       
-      // Set initial values from userInfo if available
       setProfileData({
         workStatus: userInfo.workStatus || 'stay-home',
         nationality: userInfo.nationality || '',
@@ -191,7 +186,7 @@ const Index = () => {
                   Complete Your Profile
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg mb-1 text-center">
-                  Help us find the right mom friends for you
+                  Help us find Moms Around You
                 </CardDescription>
               </CardHeader>
               
