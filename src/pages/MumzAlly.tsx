@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -40,8 +39,16 @@ const MumzAlly = () => {
   const { toast } = useToast();
   const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
 
+  const isProfileComplete = () => {
+    return !!(
+      userInfo?.name &&
+      userInfo?.neighborhood &&
+      userInfo?.kids &&
+      userInfo?.kids.length > 0
+    );
+  };
+
   useEffect(() => {
-    // Example profiles - replace with actual data fetching
     const exampleProfiles: MumzProfile[] = [
       {
         id: 1,
@@ -119,26 +126,28 @@ const MumzAlly = () => {
 
     setProfiles(exampleProfiles);
 
-    // Show all moms regardless of neighborhood for users without complete profiles
-    const nearby = isProfileComplete() 
-      ? exampleProfiles.filter(profile => profile.location === neighborhood)
-      : exampleProfiles;
-      
-    setNearbyMoms(nearby);
-    setFilteredProfiles(exampleProfiles);
+    if (isProfileComplete()) {
+      const nearby = exampleProfiles.filter(profile => profile.location === neighborhood);
+      setNearbyMoms(nearby);
+      setFilteredProfiles(nearby);
+    } else {
+      setNearbyMoms([]);
+      setFilteredProfiles(exampleProfiles);
+    }
   }, [neighborhood]);
 
   useEffect(() => {
-    // Apply search filter
+    const baseProfiles = isProfileComplete() ? nearbyMoms : profiles;
+    
     if (searchTerm) {
-      const searchResults = profiles.filter(profile =>
+      const searchResults = baseProfiles.filter(profile =>
         profile.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredProfiles(searchResults);
     } else {
-      setFilteredProfiles(profiles);
+      setFilteredProfiles(baseProfiles);
     }
-  }, [searchTerm, profiles]);
+  }, [searchTerm, profiles, nearbyMoms]);
 
   const handleLeanOn = (id: number, name: string) => {
     if (sentConnections.includes(id)) {
@@ -162,17 +171,7 @@ const MumzAlly = () => {
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setSearchTerm(filters.searchTerm || '');
-    // Apply other filters as needed
     console.log('filters', filters);
-  };
-
-  const isProfileComplete = () => {
-    return !!(
-      userInfo?.name &&
-      userInfo?.neighborhood &&
-      userInfo?.kids &&
-      userInfo?.kids.length > 0
-    );
   };
 
   const handleCompleteProfile = () => {
@@ -212,6 +211,7 @@ const MumzAlly = () => {
           nearbyMoms={nearbyMoms}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
+          isProfileComplete={isProfileComplete()}
         />
 
         <SwipeableProfiles
@@ -222,7 +222,6 @@ const MumzAlly = () => {
         />
       </div>
       
-      {/* Important: Making dialog render at the top level with fixed props */}
       <EditProfileDialog
         isOpen={editProfileDialogOpen}
         onOpenChange={setEditProfileDialogOpen}

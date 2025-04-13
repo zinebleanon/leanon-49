@@ -1,12 +1,22 @@
 
 import React from 'react';
+import { Badge } from "@/components/ui/badge";
 
-const HeroTitle: React.FC = () => {
+interface HeroTitleProps {
+  isProfileComplete?: boolean;
+}
+
+const HeroTitle: React.FC<HeroTitleProps> = ({ isProfileComplete = false }) => {
   return (
     <div className="w-full text-center">
       <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
-        LeanMoms<br />Around You
+        LeanMoms
       </h1>
+      {isProfileComplete && (
+        <Badge variant="outline" className="px-3 py-1 bg-white/50">
+          Showing moms near you
+        </Badge>
+      )}
     </div>
   );
 };

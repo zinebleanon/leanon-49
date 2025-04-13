@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { MumzProfile } from "@/pages/MumzAlly";
 import HowItWorksModal from "./HowItWorksModal";
 import FilterSection from "./FilterSection";
 import ConnectionRequests from "./ConnectionRequests";
-import RecommendedMatches from "./RecommendedMatches";
 import HeroTitle from "./HeroTitle";
 import ActionButtons from "./ActionButtons";
 import SearchBar from "./SearchBar";
@@ -17,6 +17,7 @@ interface HeroSectionProps {
   showTinderView?: boolean;
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
+  isProfileComplete?: boolean;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ 
@@ -26,7 +27,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   onViewToggle, 
   showTinderView = false,
   searchTerm = '',
-  onSearchChange
+  onSearchChange,
+  isProfileComplete = false
 }) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -42,7 +44,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <div className="mb-8">
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-        <HeroTitle />
+        <HeroTitle isProfileComplete={isProfileComplete} />
         <ActionButtons 
           onHowItWorksClick={() => setIsHowItWorksOpen(true)}
           onConnectionRequestsClick={() => setIsConnectionRequestsOpen(true)}
@@ -62,23 +64,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           profiles={profiles}
         />
       </div>
-      
-      {!showTinderView && nearbyMoms.length > 0 && (
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-medium">LeanMoms</h2>
-            {nearbyMoms.length > 0 && (
-              <Badge variant="outline" className="px-3 py-1 bg-white/50">
-                {nearbyMoms.length} {nearbyMoms.length === 1 ? 'mom' : 'moms'} nearby
-              </Badge>
-            )}
-          </div>
-          
-          <RecommendedMatches 
-            profiles={nearbyMoms} 
-          />
-        </div>
-      )}
 
       <HowItWorksModal
         open={isHowItWorksOpen}
