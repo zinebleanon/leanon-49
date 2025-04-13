@@ -1,4 +1,4 @@
-
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,7 +10,6 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { UserCircle, MapPin, MessageCircle, Heart, ArrowLeft, Info } from "lucide-react";
-import HowItWorksDialog from "@/components/HowItWorksDialog";
 
 const steps = [
   {
@@ -52,11 +51,8 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
         <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20 p-6 pt-8 pb-8 max-h-[95vh] overflow-y-auto">
           <DialogHeader className="relative mb-2">
             <DialogTitle className="text-2xl text-center mb-4">
-              How To Connect With Moms Near You
+              How to Connect with Moms Around You
             </DialogTitle>
-            <DialogDescription className="text-center text-muted-foreground">
-              Find your mom community
-            </DialogDescription>
           </DialogHeader>
           
           <div className="grid gap-6 mt-2">
@@ -94,11 +90,8 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20 p-6 pt-8 pb-8 max-h-[95vh] overflow-y-auto">
         <DialogHeader className="relative mb-2">
           <DialogTitle className="text-2xl text-center mb-4">
-            How To Connect With Moms Near You
+            How to Connect with Moms Around You
           </DialogTitle>
-          <DialogDescription className="text-center text-muted-foreground">
-            Find your mom community
-          </DialogDescription>
         </DialogHeader>
         
         <div className="grid gap-6 mt-2">
