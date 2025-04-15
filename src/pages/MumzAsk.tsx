@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -20,7 +19,9 @@ import {
   HeartHandshake,
   Ticket,
   Tent,
-  Smile
+  Smile,
+  Bed,
+  Tooth
 } from 'lucide-react';
 import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -47,6 +48,8 @@ const MumzAsk = () => {
     { name: 'Birth', icon: <Activity className="h-4 w-4 mr-2" /> },
     { name: 'Postpartum', icon: <User className="h-4 w-4 mr-2" /> },
     { name: 'Health', icon: <Activity className="h-4 w-4 mr-2" /> },
+    { name: 'Sleep', icon: <Bed className="h-4 w-4 mr-2" /> },
+    { name: 'Teething', icon: <Tooth className="h-4 w-4 mr-2" /> },
     { name: 'Diversification', icon: <UtensilsCrossed className="h-4 w-4 mr-2" /> },
     { name: 'Feeding & Breastfeeding', icon: <Baby className="h-4 w-4 mr-2" /> },
     { name: 'Shopping', icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
