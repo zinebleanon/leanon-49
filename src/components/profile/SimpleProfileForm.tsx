@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { cn } from '@/lib/utils';
 import InterestsSelector from './InterestsSelector';
+import NationalitySearch from './NationalitySearch';
 
 interface SimpleProfileFormProps {
   onSuccess: () => void;
@@ -41,7 +41,6 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     (new Date().getMonth() + 1).toString().padStart(2, '0')
   );
   
-  // Initialize interests from user data or empty array
   const [selectedInterests, setSelectedInterests] = useState<string[]>(
     userInfo?.interests ? userInfo.interests.split(', ').filter(Boolean) : []
   );
@@ -203,28 +202,10 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
             
             <div>
               <Label htmlFor="nationality" className="font-medium">Your Nationality</Label>
-              <Select value={nationality} onValueChange={setNationality}>
-                <SelectTrigger className="w-full mt-1">
-                  <SelectValue placeholder="Select your nationality" />
-                </SelectTrigger>
-                <SelectContent>
-                  <div className="sticky top-0 p-2 bg-white border-b">
-                    <Input
-                      placeholder="Search nationality..."
-                      value={nationalitySearch}
-                      onChange={(e) => setNationalitySearch(e.target.value)}
-                      className="h-8"
-                    />
-                  </div>
-                  <ScrollArea className="h-[200px]">
-                    {filteredNationalities.map((nat) => (
-                      <SelectItem key={nat} value={nat}>
-                        {nat}
-                      </SelectItem>
-                    ))}
-                  </ScrollArea>
-                </SelectContent>
-              </Select>
+              <NationalitySearch
+                selectedNationality={nationality}
+                onNationalitySelect={setNationality}
+              />
             </div>
             
             <div>
