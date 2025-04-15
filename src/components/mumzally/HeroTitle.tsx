@@ -1,22 +1,44 @@
 
 import React from 'react';
-import { Badge } from "@/components/ui/badge";
+import { useNavigate } from 'react-router-dom';
 
 interface HeroTitleProps {
   isProfileComplete?: boolean;
 }
 
-const HeroTitle: React.FC<HeroTitleProps> = ({ isProfileComplete = false }) => {
+const HeroTitle = ({ isProfileComplete = false }: HeroTitleProps) => {
+  const navigate = useNavigate();
+
+  const handleCompleteProfile = () => {
+    navigate('/', {
+      state: { 
+        openProfileUpdate: true,
+        section: 'all'
+      }
+    });
+  };
+
   return (
-    <div className="w-full text-center">
-      <h1 className="text-3xl md:text-4xl font-playfair font-bold text-foreground mb-2">
-        {isProfileComplete ? "LeanMoms Around You" : "LeanMoms"}
+    <div>
+      <h1 className="text-2xl md:text-3xl font-bold font-playfair mb-2">
+        {isProfileComplete ? 'Find Your LeanMoms' : 'Complete Your Profile'}
       </h1>
-      {isProfileComplete && (
-        <Badge variant="outline" className="px-3 py-1 bg-white/50">
-          Showing moms near you
-        </Badge>
-      )}
+      <p className="text-muted-foreground">
+        {isProfileComplete 
+          ? 'Connect with moms who share your interests and parenting journey'
+          : (
+            <span className="flex items-center gap-2">
+              Complete your profile to start connecting with other moms.
+              <button
+                onClick={handleCompleteProfile}
+                className="text-primary hover:underline font-medium"
+              >
+                Complete Profile
+              </button>
+            </span>
+          )
+        }
+      </p>
     </div>
   );
 };
