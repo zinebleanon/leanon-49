@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Bell, Check, Trash2, MessageCircle, Users, ShoppingBag, AlertTriangle } from 'lucide-react';
+import { Bell, Check, Trash2, MessageCircle, Users, ShoppingBag, AlertTriangle, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -15,7 +14,7 @@ interface Notification {
   message: string;
   timestamp: string;
   read: boolean;
-  feature: 'ask' | 'connect' | 'marketplace' | 'general';
+  feature: 'ask' | 'connect' | 'preloved' | 'deals' | 'general';
   isUrgent?: boolean;
 }
 
@@ -48,11 +47,19 @@ const Notifications = () => {
         },
         {
           id: '3',
-          title: 'Marketplace Update',
+          title: 'Preloved Item Interest',
           message: 'Someone is interested in your baby carrier listing',
           timestamp: '2025-04-05T08:45:00Z',
           read: true,
-          feature: 'marketplace'
+          feature: 'preloved'
+        },
+        {
+          id: '4',
+          title: 'New Deal Available',
+          message: 'Special discount on baby essentials this week',
+          timestamp: '2025-04-04T16:20:00Z',
+          read: false,
+          feature: 'deals'
         }
       ];
       
@@ -69,8 +76,10 @@ const Notifications = () => {
         return <MessageCircle className="h-4 w-4" />;
       case 'connect':
         return <Users className="h-4 w-4" />;
-      case 'marketplace':
+      case 'preloved':
         return <ShoppingBag className="h-4 w-4" />;
+      case 'deals':
+        return <Tag className="h-4 w-4" />;
       default:
         return <Bell className="h-4 w-4" />;
     }
@@ -142,11 +151,12 @@ const Notifications = () => {
         ) : (
           <>
             <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-6">
-              <TabsList className="grid grid-cols-4">
+              <TabsList className="grid grid-cols-5">
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="ask">Ask</TabsTrigger>
                 <TabsTrigger value="connect">Connect</TabsTrigger>
-                <TabsTrigger value="marketplace">Market</TabsTrigger>
+                <TabsTrigger value="preloved">Preloved</TabsTrigger>
+                <TabsTrigger value="deals">Deals</TabsTrigger>
               </TabsList>
             </Tabs>
             
@@ -218,4 +228,3 @@ const Notifications = () => {
 };
 
 export default Notifications;
-
