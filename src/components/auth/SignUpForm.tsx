@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Mail, Lock, MapPin, Gift, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -96,8 +97,8 @@ const SignUpForm = ({ onSwitchToSignIn, signupStep, onStepChange, defaultReferra
       setIsLoading(true);
       
       try {
-        
-        setSignupStep(2);
+        // Changed from setSignupStep to onStepChange
+        onStepChange(2);
         toast({
           title: "Verification code sent",
           description: `We've sent a verification code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
@@ -152,7 +153,8 @@ const SignUpForm = ({ onSwitchToSignIn, signupStep, onStepChange, defaultReferra
             description: "This email address is already registered. Please sign in or use a different email.",
             variant: "destructive",
           });
-          setSignupStep(1);
+          // Changed from setSignupStep to onStepChange
+          onStepChange(1);
         } else {
           toast({
             title: "Error signing up",
