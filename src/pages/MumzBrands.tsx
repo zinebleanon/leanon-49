@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import BrandsHero from '@/components/mumzbrands/BrandsHero';
@@ -117,8 +117,14 @@ const MumzBrands = () => {
   }, []);
 
   const handleOpenBrandDetail = (brand: Brand) => {
+    console.log('Opening brand detail:', brand);
     setSelectedBrand(brand);
     setIsBrandDetailDialogOpen(true);
+  };
+  
+  const handleOpenDiscountDialog = () => {
+    console.log('Opening discount dialog');
+    setIsDiscountDialogOpen(true);
   };
   
   if (isLoading) {
@@ -132,7 +138,7 @@ const MumzBrands = () => {
       <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-visible">
         <BrandsHero 
           onOpenDialog={() => setIsLocalBrandsDialogOpen(true)} 
-          onOpenDiscountDialog={() => setIsDiscountDialogOpen(true)}
+          onOpenDiscountDialog={handleOpenDiscountDialog}
         />
         
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 mt-[-90px]">

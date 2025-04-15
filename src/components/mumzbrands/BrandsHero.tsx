@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
@@ -13,6 +14,11 @@ interface BrandsHeroProps {
 const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  
+  const handleDiscountDialogOpen = () => {
+    console.log('Discount dialog open clicked');
+    onOpenDiscountDialog();
+  };
   
   return (
     <section className="py-4 md:py-6 px-4 md:px-8 bg-[#B8CEC2]">
@@ -34,7 +40,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
               variant="warm"
               size={isMobile ? "default" : "lg"}
               className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform"
-              onClick={onOpenDiscountDialog}
+              onClick={handleDiscountDialogOpen}
               trackingName="brands_browse_discounts"
             >
               <BadgePercent className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> 
