@@ -16,7 +16,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
   const isMobile = useIsMobile();
   
   const handleDiscountDialogOpen = () => {
-    console.log('Discount dialog open clicked');
+    console.log('Opening discount dialog from BrandsHero');
     onOpenDiscountDialog();
   };
   
@@ -39,7 +39,7 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             <Button 
               variant="warm"
               size={isMobile ? "default" : "lg"}
-              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform"
+              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform cursor-pointer"
               onClick={handleDiscountDialogOpen}
               trackingName="brands_browse_discounts"
             >

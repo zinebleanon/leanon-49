@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -123,7 +124,7 @@ const MumzBrands = () => {
   };
   
   const handleOpenDiscountDialog = () => {
-    console.log('Opening discount dialog');
+    console.log('Opening discount dialog from MumzBrands');
     setIsDiscountDialogOpen(true);
   };
   
