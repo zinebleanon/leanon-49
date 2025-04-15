@@ -41,6 +41,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     }
   };
 
+  const totalPendingRequests = 4;
+
   return (
     <div className="mb-8">
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
@@ -50,7 +52,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         <ActionButtons 
           onHowItWorksClick={() => setIsHowItWorksOpen(true)}
           onConnectionRequestsClick={() => setIsConnectionRequestsOpen(true)}
-          pendingRequestsCount={2}
+          pendingRequestsCount={totalPendingRequests}
         />
       </div>
       
