@@ -58,7 +58,7 @@ const BrandsHowItWorksDialog = ({ className, trackingName }: BrandsHowItWorksDia
       <DialogContent className="sm:max-w-lg bg-gradient-to-br from-pastel-green/10 to-pastel-yellow/20 p-6 pt-8 pb-8 max-h-[95vh] overflow-y-auto">
         <DialogHeader className="relative mb-2">
           <DialogTitle className="text-2xl text-center mb-4">
-            How MumzBrands Works
+            How LeanDeals Works
           </DialogTitle>
           <DialogDescription className="text-center text-muted-foreground">
             Discover great brands with exclusive discounts
