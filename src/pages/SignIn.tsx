@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, ArrowLeft, Check, MapPin, Gift } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -24,8 +26,10 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
   const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification
   const [otpValue, setOtpValue] = useState("");
+  const [resetPasswordEmail, setResetPasswordEmail] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const referralCodeFromParams = searchParams.get('referral') || '';
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, resetPassword } = useAuth();
   const { toast } = useToast();
   
   useEffect(() => {
@@ -236,6 +240,20 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     }
   };
   
+  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    try {
+      await resetPassword(resetPasswordEmail);
+      setShowForgotPassword(false);
+    } catch (error) {
+      console.error("Password reset error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   const formatPhoneDisplay = (phone: string) => {
     if (!phone) return '';
     
@@ -363,6 +381,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                         variant="link" 
                         className="text-xs p-0 h-auto font-normal text-muted-foreground"
                         type="button"
+                        onClick={() => setShowForgotPassword(true)}
                       >
                         Forgot password?
                       </Button>
@@ -644,6 +663,55 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Forgot Password Dialog */}
+      <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Forgot Password</DialogTitle>
+            <DialogDescription>
+              Enter your email and we'll send you a link to reset your password.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <form onSubmit={handleResetPassword} className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="reset-email">Email</Label>
+              <Input 
+                id="reset-email"
+                type="email"
+                value={resetPasswordEmail}
+                onChange={(e) => setResetPasswordEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="border-secondary/30 focus:border-secondary"
+                icon={<Mail className="h-4 w-4" />}
+                required
+              />
+            </div>
+            
+            <DialogFooter className="pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowForgotPassword(false)}
+                disabled={isLoading}
+              >
+                Cancel
+              </Button>
+              <Button 
+                type="submit"
+                className="warm-button"
+                disabled={isLoading}
+              >
+                {isLoading && (
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></div>
+                )}
+                Send Reset Link
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

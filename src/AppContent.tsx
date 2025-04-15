@@ -24,6 +24,7 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Inbox from "./pages/Inbox";
 import Terms from "./pages/Terms";
+import ResetPassword from "./pages/ResetPassword";
 
 const AppContent = () => {
   const { loading, user } = useAuth();
@@ -50,6 +51,7 @@ const AppContent = () => {
       {/* Both sign-in and sign-up routes use the same component with appropriate default tabs */}
       <Route path="/sign-in" element={<SignIn defaultTab="signin" />} />
       <Route path="/sign-up" element={<SignIn defaultTab="signup" />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       
       {/* Terms & Conditions Page */}
       <Route path="/terms" element={<Terms />} />
