@@ -1,4 +1,3 @@
-
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -105,24 +104,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (error) throw error;
       
-      if (data.user) {
-        console.log("Sign up successful, user created:", data.user.id);
-        
-        // Sign in immediately after successful signup
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
-        if (signInError) {
-          console.error("Error signing in after signup:", signInError);
-          throw signInError;
-        }
+      // Check if email confirmation is required
+      if (data.user && data.session) {
+        // If we have a session, user doesn't need email confirmation
+        console.log("Sign up successful with immediate session, user created:", data.user.id);
+        // Auth state change event will handle redirects
+      } else if (data.user) {
+        // If we have a user but no session, email confirmation is needed
+        console.log("Sign up successful but email confirmation is required:", data.user.id);
+        setLoading(false);
         
         toast({
-          title: "Account created!",
-          description: "Welcome to LeanOn! Your account has been created.",
+          title: "Email confirmation required",
+          description: "We've sent you an email with a confirmation link. Please check your inbox to verify your account.",
         });
+        
+        // Keep the user on the sign-in page
+        setTimeout(() => {
+          navigate('/sign-in', { replace: true });
+        }, 0);
       }
     } catch (error: any) {
       console.error("Error in signup:", error);

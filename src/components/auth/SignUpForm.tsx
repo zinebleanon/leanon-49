@@ -81,9 +81,19 @@ const SignUpForm = ({
       setIsLoading(true);
       
       try {
-        // For testing purposes, we'll skip the verification step
-        // and move directly to create the account
-        handleSkipVerification();
+        await signUp(
+          signUpData.email, 
+          signUpData.password, 
+          {
+            first_name: signUpData.firstName,
+            last_name: signUpData.lastName,
+            phone: signUpData.phone
+          }
+        );
+        
+        // The navigation and toast will be handled by the auth provider
+        // If email confirmation is required, the auth provider will show the appropriate toast
+        setIsLoading(false);
       } catch (error: any) {
         console.error("Error in signup:", error);
         toast({
@@ -124,6 +134,7 @@ const SignUpForm = ({
         );
         
         // Navigation is handled by the auth provider
+        setIsLoading(false);
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
@@ -168,33 +179,6 @@ const SignUpForm = ({
     return phone;
   };
 
-  const handleSkipVerification = async () => {
-    // This is for testing only - in real app, would not skip verification
-    setIsLoading(true);
-    
-    try {
-      console.log("Skipping verification, completing signup directly");
-      await signUp(
-        signUpData.email, 
-        signUpData.password, 
-        {
-          first_name: signUpData.firstName,
-          last_name: signUpData.lastName,
-          phone: signUpData.phone
-        }
-      );
-      // Navigation is handled by the auth provider in useAuth.tsx
-    } catch (error: any) {
-      console.error("Error in signup with skip verification:", error);
-      toast({
-        title: "Error signing up",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-    }
-  };
-
   return (
     <form onSubmit={handleSignUp}>
       {signupStep === 2 ? (
@@ -203,7 +187,7 @@ const SignUpForm = ({
           otpValue={otpValue}
           setOtpValue={setOtpValue}
           onResendOTP={resendOTP}
-          onSkipVerification={handleSkipVerification}
+          onSkipVerification={() => handleSignUp(new Event('skip') as any)}
           isLoading={isLoading}
         />
       ) : (
