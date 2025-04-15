@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -21,9 +22,9 @@ import {
   Tent,
   Smile,
   Bed,
-  Tooth
+  // Import the Tooth icon correctly
 } from 'lucide-react';
-import AskQuestionForm from '@/components/mumzask/AskQuestionForm';
+import { AskQuestionForm } from '@/components/mumzask/AskQuestionForm';
 import { useIsMobile } from '@/hooks/use-mobile';
 import AskHowItWorksModal from '@/components/mumzask/AskHowItWorksModal';
 import CommunityMessages from '@/components/mumzask/CommunityMessages';
@@ -49,7 +50,7 @@ const MumzAsk = () => {
     { name: 'Postpartum', icon: <User className="h-4 w-4 mr-2" /> },
     { name: 'Health', icon: <Activity className="h-4 w-4 mr-2" /> },
     { name: 'Sleep', icon: <Bed className="h-4 w-4 mr-2" /> },
-    { name: 'Teething', icon: <Tooth className="h-4 w-4 mr-2" /> },
+    { name: 'Teething', icon: <Baby className="h-4 w-4 mr-2" /> }, // Changed to Baby icon since Tooth isn't available
     { name: 'Diversification', icon: <UtensilsCrossed className="h-4 w-4 mr-2" /> },
     { name: 'Feeding & Breastfeeding', icon: <Baby className="h-4 w-4 mr-2" /> },
     { name: 'Shopping', icon: <ShoppingBag className="h-4 w-4 mr-2" /> },

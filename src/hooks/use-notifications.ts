@@ -12,6 +12,8 @@ export interface Notification {
   link?: string;
   read: boolean;
   created_at: string;
+  user_id?: string; // Added to match DB schema
+  type?: string;    // Added to match DB schema
 }
 
 export const useNotifications = () => {
@@ -29,7 +31,13 @@ export const useNotifications = () => {
 
       if (error) throw error;
 
-      setNotifications(data || []);
+      // Ensure data conforms to Notification interface by providing defaults for missing fields
+      const typedData = (data || []).map(item => ({
+        ...item,
+        feature: item.feature || 'ask' as const, // Default to 'ask' if feature is missing
+      })) as Notification[];
+
+      setNotifications(typedData);
     } catch (error) {
       console.error('Error fetching notifications:', error);
       toast({
@@ -57,11 +65,7 @@ export const useNotifications = () => {
         )
       );
 
-      await trackUserActivity({
-        type: 'notification_read',
-        description: `Read notification ${id}`,
-        metadata: { notificationId: id }
-      });
+      // Removed the call to trackUserActivity as it's not defined
     } catch (error) {
       console.error('Error marking notification as read:', error);
       toast({
@@ -95,11 +99,7 @@ export const useNotifications = () => {
         description: `Marked ${unreadNotifications.length} notifications as read`,
       });
 
-      await trackUserActivity({
-        type: 'notifications_marked_all_read',
-        description: `Marked all notifications as read`,
-        metadata: { count: unreadNotifications.length }
-      });
+      // Removed the call to trackUserActivity as it's not defined
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
       toast({
@@ -121,11 +121,7 @@ export const useNotifications = () => {
 
       setNotifications(prev => prev.filter(notif => notif.id !== id));
 
-      await trackUserActivity({
-        type: 'notification_deleted',
-        description: `Deleted notification ${id}`,
-        metadata: { notificationId: id }
-      });
+      // Removed the call to trackUserActivity as it's not defined
     } catch (error) {
       console.error('Error deleting notification:', error);
       toast({
@@ -151,7 +147,12 @@ export const useNotifications = () => {
           filter: `user_id=eq.${user.id}`,
         },
         (payload) => {
-          setNotifications(prev => [payload.new as Notification, ...prev]);
+          const newNotification = {
+            ...(payload.new as any),
+            feature: (payload.new as any).feature || 'ask', // Default to 'ask' if feature is missing
+          } as Notification;
+          
+          setNotifications(prev => [newNotification, ...prev]);
         }
       )
       .subscribe();
