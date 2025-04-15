@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      button_clicks: {
+        Row: {
+          button_name: string
+          clicked_at: string
+          id: string
+          page_path: string
+          user_id: string | null
+        }
+        Insert: {
+          button_name: string
+          clicked_at?: string
+          id?: string
+          page_path: string
+          user_id?: string | null
+        }
+        Update: {
+          button_name?: string
+          clicked_at?: string
+          id?: string
+          page_path?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       connections: {
         Row: {
           connected_user_id: string | null
