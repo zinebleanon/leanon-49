@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -42,6 +43,7 @@ const MumzAlly = () => {
   const [editProfileSection, setEditProfileSection] = useState<ProfileSection>('all');
   const [useSimpleProfileForm, setUseSimpleProfileForm] = useState(false);
 
+  // Updated profile completion check to match the same logic used in Index.tsx
   const isProfileComplete = () => {
     return !!(
       userInfo?.name &&
@@ -50,7 +52,8 @@ const MumzAlly = () => {
       userInfo?.kids.length > 0 &&
       userInfo?.nationality &&
       userInfo?.birthDate &&
-      userInfo?.interests
+      userInfo?.interests &&
+      !userInfo?.profileNeedsUpdate // Add this check to match Index.tsx logic
     );
   };
 
