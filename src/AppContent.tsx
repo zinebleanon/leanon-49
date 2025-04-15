@@ -40,9 +40,17 @@ const AppContent = () => {
     );
   }
 
-  // Redirect authenticated users away from auth pages
+  // Stronger redirection for authenticated users away from auth pages
   if (user && (location.pathname === '/sign-in' || location.pathname === '/sign-up')) {
     console.log("User already authenticated, redirecting to home from", location.pathname);
+    return <Navigate to="/" replace />;
+  }
+
+  // For authentication-based redirection directly after signup (via session flag)
+  const signupCompleted = sessionStorage.getItem('signup_completed');
+  if (signupCompleted === 'true' && (location.pathname === '/sign-in' || location.pathname === '/sign-up')) {
+    console.log("Found signup_completed flag in AppContent, redirecting to index");
+    sessionStorage.removeItem('signup_completed');
     return <Navigate to="/" replace />;
   }
 

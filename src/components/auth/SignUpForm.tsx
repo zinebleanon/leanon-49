@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
@@ -37,6 +37,16 @@ const SignUpForm = ({
     neighborhood: 'Dubai Marina',
     referralCode: defaultReferralCode
   });
+
+  // Auto-redirect to index on mount if we got here after a successful signup
+  useEffect(() => {
+    const signupCompleted = sessionStorage.getItem('signup_completed');
+    if (signupCompleted === 'true') {
+      console.log("Found signup_completed flag, redirecting to index");
+      sessionStorage.removeItem('signup_completed');
+      navigate('/', { replace: true });
+    }
+  }, [navigate]);
 
   const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -116,6 +126,9 @@ const SignUpForm = ({
           phone: signUpData.phone
         });
         
+        // Set a flag to indicate signup completion
+        sessionStorage.setItem('signup_completed', 'true');
+        
         await signUp(
           signUpData.email, 
           signUpData.password, 
@@ -126,9 +139,17 @@ const SignUpForm = ({
           }
         );
         
-        // Explicit navigation to ensure redirection happens
+        // Multiple redirection strategies to ensure we get to index
         console.log("SignUp completed, redirecting to home page (Index)...");
         navigate('/', { replace: true });
+        
+        // Force a window reload after a brief delay if redirection fails
+        setTimeout(() => {
+          if (window.location.pathname !== '/') {
+            console.log("Forced redirect via window.location");
+            window.location.href = '/';
+          }
+        }, 500);
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
@@ -176,6 +197,10 @@ const SignUpForm = ({
   const handleSkipVerification = () => {
     // This is for testing only - in real app, would not skip verification
     setIsLoading(true);
+    
+    // Set a flag to indicate signup completion
+    sessionStorage.setItem('signup_completed', 'true');
+    
     try {
       console.log("Skipping verification, completing signup directly");
       signUp(
@@ -190,6 +215,14 @@ const SignUpForm = ({
         // Explicit navigation after signup completes
         console.log("Skip verification signup completed, redirecting to home page (Index)...");
         navigate('/', { replace: true });
+        
+        // Force a window reload after a brief delay if redirection fails
+        setTimeout(() => {
+          if (window.location.pathname !== '/') {
+            console.log("Forced redirect via window.location");
+            window.location.href = '/';
+          }
+        }, 500);
       });
     } catch (error: any) {
       console.error("Error in signup with skip verification:", error);

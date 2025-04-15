@@ -1,3 +1,4 @@
+
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -35,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         console.log("Is new user:", isNewUser);
         
-        // Always redirect to the home page (Index), not to MumzAllySubscribe
+        // Always redirect to the home page (Index)
         navigate('/', { replace: true });
         
         if (isNewUser) {
@@ -93,8 +94,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           description: "Welcome to LeanOn! Your account has been created.",
         });
         
-        // Always navigate directly to home page (Index)
-        navigate('/', { replace: true });
+        // Force immediate navigation to Index page
+        console.log("Forcing navigation to Index page after signup");
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 100);
       }
     } catch (error: any) {
       toast({
