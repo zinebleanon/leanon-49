@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Calendar as CalendarIcon, Clock } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
@@ -10,7 +11,6 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { useToast } from '@/hooks/use-toast';
 import EditProfileDialog from './EditProfileDialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { cn } from '@/lib/utils';
 import InterestsSelector from './InterestsSelector';
@@ -153,191 +153,204 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
   };
 
   return (
-    <div className="bg-card rounded-lg border shadow-sm p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-2">Complete Your Profile</h2>
-      <p className="text-center text-muted-foreground mb-6">Help us find Moms Around You</p>
-      
-      <Button 
-        variant="outline" 
-        className="w-full mb-6"
+    <div className="bg-card rounded-lg border shadow-sm p-0 max-w-md mx-auto relative">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute right-2 top-2 z-50"
         onClick={onCancel}
       >
-        <Clock className="mr-2 h-4 w-4" />
-        Do this later
+        <X className="h-4 w-4" />
       </Button>
-      
-      <div className="space-y-6">
-        <div>
-          <Label className="font-medium">I am a:</Label>
-          <RadioGroup 
-            defaultValue={workStatus}
-            onValueChange={setWorkStatus}
-            className="flex gap-8 mt-2"
+
+      <ScrollArea className="h-[80vh] rounded-lg">
+        <div className="p-6">
+          <h2 className="text-2xl font-bold text-center mb-2">Complete Your Profile</h2>
+          <p className="text-center text-muted-foreground mb-6">Help us find Moms Around You</p>
+          
+          <Button 
+            variant="outline" 
+            className="w-full mb-6"
+            onClick={onCancel}
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="full-time" id="full-time" />
-              <Label htmlFor="full-time">Full Time Mom</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="working" id="working" />
-              <Label htmlFor="working">Working Mom</Label>
-            </div>
-          </RadioGroup>
-        </div>
-        
-        <div>
-          <Label htmlFor="nationality" className="font-medium">Your Nationality</Label>
-          <Select value={nationality} onValueChange={setNationality}>
-            <SelectTrigger className="w-full mt-1">
-              <SelectValue placeholder="Select your nationality" />
-            </SelectTrigger>
-            <SelectContent>
-              <div className="sticky top-0 p-2 bg-white border-b">
-                <Input
-                  placeholder="Search nationality..."
-                  value={nationalitySearch}
-                  onChange={(e) => setNationalitySearch(e.target.value)}
-                  className="h-8"
-                />
-              </div>
-              <ScrollArea className="h-[200px]">
-                {filteredNationalities.map((nat) => (
-                  <SelectItem key={nat} value={nat}>
-                    {nat}
-                  </SelectItem>
-                ))}
-              </ScrollArea>
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div>
-          <Label className="font-medium">Your Birth Date</Label>
-          <div className="flex gap-2 mb-2">
-            <Select value={selectedMonth} onValueChange={handleMonthChange}>
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Month" />
-              </SelectTrigger>
-              <SelectContent>
-                {months.map((month) => (
-                  <SelectItem key={month.value} value={month.value}>
-                    {month.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={selectedYear} onValueChange={handleYearChange}>
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Year" />
-              </SelectTrigger>
-              <SelectContent>
-                {years.map((year) => (
-                  <SelectItem key={year} value={year}>
-                    {year}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-full pl-3 text-left font-normal",
-                  !birthDate && "text-muted-foreground"
-                )}
+            <Clock className="mr-2 h-4 w-4" />
+            Do this later
+          </Button>
+          
+          <div className="space-y-6">
+            <div>
+              <Label className="font-medium">I am a:</Label>
+              <RadioGroup 
+                defaultValue={workStatus}
+                onValueChange={setWorkStatus}
+                className="flex gap-8 mt-2"
               >
-                {birthDate ? (
-                  format(birthDate, "MMMM d, yyyy")
-                ) : (
-                  <span>Select day</span>
-                )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={birthDate}
-                onSelect={setBirthDate}
-                month={new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1)}
-                defaultMonth={new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1)}
-                disabled={(date) => {
-                  const minDate = new Date();
-                  minDate.setFullYear(minDate.getFullYear() - 80);
-                  return date > new Date() || date < minDate;
-                }}
-                initialFocus
-                className="p-3 pointer-events-auto"
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="full-time" id="full-time" />
+                  <Label htmlFor="full-time">Full Time Mom</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="working" id="working" />
+                  <Label htmlFor="working">Working Mom</Label>
+                </div>
+              </RadioGroup>
+            </div>
+            
+            <div>
+              <Label htmlFor="nationality" className="font-medium">Your Nationality</Label>
+              <Select value={nationality} onValueChange={setNationality}>
+                <SelectTrigger className="w-full mt-1">
+                  <SelectValue placeholder="Select your nationality" />
+                </SelectTrigger>
+                <SelectContent>
+                  <div className="sticky top-0 p-2 bg-white border-b">
+                    <Input
+                      placeholder="Search nationality..."
+                      value={nationalitySearch}
+                      onChange={(e) => setNationalitySearch(e.target.value)}
+                      className="h-8"
+                    />
+                  </div>
+                  <ScrollArea className="h-[200px]">
+                    {filteredNationalities.map((nat) => (
+                      <SelectItem key={nat} value={nat}>
+                        {nat}
+                      </SelectItem>
+                    ))}
+                  </ScrollArea>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div>
+              <Label className="font-medium">Your Birth Date</Label>
+              <div className="flex gap-2 mb-2">
+                <Select value={selectedMonth} onValueChange={handleMonthChange}>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {months.map((month) => (
+                      <SelectItem key={month.value} value={month.value}>
+                        {month.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select value={selectedYear} onValueChange={handleYearChange}>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {years.map((year) => (
+                      <SelectItem key={year} value={year}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full pl-3 text-left font-normal",
+                      !birthDate && "text-muted-foreground"
+                    )}
+                  >
+                    {birthDate ? (
+                      format(birthDate, "MMMM d, yyyy")
+                    ) : (
+                      <span>Select day</span>
+                    )}
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={birthDate}
+                    onSelect={setBirthDate}
+                    month={new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1)}
+                    defaultMonth={new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1)}
+                    disabled={(date) => {
+                      const minDate = new Date();
+                      minDate.setFullYear(minDate.getFullYear() - 80);
+                      return date > new Date() || date < minDate;
+                    }}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+              <p className="text-xs text-muted-foreground mt-1">
+                Please select your date of birth
+              </p>
+            </div>
+            
+            <div>
+              <InterestsSelector
+                selectedInterests={selectedInterests}
+                onInterestsChange={setSelectedInterests}
               />
-            </PopoverContent>
-          </Popover>
-          <p className="text-xs text-muted-foreground mt-1">
-            Please select your date of birth
-          </p>
-        </div>
-        
-        <div>
-          <InterestsSelector
-            selectedInterests={selectedInterests}
-            onInterestsChange={setSelectedInterests}
-          />
-        </div>
-        
-        <div>
-          <div className="flex justify-between items-center">
-            <Label className="font-medium">Your Children</Label>
+            </div>
+            
+            <div>
+              <div className="flex justify-between items-center">
+                <Label className="font-medium">Your Children</Label>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleAddChild}
+                  className="text-primary hover:bg-primary/10"
+                >
+                  + Add Child
+                </Button>
+              </div>
+              
+              {(!userInfo?.kids || userInfo.kids.length === 0) && (
+                <p className="text-sm text-muted-foreground mt-2">No children added yet</p>
+              )}
+              
+              {userInfo?.kids && userInfo.kids.length > 0 && (
+                <div className="space-y-2 mt-2">
+                  {userInfo.kids.map((kid, index) => {
+                    let age = 0;
+                    if (kid.birthDate) {
+                      const birthDate = new Date(kid.birthDate);
+                      const today = new Date();
+                      age = today.getFullYear() - birthDate.getFullYear();
+                      
+                      const monthDiff = today.getMonth() - birthDate.getMonth();
+                      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                      }
+                    }
+                    
+                    return (
+                      <div key={index} className="flex justify-between bg-muted p-2 rounded border">
+                        <span>Child {index + 1}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {kid.gender === 'male' ? 'Boy' : kid.gender === 'female' ? 'Girl' : kid.gender}, {age} {age === 1 ? 'year' : 'years'}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            
             <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleAddChild}
-              className="text-primary hover:bg-primary/10"
+              className="w-full"
+              onClick={handleSave}
+              disabled={isLoading}
             >
-              + Add Child
+              {isLoading ? "Saving..." : "Save Profile"}
             </Button>
           </div>
-          
-          {(!userInfo?.kids || userInfo.kids.length === 0) && (
-            <p className="text-sm text-muted-foreground mt-2">No children added yet</p>
-          )}
-          
-          {userInfo?.kids && userInfo.kids.length > 0 && (
-            <div className="space-y-2 mt-2">
-              {userInfo.kids.map((kid, index) => {
-                let age = 0;
-                if (kid.birthDate) {
-                  const birthDate = new Date(kid.birthDate);
-                  const today = new Date();
-                  age = today.getFullYear() - birthDate.getFullYear();
-                  
-                  const monthDiff = today.getMonth() - birthDate.getMonth();
-                  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                  }
-                }
-                
-                return (
-                  <div key={index} className="flex justify-between bg-muted p-2 rounded border">
-                    <span>Child {index + 1}</span>
-                    <span className="text-sm text-muted-foreground">
-                      {kid.gender === 'male' ? 'Boy' : kid.gender === 'female' ? 'Girl' : kid.gender}, {age} {age === 1 ? 'year' : 'years'}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
-        
-        <Button 
-          className="w-full"
-          onClick={handleSave}
-          disabled={isLoading}
-        >
-          {isLoading ? "Saving..." : "Save Profile"}
-        </Button>
-      </div>
+      </ScrollArea>
 
       <EditProfileDialog
         isOpen={isAddKidOpen}

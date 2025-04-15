@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -60,7 +59,7 @@ const EditProfileDialog = ({
   if (mode === "profile" && simpleMode) {
     return (
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-md p-0 border-0 bg-transparent shadow-none">
+        <DialogContent className="max-w-md p-0 border-0 bg-transparent shadow-none overflow-hidden">
           <SimpleProfileForm 
             onSuccess={handleSuccess} 
             onCancel={() => onOpenChange(false)} 
