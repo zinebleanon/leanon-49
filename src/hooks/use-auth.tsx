@@ -1,4 +1,3 @@
-
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -31,19 +30,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(newSession?.user ?? null);
       
       if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-        const isNewUser = newSession?.user?.app_metadata?.provider === 'email' && 
-                         newSession?.user?.app_metadata?.created_at === newSession?.user?.app_metadata?.last_sign_in_at;
-        
-        console.log("Is new user:", isNewUser);
-        
-        // Always redirect to the home page (Index)
+        console.log("User signed in or updated, redirecting to Index");
         navigate('/', { replace: true });
         
-        if (isNewUser) {
-          toast({
-            title: "Welcome to LeanOn!",
-            description: `Your account has been created successfully. Share your referral code with friends!`,
-          });
+        if (event === 'SIGNED_IN') {
+          const isNewUser = newSession?.user?.app_metadata?.provider === 'email' && 
+                           newSession?.user?.app_metadata?.created_at === newSession?.user?.app_metadata?.last_sign_in_at;
+          
+          if (isNewUser) {
+            toast({
+              title: "Welcome to LeanOn!",
+              description: "Your account has been created successfully. Share your referral code with friends!",
+            });
+          }
         }
       } else if (event === 'SIGNED_OUT') {
         navigate('/sign-in', { replace: true });
@@ -94,11 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           description: "Welcome to LeanOn! Your account has been created.",
         });
         
-        // Force immediate navigation to Index page
-        console.log("Forcing navigation to Index page after signup");
-        setTimeout(() => {
-          navigate('/', { replace: true });
-        }, 100);
+        navigate('/', { replace: true });
       }
     } catch (error: any) {
       toast({
