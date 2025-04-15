@@ -199,8 +199,7 @@ const Notifications = () => {
                   <Users className="h-4 w-4" />
                   Connect
                 </TabsTrigger>
-                <TabsTrigger value="ask" className="flex items-center gap-1">
-                  <MessageSquare className="h-4 w-4" />
+                <TabsTrigger value="ask">
                   Ask
                 </TabsTrigger>
                 <TabsTrigger value="deals" className="flex items-center gap-1">
