@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 
 export const trackButtonClick = async (buttonName: string, pagePath: string) => {
-  const user = supabase.auth.user();
+  const { data: { user } } = await supabase.auth.getUser();
   
   if (user) {
     try {

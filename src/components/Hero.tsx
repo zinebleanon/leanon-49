@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -132,12 +131,17 @@ const Hero = ({ onJoinClick }: HeroProps) => {
               size="lg" 
               className="rounded-full h-11 px-8 w-full sm:w-auto border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors"
               onClick={handleJoinClick}
+              trackingName="hero_join_button"
             >
               <RibbonIcon className="mr-2 h-5 w-5" fill="currentColor" />
               Join & <span className="font-adlery">LeanOn</span>
             </Button>
 
-            <HowItWorksDialog buttonVariant="ghost" className="" />
+            <HowItWorksDialog 
+              buttonVariant="ghost" 
+              className="" 
+              trackingName="hero_how_it_works"
+            />
           </div>
         </div>
         

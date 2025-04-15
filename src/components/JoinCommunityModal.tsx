@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -11,13 +10,11 @@ interface JoinCommunityModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Redirect to sign-up page instead of using in-modal sign-up
 const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) => {
   const navigate = useNavigate();
 
   const handleRedirectToSignUp = () => {
     onOpenChange(false);
-    // Short delay to allow modal to close smoothly before navigation
     setTimeout(() => {
       navigate('/sign-up');
     }, 300);
@@ -47,6 +44,14 @@ const JoinCommunityModal = ({ isOpen, onOpenChange }: JoinCommunityModalProps) =
               </div>
               <h3 className="font-semibold mb-2">Join via Subscription</h3>
               <p className="text-sm text-muted-foreground">Create an account to connect with other moms</p>
+              <Button
+                variant="warm"
+                className="mt-4"
+                onClick={handleRedirectToSignUp}
+                trackingName="join_modal_signup"
+              >
+                Sign Up Now
+              </Button>
             </CardContent>
           </Card>
         </div>
