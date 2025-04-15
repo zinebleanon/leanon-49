@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserInfo } from './use-user-info';
+import { useToast } from '@/hooks/use-toast';
 
 interface Connection {
   id: string;
@@ -15,23 +16,29 @@ export function useConnections() {
   const [connections, setConnections] = useState<Connection[]>([]);
   const [loading, setLoading] = useState(true);
   const { userInfo } = useUserInfo();
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (!userInfo?.id) return;
+    if (!userInfo) return;
 
     const fetchConnections = async () => {
-      const { data, error } = await supabase
-        .from('connection_requests')
-        .select('*')
-        .or(`requester_id.eq.${userInfo.id},recipient_id.eq.${userInfo.id}`);
+      try {
+        const { data, error } = await supabase
+          .from('connection_requests')
+          .select('*')
+          .or(`requester_id.eq.${userInfo.email},recipient_id.eq.${userInfo.email}`);
 
-      if (error) {
-        console.error('Error fetching connections:', error);
-        return;
+        if (error) {
+          console.error('Error fetching connections:', error);
+          return;
+        }
+
+        setConnections(data || []);
+        setLoading(false);
+      } catch (err) {
+        console.error('Fetch connections error:', err);
+        setLoading(false);
       }
-
-      setConnections(data || []);
-      setLoading(false);
     };
 
     fetchConnections();
@@ -55,45 +62,89 @@ export function useConnections() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userInfo?.id]);
+  }, [userInfo]);
 
-  const sendConnectionRequest = async (recipientId: string) => {
-    if (!userInfo?.id) return null;
-
-    const { data, error } = await supabase
-      .from('connection_requests')
-      .insert({
-        requester_id: userInfo.id,
-        recipient_id: recipientId,
-        status: 'pending'
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error sending connection request:', error);
+  const sendConnectionRequest = async (recipientEmail: string) => {
+    if (!userInfo) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to send a connection request.",
+        variant: "destructive"
+      });
       return null;
     }
 
-    return data;
+    try {
+      const { data, error } = await supabase
+        .from('connection_requests')
+        .insert({
+          requester_id: userInfo.email,
+          recipient_id: recipientEmail,
+          status: 'pending'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error sending connection request:', error);
+        toast({
+          title: "Error",
+          description: "Failed to send connection request.",
+          variant: "destructive"
+        });
+        return null;
+      }
+
+      toast({
+        title: "Connection Request Sent",
+        description: `Request sent to ${recipientEmail}`,
+      });
+
+      return data;
+    } catch (err) {
+      console.error('Send connection request error:', err);
+      return null;
+    }
   };
 
   const updateConnectionStatus = async (connectionId: string, status: 'connected' | 'declined') => {
-    if (!userInfo?.id) return null;
-
-    const { data, error } = await supabase
-      .from('connection_requests')
-      .update({ status })
-      .eq('id', connectionId)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error updating connection status:', error);
+    if (!userInfo) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to update connection status.",
+        variant: "destructive"
+      });
       return null;
     }
 
-    return data;
+    try {
+      const { data, error } = await supabase
+        .from('connection_requests')
+        .update({ status })
+        .eq('id', connectionId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error updating connection status:', error);
+        toast({
+          title: "Error",
+          description: "Failed to update connection status.",
+          variant: "destructive"
+        });
+        return null;
+      }
+
+      toast({
+        title: "Connection Updated",
+        description: `Connection status updated to ${status}`,
+      });
+
+      return data;
+    } catch (err) {
+      console.error('Update connection status error:', err);
+      return null;
+    }
   };
 
   return {
