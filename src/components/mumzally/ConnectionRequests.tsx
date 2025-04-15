@@ -1,3 +1,4 @@
+
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare, ArrowDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +10,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 import { Link } from 'react-router-dom';
 import MessageDialog from './MessageDialog';
 import LeanMomsDialog from './LeanMomsDialog';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { trackConnection } from '@/utils/track-user-activity';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -400,7 +401,14 @@ const ConnectionRequests = ({
   }
 
   if (dialogMode) {
-    return content;
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+          <DialogTitle className="text-xl font-semibold mb-4">LeanOn Requests</DialogTitle>
+          {content}
+        </DialogContent>
+      </Dialog>
+    );
   }
 
   return (
