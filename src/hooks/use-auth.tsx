@@ -24,7 +24,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       console.log("Auth state change event:", event, "Session:", newSession ? "exists" : "null");
       
@@ -32,33 +31,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(newSession?.user ?? null);
       setLoading(false);
       
-      if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-        console.log("User signed in or updated, redirecting to Index");
+      if (event === 'SIGNED_IN') {
+        console.log("User signed in, redirecting to Index");
+        navigate('/', { replace: true });
         
-        // Use setTimeout to avoid potential React state update conflicts
-        setTimeout(() => {
-          navigate('/', { replace: true });
-        }, 0);
-        
-        if (event === 'SIGNED_IN') {
-          const isNewUser = newSession?.user?.app_metadata?.provider === 'email' && 
-                           newSession?.user?.app_metadata?.created_at === newSession?.user?.app_metadata?.last_sign_in_at;
-          
-          if (isNewUser) {
-            toast({
-              title: "Welcome to LeanOn!",
-              description: "Your account has been created successfully. Share your referral code with friends!",
-            });
-          }
-        }
+        toast({
+          title: "Welcome to LeanOn!",
+          description: "Your account has been created successfully.",
+        });
       } else if (event === 'SIGNED_OUT') {
-        setTimeout(() => {
-          navigate('/sign-in', { replace: true });
-        }, 0);
+        navigate('/sign-in', { replace: true });
       }
     });
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       console.log("Initial session check:", session ? "User logged in" : "No session");
       setSession(session);
@@ -77,7 +62,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      // Auth state change event will handle redirect
     } catch (error: any) {
       toast({
         title: "Error signing in",
@@ -94,36 +78,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log("Attempting sign up for:", email);
       setLoading(true);
       
-      const { error, data } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: metadata
+          data: metadata,
+          emailRedirectTo: `${window.location.origin}/sign-in`
         }
       });
       
       if (error) throw error;
       
-      // Check if email confirmation is required
-      if (data.user && data.session) {
-        // If we have a session, user doesn't need email confirmation
-        console.log("Sign up successful with immediate session, user created:", data.user.id);
-        // Auth state change event will handle redirects
-      } else if (data.user) {
-        // If we have a user but no session, email confirmation is needed
-        console.log("Sign up successful but email confirmation is required:", data.user.id);
-        setLoading(false);
-        
-        toast({
-          title: "Email confirmation required",
-          description: "We've sent you an email with a confirmation link. Please check your inbox to verify your account.",
-        });
-        
-        // Keep the user on the sign-in page
-        setTimeout(() => {
-          navigate('/sign-in', { replace: true });
-        }, 0);
-      }
+      // After successful signup, automatically sign in the user
+      await signIn(email, password);
+      
     } catch (error: any) {
       console.error("Error in signup:", error);
       toast({
@@ -169,7 +137,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      // Auth state change will handle redirect
     } catch (error: any) {
       toast({
         title: "Error signing out",
