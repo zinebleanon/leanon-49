@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -223,7 +222,6 @@ const MumzAlly = () => {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           isProfileComplete={profileComplete}
-          onCompleteProfile={() => handleCompleteProfile(true)}
         />
 
         <SwipeableProfiles

@@ -18,7 +18,6 @@ interface HeroSectionProps {
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
   isProfileComplete?: boolean;
-  onCompleteProfile?: () => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ 
@@ -30,7 +29,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   searchTerm = '',
   onSearchChange,
   isProfileComplete = false,
-  onCompleteProfile
 }) => {
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -48,7 +46,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
         <HeroTitle 
           isProfileComplete={isProfileComplete} 
-          onCompleteProfile={onCompleteProfile}
         />
         <ActionButtons 
           onHowItWorksClick={() => setIsHowItWorksOpen(true)}
