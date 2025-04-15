@@ -65,18 +65,17 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
   };
 
   const handleAddChild = () => {
-    // This will redirect to the full profile form with the kids section open
     onSuccess();
   };
   
   return (
-    <div className="bg-pastel-yellow/20 rounded-lg p-6 max-w-md mx-auto">
+    <div className="bg-gradient-to-br from-[#FFE29F] to-[#FFA99F] rounded-2xl p-6 max-w-md mx-auto shadow-lg">
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Complete Your Profile</h2>
       <p className="text-center text-gray-600 mb-6">Help us find Moms Around You</p>
       
       <Button 
         variant="outline" 
-        className="w-full mb-6 bg-pastel-yellow/30 hover:bg-pastel-yellow/40 border-pastel-yellow/40 text-gray-700"
+        className="w-full mb-6 bg-white/30 hover:bg-white/40 border-white/40 text-gray-700"
         onClick={onCancel}
       >
         <Clock className="mr-2 h-4 w-4" />
@@ -109,7 +108,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
             placeholder="Select your nationality"
             value={nationality}
             onChange={(e) => setNationality(e.target.value)}
-            className="mt-1 bg-pastel-yellow/30 border-pastel-yellow/40"
+            className="mt-1 bg-white/30 border-white/40"
           />
         </div>
         
@@ -119,7 +118,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full mt-1 justify-start text-left font-normal bg-white border-gray-200"
+                className="w-full mt-1 justify-start text-left font-normal bg-white/30 border-white/40"
               >
                 {birthDate ? (
                   format(birthDate, "PPP")
@@ -163,10 +162,10 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
           {userInfo?.kids && userInfo.kids.length > 0 && (
             <div className="space-y-2 mt-2">
               {kidsAges.map((kid, index) => (
-                <div key={index} className="flex justify-between bg-white p-2 rounded border border-gray-200">
+                <div key={index} className="flex justify-between bg-white/50 p-2 rounded border border-white/30">
                   <span>Child {index + 1}</span>
                   <span className="text-sm text-gray-500">
-                    {kid.gender}, {kid.age} {kid.age === 1 ? 'year' : 'years'}
+                    {kid.gender}, {kid.years} {kid.years === 1 ? 'year' : 'years'}
                   </span>
                 </div>
               ))}
@@ -175,7 +174,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
         </div>
         
         <Button 
-          className="w-full"
+          className="w-full bg-white text-gray-700 hover:bg-gray-100"
           onClick={handleSave}
           disabled={isLoading}
         >
