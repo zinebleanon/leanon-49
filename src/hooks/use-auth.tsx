@@ -1,3 +1,4 @@
+
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -36,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             description: "Your account has been created successfully.",
           });
         }
-        navigate('/ally/subscribe');
+        navigate('/'); // Changed from '/ally/subscribe' to '/'
       } else if (event === 'SIGNED_OUT') {
         navigate('/sign-in');
       }
