@@ -298,7 +298,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       title: "Account created!",
       description: "Welcome to LeanOn! Your account has been created.",
     });
-    // Navigation will be handled by the auth provider
+    // We don't need to navigate here as the auth provider will handle it
   };
   
   return (

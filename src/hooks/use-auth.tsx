@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null);
       
       if (event === 'SIGNED_IN') {
-        navigate('/');
+        navigate('/ally/subscribe');
       } else if (event === 'SIGNED_OUT') {
         navigate('/sign-in');
       }
@@ -64,19 +64,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: metadata
         }
       });
+      
       if (error) throw error;
       
-      toast({
-        title: "Success!",
-        description: "Please check your email to verify your account.",
-      });
+      // If sign up is successful and the user is created immediately
+      if (data.user) {
+        toast({
+          title: "Account created!",
+          description: "Welcome to LeanOn! Your account has been created.",
+        });
+        // The navigation is handled by the auth state change listener
+      } else {
+        // For email confirmation flow
+        toast({
+          title: "Success!",
+          description: "Please check your email to verify your account.",
+        });
+      }
     } catch (error: any) {
       toast({
         title: "Error signing up",
