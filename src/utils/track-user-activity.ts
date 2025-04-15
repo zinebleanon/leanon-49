@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 export type ActivityType = 
@@ -8,7 +7,11 @@ export type ActivityType =
   | 'profile_updated'
   | 'deal_unlocked'
   | 'item_listed'
-  | 'question_asked';
+  | 'question_asked'
+  | 'notification_read'
+  | 'notification_deleted'
+  | 'notifications_marked_all_read'
+  | 'notification_clicked';
 
 interface ActivityData {
   type: ActivityType;
@@ -32,7 +35,6 @@ export const trackUserActivity = async (activity: ActivityData) => {
   }
 };
 
-// Predefined activity tracking functions for common actions
 export const trackConnection = (connectedUserId: string, connectedUserName: string) => {
   return trackUserActivity({
     type: 'connection_made',
@@ -86,5 +88,37 @@ export const trackQuestion = (questionId: string, questionTitle: string) => {
     type: 'question_asked',
     description: `Asked question: ${questionTitle}`,
     metadata: { questionId }
+  });
+};
+
+export const trackNotificationRead = (notificationId: string, notificationTitle: string) => {
+  return trackUserActivity({
+    type: 'notification_read',
+    description: `Read notification: ${notificationTitle}`,
+    metadata: { notificationId }
+  });
+};
+
+export const trackNotificationDeleted = (notificationId: string, notificationTitle: string) => {
+  return trackUserActivity({
+    type: 'notification_deleted',
+    description: `Deleted notification: ${notificationTitle}`,
+    metadata: { notificationId }
+  });
+};
+
+export const trackAllNotificationsRead = (count: number) => {
+  return trackUserActivity({
+    type: 'notifications_marked_all_read',
+    description: `Marked all notifications as read`,
+    metadata: { count }
+  });
+};
+
+export const trackNotificationClicked = (notificationId: string, notificationTitle: string, link: string) => {
+  return trackUserActivity({
+    type: 'notification_clicked',
+    description: `Clicked notification: ${notificationTitle}`,
+    metadata: { notificationId, link }
   });
 };
