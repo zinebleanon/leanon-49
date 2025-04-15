@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,7 @@ interface SimpleProfileFormProps {
 }
 
 const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
-  const { userInfo, updateUserInfo, kidsAges } = useUserInfo();
+  const { userInfo, updateUserInfo } = useUserInfo();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isAddKidOpen, setIsAddKidOpen] = useState(false);
@@ -296,7 +295,6 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
           {userInfo?.kids && userInfo.kids.length > 0 && (
             <div className="space-y-2 mt-2">
               {userInfo.kids.map((kid, index) => {
-                // Get child age from birthDate
                 let age = 0;
                 if (kid.birthDate) {
                   const birthDate = new Date(kid.birthDate);
@@ -337,6 +335,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
         mode="kid"
         title="Add Child"
         description="Enter your child's information"
+        onSuccess={handleKidAdded}
       />
     </div>
   );

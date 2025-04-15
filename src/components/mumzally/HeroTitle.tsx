@@ -17,4 +17,3 @@ const HeroTitle = ({ isProfileComplete = false, onCompleteProfile }: HeroTitlePr
 };
 
 export default HeroTitle;
-
