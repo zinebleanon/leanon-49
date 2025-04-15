@@ -165,7 +165,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
                 <div key={index} className="flex justify-between bg-white/50 p-2 rounded border border-white/30">
                   <span>Child {index + 1}</span>
                   <span className="text-sm text-gray-500">
-                    {kid.gender}, {kid.years} {kid.years === 1 ? 'year' : 'years'}
+                    {kid.gender}, {kid.age} {kid.age === 1 ? 'year' : 'years'}
                   </span>
                 </div>
               ))}
