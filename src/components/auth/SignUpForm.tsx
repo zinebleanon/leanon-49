@@ -127,7 +127,7 @@ const SignUpForm = ({
         );
         
         // Explicit navigation to ensure redirection happens
-        console.log("SignUp completed, redirecting to home...");
+        console.log("SignUp completed, redirecting to home page (Index)...");
         navigate('/', { replace: true });
       } catch (error: any) {
         console.error("Error completing signup:", error);
@@ -188,7 +188,7 @@ const SignUpForm = ({
         }
       ).then(() => {
         // Explicit navigation after signup completes
-        console.log("Skip verification signup completed, redirecting to home...");
+        console.log("Skip verification signup completed, redirecting to home page (Index)...");
         navigate('/', { replace: true });
       });
     } catch (error: any) {

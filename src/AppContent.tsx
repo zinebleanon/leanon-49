@@ -48,8 +48,10 @@ const AppContent = () => {
 
   return (
     <Routes>
+      {/* Home Page (Index) is the main landing page that shows welcome message, profile update and referral */}
       <Route path="/" element={<Index />} />
-      {/* Both sign-in and sign-up routes use the same component with appropriate default tabs */}
+      
+      {/* Auth routes */}
       <Route path="/sign-in" element={<SignIn defaultTab="signin" />} />
       <Route path="/sign-up" element={<SignIn defaultTab="signup" />} />
       <Route path="/reset-password" element={<ResetPassword />} />
