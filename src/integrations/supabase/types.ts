@@ -9,7 +9,185 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      connections: {
+        Row: {
+          connected_user_id: string | null
+          created_at: string | null
+          id: string
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          connected_user_id?: string | null
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          connected_user_id?: string | null
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      kids: {
+        Row: {
+          birth_date: string
+          created_at: string | null
+          gender: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          birth_date: string
+          created_at?: string | null
+          gender: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          birth_date?: string
+          created_at?: string | null
+          gender?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kids_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          read: boolean | null
+          title: string
+          type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          read?: boolean | null
+          title: string
+          type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          read?: boolean | null
+          title?: string
+          type?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          bio: string | null
+          birth_date: string | null
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          interests: string | null
+          last_name: string | null
+          location: Json | null
+          location_sharing: boolean | null
+          manual_location_update: boolean | null
+          nationality: string | null
+          neighborhood: string | null
+          phone: string | null
+          profile_needs_update: boolean | null
+          profile_picture_url: string | null
+          profile_visibility: string | null
+          referral_code: string | null
+          updated_at: string | null
+          use_geolocation_for_neighborhood: boolean | null
+          work_status: string | null
+        }
+        Insert: {
+          bio?: string | null
+          birth_date?: string | null
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id: string
+          interests?: string | null
+          last_name?: string | null
+          location?: Json | null
+          location_sharing?: boolean | null
+          manual_location_update?: boolean | null
+          nationality?: string | null
+          neighborhood?: string | null
+          phone?: string | null
+          profile_needs_update?: boolean | null
+          profile_picture_url?: string | null
+          profile_visibility?: string | null
+          referral_code?: string | null
+          updated_at?: string | null
+          use_geolocation_for_neighborhood?: boolean | null
+          work_status?: string | null
+        }
+        Update: {
+          bio?: string | null
+          birth_date?: string | null
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          interests?: string | null
+          last_name?: string | null
+          location?: Json | null
+          location_sharing?: boolean | null
+          manual_location_update?: boolean | null
+          nationality?: string | null
+          neighborhood?: string | null
+          phone?: string | null
+          profile_needs_update?: boolean | null
+          profile_picture_url?: string | null
+          profile_visibility?: string | null
+          referral_code?: string | null
+          updated_at?: string | null
+          use_geolocation_for_neighborhood?: boolean | null
+          work_status?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +196,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +311,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
