@@ -1,3 +1,4 @@
+
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./hooks/use-auth";
 import { useAnalytics } from "./hooks/use-analytics";
@@ -25,9 +26,10 @@ import Inbox from "./pages/Inbox";
 import Terms from "./pages/Terms";
 
 const AppContent = () => {
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
   useNotificationInit();
   useAnalytics();
+  const location = useLocation();
   
   if (loading) {
     return (
@@ -35,6 +37,11 @@ const AppContent = () => {
         <div className="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
       </div>
     );
+  }
+
+  // Redirect authenticated users away from auth pages
+  if (user && (location.pathname === '/sign-in' || location.pathname === '/sign-up')) {
+    return <Navigate to="/" replace />;
   }
 
   return (

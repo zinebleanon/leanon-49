@@ -1,15 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, ArrowLeft, Check, MapPin, Gift } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import RibbonIcon from '@/components/ui/RibbonIcon';
+import { useAuth } from '@/hooks/use-auth';
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
@@ -24,6 +25,8 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification
   const [otpValue, setOtpValue] = useState("");
   const referralCodeFromParams = searchParams.get('referral') || '';
+  const { signIn, signUp } = useAuth();
+  const { toast } = useToast();
   
   useEffect(() => {
     if (location.pathname === '/sign-up' && activeTab !== 'signup') {
@@ -122,21 +125,20 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     setSignUpData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     
-    setTimeout(() => {
+    try {
+      await signIn(signInData.email, signInData.password);
+      // The navigation is handled in the auth provider
+    } catch (error) {
+      console.error("Sign in error:", error);
       setIsLoading(false);
-      toast({
-        title: "Welcome back!",
-        description: "You've successfully signed in.",
-      });
-      navigate('/ally/subscribe');
-    }, 1500);
+    }
   };
   
-  const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (signupStep === 1) {
@@ -160,14 +162,27 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       
       setIsLoading(true);
       
-      setTimeout(() => {
+      try {
+        await signUp(
+          signUpData.email, 
+          signUpData.password, 
+          {
+            first_name: signUpData.firstName,
+            last_name: signUpData.lastName
+          }
+        );
+        
+        // Let's skip the OTP for now since we're not implementing phone verification
+        skipVerification();
+      } catch (error) {
+        console.error("Sign up error:", error);
         setIsLoading(false);
-        setSignupStep(2);
         toast({
-          title: "Verification code sent",
-          description: `We've sent a code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
+          title: "Error signing up",
+          description: error instanceof Error ? error.message : "An unexpected error occurred",
+          variant: "destructive",
         });
-      }, 1500);
+      }
     } else if (signupStep === 2) {
       if (otpValue.length !== 4) {
         toast({
@@ -278,35 +293,12 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   };
 
   const skipVerification = () => {
-    toast({
-      title: "Verification skipped",
-      description: "For testing purposes only"
-    });
-    
-    const createUser = {
-      name: `${signUpData.firstName} ${signUpData.lastName}`,
-      firstName: signUpData.firstName,
-      lastName: signUpData.lastName,
-      email: signUpData.email,
-      neighborhood: signUpData.neighborhood,
-      phone: signUpData.phone,
-      profileNeedsUpdate: true
-    };
-    
-    localStorage.setItem('userInfo', JSON.stringify(createUser));
-    
-    if (signUpData.referralCode) {
-      toast({
-        title: "Referral applied!",
-        description: `You signed up using referral code: ${signUpData.referralCode}`,
-      });
-    }
-    
+    setIsLoading(false);
     toast({
       title: "Account created!",
-      description: "Welcome to LeanOn! Let's complete your profile.",
+      description: "Welcome to LeanOn! Your account has been created.",
     });
-    navigate('/');
+    // Navigation will be handled by the auth provider
   };
   
   return (
