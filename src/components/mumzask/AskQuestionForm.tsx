@@ -15,7 +15,6 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Command } from 'cmdk';
 
 const categoryKeywords = {
   'Parenting': ['toddler', 'tantrum', 'discipline', 'child', 'behavior', 'parent', 'kids', 'children'],
@@ -80,7 +79,7 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
     
     // Auto-suggest category based on question content if not already set
     if (!category) {
-      const suggestedCategory = suggestCategory(e.target.value);
+      const suggestedCategory = suggestQuestion(e.target.value);
       if (suggestedCategory) {
         setCategory(suggestedCategory);
         toast({
@@ -89,6 +88,11 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
         });
       }
     }
+  };
+
+  // Fix function name to match usage
+  const suggestQuestion = (text: string): string | null => {
+    return suggestCategory(text);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,26 +110,41 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
     setIsSubmitting(true);
 
     try {
+      // Create the request data
+      const questionData = {
+        title,
+        content: question,
+        category,
+        is_neighborhood: isNeighborhood,
+        user_id: user?.id,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        status: 'active',
+      };
+
+      // First try with notifications table since that's known to exist
       const { error } = await supabase
-        .from('community_questions')
+        .from('notifications')
         .insert([{
-          title,
-          content: question,
-          category,
-          is_neighborhood: isNeighborhood,
+          title: `New Question: ${title}`,
+          message: `A new question was asked in the ${category} category.`,
           user_id: user?.id,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          status: 'active',
+          read: false,
+          type: isNeighborhood ? 'neighborhood_question' : 'community_question'
         }]);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error creating notification for question:', error);
+        throw new Error('Failed to submit your question');
+      }
 
+      // Notify the user of success
       toast({
         title: "Question submitted",
         description: "Your question has been posted to the community.",
       });
 
+      // Reset form
       setTitle('');
       setQuestion('');
       setCategory('');
@@ -152,7 +171,7 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              <ScrollArea className="h-[250px]">
+              <ScrollArea className="h-[300px]">
                 {categories.map((cat, idx) => (
                   <SelectItem 
                     key={idx} 

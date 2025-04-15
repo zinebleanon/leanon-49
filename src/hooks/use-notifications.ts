@@ -8,7 +8,7 @@ export interface Notification {
   id: string;
   title: string;
   message: string;
-  feature: 'connect' | 'ask' | 'deals' | 'preloved';
+  feature?: 'connect' | 'ask' | 'deals' | 'preloved';
   link?: string;
   read: boolean;
   created_at: string;
@@ -34,7 +34,11 @@ export const useNotifications = () => {
       // Ensure data conforms to Notification interface by providing defaults for missing fields
       const typedData = (data || []).map(item => ({
         ...item,
-        feature: item.feature || 'ask' as const, // Default to 'ask' if feature is missing
+        feature: (item.type?.includes('_question') ? 'ask' : 
+                 item.type?.includes('connect') ? 'connect' : 
+                 item.type?.includes('deals') ? 'deals' : 
+                 item.type?.includes('preloved') ? 'preloved' : 'ask') as 'connect' | 'ask' | 'deals' | 'preloved',
+        link: item.link || ''
       })) as Notification[];
 
       setNotifications(typedData);
@@ -149,7 +153,11 @@ export const useNotifications = () => {
         (payload) => {
           const newNotification = {
             ...(payload.new as any),
-            feature: (payload.new as any).feature || 'ask', // Default to 'ask' if feature is missing
+            feature: ((payload.new as any).type?.includes('_question') ? 'ask' : 
+                     (payload.new as any).type?.includes('connect') ? 'connect' : 
+                     (payload.new as any).type?.includes('deals') ? 'deals' : 
+                     (payload.new as any).type?.includes('preloved') ? 'preloved' : 'ask') as 'connect' | 'ask' | 'deals' | 'preloved',
+            link: (payload.new as any).link || ''
           } as Notification;
           
           setNotifications(prev => [newNotification, ...prev]);
