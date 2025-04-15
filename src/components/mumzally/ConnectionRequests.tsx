@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare, ArrowDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,8 +18,12 @@ interface ConnectionRequest {
   name: string;
   age: number;
   location: string;
+  kids: {age: number; gender: string}[];
   compatibility: number;
   activeInCommunity?: boolean;
+  nationality: string;
+  workStatus: string;
+  interests: string[];
 }
 
 interface NearbyMom {
@@ -55,7 +58,14 @@ const ConnectionRequests = ({
       age: 31,
       location: "Palm Jumeirah",
       compatibility: 79,
-      activeInCommunity: true
+      activeInCommunity: true,
+      kids: [
+        { age: 3, gender: 'girl' },
+        { age: 1, gender: 'boy' }
+      ],
+      nationality: "British",
+      workStatus: "Part-time",
+      interests: ["Cooking", "Yoga", "Reading"]
     },
     {
       id: 4,
@@ -63,7 +73,13 @@ const ConnectionRequests = ({
       age: 34,
       location: "Dubai Marina",
       compatibility: 85,
-      activeInCommunity: false
+      activeInCommunity: false,
+      kids: [
+        { age: 2, gender: 'girl' }
+      ],
+      nationality: "Emirati",
+      workStatus: "Full-time",
+      interests: ["Travel", "Art", "Swimming"]
     }
   ];
 
@@ -131,7 +147,11 @@ const ConnectionRequests = ({
       age: 29,
       location: "JBR",
       compatibility: 82,
-      activeInCommunity: true
+      activeInCommunity: true,
+      kids: [{ age: 1, gender: 'girl' }],
+      nationality: "American",
+      workStatus: "Full-time",
+      interests: ["Reading", "Hiking", "Movies"]
     },
     {
       id: 6,
@@ -139,7 +159,11 @@ const ConnectionRequests = ({
       age: 33,
       location: "Business Bay",
       compatibility: 75,
-      activeInCommunity: false
+      activeInCommunity: false,
+      kids: [{ age: 2, gender: 'boy' }],
+      nationality: "Spanish",
+      workStatus: "Part-time",
+      interests: ["Dancing", "Cooking", "Travel"]
     }
   ];
 
@@ -150,31 +174,29 @@ const ConnectionRequests = ({
           <TabsTrigger value="received" className="flex items-center gap-2">
             <ArrowDown className="h-4 w-4" />
             <span>Received</span>
+            <Badge variant="secondary" className="ml-2">{connectionRequests.length}</Badge>
           </TabsTrigger>
           <TabsTrigger value="sent" className="flex items-center gap-2">
             <ArrowUp className="h-4 w-4" />
             <span>Sent</span>
+            <Badge variant="secondary" className="ml-2">2</Badge>
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="received">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-lg font-medium">Received Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {filteredRequests.map((request) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {connectionRequests.map((request) => (
               <Card key={request.id} className="overflow-hidden bg-white/90">
-                <CardContent className="p-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                      <UserCircle className="h-6 w-6 text-primary" />
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                      <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
+                      <Link to={`/ally/profile/${request.id}`} className="font-medium hover:underline">
                         {request.name}
                       </Link>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm text-muted-foreground">
                         {request.age}, {request.location}
                         {request.activeInCommunity && (
                           <span className="ml-1 text-green-600">● Active</span>
@@ -182,9 +204,32 @@ const ConnectionRequests = ({
                       </p>
                     </div>
                     <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
-                      {request.compatibility}%
+                      {request.compatibility}% Match
                     </Badge>
                   </div>
+                  
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Baby className="h-4 w-4 text-amber-500" />
+                      <span className="text-sm">
+                        {request.kids.map((kid, i) => (
+                          <span key={i}>
+                            {kid.age} y/o {kid.gender}
+                            {i < request.kids.length - 1 ? ', ' : ''}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      {request.interests.map((interest, i) => (
+                        <Badge key={i} variant="outline" className="bg-secondary/50">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
                   <div className="flex items-center justify-end gap-2">
                     <Button 
                       variant="outline" 
