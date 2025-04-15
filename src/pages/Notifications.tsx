@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Bell, Check, Trash2, MessageCircle, Users, ShoppingBag, AlertTriangle, Tag } from 'lucide-react';
+import { Bell, Check, Trash2, MessageCircle, Users, ShoppingBag, AlertTriangle, Tag, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { useUserInfo } from '@/hooks/use-user-info';
+import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useNavigate } from 'react-router-dom';
+import { trackUserActivity } from '@/utils/track-user-activity';
 
 interface Notification {
   id: string;
@@ -16,16 +17,17 @@ interface Notification {
   read: boolean;
   feature: 'ask' | 'connect' | 'preloved' | 'deals' | 'general';
   isUrgent?: boolean;
+  link?: string;
 }
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
-  const { userInfo } = useUserInfo();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   
   useEffect(() => {
-    // Simulate loading notifications from an API
     const timeout = setTimeout(() => {
       const mockNotifications: Notification[] = [
         {
@@ -35,7 +37,8 @@ const Notifications = () => {
           timestamp: '2025-04-07T14:30:00Z',
           read: false,
           feature: 'ask',
-          isUrgent: true
+          isUrgent: true,
+          link: '/mumzask?question=123'
         },
         {
           id: '2',
@@ -43,7 +46,8 @@ const Notifications = () => {
           message: 'Sarah would like to connect with you!',
           timestamp: '2025-04-06T10:15:00Z',
           read: false,
-          feature: 'connect'
+          feature: 'connect',
+          link: '/connections'
         },
         {
           id: '3',
@@ -51,7 +55,8 @@ const Notifications = () => {
           message: 'Someone is interested in your baby carrier listing',
           timestamp: '2025-04-05T08:45:00Z',
           read: true,
-          feature: 'preloved'
+          feature: 'preloved',
+          link: '/mumzmarketplace/items/456'
         },
         {
           id: '4',
@@ -59,7 +64,8 @@ const Notifications = () => {
           message: 'Special discount on baby essentials this week',
           timestamp: '2025-04-04T16:20:00Z',
           read: false,
-          feature: 'deals'
+          feature: 'deals',
+          link: '/mumzsave'
         }
       ];
       
@@ -69,7 +75,7 @@ const Notifications = () => {
     
     return () => clearTimeout(timeout);
   }, []);
-  
+
   const getFeatureIcon = (feature: string) => {
     switch (feature) {
       case 'ask':
@@ -95,22 +101,62 @@ const Notifications = () => {
     });
   };
   
-  const markAsRead = (id: string) => {
+  const markAsRead = async (id: string) => {
     setNotifications(prev => 
       prev.map(notif => 
         notif.id === id ? { ...notif, read: true } : notif
       )
     );
+
+    await trackUserActivity({
+      type: 'notification_read',
+      description: `Marked notification ${id} as read`,
+      metadata: { notificationId: id }
+    });
   };
   
-  const deleteNotification = (id: string) => {
+  const deleteNotification = async (id: string) => {
     setNotifications(prev => prev.filter(notif => notif.id !== id));
+    
+    await trackUserActivity({
+      type: 'notification_deleted',
+      description: `Deleted notification ${id}`,
+      metadata: { notificationId: id }
+    });
   };
   
-  const markAllAsRead = () => {
+  const markAllAsRead = async () => {
+    const unreadCount = notifications.filter(n => !n.read).length;
+    
     setNotifications(prev => 
       prev.map(notif => ({ ...notif, read: true }))
     );
+
+    await trackUserActivity({
+      type: 'notifications_marked_all_read',
+      description: `Marked all notifications as read`,
+      metadata: { count: unreadCount }
+    });
+
+    toast({
+      title: "Notifications Updated",
+      description: `Marked ${unreadCount} notifications as read`,
+    });
+  };
+
+  const handleNotificationClick = async (notification: Notification) => {
+    if (notification.link) {
+      await trackUserActivity({
+        type: 'notification_clicked',
+        description: `Clicked notification: ${notification.title}`,
+        metadata: { 
+          notificationId: notification.id,
+          link: notification.link
+        }
+      });
+      
+      navigate(notification.link);
+    }
   };
 
   const filteredNotifications = notifications.filter(notification => 
@@ -165,7 +211,9 @@ const Notifications = () => {
                 <Card 
                   key={notification.id}
                   className={`p-4 ${!notification.read ? 'border-l-4 border-l-primary' : ''} 
-                    ${notification.isUrgent ? 'bg-amber-50/50' : ''}`}
+                    ${notification.isUrgent ? 'bg-amber-50/50' : ''} 
+                    ${notification.link ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-3">
@@ -183,6 +231,9 @@ const Notifications = () => {
                               Urgent
                             </span>
                           )}
+                          {notification.link && (
+                            <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                          )}
                         </div>
                         <p className="text-muted-foreground mt-1">{notification.message}</p>
                         <p className="text-xs text-muted-foreground mt-2">
@@ -197,7 +248,10 @@ const Notifications = () => {
                           variant="ghost" 
                           size="sm"
                           className="h-8 w-8 p-0"
-                          onClick={() => markAsRead(notification.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            markAsRead(notification.id);
+                          }}
                         >
                           <Check className="h-4 w-4" />
                           <span className="sr-only">Mark as read</span>
@@ -208,7 +262,10 @@ const Notifications = () => {
                         variant="ghost" 
                         size="sm"
                         className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                        onClick={() => deleteNotification(notification.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteNotification(notification.id);
+                        }}
                       >
                         <Trash2 className="h-4 w-4" />
                         <span className="sr-only">Delete</span>
