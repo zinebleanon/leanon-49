@@ -26,65 +26,90 @@ const NeighborhoodUpdateForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
   
-  const handleDetectLocation = () => {
-    if (!navigator.geolocation) {
-      toast({
-        title: "Geolocation unavailable",
-        description: "Your browser doesn't support geolocation.",
-        variant: "destructive"
-      });
-      return;
+  const getLocationFromIP = async () => {
+    try {
+      const response = await fetch('http://ip-api.com/json/');
+      if (!response.ok) throw new Error('IP geolocation failed');
+      const data = await response.json();
+      return {
+        latitude: data.lat,
+        longitude: data.lon,
+        city: data.city,
+        region: data.regionName
+      };
+    } catch (error) {
+      console.error('IP geolocation error:', error);
+      return null;
     }
-    
+  };
+
+  const handleDetectLocation = async () => {
     setIsDetectingLocation(true);
     
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        // In a real app, we would use reverse geocoding here
-        // For now, we'll just display coordinates and set a simulated neighborhood
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          });
+        });
+        
         const { latitude, longitude } = position.coords;
-        
-        // This is a simulation of reverse geocoding
-        // You would typically call a service like Google Maps API to get the actual neighborhood
-        const simulatedNeighborhood = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-        
-        setNeighborhood(simulatedNeighborhood);
+        // This would typically use reverse geocoding - for now using coordinates
+        const locationString = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        setNeighborhood(locationString);
         toast({
           title: "Location detected",
-          description: "Your location has been detected. You can edit it if needed.",
+          description: "Your location has been detected using GPS.",
         });
-        setIsDetectingLocation(false);
-      },
-      (error) => {
-        console.error("Geolocation error:", error);
+      } catch (error) {
+        console.error("Browser geolocation failed, trying IP-based location...");
         
-        let errorMessage = "Could not detect your location.";
-        
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = "Location permission denied. Please enable location services.";
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information is unavailable.";
-            break;
-          case error.TIMEOUT:
-            errorMessage = "Location request timed out.";
-            break;
+        // Fallback to IP-based geolocation
+        const ipLocation = await getLocationFromIP();
+        if (ipLocation) {
+          const locationString = ipLocation.city 
+            ? `${ipLocation.city}, ${ipLocation.region}`
+            : `${ipLocation.latitude.toFixed(5)}, ${ipLocation.longitude.toFixed(5)}`;
+          
+          setNeighborhood(locationString);
+          toast({
+            title: "Location detected",
+            description: "Your location has been approximated using your IP address.",
+          });
+        } else {
+          toast({
+            title: "Location error",
+            description: "Could not detect your location. Please enter it manually.",
+            variant: "destructive"
+          });
         }
+      }
+    } else {
+      // Fallback to IP-based geolocation if geolocation is not supported
+      const ipLocation = await getLocationFromIP();
+      if (ipLocation) {
+        const locationString = ipLocation.city 
+          ? `${ipLocation.city}, ${ipLocation.region}`
+          : `${ipLocation.latitude.toFixed(5)}, ${ipLocation.longitude.toFixed(5)}`;
         
+        setNeighborhood(locationString);
         toast({
-          title: "Location error",
-          description: errorMessage,
+          title: "Location detected",
+          description: "Your location has been approximated using your IP address.",
+        });
+      } else {
+        toast({
+          title: "Location unavailable",
+          description: "Could not detect your location. Please enter it manually.",
           variant: "destructive"
         });
-        setIsDetectingLocation(false);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
       }
-    );
+    }
+    
+    setIsDetectingLocation(false);
   };
   
   const handleSubmit = async () => {
