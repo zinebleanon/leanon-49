@@ -1,51 +1,48 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useUserInfo } from '@/hooks/use-user-info';
 import MessageDialog from '@/components/mumzally/MessageDialog';
 import { UserCircle, MessageSquare, Search, X } from 'lucide-react';
-
-interface LeanMom {
-  id: number;
-  name: string;
-  age: number;
-  location: string;
-  compatibility: number;
-  activeInCommunity?: boolean;
-}
+import { useConnections } from '@/hooks/use-connections';
+import { useMessages } from '@/hooks/use-messages';
+import { useUserInfo } from '@/hooks/use-user-info';
 
 const Connections = () => {
   const navigate = useNavigate();
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
-  const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
-  const { userInfo } = useUserInfo();
-  const [leanBackMoms, setLeanBackMoms] = useState<LeanMom[]>([]);
+  const [selectedRecipient, setSelectedRecipient] = useState<{id: string, name: string} | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   
-  useEffect(() => {
-    const savedLeanBackMoms = localStorage.getItem('leanBackMoms');
-    if (savedLeanBackMoms) {
-      setLeanBackMoms(JSON.parse(savedLeanBackMoms));
-    }
-  }, []);
+  const { userInfo } = useUserInfo();
+  const { connections, loading } = useConnections();
+  const { sendMessage } = useMessages(selectedRecipient?.id);
 
-  const handleMessageClick = (id: number, name: string) => {
+  // Filter only connected users
+  const connectedUsers = connections.filter(conn => 
+    conn.status === 'connected' &&
+    (conn.requester_id === userInfo?.id || conn.recipient_id === userInfo?.id)
+  );
+
+  const handleMessageClick = (id: string, name: string) => {
     setSelectedRecipient({ id, name });
     setMessageDialogOpen(true);
   };
   
-  const handleSendMessage = (text: string, image: string | null) => {
-    console.log("Sending message to", selectedRecipient, "Text:", text, "Image:", image);
+  const handleSendMessage = async (text: string, image: string | null) => {
+    if (!selectedRecipient) return;
+    await sendMessage(selectedRecipient.id, text, image || undefined);
   };
 
-  const filteredMoms = leanBackMoms.filter(mom => 
-    mom.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    mom.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = connectedUsers.filter(conn => {
+    const partnerId = conn.requester_id === userInfo?.id ? conn.recipient_id : conn.requester_id;
+    // Note: In a real app, you would fetch user profiles to get names and locations
+    return partnerId.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,34 +77,39 @@ const Connections = () => {
             </div>
             
             <div className="flex-1 overflow-y-auto px-4 py-3">
-              {filteredMoms.length > 0 ? (
+              {loading ? (
+                <div className="flex justify-center items-center h-full">
+                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : filteredUsers.length > 0 ? (
                 <div className="space-y-1">
-                  {filteredMoms.map((mom) => (
-                    <Card key={mom.id} className="border-transparent hover:bg-muted/30 transition-colors">
-                      <CardContent className="p-3 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                            <UserCircle className="h-7 w-7 text-primary" />
+                  {filteredUsers.map((conn) => {
+                    const partnerId = conn.requester_id === userInfo?.id ? conn.recipient_id : conn.requester_id;
+                    // Note: In a real app, you would display actual user data
+                    return (
+                      <Card key={conn.id} className="border-transparent hover:bg-muted/30 transition-colors">
+                        <CardContent className="p-3 flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                              <UserCircle className="h-7 w-7 text-primary" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">
+                                {partnerId} {/* Replace with actual user name */}
+                              </h3>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="font-medium">
-                              {mom.name}
-                            </h3>
-                            <p className="text-xs text-muted-foreground">
-                              {mom.location}
-                            </p>
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleMessageClick(mom.id, mom.name)}
-                        >
-                          <MessageSquare className="h-5 w-5 text-primary" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleMessageClick(partnerId, partnerId)} // Replace second parameter with actual user name
+                          >
+                            <MessageSquare className="h-5 w-5 text-primary" />
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-40 text-center p-4">
@@ -141,7 +143,7 @@ const Connections = () => {
           onOpenChange={setMessageDialogOpen} 
           conversation={{
             id: `conv-${selectedRecipient.id}`,
-            participantId: selectedRecipient.id.toString(),
+            participantId: selectedRecipient.id,
             participantName: selectedRecipient.name,
             lastMessage: "",
             lastMessageTimestamp: new Date().toISOString(),

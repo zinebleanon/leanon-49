@@ -33,6 +33,33 @@ export type Database = {
         }
         Relationships: []
       }
+      connection_requests: {
+        Row: {
+          created_at: string | null
+          id: string
+          recipient_id: string
+          requester_id: string
+          status: Database["public"]["Enums"]["connection_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          recipient_id: string
+          requester_id: string
+          status?: Database["public"]["Enums"]["connection_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          recipient_id?: string
+          requester_id?: string
+          status?: Database["public"]["Enums"]["connection_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       connections: {
         Row: {
           connected_user_id: string | null
@@ -88,6 +115,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          image_url: string | null
+          read_at: string | null
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          read_at?: string | null
+          receiver_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          read_at?: string | null
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: []
       }
       notifications: {
         Row: {
@@ -248,6 +305,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      connection_status: "pending" | "declined" | "connected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -364,6 +422,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      connection_status: ["pending", "declined", "connected"],
     },
   },
 } as const
