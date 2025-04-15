@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
@@ -126,8 +125,7 @@ const SignUpForm = ({
           }
         );
         
-        // The redirect is now handled by the AuthProvider in use-auth.tsx
-        // No need for additional redirection logic here
+        // Navigation is handled by the auth provider
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
@@ -187,7 +185,7 @@ const SignUpForm = ({
           phone: signUpData.phone
         }
       );
-      // The redirect is handled by the AuthProvider in use-auth.tsx
+      // Navigation is handled by the auth provider
     } catch (error: any) {
       console.error("Error in signup with skip verification:", error);
       toast({

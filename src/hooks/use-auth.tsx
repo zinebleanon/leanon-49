@@ -1,3 +1,4 @@
+
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -32,6 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
         console.log("User signed in or updated, redirecting to Index");
+        setLoading(false);
         
         setTimeout(() => {
           navigate('/', { replace: true });
@@ -49,6 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         }
       } else if (event === 'SIGNED_OUT') {
+        setLoading(false);
         setTimeout(() => {
           navigate('/sign-in', { replace: true });
         }, 0);
@@ -115,13 +118,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           description: "Welcome to LeanOn! Your account has been created.",
         });
         
-        // Auth state change event will handle the redirect
-        // But we'll force a redirect here as a backup
-        setTimeout(() => {
-          navigate('/', { replace: true });
-        }, 500);
+        // Instead of waiting for auth state change, we'll establish a session right away
+        // by signing in with the newly created credentials
+        await supabase.auth.signInWithPassword({ email, password });
       }
     } catch (error: any) {
+      console.error("Error in signup:", error);
       toast({
         title: "Error signing up",
         description: error.message,
