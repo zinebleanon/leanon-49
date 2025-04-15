@@ -1,85 +1,29 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ShoppingBag, Tag, Users, MessageSquare } from 'lucide-react';
+import { ShoppingBag, Tag, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
-import { trackUserActivity } from '@/utils/track-user-activity';
-
-interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-  feature: 'connect' | 'ask' | 'deals' | 'preloved';
-  link?: string;
-}
+import { useNotifications } from '@/hooks/use-notifications';
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { 
+    notifications, 
+    isLoading, 
+    markAsRead, 
+    markAllAsRead, 
+    deleteNotification 
+  } = useNotifications();
   
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const mockNotifications: Notification[] = [
-        {
-          id: '1',
-          title: 'New Connection Request',
-          message: 'Sarah would like to connect with you',
-          timestamp: '2025-04-15T10:00:00Z',
-          read: false,
-          feature: 'connect',
-          link: '/connections'
-        },
-        {
-          id: '2',
-          title: 'New Question Response',
-          message: 'Emily answered your question about baby sleep schedules',
-          timestamp: '2025-04-15T09:30:00Z',
-          read: false,
-          feature: 'ask',
-          link: '/ask'
-        },
-        {
-          id: '3',
-          title: 'Preloved Item Sale',
-          message: 'A baby carrier is now available at a discounted price',
-          timestamp: '2025-04-05T08:45:00Z',
-          read: false,
-          feature: 'preloved',
-          link: '/mumzmarketplace/items/456'
-        },
-        {
-          id: '4',
-          title: 'New Deal Available',
-          message: 'Special offer on baby essentials this week',
-          timestamp: '2025-04-04T16:20:00Z',
-          read: false,
-          feature: 'deals',
-          link: '/mumzsave'
-        }
-      ];
-      
-      setNotifications(mockNotifications);
-      setIsLoading(false);
-    }, 800);
-    
-    return () => clearTimeout(timeout);
-  }, []);
-
   const getFeatureIcon = (feature: string) => {
     switch (feature) {
       case 'connect':
         return <Users className="h-4 w-4" />;
-      case 'ask':
-        return <MessageSquare className="h-4 w-4" />;
       case 'preloved':
         return <ShoppingBag className="h-4 w-4" />;
       case 'deals':
@@ -98,61 +42,10 @@ const Notifications = () => {
       minute: '2-digit'
     });
   };
-  
-  const markAsRead = async (id: string) => {
-    setNotifications(prev => 
-      prev.map(notif => 
-        notif.id === id ? { ...notif, read: true } : notif
-      )
-    );
-
-    await trackUserActivity({
-      type: 'notifications_marked_all_read',
-      description: `Marked notification ${id} as read`,
-      metadata: { notificationId: id }
-    });
-  };
-  
-  const deleteNotification = async (id: string) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== id));
-    
-    await trackUserActivity({
-      type: 'notification_deleted',
-      description: `Deleted notification ${id}`,
-      metadata: { notificationId: id }
-    });
-  };
-  
-  const markAllAsRead = async () => {
-    const unreadCount = notifications.filter(n => !n.read).length;
-    
-    setNotifications(prev => 
-      prev.map(notif => ({ ...notif, read: true }))
-    );
-
-    await trackUserActivity({
-      type: 'notifications_marked_all_read',
-      description: `Marked all notifications as read`,
-      metadata: { count: unreadCount }
-    });
-
-    toast({
-      title: "Notifications Updated",
-      description: `Marked ${unreadCount} notifications as read`,
-    });
-  };
 
   const handleNotificationClick = async (notification: Notification) => {
     if (notification.link) {
-      await trackUserActivity({
-        type: 'notification_clicked',
-        description: `Clicked notification: ${notification.title}`,
-        metadata: { 
-          notificationId: notification.id,
-          link: notification.link
-        }
-      });
-      
+      await markAsRead(notification.id);
       navigate(notification.link);
     }
   };
@@ -232,7 +125,7 @@ const Notifications = () => {
                         </h3>
                         <p className="text-muted-foreground mt-1">{notification.message}</p>
                         <p className="text-xs text-muted-foreground mt-2">
-                          {formatDate(notification.timestamp)}
+                          {formatDate(notification.created_at)}
                         </p>
                       </div>
                     </div>
