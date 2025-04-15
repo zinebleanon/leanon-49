@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useAuth } from '@/hooks/use-auth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
@@ -23,7 +24,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(defaultTab);
-  const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: OTP verification
+  const [signupStep, setSignupStep] = useState(1);
   const [otpValue, setOtpValue] = useState("");
   const [resetPasswordEmail, setResetPasswordEmail] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -471,7 +472,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                   </CardDescription>
                 )}
               </CardHeader>
-              <form onSubmit={handleSignUpSubmit}>
+              <form onSubmit={handleSignUp}>
                 {signupStep === 1 && (
                   <CardContent className="space-y-4 pt-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -703,7 +704,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
         </Tabs>
       </div>
       
-      {/* Forgot Password Dialog */}
       <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
