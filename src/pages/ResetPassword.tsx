@@ -13,21 +13,61 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [hashParam, setHashParam] = useState<string | null>(null);
+  const [isValidToken, setIsValidToken] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   
-  // Extract hash parameter from URL on component mount
+  // Check if we have a valid auth token in the URL on component mount
   useEffect(() => {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const type = params.get('type');
+    // This is crucial for password reset functionality
+    // We need to check if we have the correct type & access token in URL
+    const checkToken = async () => {
+      // Parse the URL fragment (#) portion to get the auth token
+      const hash = window.location.hash.substring(1);
+      
+      if (!hash) {
+        console.log("No hash parameter found in URL");
+        return;
+      }
+      
+      const params = new URLSearchParams(hash);
+      const type = params.get('type');
+      const accessToken = params.get('access_token');
+
+      console.log("Auth params:", { type, hasAccessToken: !!accessToken });
+      
+      if (type === 'recovery' && accessToken) {
+        try {
+          // Validate the token by setting the session
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: '',
+          });
+          
+          if (error) {
+            console.error("Invalid or expired reset token:", error);
+            toast({
+              title: "Invalid or expired token",
+              description: "Please request a new password reset link.",
+              variant: "destructive",
+            });
+          } else {
+            setIsValidToken(true);
+          }
+        } catch (err) {
+          console.error("Error validating reset token:", err);
+        }
+      } else {
+        toast({
+          title: "Invalid reset link",
+          description: "This link is not valid for password reset.",
+          variant: "destructive",
+        });
+      }
+    };
     
-    // Only set the hash if it's a recovery flow
-    if (type === 'recovery') {
-      setHashParam(hash);
-    }
-  }, []);
+    checkToken();
+  }, [toast]);
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,6 +106,36 @@ const ResetPassword = () => {
       setIsLoading(false);
     }
   };
+  
+  if (!isValidToken) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center pt-0">
+        <div className="w-full max-w-md text-center">
+          <img 
+            src="/lovable-uploads/cff1d041-e202-4a39-8f31-c3fea11a1405.png" 
+            alt="LeanOn Logo" 
+            className="w-20 h-auto mx-auto mb-4"
+          />
+          <Card className="border-secondary/20 shadow-md">
+            <CardHeader className="bg-gradient-to-b from-secondary/20 to-transparent pb-4">
+              <CardTitle>Reset Password Link Invalid</CardTitle>
+              <CardDescription>
+                The password reset link is invalid or has expired.
+              </CardDescription>
+            </CardHeader>
+            <CardFooter className="flex-col space-y-3 bg-gradient-to-t from-secondary/20 to-transparent pt-4">
+              <Button 
+                onClick={() => navigate('/sign-in')} 
+                className="w-full warm-button"
+              >
+                Return to Sign In
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center pt-0">
