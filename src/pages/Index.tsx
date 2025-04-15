@@ -576,9 +576,8 @@ const Index = () => {
                   <div className="flex flex-col gap-3">
                     {isProfileIncomplete && (
                       <Button 
-                        variant="outline" 
+                        variant="warm" 
                         onClick={openProfileUpdateForm}
-                        className="bg-pastel-yellow/10 hover:bg-pastel-yellow/20 border-pastel-yellow/30"
                       >
                         <User className="h-4 w-4 mr-2" />
                         Complete Your Profile
