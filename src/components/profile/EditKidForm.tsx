@@ -244,10 +244,8 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                  <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                  <SelectItem value="male">Boy</SelectItem>
+                  <SelectItem value="female">Girl</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

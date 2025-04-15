@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -139,6 +140,14 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     setSelectedMonth(month);
     const newDate = new Date(parseInt(selectedYear), parseInt(month) - 1, 1);
     setBirthDate(newDate);
+  };
+
+  const handleKidAdded = () => {
+    setIsAddKidOpen(false);
+    toast({
+      title: "Child added",
+      description: "Your child has been added to your profile.",
+    });
   };
 
   return (
@@ -286,14 +295,29 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
           
           {userInfo?.kids && userInfo.kids.length > 0 && (
             <div className="space-y-2 mt-2">
-              {kidsAges.map((kid, index) => (
-                <div key={index} className="flex justify-between bg-muted p-2 rounded border">
-                  <span>Child {index + 1}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {kid.gender}, {kid.age} {kid.age === 1 ? 'year' : 'years'}
-                  </span>
-                </div>
-              ))}
+              {userInfo.kids.map((kid, index) => {
+                // Get child age from birthDate
+                let age = 0;
+                if (kid.birthDate) {
+                  const birthDate = new Date(kid.birthDate);
+                  const today = new Date();
+                  age = today.getFullYear() - birthDate.getFullYear();
+                  
+                  const monthDiff = today.getMonth() - birthDate.getMonth();
+                  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                  }
+                }
+                
+                return (
+                  <div key={index} className="flex justify-between bg-muted p-2 rounded border">
+                    <span>Child {index + 1}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {kid.gender === 'male' ? 'Boy' : kid.gender === 'female' ? 'Girl' : kid.gender}, {age} {age === 1 ? 'year' : 'years'}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
