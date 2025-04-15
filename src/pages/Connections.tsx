@@ -25,7 +25,7 @@ const Connections = () => {
   // Filter only connected users
   const connectedUsers = connections.filter(conn => 
     conn.status === 'connected' &&
-    (conn.requester_id === userInfo?.id || conn.recipient_id === userInfo?.id)
+    (conn.requester_id === userInfo?.email || conn.recipient_id === userInfo?.email)
   );
 
   const handleMessageClick = (id: string, name: string) => {

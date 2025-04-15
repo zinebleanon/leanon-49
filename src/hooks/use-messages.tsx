@@ -19,13 +19,13 @@ export function useMessages(conversationPartnerId?: string) {
   const { userInfo } = useUserInfo();
 
   useEffect(() => {
-    if (!userInfo?.id || !conversationPartnerId) return;
+    if (!userInfo?.email || !conversationPartnerId) return;
 
     const fetchMessages = async () => {
       const { data, error } = await supabase
         .from('messages')
         .select('*')
-        .or(`and(sender_id.eq.${userInfo.id},receiver_id.eq.${conversationPartnerId}),and(sender_id.eq.${conversationPartnerId},receiver_id.eq.${userInfo.id})`)
+        .or(`and(sender_id.eq.${userInfo.email},receiver_id.eq.${conversationPartnerId}),and(sender_id.eq.${conversationPartnerId},receiver_id.eq.${userInfo.email})`)
         .order('created_at', { ascending: true });
 
       if (error) {
@@ -47,7 +47,7 @@ export function useMessages(conversationPartnerId?: string) {
           event: 'INSERT', 
           schema: 'public', 
           table: 'messages',
-          filter: `sender_id=eq.${conversationPartnerId},receiver_id=eq.${userInfo.id}`
+          filter: `sender_id=eq.${conversationPartnerId},receiver_id=eq.${userInfo.email}`
         }, 
         (payload) => {
           console.log('New message received:', payload);
@@ -59,15 +59,15 @@ export function useMessages(conversationPartnerId?: string) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userInfo?.id, conversationPartnerId]);
+  }, [userInfo?.email, conversationPartnerId]);
 
   const sendMessage = async (receiverId: string, content: string, imageUrl?: string) => {
-    if (!userInfo?.id) return null;
+    if (!userInfo?.email) return null;
 
     const { data, error } = await supabase
       .from('messages')
       .insert({
-        sender_id: userInfo.id,
+        sender_id: userInfo.email,
         receiver_id: receiverId,
         content,
         image_url: imageUrl

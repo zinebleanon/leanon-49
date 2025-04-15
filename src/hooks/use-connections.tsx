@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserInfo } from './use-user-info';
@@ -23,6 +22,35 @@ export function useConnections() {
 
     const fetchConnections = async () => {
       try {
+        // Insert a test connection request for demonstration
+        if (userInfo.email === 'test@example.com') {
+          const testRequest = {
+            requester_id: 'sarah@example.com',
+            recipient_id: userInfo.email,
+            status: 'pending'
+          };
+
+          const { error: existingError } = await supabase
+            .from('connection_requests')
+            .select('*')
+            .eq('requester_id', testRequest.requester_id)
+            .eq('recipient_id', testRequest.recipient_id)
+            .single();
+
+          if (existingError) {
+            // No existing request found, insert the test request
+            const { error } = await supabase
+              .from('connection_requests')
+              .insert(testRequest);
+
+            if (error) {
+              console.error('Error creating test connection:', error);
+            } else {
+              console.log('Test connection request created');
+            }
+          }
+        }
+
         const { data, error } = await supabase
           .from('connection_requests')
           .select('*')
