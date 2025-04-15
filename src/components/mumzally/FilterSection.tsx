@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Input } from '@/components/ui/input';
 
 interface FilterSectionProps {
   onFiltersChange: (filters: Record<string, any>) => void;
@@ -47,6 +47,36 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
   
   const [activeFiltersCount, setActiveFiltersCount] = useState(0);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+
+  // Add nationality search state
+  const [nationalitySearch, setNationalitySearch] = useState('');
+  
+  // Filter nationalities based on search
+  const nationalities = [
+    "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
+    "Austrian", "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean", "Beninese",
+    "Bhutanese", "Bolivian", "Bosnian", "Botswanan", "Brazilian", "British", "Bruneian", "Bulgarian", "Burkinabe", "Burmese",
+    "Burundian", "Cambodian", "Cameroonian", "Canadian", "Cape Verdean", "Central African", "Chadian", "Chilean", "Chinese", "Colombian",
+    "Comoran", "Congolese", "Costa Rican", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian", "Dominican",
+    "Dutch", "East Timorese", "Ecuadorean", "Egyptian", "Emirati", "Equatorial Guinean", "Eritrean", "Estonian", "Ethiopian", "Fijian",
+    "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Grenadian",
+    "Guatemalan", "Guinean", "Guyanese", "Haitian", "Honduran", "Hungarian", "Icelandic", "Indian", "Indonesian", "Iranian",
+    "Iraqi", "Irish", "Israeli", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakhstani", "Kenyan",
+    "Kuwaiti", "Kyrgyz", "Laotian", "Latvian", "Lebanese", "Liberian", "Libyan", "Liechtensteiner", "Lithuanian", "Luxembourgish",
+    "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivian", "Malian", "Maltese", "Marshallese", "Mauritanian", "Mauritian",
+    "Mexican", "Micronesian", "Moldovan", "Monacan", "Mongolian", "Montenegrin", "Moroccan", "Mozambican", "Namibian", "Nauruan",
+    "Nepalese", "New Zealand", "Nicaraguan", "Nigerian", "North Korean", "Norwegian", "Omani", "Pakistani", "Palauan", "Palestinian",
+    "Panamanian", "Papua New Guinean", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian", "Russian", "Rwandan",
+    "Saint Lucian", "Salvadoran", "Samoan", "San Marinese", "Saudi", "Senegalese", "Serbian", "Seychellois", "Sierra Leonean", "Singaporean",
+    "Slovak", "Slovenian", "Solomon Islander", "Somali", "South African", "South Korean", "Spanish", "Sri Lankan", "Sudanese", "Surinamese",
+    "Swazi", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese", "Tongan",
+    "Trinidadian", "Tunisian", "Turkish", "Turkmen", "Tuvaluan", "Ugandan", "Ukrainian", "Uruguayan", "Uzbekistani", "Vanuatuan",
+    "Vatican", "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean"
+  ];
+  
+  const filteredNationalities = nationalities.filter(nat =>
+    nat.toLowerCase().includes(nationalitySearch.toLowerCase())
+  );
 
   // Update local search term when prop changes
   useEffect(() => {
@@ -451,15 +481,22 @@ const FilterSection = ({ onFiltersChange, onClose, open, onOpenChange, searchTer
                   <SelectValue placeholder="Any Nationality" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-pastel-green/30">
-                  <SelectGroup>
-                    <SelectItem value="all">Any Nationality</SelectItem>
-                    <SelectItem value="British Expat">British Expat</SelectItem>
-                    <SelectItem value="American Expat">American Expat</SelectItem>
-                    <SelectItem value="Chinese-American">Chinese-American</SelectItem>
-                    <SelectItem value="Indian Expat">Indian Expat</SelectItem>
-                    <SelectItem value="Lebanese">Lebanese</SelectItem>
-                    <SelectItem value="UAE">UAE</SelectItem>
-                  </SelectGroup>
+                  <div className="sticky top-0 p-2 bg-white border-b">
+                    <Input
+                      placeholder="Search nationality..."
+                      value={nationalitySearch}
+                      onChange={(e) => setNationalitySearch(e.target.value)}
+                      className="h-8"
+                    />
+                  </div>
+                  <ScrollArea className="h-[200px]">
+                    <SelectGroup>
+                      <SelectItem value="all">Any Nationality</SelectItem>
+                      {filteredNationalities.map((nat) => (
+                        <SelectItem key={nat} value={nat}>{nat}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </ScrollArea>
                 </SelectContent>
               </Select>
             </CollapsibleContent>

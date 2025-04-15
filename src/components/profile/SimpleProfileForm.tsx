@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import EditProfileDialog from './EditProfileDialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 
 interface SimpleProfileFormProps {
   onSuccess: () => void;
@@ -28,6 +29,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
   const [birthDate, setBirthDate] = useState<Date | undefined>(
     userInfo?.birthDate ? new Date(userInfo.birthDate) : undefined
   );
+  const [nationalitySearch, setNationalitySearch] = useState('');
 
   const nationalities = [
     "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
@@ -92,6 +94,10 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     setIsAddKidOpen(true);
   };
   
+  const filteredNationalities = nationalities.filter(nat =>
+    nat.toLowerCase().includes(nationalitySearch.toLowerCase())
+  );
+
   return (
     <div className="bg-card rounded-lg border shadow-sm p-6 max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-center mb-2">Complete Your Profile</h2>
@@ -132,8 +138,16 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
               <SelectValue placeholder="Select your nationality" />
             </SelectTrigger>
             <SelectContent>
+              <div className="sticky top-0 p-2 bg-white border-b">
+                <Input
+                  placeholder="Search nationality..."
+                  value={nationalitySearch}
+                  onChange={(e) => setNationalitySearch(e.target.value)}
+                  className="h-8"
+                />
+              </div>
               <ScrollArea className="h-[200px]">
-                {nationalities.map((nat) => (
+                {filteredNationalities.map((nat) => (
                   <SelectItem key={nat} value={nat}>
                     {nat}
                   </SelectItem>
