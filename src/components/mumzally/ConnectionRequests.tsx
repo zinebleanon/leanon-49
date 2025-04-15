@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import MessageDialog from './MessageDialog';
 import LeanMomsDialog from './LeanMomsDialog';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { trackConnection } from '@/utils/track-user-activity';
 
 interface ConnectionRequest {
   id: number;
@@ -98,7 +99,6 @@ const ConnectionRequests = ({
     setAcceptedRequests(updatedAccepted);
     localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
     
-    // Track the connection activity
     trackConnection(id.toString(), name);
     
     toast({
