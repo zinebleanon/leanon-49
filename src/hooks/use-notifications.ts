@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,8 +12,8 @@ export interface Notification {
   link?: string;
   read: boolean;
   created_at: string;
-  user_id?: string; // Added to match DB schema
-  type?: string;    // Added to match DB schema
+  user_id?: string;
+  type?: string;
 }
 
 export const useNotifications = () => {

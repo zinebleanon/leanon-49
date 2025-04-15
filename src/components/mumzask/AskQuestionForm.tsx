@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const categoryKeywords = {
+const categoryKeywords: Record<string, string[]> = {
   'Parenting': ['toddler', 'tantrum', 'discipline', 'child', 'behavior', 'parent', 'kids', 'children'],
   'Pregnancy': ['pregnant', 'trimester', 'baby', 'birth', 'ultrasound', 'expecting', 'maternity', 'nausea'],
   'Birth': ['labor', 'delivery', 'contractions', 'birth plan', 'midwife', 'water birth', 'c-section', 'epidural'],
@@ -31,7 +31,7 @@ const categoryKeywords = {
   'Nannies': ['nanny', 'babysitter', 'childcare', 'au pair', 'caregiver', 'sitter', 'childminder'],
   'Entertainment & Birthday': ['party', 'activity', 'birthday', 'holiday', 'event', 'celebration', 'gift', 'present'],
   'Others': [] 
-} as const;
+};
 
 interface AskQuestionFormProps {
   categories: { name: string; icon: React.ReactNode }[];
@@ -133,7 +133,8 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
           message: `A new question was asked in the ${category} category.`,
           user_id: user?.id,
           read: false,
-          type: isNeighborhood ? 'neighborhood_question' : 'community_question'
+          type: isNeighborhood ? 'neighborhood_question' : 'community_question',
+          link: '/ask' // Adding link field to fix the error
         }]);
 
       if (notificationError) {

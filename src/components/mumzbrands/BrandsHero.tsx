@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { HeartHandshake, BadgePercent, Info } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
@@ -24,16 +25,10 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
           </h1>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8 md:mt-12 md:mb-12">
-            <Button 
-              variant="warm"
-              size={isMobile ? "default" : "lg"}
-              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2"
-              onClick={onOpenDialog}
+            <BrandsHowItWorksDialog 
+              className="w-full sm:w-auto" 
               trackingName="brands_how_it_works"
-            >
-              <Info className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
-              <span>How It Works</span>
-            </Button>
+            />
             
             <Button 
               variant="warm"
