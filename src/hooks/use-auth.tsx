@@ -24,23 +24,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+      console.log("Auth state change event:", event);
+      setSession(newSession);
+      setUser(newSession?.user ?? null);
       
       if (event === 'SIGNED_IN') {
-        if (session?.user?.app_metadata?.provider === 'email' && 
-            session?.user?.app_metadata?.created_at === session?.user?.app_metadata?.last_sign_in_at) {
-          navigate('/');
+        const isNewUser = newSession?.user?.app_metadata?.provider === 'email' && 
+                         newSession?.user?.app_metadata?.created_at === newSession?.user?.app_metadata?.last_sign_in_at;
+        
+        console.log("Is new user:", isNewUser);
+        
+        if (isNewUser) {
+          navigate('/', { replace: true });
           toast({
             title: "Welcome to LeanOn!",
             description: `Your account has been created successfully. Share your referral code with friends!`,
           });
         } else {
-          navigate('/');
+          navigate('/', { replace: true });
         }
       } else if (event === 'SIGNED_OUT') {
-        navigate('/sign-in');
+        navigate('/sign-in', { replace: true });
       }
     });
 
@@ -75,14 +80,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
         options: {
-          data: metadata,
-          emailRedirectTo: `${window.location.origin}/sign-in`
+          data: metadata
         }
       });
       
       if (error) throw error;
       
       if (data.user) {
+        console.log("Sign up successful, user created:", data.user.id);
         toast({
           title: "Account created!",
           description: "Welcome to LeanOn! Your account has been created.",

@@ -107,6 +107,13 @@ const SignUpForm = ({
       setIsLoading(true);
       
       try {
+        console.log("Completing sign up with data:", {
+          email: signUpData.email,
+          firstName: signUpData.firstName,
+          lastName: signUpData.lastName,
+          phone: signUpData.phone
+        });
+        
         await signUp(
           signUpData.email, 
           signUpData.password, 
@@ -116,6 +123,9 @@ const SignUpForm = ({
             phone: signUpData.phone
           }
         );
+        
+        // The redirection will now be handled by the onAuthStateChange event in useAuth
+        console.log("SignUp completed, waiting for redirect...");
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
@@ -160,6 +170,32 @@ const SignUpForm = ({
     return phone;
   };
 
+  const handleSkipVerification = () => {
+    // This is for testing only - in real app, would not skip verification
+    setIsLoading(true);
+    try {
+      console.log("Skipping verification, completing signup directly");
+      signUp(
+        signUpData.email, 
+        signUpData.password, 
+        {
+          first_name: signUpData.firstName,
+          last_name: signUpData.lastName,
+          phone: signUpData.phone
+        }
+      );
+    } catch (error: any) {
+      console.error("Error in signup with skip verification:", error);
+      toast({
+        title: "Error signing up",
+        description: error instanceof Error ? error.message : "An unexpected error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSignUp}>
       {signupStep === 2 ? (
@@ -168,6 +204,7 @@ const SignUpForm = ({
           otpValue={otpValue}
           setOtpValue={setOtpValue}
           onResendOTP={resendOTP}
+          onSkipVerification={handleSkipVerification}
           isLoading={isLoading}
         />
       ) : (
@@ -199,4 +236,3 @@ const SignUpForm = ({
 };
 
 export default SignUpForm;
-

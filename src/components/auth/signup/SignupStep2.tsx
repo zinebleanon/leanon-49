@@ -9,10 +9,18 @@ interface SignupStep2Props {
   otpValue: string;
   setOtpValue: (value: string) => void;
   onResendOTP: () => void;
+  onSkipVerification: () => void;
   isLoading: boolean;
 }
 
-const SignupStep2 = ({ phone, otpValue, setOtpValue, onResendOTP, isLoading }: SignupStep2Props) => {
+const SignupStep2 = ({ 
+  phone, 
+  otpValue, 
+  setOtpValue, 
+  onResendOTP, 
+  onSkipVerification,
+  isLoading 
+}: SignupStep2Props) => {
   const formatPhoneDisplay = (phone: string) => {
     if (!phone) return '';
     if (phone.length <= 9) {
@@ -63,6 +71,7 @@ const SignupStep2 = ({ phone, otpValue, setOtpValue, onResendOTP, isLoading }: S
           type="button"
           size="sm"
           className="mx-auto text-xs"
+          onClick={onSkipVerification}
         >
           Skip verification (for testing)
         </Button>
@@ -72,4 +81,3 @@ const SignupStep2 = ({ phone, otpValue, setOtpValue, onResendOTP, isLoading }: S
 };
 
 export default SignupStep2;
-
