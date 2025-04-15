@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ShoppingBag, Tag } from 'lucide-react';
+import { ShoppingBag, Tag, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -16,7 +15,7 @@ interface Notification {
   message: string;
   timestamp: string;
   read: boolean;
-  feature: 'preloved' | 'deals';
+  feature: 'connect' | 'ask' | 'deals' | 'preloved';
   link?: string;
 }
 
@@ -30,6 +29,24 @@ const Notifications = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       const mockNotifications: Notification[] = [
+        {
+          id: '1',
+          title: 'New Connection Request',
+          message: 'Sarah would like to connect with you',
+          timestamp: '2025-04-15T10:00:00Z',
+          read: false,
+          feature: 'connect',
+          link: '/connections'
+        },
+        {
+          id: '2',
+          title: 'New Question Response',
+          message: 'Emily answered your question about baby sleep schedules',
+          timestamp: '2025-04-15T09:30:00Z',
+          read: false,
+          feature: 'ask',
+          link: '/ask'
+        },
         {
           id: '3',
           title: 'Preloved Item Sale',
@@ -59,6 +76,10 @@ const Notifications = () => {
 
   const getFeatureIcon = (feature: string) => {
     switch (feature) {
+      case 'connect':
+        return <Users className="h-4 w-4" />;
+      case 'ask':
+        return <MessageSquare className="h-4 w-4" />;
       case 'preloved':
         return <ShoppingBag className="h-4 w-4" />;
       case 'deals':
@@ -67,7 +88,7 @@ const Notifications = () => {
         return null;
     }
   };
-  
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -172,10 +193,24 @@ const Notifications = () => {
         ) : (
           <>
             <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-6">
-              <TabsList className="grid grid-cols-3">
+              <TabsList className="grid grid-cols-5">
                 <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="preloved">Preloved</TabsTrigger>
-                <TabsTrigger value="deals">Deals</TabsTrigger>
+                <TabsTrigger value="connect" className="flex items-center gap-1">
+                  <Users className="h-4 w-4" />
+                  Connect
+                </TabsTrigger>
+                <TabsTrigger value="ask" className="flex items-center gap-1">
+                  <MessageSquare className="h-4 w-4" />
+                  Ask
+                </TabsTrigger>
+                <TabsTrigger value="deals" className="flex items-center gap-1">
+                  <Tag className="h-4 w-4" />
+                  Deals
+                </TabsTrigger>
+                <TabsTrigger value="preloved" className="flex items-center gap-1">
+                  <ShoppingBag className="h-4 w-4" />
+                  Preloved
+                </TabsTrigger>
               </TabsList>
             </Tabs>
             
@@ -244,4 +279,3 @@ const Notifications = () => {
 };
 
 export default Notifications;
-
