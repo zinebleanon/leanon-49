@@ -12,6 +12,7 @@ import EditProfileDialog from './EditProfileDialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { cn } from '@/lib/utils';
 
 interface SimpleProfileFormProps {
   onSuccess: () => void;
