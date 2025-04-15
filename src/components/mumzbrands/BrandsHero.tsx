@@ -37,25 +37,14 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             />
             
             <Button 
-              variant="outline"
+              variant="warm"
               size={isMobile ? "default" : "lg"}
-              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform cursor-pointer bg-white hover:bg-white/90"
+              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform cursor-pointer"
               onClick={handleDiscountDialogOpen}
               trackingName="brands_browse_discounts"
             >
               <Tags className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> 
               <span>View All Brand Discounts</span>
-            </Button>
-            
-            <Button 
-              variant="warm"
-              size={isMobile ? "default" : "lg"}
-              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform cursor-pointer"
-              onClick={handleDiscountDialogOpen}
-              trackingName="brands_browse_discounts_alt"
-            >
-              <BadgePercent className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> 
-              <span>Browse Available Discounts</span>
             </Button>
           </div>
         </div>
