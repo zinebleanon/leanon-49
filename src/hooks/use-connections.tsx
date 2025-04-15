@@ -19,7 +19,7 @@ export function useConnections() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!userInfo) return;
+    if (!userInfo?.email) return;
 
     const fetchConnections = async () => {
       try {
@@ -46,8 +46,6 @@ export function useConnections() {
 
             if (error) {
               console.error('Error creating test connection:', error);
-            } else {
-              console.log('Test connection request created');
             }
           }
         }
@@ -72,7 +70,7 @@ export function useConnections() {
 
     fetchConnections();
 
-    // Subscribe to changes
+    // Subscribe to changes in real-time
     const channel = supabase
       .channel('connection_changes')
       .on('postgres_changes', 
@@ -91,10 +89,10 @@ export function useConnections() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userInfo]);
+  }, [userInfo?.email]);
 
   const sendConnectionRequest = async (recipientEmail: string) => {
-    if (!userInfo) {
+    if (!userInfo?.email) {
       toast({
         title: "Error",
         description: "You must be logged in to send a connection request.",
@@ -129,9 +127,7 @@ export function useConnections() {
         description: `Request sent to ${recipientEmail}`,
       });
 
-      // Update local state with the new connection
       setConnections(prev => [...prev, data]);
-
       return data;
     } catch (err) {
       console.error('Send connection request error:', err);
@@ -140,7 +136,7 @@ export function useConnections() {
   };
 
   const updateConnectionStatus = async (connectionId: string, status: 'connected' | 'declined') => {
-    if (!userInfo) {
+    if (!userInfo?.email) {
       toast({
         title: "Error",
         description: "You must be logged in to update connection status.",
@@ -167,7 +163,6 @@ export function useConnections() {
         return null;
       }
 
-      // Update local state immediately
       setConnections(prev => 
         prev.map(conn => 
           conn.id === connectionId ? { ...conn, status } : conn

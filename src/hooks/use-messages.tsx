@@ -80,6 +80,8 @@ export function useMessages(conversationPartnerId?: string) {
       return null;
     }
 
+    // Update local state immediately
+    setMessages(current => [...current, data]);
     return data;
   };
 

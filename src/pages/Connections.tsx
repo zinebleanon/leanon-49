@@ -14,7 +14,7 @@ import { useUserInfo } from '@/hooks/use-user-info';
 const Connections = () => {
   const navigate = useNavigate();
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
-  const [selectedRecipient, setSelectedRecipient<{id: string, name: string} | null>({id: '', name: ''});
+  const [selectedRecipient, setSelectedRecipient] = useState<{id: string, name: string}>({id: '', name: ''});
   const [searchTerm, setSearchTerm] = useState('');
   
   const { userInfo } = useUserInfo();
