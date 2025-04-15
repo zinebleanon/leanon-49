@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -7,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Send, Image, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import BowRibbon from './BowRibbon';
+import { useNavigate } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -41,11 +41,11 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (open && conversation) {
       setIsLoading(true);
-      // Simulate loading messages for the selected conversation
       setTimeout(() => {
         const mockMessages: Message[] = [
           {
@@ -87,7 +87,6 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
         setIsLoading(false);
       }, 500);
     } else {
-      // Reset state when dialog closes
       setMessages([]);
       setNewMessage('');
       setSelectedImage(null);
@@ -98,7 +97,6 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
   const handleSendMessage = () => {
     if ((!newMessage.trim() && !imagePreview) || !conversation) return;
     
-    // Add new message to the conversation
     const newMessageObj: Message = {
       id: `msg${Date.now()}`,
       senderId: 'current-user',
@@ -111,15 +109,12 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
     
     setMessages(prev => [...prev, newMessageObj]);
     
-    // Call the parent onSendMessage handler
     onSendMessage(newMessage, imagePreview);
     
-    // Clear message input and image preview
     setNewMessage('');
     setSelectedImage(null);
     setImagePreview(null);
     
-    // Show toast notification
     toast({
       title: "Message sent",
       description: "Your message has been sent successfully."
@@ -138,7 +133,6 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
       const file = e.target.files[0];
       setSelectedImage(file);
       
-      // Create a preview URL for the selected image
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -184,12 +178,16 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
     }
   };
   
+  const handleNameClick = () => {
+    onOpenChange(false);
+    navigate('/connections');
+  };
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] h-[80vh] max-h-[700px] flex flex-col p-0 overflow-hidden bg-card">
         {conversation && (
           <>
-            {/* Conversation Header */}
             <DialogHeader className="p-4 border-b bg-muted/20 flex flex-row items-center justify-between">
               <Button 
                 variant="ghost" 
@@ -207,12 +205,17 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
                     {getInitials(conversation.participantName)}
                   </AvatarFallback>
                 </Avatar>
-                <span>{conversation.participantName}</span>
+                <Button
+                  variant="ghost"
+                  className="font-semibold p-0 h-auto hover:bg-transparent"
+                  onClick={handleNameClick}
+                >
+                  {conversation.participantName}
+                </Button>
               </DialogTitle>
-              <div className="w-[60px]"></div> {/* Spacer for centering */}
+              <div className="w-[60px]"></div>
             </DialogHeader>
             
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#F1F1F1]/30">
               {isLoading ? (
                 <div className="flex justify-center items-center h-full">
@@ -254,7 +257,6 @@ const MessageDialog = ({ open, onOpenChange, conversation, onSendMessage }: Mess
               )}
             </div>
             
-            {/* Message Input */}
             <div className="p-3 border-t bg-white">
               {imagePreview && (
                 <div className="mb-2 relative bg-muted/10 p-2 rounded-md">
