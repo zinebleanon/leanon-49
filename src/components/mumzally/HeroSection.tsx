@@ -50,6 +50,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         <ActionButtons 
           onHowItWorksClick={() => setIsHowItWorksOpen(true)}
           onConnectionRequestsClick={() => setIsConnectionRequestsOpen(true)}
+          pendingRequestsCount={2}
         />
       </div>
       

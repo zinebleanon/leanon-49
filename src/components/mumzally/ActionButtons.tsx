@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 interface ActionButtonsProps {
   onHowItWorksClick: () => void;
   onConnectionRequestsClick: () => void;
+  pendingRequestsCount?: number;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({ 
   onHowItWorksClick, 
-  onConnectionRequestsClick 
+  onConnectionRequestsClick,
+  pendingRequestsCount = 0
 }) => {
   const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       >
         <div className="flex items-center gap-2">
           <Users className="h-4 w-4" />
-          <span>LeanOn Requests</span>
+          <span>LeanOn Requests {pendingRequestsCount > 0 && `(${pendingRequestsCount})`}</span>
         </div>
       </Button>
       
