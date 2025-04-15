@@ -1,3 +1,4 @@
+
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -49,7 +50,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     });
 
+    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Initial session check:", session ? "User logged in" : "No session");
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -62,8 +65,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      console.log("Attempting sign in for:", email);
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      
+      // Auth state change event will handle redirect
     } catch (error: any) {
       toast({
         title: "Error signing in",
@@ -76,6 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string; phone?: string }) => {
     try {
+      console.log("Attempting sign up for:", email);
       const { error, data } = await supabase.auth.signUp({
         email,
         password,
@@ -93,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           description: "Welcome to LeanOn! Your account has been created.",
         });
         
-        navigate('/', { replace: true });
+        // Auth state change event will handle the redirect
       }
     } catch (error: any) {
       toast({
