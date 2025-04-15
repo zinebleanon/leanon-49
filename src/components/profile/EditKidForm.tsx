@@ -5,7 +5,7 @@ import * as z from "zod";
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Calendar } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Form, 
@@ -16,7 +16,7 @@ import {
   FormMessage 
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { 
@@ -132,7 +132,7 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                       ) : (
                         <span>Select child's birth date</span>
                       )}
-                      <Calendar className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
