@@ -5,10 +5,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { UserCircle, MessageSquare } from 'lucide-react';
+import { UserCircle, MessageSquare, X } from 'lucide-react';
 import MessageDialog from './MessageDialog';
 
 interface LeanMom {
@@ -46,6 +47,16 @@ const LeanMomsDialog = ({ open, onOpenChange, leanBackMoms }: LeanMomsDialogProp
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>My LeanMoms</DialogTitle>
+            <DialogClose asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </Button>
+            </DialogClose>
           </DialogHeader>
           
           <div className="max-h-[70vh] overflow-y-auto pt-2">
