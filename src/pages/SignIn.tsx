@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +12,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useAuth } from '@/hooks/use-auth';
+import { supabase } from '@/integrations/supabase/client';
+
+const dubaiNeighborhoods = [
+  "Dubai Marina", "JLT", "Downtown Dubai", "Palm Jumeirah", "Arabian Ranches",
+  "Emirates Hills", "Mirdif", "Dubailand", "Silicon Oasis", "Business Bay",
+  "Al Barsha", "Deira", "Bur Dubai", "The Springs", "The Meadows", "The Greens",
+  "Jumeirah", "Umm Suqeim", "Discovery Gardens", "International City"
+];
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
