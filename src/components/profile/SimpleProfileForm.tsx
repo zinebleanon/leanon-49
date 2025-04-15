@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -39,7 +40,11 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     birthDate ? (birthDate.getMonth() + 1).toString().padStart(2, '0') : 
     (new Date().getMonth() + 1).toString().padStart(2, '0')
   );
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  
+  // Initialize interests from user data or empty array
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(
+    userInfo?.interests ? userInfo.interests.split(', ').filter(Boolean) : []
+  );
   
   const nationalities = [
     "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -140,7 +141,7 @@ const MumzAlly = () => {
       setNearbyMoms([]);
       setFilteredProfiles(exampleProfiles);
     }
-  }, [neighborhood]);
+  }, [neighborhood, userInfo]);
 
   useEffect(() => {
     const baseProfiles = isProfileComplete() ? nearbyMoms : profiles;
@@ -153,7 +154,7 @@ const MumzAlly = () => {
     } else {
       setFilteredProfiles(baseProfiles);
     }
-  }, [searchTerm, profiles, nearbyMoms]);
+  }, [searchTerm, profiles, nearbyMoms, userInfo]);
 
   const handleLeanOn = (id: number, name: string) => {
     if (sentConnections.includes(id)) {
@@ -221,6 +222,8 @@ const MumzAlly = () => {
           nearbyMoms={nearbyMoms}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
+          isProfileComplete={profileComplete}
+          onCompleteProfile={() => handleCompleteProfile(true)}
         />
 
         <SwipeableProfiles
