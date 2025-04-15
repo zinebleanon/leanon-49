@@ -39,10 +39,8 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     birthDate ? (birthDate.getMonth() + 1).toString().padStart(2, '0') : 
     (new Date().getMonth() + 1).toString().padStart(2, '0')
   );
-  const [selectedInterests, setSelectedInterests] = useState<string[]>(
-    userInfo?.interests ? userInfo.interests.split(',').map(i => i.trim()) : []
-  );
-
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  
   const nationalities = [
     "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
     "Austrian", "Azerbaijani", "Bahamian", "Bahraini", "Bangladeshi", "Barbadian", "Belarusian", "Belgian", "Belizean", "Beninese",
