@@ -1,4 +1,4 @@
-import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare } from 'lucide-react';
+import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare, ArrowDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +11,7 @@ import MessageDialog from './MessageDialog';
 import LeanMomsDialog from './LeanMomsDialog';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { trackConnection } from '@/utils/track-user-activity';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ConnectionRequest {
   id: number;
@@ -122,68 +123,144 @@ const ConnectionRequests = ({
     !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
   );
 
+  const sentRequests: ConnectionRequest[] = [
+    {
+      id: 5,
+      name: "Sarah Smith",
+      age: 29,
+      location: "JBR",
+      compatibility: 82,
+      activeInCommunity: true
+    },
+    {
+      id: 6,
+      name: "Maria Rodriguez",
+      age: 33,
+      location: "Business Bay",
+      compatibility: 75,
+      activeInCommunity: false
+    }
+  ];
+
   const content = (
     <div className="mb-6">
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="text-lg font-medium">Connect Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {filteredRequests.map((request) => (
-          <Card key={request.id} className="overflow-hidden bg-white/90">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                  <UserCircle className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
-                    {request.name}
-                  </Link>
-                  <p className="text-xs text-muted-foreground">
-                    {request.age}, {request.location}
-                    {request.activeInCommunity && (
-                      <span className="ml-1 text-green-600">● Active</span>
-                    )}
-                  </p>
-                </div>
-                <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
-                  {request.compatibility}%
-                </Badge>
-              </div>
-              <div className="flex items-center justify-end gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="text-xs"
-                  onClick={() => handleRejectRequest(request.id, request.name)}
-                >
-                  Decline
-                </Button>
-                <Button 
-                  variant="default" 
-                  size="sm"
-                  className="text-xs"
-                  onClick={() => handleAcceptRequest(request.id, request.name)}
-                >
-                  <BowRibbon className="w-8 h-5 mr-1" color="#FFD9A7" />
-                  LeanBack
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      
-      {filteredRequests.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-40 text-center p-4 bg-white rounded-lg">
-          <Users className="h-10 w-10 text-muted-foreground mb-2" />
-          <h3 className="font-medium mb-1">No Connect Requests</h3>
-          <p className="text-sm text-muted-foreground">
-            You'll see new connection requests here
-          </p>
-        </div>
-      )}
+      <Tabs defaultValue="received" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="received" className="flex items-center gap-2">
+            <ArrowDown className="h-4 w-4" />
+            <span>Received</span>
+          </TabsTrigger>
+          <TabsTrigger value="sent" className="flex items-center gap-2">
+            <ArrowUp className="h-4 w-4" />
+            <span>Sent</span>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="received">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-lg font-medium">Received Requests <span className="text-sm font-normal text-muted-foreground">({filteredRequests.length})</span></h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {filteredRequests.map((request) => (
+              <Card key={request.id} className="overflow-hidden bg-white/90">
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
+                        {request.name}
+                      </Link>
+                      <p className="text-xs text-muted-foreground">
+                        {request.age}, {request.location}
+                        {request.activeInCommunity && (
+                          <span className="ml-1 text-green-600">● Active</span>
+                        )}
+                      </p>
+                    </div>
+                    <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
+                      {request.compatibility}%
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-end gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => handleRejectRequest(request.id, request.name)}
+                    >
+                      Decline
+                    </Button>
+                    <Button 
+                      variant="default" 
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => handleAcceptRequest(request.id, request.name)}
+                    >
+                      <BowRibbon className="w-8 h-5 mr-1" color="#FFD9A7" />
+                      LeanBack
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="sent">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-lg font-medium">Sent Requests <span className="text-sm font-normal text-muted-foreground">({sentRequests.length})</span></h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {sentRequests.map((request) => (
+              <Card key={request.id} className="overflow-hidden bg-white/90">
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                      <UserCircle className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
+                        {request.name}
+                      </Link>
+                      <p className="text-xs text-muted-foreground">
+                        {request.age}, {request.location}
+                        {request.activeInCommunity && (
+                          <span className="ml-1 text-green-600">● Active</span>
+                        )}
+                      </p>
+                    </div>
+                    <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
+                      {request.compatibility}%
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-end gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => handleMessageClick(request.id, request.name)}
+                    >
+                      <MessageSquare className="h-4 w-4 mr-1" />
+                      Message
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className="text-xs"
+                    >
+                      Pending
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
       
       {selectedRecipient && (
         <MessageDialog 
@@ -202,18 +279,6 @@ const ConnectionRequests = ({
       )}
     </div>
   );
-
-  if (dialogMode && open !== undefined) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[600px] p-0">
-          <div className="p-6">
-            {content}
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   if (simplifiedView) {
     const pendingRequests = connectionRequests.filter(request => 
@@ -341,97 +406,8 @@ const ConnectionRequests = ({
   return (
     <section className="py-8 px-4 md:px-8 bg-[#B8CEC2]">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold font-playfair">Connect Requests <span className="text-lg font-normal text-primary-foreground/80">({filteredRequests.length})</span></h2>
-        </div>
-        
-        {filteredRequests.length === 0 ? (
-          <div className="bg-white rounded-lg p-8 text-center">
-            <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-medium mb-2">No Connect Requests</h3>
-            <p className="text-muted-foreground max-w-md mx-auto">
-              When other moms send you connection requests, they'll appear here.
-            </p>
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredRequests.map((request) => (
-              <Card key={request.id} className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                      <UserCircle className="h-8 w-8 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium">
-                        <Link to={`/ally/profile/${request.id}`} className="hover:underline">
-                          {request.name}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {request.age}, {request.location}
-                        {request.activeInCommunity && (
-                          <span className="ml-1 text-green-600">● Active in Community</span>
-                        )}
-                      </p>
-                    </div>
-                    <div className="ml-auto flex items-center gap-2">
-                      <Badge className="bg-primary/50 text-foreground font-bold border-primary/30">
-                        {request.compatibility}% Match
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="text-sm text-primary hover:text-primary/80 p-0 h-auto flex items-center gap-1"
-                    >
-                      <Link to={`/ally/profile/${request.id}`} className="flex items-center gap-1">
-                        See {request.name}'s profile
-                        <ExternalLink className="h-3 w-3 ml-1" />
-                      </Link>
-                    </Button>
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        onClick={() => handleRejectRequest(request.id, request.name)}
-                      >
-                        Decline
-                      </Button>
-                      <Button 
-                        variant="default" 
-                        onClick={() => handleAcceptRequest(request.id, request.name)}
-                      >
-                        <div className="flex items-center gap-2">
-                          <BowRibbon className="w-12 h-8 mr-1" color="#FFD9A7" />
-                          LeanBack
-                        </div>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+        {content}
       </div>
-      
-      {selectedRecipient && (
-        <MessageDialog 
-          open={messageDialogOpen} 
-          onOpenChange={setMessageDialogOpen} 
-          conversation={{
-            id: `conv-${selectedRecipient.id}`,
-            participantId: selectedRecipient.id.toString(),
-            participantName: selectedRecipient.name,
-            lastMessage: "",
-            lastMessageTimestamp: new Date().toISOString(),
-            unreadCount: 0
-          }}
-          onSendMessage={handleSendMessage}
-        />
-      )}
     </section>
   );
 };
