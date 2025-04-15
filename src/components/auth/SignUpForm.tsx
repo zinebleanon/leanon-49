@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Mail, Lock, MapPin, Gift, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -136,13 +135,8 @@ const SignUpForm = ({ onSwitchToSignIn, signupStep, onStepChange, defaultReferra
           }
         );
         
-        toast({
-          title: "Welcome to LeanOn!",
-          description: `We're excited to have you here, ${signUpData.firstName}!`,
-        });
-
-        // The navigation will be handled by the auth provider in use-auth.tsx
-        // which already redirects to /ally/subscribe on successful signup
+        // The navigation and welcome message are now handled by the auth provider
+        // in the onAuthStateChange event
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
@@ -153,7 +147,6 @@ const SignUpForm = ({ onSwitchToSignIn, signupStep, onStepChange, defaultReferra
             description: "This email address is already registered. Please sign in or use a different email.",
             variant: "destructive",
           });
-          // Changed from setSignupStep to onStepChange
           onStepChange(1);
         } else {
           toast({

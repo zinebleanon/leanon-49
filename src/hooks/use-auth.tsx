@@ -1,4 +1,3 @@
-
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -32,12 +31,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (event === 'SIGNED_IN') {
         if (session?.user?.app_metadata?.provider === 'email' && 
             session?.user?.app_metadata?.created_at === session?.user?.app_metadata?.last_sign_in_at) {
+          navigate('/');
           toast({
             title: "Welcome to LeanOn!",
-            description: "Your account has been created successfully.",
+            description: `Your account has been created successfully. Share your referral code with friends!`,
           });
+        } else {
+          navigate('/');
         }
-        navigate('/'); // Changed from '/ally/subscribe' to '/'
       } else if (event === 'SIGNED_OUT') {
         navigate('/sign-in');
       }
