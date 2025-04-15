@@ -178,24 +178,22 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       setIsLoading(true);
       
       try {
-        await signUp(
-          signUpData.email, 
-          signUpData.password, 
-          {
-            first_name: signUpData.firstName,
-            last_name: signUpData.lastName
-          }
-        );
+        console.log("Would send OTP to:", signUpData.phone);
         
-        skipVerification();
+        setSignupStep(2);
+        toast({
+          title: "Verification code sent",
+          description: `We've sent a verification code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
+        });
       } catch (error) {
-        console.error("Sign up error:", error);
-        setIsLoading(false);
+        console.error("Error in signup:", error);
         toast({
           title: "Error signing up",
           description: error instanceof Error ? error.message : "An unexpected error occurred",
           variant: "destructive",
         });
+      } finally {
+        setIsLoading(false);
       }
     } else if (signupStep === 2) {
       if (otpValue.length !== 4) {
@@ -209,44 +207,27 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       
       setIsLoading(true);
       
-      setTimeout(() => {
+      try {
+        await signUp(
+          signUpData.email, 
+          signUpData.password, 
+          {
+            first_name: signUpData.firstName,
+            last_name: signUpData.lastName,
+            phone: signUpData.phone
+          }
+        );
+        
+        skipVerification();
+      } catch (error) {
+        console.error("Error completing signup:", error);
         setIsLoading(false);
-        
-        const formData = {
-          firstName: signUpData.firstName,
-          lastName: signUpData.lastName,
-          email: signUpData.email,
-          phone: signUpData.phone,
-          neighborhood: signUpData.neighborhood,
-          referralCode: signUpData.referralCode
-        };
-        
-        const createUser = {
-          name: `${formData.firstName} ${formData.lastName}`,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone,
-          neighborhood: formData.neighborhood,
-          referralCode: formData.referralCode,
-          profileNeedsUpdate: true
-        };
-        
-        localStorage.setItem('userInfo', JSON.stringify(createUser));
-        
-        if (signUpData.referralCode) {
-          toast({
-            title: "Referral applied!",
-            description: `You signed up using referral code: ${signUpData.referralCode}`,
-          });
-        }
-        
         toast({
-          title: "Account created!",
-          description: "Welcome to LeanOn! Let's complete your profile.",
+          title: "Error signing up",
+          description: error instanceof Error ? error.message : "An unexpected error occurred",
+          variant: "destructive",
         });
-        navigate('/');
-      }, 1500);
+      }
     }
   };
   
