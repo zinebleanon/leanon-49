@@ -128,9 +128,9 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                       className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "MMMM d, yyyy")  // More user-friendly format
                       ) : (
-                        <span>Pick a date</span>
+                        <span>Select birth date</span>
                       )}
                       <Calendar className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -145,6 +145,7 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                       date > new Date() || date < new Date("1900-01-01")
                     }
                     initialFocus
+                    className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
               </Popover>

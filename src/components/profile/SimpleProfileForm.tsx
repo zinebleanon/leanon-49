@@ -166,9 +166,9 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
                 className="w-full mt-1 justify-start text-left font-normal"
               >
                 {birthDate ? (
-                  format(birthDate, "PPP")
+                  format(birthDate, "MMMM d, yyyy")
                 ) : (
-                  <span className="text-muted-foreground">dd/mm/yyyy</span>
+                  <span className="text-muted-foreground">Select your birth date</span>
                 )}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
@@ -182,6 +182,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
                   date > new Date() || date < new Date("1900-01-01")
                 }
                 initialFocus
+                className={cn("p-3 pointer-events-auto")}
               />
             </PopoverContent>
           </Popover>
