@@ -17,6 +17,7 @@ import { toast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ShieldCheck, Check, X, Upload, Image } from 'lucide-react';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
+import { trackItemListing } from '@/utils/track-user-activity';
 
 const SellItemForm = () => {
   const navigate = useNavigate();
@@ -185,6 +186,9 @@ const SellItemForm = () => {
         approved: false,
         image: imageData
       };
+      
+      // Track the item listing activity
+      trackItemListing(newItem.id, newItem.title);
       
       const existingItems = localStorage.getItem('listedItems');
       const allItems = existingItems ? JSON.parse(existingItems) : [];

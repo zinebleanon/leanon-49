@@ -98,6 +98,9 @@ const ConnectionRequests = ({
     setAcceptedRequests(updatedAccepted);
     localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
     
+    // Track the connection activity
+    trackConnection(id.toString(), name);
+    
     toast({
       title: "Connection Request Accepted",
       description: `You are now connected with ${name}!`,

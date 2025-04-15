@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import EditKidForm from "./EditKidForm";
 import { ProfileSection } from "@/pages/Profile";
 import { useEffect } from "react";
 import { useUserInfo } from "@/hooks/use-user-info";
+import { trackProfileUpdate } from '@/utils/track-user-activity';
 
 interface EditProfileDialogProps {
   isOpen: boolean;
@@ -33,22 +33,20 @@ const EditProfileDialog = ({
 }: EditProfileDialogProps) => {
   const { userInfo, updateUserInfo } = useUserInfo();
   
-  // Check if user has a referral code, if not, create one
   useEffect(() => {
     if (isOpen && userInfo && !userInfo.referralCode) {
-      // Generate a referral code if the user doesn't have one
       const newReferralCode = 'LO' + Math.random().toString(36).substring(2, 8).toUpperCase();
       updateUserInfo({ referralCode: newReferralCode });
     }
   }, [isOpen, userInfo, updateUserInfo]);
 
   const handleSuccess = () => {
+    trackProfileUpdate(['profile']);
     onOpenChange(false);
   };
 
   console.log("EditProfileDialog rendering with isOpen:", isOpen);
 
-  // Force the dialog to be a controlled component
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
