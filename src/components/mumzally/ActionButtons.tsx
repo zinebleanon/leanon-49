@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface ActionButtonsProps {
   onHowItWorksClick: () => void;
   onConnectionRequestsClick: () => void;
-  pendingRequestsCount?: number;
+  pendingRequestsCount: number;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({ 
@@ -59,4 +59,3 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 };
 
 export default ActionButtons;
-

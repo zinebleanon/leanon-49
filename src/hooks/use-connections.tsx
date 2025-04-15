@@ -14,6 +14,7 @@ interface Connection {
 
 export function useConnections() {
   const [connections, setConnections] = useState<Connection[]>([]);
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const { userInfo } = useUserInfo();
   const { toast } = useToast();
@@ -61,6 +62,11 @@ export function useConnections() {
         }
 
         setConnections(data || []);
+        // Count pending requests where user is the recipient
+        const pendingCount = (data || []).filter(
+          conn => conn.status === 'pending' && conn.recipient_id === userInfo.email
+        ).length;
+        setPendingRequestsCount(pendingCount);
         setLoading(false);
       } catch (err) {
         console.error('Fetch connections error:', err);
@@ -184,6 +190,7 @@ export function useConnections() {
   return {
     connections,
     loading,
+    pendingRequestsCount,
     sendConnectionRequest,
     updateConnectionStatus
   };
