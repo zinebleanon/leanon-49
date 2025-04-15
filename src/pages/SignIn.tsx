@@ -226,15 +226,13 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
             }));
           }
         }
-
-        console.log("Would send OTP to:", signUpData.phone);
         
         setSignupStep(2);
         toast({
           title: "Verification code sent",
           description: `We've sent a verification code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error in signup:", error);
         toast({
           title: "Error signing up",
@@ -268,14 +266,26 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
         );
         
         skipVerification();
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
-        toast({
-          title: "Error signing up",
-          description: error instanceof Error ? error.message : "An unexpected error occurred",
-          variant: "destructive",
-        });
+        
+        // Check if the error is due to email already being in use
+        if (error.message?.toLowerCase().includes('email address already in use')) {
+          toast({
+            title: "Email already registered",
+            description: "This email address is already registered. Please sign in or use a different email.",
+            variant: "destructive",
+          });
+          // Reset to step 1 so user can try with different email
+          setSignupStep(1);
+        } else {
+          toast({
+            title: "Error signing up",
+            description: error.message || "An unexpected error occurred",
+            variant: "destructive",
+          });
+        }
       }
     }
   };
