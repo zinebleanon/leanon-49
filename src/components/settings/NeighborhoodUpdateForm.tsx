@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,9 +27,8 @@ const NeighborhoodUpdateForm = ({
   
   const getLocationFromIP = async () => {
     try {
-      const response = await fetch('http://ip-api.com/json/');
-      if (!response.ok) throw new Error('IP geolocation failed');
-      const data = await response.json();
+      const { data, error } = await supabase.functions.invoke('geolocation')
+      if (error) throw new Error('IP geolocation failed');
       return {
         latitude: data.lat,
         longitude: data.lon,
@@ -57,7 +55,6 @@ const NeighborhoodUpdateForm = ({
         });
         
         const { latitude, longitude } = position.coords;
-        // This would typically use reverse geocoding - for now using coordinates
         const locationString = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
         setNeighborhood(locationString);
         toast({
@@ -67,7 +64,6 @@ const NeighborhoodUpdateForm = ({
       } catch (error) {
         console.error("Browser geolocation failed, trying IP-based location...");
         
-        // Fallback to IP-based geolocation
         const ipLocation = await getLocationFromIP();
         if (ipLocation) {
           const locationString = ipLocation.city 
@@ -88,7 +84,6 @@ const NeighborhoodUpdateForm = ({
         }
       }
     } else {
-      // Fallback to IP-based geolocation if geolocation is not supported
       const ipLocation = await getLocationFromIP();
       if (ipLocation) {
         const locationString = ipLocation.city 
