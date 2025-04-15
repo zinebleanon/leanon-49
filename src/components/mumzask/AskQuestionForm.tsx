@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -118,8 +119,8 @@ const AskQuestionForm = ({ categories, onClose, isNeighborhood = false }: AskQue
     
     if (validateForm()) {
       toast({
-        title: "Question Submitted Successfully",
-        description: "Your question has been sent for review and will be published once approved by an admin.",
+        title: "Question Posted Successfully",
+        description: "Your question has been posted to the community.",
       });
       
       setDetails('');
