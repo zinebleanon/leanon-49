@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -182,9 +181,6 @@ const AskQuestionForm = ({ categories, onClose, isNeighborhood = false }: AskQue
           )}
         </div>
         <DialogTitle>{isNeighborhood ? "Ask Your Neighborhood" : "Ask the Community"}</DialogTitle>
-        <DialogDescription>
-          Your question will be reviewed by our admins before being published to the community.
-        </DialogDescription>
       </DialogHeader>
       
       <div className="space-y-2">
