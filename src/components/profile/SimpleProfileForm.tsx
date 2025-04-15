@@ -31,6 +31,13 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     userInfo?.birthDate ? new Date(userInfo.birthDate) : undefined
   );
   const [nationalitySearch, setNationalitySearch] = useState('');
+  const [selectedYear, setSelectedYear] = useState<string>(
+    birthDate ? birthDate.getFullYear().toString() : new Date().getFullYear().toString()
+  );
+  const [selectedMonth, setSelectedMonth] = useState<string>(
+    birthDate ? (birthDate.getMonth() + 1).toString().padStart(2, '0') : 
+    (new Date().getMonth() + 1).toString().padStart(2, '0')
+  );
 
   const nationalities = [
     "Afghan", "Albanian", "Algerian", "American", "Andorran", "Angolan", "Antiguan", "Argentine", "Armenian", "Australian",
@@ -56,6 +63,26 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
 
   const maxDate = new Date(); // Today
   const minDate = new Date('1900-01-01');
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 81 }, (_, i) => 
+    (currentYear - 80 + i).toString()
+  );
+
+  const months = [
+    { value: "01", label: "January" },
+    { value: "02", label: "February" },
+    { value: "03", label: "March" },
+    { value: "04", label: "April" },
+    { value: "05", label: "May" },
+    { value: "06", label: "June" },
+    { value: "07", label: "July" },
+    { value: "08", label: "August" },
+    { value: "09", label: "September" },
+    { value: "10", label: "October" },
+    { value: "11", label: "November" },
+    { value: "12", label: "December" }
+  ];
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -101,6 +128,18 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
   const filteredNationalities = nationalities.filter(nat =>
     nat.toLowerCase().includes(nationalitySearch.toLowerCase())
   );
+
+  const handleYearChange = (year: string) => {
+    setSelectedYear(year);
+    const newDate = new Date(parseInt(year), parseInt(selectedMonth) - 1, 1);
+    setBirthDate(newDate);
+  };
+
+  const handleMonthChange = (month: string) => {
+    setSelectedMonth(month);
+    const newDate = new Date(parseInt(selectedYear), parseInt(month) - 1, 1);
+    setBirthDate(newDate);
+  };
 
   return (
     <div className="bg-card rounded-lg border shadow-sm p-6 max-w-md mx-auto">
@@ -163,19 +202,45 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
         
         <div>
           <Label className="font-medium">Your Birth Date</Label>
+          <div className="flex gap-2 mb-2">
+            <Select value={selectedMonth} onValueChange={handleMonthChange}>
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder="Month" />
+              </SelectTrigger>
+              <SelectContent>
+                {months.map((month) => (
+                  <SelectItem key={month.value} value={month.value}>
+                    {month.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={selectedYear} onValueChange={handleYearChange}>
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder="Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                variant="outline"
+                variant={"outline"}
                 className={cn(
-                  "w-full mt-1 justify-start text-left font-normal",
+                  "w-full pl-3 text-left font-normal",
                   !birthDate && "text-muted-foreground"
                 )}
               >
                 {birthDate ? (
                   format(birthDate, "MMMM d, yyyy")
                 ) : (
-                  <span>Select your birth date</span>
+                  <span>Select day</span>
                 )}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
@@ -185,16 +250,20 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
                 mode="single"
                 selected={birthDate}
                 onSelect={setBirthDate}
-                disabled={(date) =>
-                  date > maxDate || date < minDate
-                }
+                month={new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1)}
+                defaultMonth={new Date(parseInt(selectedYear), parseInt(selectedMonth) - 1)}
+                disabled={(date) => {
+                  const minDate = new Date();
+                  minDate.setFullYear(minDate.getFullYear() - 80);
+                  return date > new Date() || date < minDate;
+                }}
                 initialFocus
-                className={cn("p-3 pointer-events-auto")}
+                className="p-3 pointer-events-auto"
               />
             </PopoverContent>
           </Popover>
           <p className="text-xs text-muted-foreground mt-1">
-            Please select your date of birth. Must be between 1900 and today.
+            Please select your date of birth
           </p>
         </div>
         
