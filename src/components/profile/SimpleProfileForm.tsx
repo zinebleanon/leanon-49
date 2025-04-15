@@ -17,7 +17,7 @@ interface SimpleProfileFormProps {
 }
 
 const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
-  const { userInfo, updateUserInfo } = useUserInfo();
+  const { userInfo, updateUserInfo, kidsAges } = useUserInfo();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   
@@ -162,7 +162,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
           
           {userInfo?.kids && userInfo.kids.length > 0 && (
             <div className="space-y-2 mt-2">
-              {userInfo.kids.map((kid, index) => (
+              {kidsAges.map((kid, index) => (
                 <div key={index} className="flex justify-between bg-white p-2 rounded border border-gray-200">
                   <span>Child {index + 1}</span>
                   <span className="text-sm text-gray-500">
