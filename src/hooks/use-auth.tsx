@@ -8,7 +8,15 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string; phone?: string }) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: { 
+    first_name?: string; 
+    last_name?: string; 
+    phone?: string;
+    neighborhood?: string;
+    workStatus?: string;
+    nationality?: string;
+    profileNeedsUpdate?: boolean;
+  }) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   loading: boolean;
@@ -73,7 +81,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string; phone?: string }) => {
+  const signUp = async (email: string, password: string, metadata?: { 
+    first_name?: string; 
+    last_name?: string; 
+    phone?: string;
+    neighborhood?: string;
+    workStatus?: string;
+    nationality?: string;
+    profileNeedsUpdate?: boolean;
+  }) => {
     try {
       console.log("Attempting sign up for:", email);
       setLoading(true);
@@ -82,7 +98,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
         options: {
-          data: metadata,
+          data: {
+            ...metadata,
+            profileNeedsUpdate: true // Ensure this is set for new users
+          },
           emailRedirectTo: `${window.location.origin}/sign-in`
         }
       });

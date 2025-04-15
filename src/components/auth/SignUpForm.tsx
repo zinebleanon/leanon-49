@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
@@ -83,16 +82,18 @@ const SignUpForm = ({
       try {
         await signUp(
           signUpData.email, 
-          signUpData.password, 
+          signUpData.password,
           {
             first_name: signUpData.firstName,
             last_name: signUpData.lastName,
-            phone: signUpData.phone
+            phone: signUpData.phone,
+            neighborhood: signUpData.neighborhood,
+            workStatus: 'full-time',
+            nationality: '',
+            profileNeedsUpdate: true
           }
         );
         
-        // The navigation and toast will be handled by the auth provider
-        // If email confirmation is required, the auth provider will show the appropriate toast
         setIsLoading(false);
       } catch (error: any) {
         console.error("Error in signup:", error);
@@ -133,7 +134,6 @@ const SignUpForm = ({
           }
         );
         
-        // Navigation is handled by the auth provider
         setIsLoading(false);
       } catch (error: any) {
         console.error("Error completing signup:", error);
