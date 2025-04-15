@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -15,14 +14,14 @@ import { useUserInfo } from '@/hooks/use-user-info';
 const Connections = () => {
   const navigate = useNavigate();
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
-  const [selectedRecipient, setSelectedRecipient] = useState<{id: string, name: string} | null>(null);
+  const [selectedRecipient, setSelectedRecipient<{id: string, name: string} | null>({id: '', name: ''});
   const [searchTerm, setSearchTerm] = useState('');
   
   const { userInfo } = useUserInfo();
   const { connections, loading } = useConnections();
   const { sendMessage } = useMessages(selectedRecipient?.id);
 
-  // Filter only connected users
+  // Filter only connected users - now includes both accepted and declined requests
   const connectedUsers = connections.filter(conn => 
     conn.status === 'connected' &&
     (conn.requester_id === userInfo?.email || conn.recipient_id === userInfo?.email)
@@ -39,8 +38,7 @@ const Connections = () => {
   };
 
   const filteredUsers = connectedUsers.filter(conn => {
-    const partnerId = conn.requester_id === userInfo?.id ? conn.recipient_id : conn.requester_id;
-    // Note: In a real app, you would fetch user profiles to get names and locations
+    const partnerId = conn.requester_id === userInfo?.email ? conn.recipient_id : conn.requester_id;
     return partnerId.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
@@ -84,7 +82,7 @@ const Connections = () => {
               ) : filteredUsers.length > 0 ? (
                 <div className="space-y-1">
                   {filteredUsers.map((conn) => {
-                    const partnerId = conn.requester_id === userInfo?.id ? conn.recipient_id : conn.requester_id;
+                    const partnerId = conn.requester_id === userInfo?.email ? conn.recipient_id : conn.requester_id;
                     // Note: In a real app, you would display actual user data
                     return (
                       <Card key={conn.id} className="border-transparent hover:bg-muted/30 transition-colors">

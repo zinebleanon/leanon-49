@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserInfo } from './use-user-info';
@@ -27,7 +28,7 @@ export function useConnections() {
           const testRequest = {
             requester_id: 'sarah@example.com',
             recipient_id: userInfo.email,
-            status: 'pending'
+            status: 'pending' as const
           };
 
           const { error: existingError } = await supabase
@@ -82,7 +83,7 @@ export function useConnections() {
         }, 
         (payload) => {
           console.log('Connection change received:', payload);
-          fetchConnections();
+          fetchConnections(); // Refresh the connections list when changes occur
         }
       )
       .subscribe();
@@ -128,6 +129,9 @@ export function useConnections() {
         description: `Request sent to ${recipientEmail}`,
       });
 
+      // Update local state with the new connection
+      setConnections(prev => [...prev, data]);
+
       return data;
     } catch (err) {
       console.error('Send connection request error:', err);
@@ -162,6 +166,13 @@ export function useConnections() {
         });
         return null;
       }
+
+      // Update local state immediately
+      setConnections(prev => 
+        prev.map(conn => 
+          conn.id === connectionId ? { ...conn, status } : conn
+        )
+      );
 
       toast({
         title: "Connection Updated",
