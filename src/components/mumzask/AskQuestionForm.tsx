@@ -110,20 +110,23 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
     setIsSubmitting(true);
 
     try {
-      // Create the request data
-      const questionData = {
-        title,
-        content: question,
-        category,
-        is_neighborhood: isNeighborhood,
-        user_id: user?.id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        status: 'active',
-      };
+      // First, create the question
+      const { data: questionData, error: questionError } = await supabase
+        .from('questions')
+        .insert([{
+          title,
+          content: question,
+          category,
+          is_neighborhood: isNeighborhood,
+          user_id: user?.id
+        }])
+        .select()
+        .single();
 
-      // First try with notifications table since that's known to exist
-      const { error } = await supabase
+      if (questionError) throw questionError;
+
+      // Then create a notification for the new question
+      const { error: notificationError } = await supabase
         .from('notifications')
         .insert([{
           title: `New Question: ${title}`,
@@ -133,18 +136,17 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
           type: isNeighborhood ? 'neighborhood_question' : 'community_question'
         }]);
 
-      if (error) {
-        console.error('Error creating notification for question:', error);
-        throw new Error('Failed to submit your question');
+      if (notificationError) {
+        console.error('Error creating notification:', notificationError);
+        // Continue even if notification fails
       }
 
-      // Notify the user of success
       toast({
         title: "Question submitted",
         description: "Your question has been posted to the community.",
       });
 
-      // Reset form
+      // Reset form and close dialog
       setTitle('');
       setQuestion('');
       setCategory('');
