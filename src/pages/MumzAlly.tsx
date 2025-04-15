@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { User } from 'lucide-react';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
+import { ProfileSection } from '@/pages/Profile';
 
 interface Kid {
   age: number;
@@ -38,6 +39,7 @@ const MumzAlly = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
+  const [editProfileSection, setEditProfileSection] = useState<ProfileSection>('all');
 
   const isProfileComplete = () => {
     return !!(
@@ -176,6 +178,7 @@ const MumzAlly = () => {
 
   const handleCompleteProfile = () => {
     console.log("Opening profile dialog");
+    setEditProfileSection('all');
     setEditProfileDialogOpen(true);
   };
 
@@ -212,6 +215,7 @@ const MumzAlly = () => {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           isProfileComplete={isProfileComplete()}
+          onCompleteProfile={handleCompleteProfile}
         />
 
         <SwipeableProfiles
@@ -228,7 +232,7 @@ const MumzAlly = () => {
         mode="profile"
         title="Complete Your Profile"
         description="Fill in your profile details to connect with more LeanMoms"
-        section="all"
+        section={editProfileSection}
       />
       
       <Footer />
