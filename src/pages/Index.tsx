@@ -206,6 +206,12 @@ const Index = () => {
     });
   };
   
+  const isProfileIncomplete = !userInfo?.birthDate || 
+                            !userInfo?.nationality || 
+                            !userInfo?.kids || 
+                            userInfo?.kids?.length === 0 || 
+                            userInfo?.profileNeedsUpdate;
+
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
@@ -568,7 +574,7 @@ const Index = () => {
                 
                 <CardContent className="pt-5 pb-6 text-center">
                   <div className="flex flex-col gap-3">
-                    {(!userInfo?.birthDate || !userInfo?.nationality || !userInfo?.kids || userInfo?.kids?.length === 0) && (
+                    {isProfileIncomplete && (
                       <Button 
                         variant="outline" 
                         onClick={openProfileUpdateForm}
