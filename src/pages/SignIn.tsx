@@ -182,7 +182,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     }
   };
   
-  const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (signupStep === 1) {
@@ -207,6 +207,25 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       setIsLoading(true);
       
       try {
+        if (signUpData.neighborhood === 'Dubai Marina') {
+          // Only try to get location if user hasn't selected a specific neighborhood
+          const { data, error } = await supabase.functions.invoke('geolocation');
+          if (!error && data) {
+            const locationString = data.city 
+              ? `${data.city}, ${data.regionName}`
+              : 'Dubai Marina';
+            
+            setSignUpData(prev => ({
+              ...prev,
+              neighborhood: locationString,
+              location: {
+                latitude: data.lat.toString(),
+                longitude: data.lon.toString()
+              }
+            }));
+          }
+        }
+
         console.log("Would send OTP to:", signUpData.phone);
         
         setSignupStep(2);
