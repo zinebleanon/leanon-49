@@ -1,4 +1,3 @@
-
 import { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Session, User } from '@supabase/supabase-js';
@@ -28,15 +27,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       console.log("Auth state change event:", event);
       
-      // First, update the session and user state
       setSession(newSession);
       setUser(newSession?.user ?? null);
       
-      // Then handle redirects and UI updates
       if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
         console.log("User signed in or updated, redirecting to Index");
         
-        // Use setTimeout to prevent potential auth state deadlocks
         setTimeout(() => {
           navigate('/', { replace: true });
         }, 0);
@@ -53,14 +49,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         }
       } else if (event === 'SIGNED_OUT') {
-        // Use setTimeout to prevent potential auth state deadlocks
         setTimeout(() => {
           navigate('/sign-in', { replace: true });
         }, 0);
       }
     });
 
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       console.log("Initial session check:", session ? "User logged in" : "No session");
       setSession(session);
@@ -68,7 +62,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
       
       if (session) {
-        // Force redirect to home if already authenticated
         setTimeout(() => {
           const currentPath = window.location.pathname;
           if (currentPath === '/sign-in' || currentPath === '/sign-up') {

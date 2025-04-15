@@ -46,10 +46,16 @@ const AppContent = () => {
     return <Navigate to="/" replace />;
   }
 
+  // Unauthenticated users should only see sign-in, sign-up, and few other routes
+  if (!user && location.pathname !== '/sign-in' && location.pathname !== '/sign-up') {
+    console.log("Unauthenticated user, redirecting to sign-in");
+    return <Navigate to="/sign-in" replace />;
+  }
+
   return (
     <Routes>
       {/* Home Page (Index) is the main landing page that shows welcome message, profile update and referral */}
-      <Route path="/" element={<Index />} />
+      <Route path="/" element={user ? <Index /> : <Navigate to="/sign-in" replace />} />
       
       {/* Auth routes */}
       <Route path="/sign-in" element={<SignIn defaultTab="signin" />} />
