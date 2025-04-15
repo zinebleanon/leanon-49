@@ -81,11 +81,9 @@ const SignUpForm = ({
       setIsLoading(true);
       
       try {
-        onStepChange(2);
-        toast({
-          title: "Verification code sent",
-          description: `We've sent a verification code to +971 ${formatPhoneDisplay(signUpData.phone)}`,
-        });
+        // For testing purposes, we'll skip the verification step
+        // and move directly to create the account
+        handleSkipVerification();
       } catch (error: any) {
         console.error("Error in signup:", error);
         toast({
@@ -93,7 +91,6 @@ const SignUpForm = ({
           description: error instanceof Error ? error.message : "An unexpected error occurred",
           variant: "destructive",
         });
-      } finally {
         setIsLoading(false);
       }
     } else if (signupStep === 2) {
@@ -186,7 +183,7 @@ const SignUpForm = ({
           phone: signUpData.phone
         }
       );
-      // Navigation is handled by the auth provider
+      // Navigation is handled by the auth provider in useAuth.tsx
     } catch (error: any) {
       console.error("Error in signup with skip verification:", error);
       toast({
@@ -226,7 +223,7 @@ const SignUpForm = ({
           {isLoading && (
             <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></div>
           )}
-          {signupStep === 2 ? "Create Account" : "Continue"}
+          {signupStep === 2 ? "Create Account" : "Create Account"}
         </Button>
         
         <p className="text-xs text-center text-muted-foreground">

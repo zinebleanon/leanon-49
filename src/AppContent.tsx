@@ -40,19 +40,19 @@ const AppContent = () => {
     );
   }
 
-  // Only redirect if user is authenticated AND trying to access sign-in/sign-up pages
-  if (user && (location.pathname === '/sign-in' || location.pathname === '/sign-up')) {
+  // Handle authenticated users trying to access auth pages
+  if (user && ['/sign-in', '/sign-up'].includes(location.pathname)) {
     console.log("User already authenticated, redirecting to Index from", location.pathname);
     return <Navigate to="/" replace />;
   }
 
-  // Don't redirect unauthenticated users from sign-in or sign-up pages
+  // Handle unauthenticated users trying to access protected routes
   if (!user && 
-      location.pathname !== '/sign-in' && 
-      location.pathname !== '/sign-up' && 
-      location.pathname !== '/reset-password' && 
-      location.pathname !== '/terms') {
-    console.log("Unauthenticated user trying to access protected route, redirecting to sign-in");
+      !location.pathname.startsWith('/sign-in') && 
+      !location.pathname.startsWith('/sign-up') && 
+      !location.pathname.startsWith('/reset-password') && 
+      !location.pathname.startsWith('/terms')) {
+    console.log("Unauthenticated user trying to access protected route, redirecting to sign-in", location.pathname);
     return <Navigate to="/sign-in" replace />;
   }
 
