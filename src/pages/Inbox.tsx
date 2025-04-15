@@ -246,7 +246,7 @@ const Inbox = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
               <TabsList className="grid grid-cols-2 px-4 pt-3 bg-transparent">
                 <TabsTrigger value="messages">Messages</TabsTrigger>
-                <TabsTrigger value="leanmoms">My LeanMoms</TabsTrigger>
+                <TabsTrigger value="leanmoms">My Moms</TabsTrigger>
               </TabsList>
               
               <div className="flex-1 overflow-y-auto">
@@ -360,3 +360,4 @@ const Inbox = () => {
 };
 
 export default Inbox;
+
