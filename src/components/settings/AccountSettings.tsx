@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Key, MapPin, LogOut } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
@@ -39,17 +38,26 @@ const AccountSettings = ({ onLogout }: AccountSettingsProps) => {
   };
   
   const handleNeighborhoodUpdate = async (neighborhood: string) => {
-    const success = await updateNeighborhoodWithGeolocation(neighborhood);
-    
-    if (success) {
-      toast({
-        title: "Neighborhood updated",
-        description: useGeolocationForNeighborhood 
-          ? "Your neighborhood and location have been updated automatically."
-          : "Your neighborhood has been updated.",
-      });
-      setIsUpdatingNeighborhood(false);
-    } else {
+    try {
+      const success = await updateNeighborhoodWithGeolocation(neighborhood);
+      
+      if (success) {
+        toast({
+          title: "Neighborhood updated",
+          description: useGeolocationForNeighborhood 
+            ? "Your neighborhood and precise location have been updated."
+            : "Your neighborhood has been updated.",
+        });
+        setIsUpdatingNeighborhood(false);
+      } else {
+        toast({
+          title: "Error",
+          description: "There was a problem updating your neighborhood.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating neighborhood:", error);
       toast({
         title: "Error",
         description: "There was a problem updating your neighborhood.",

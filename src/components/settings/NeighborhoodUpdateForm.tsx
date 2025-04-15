@@ -23,8 +23,9 @@ const NeighborhoodUpdateForm = ({
 }: NeighborhoodUpdateFormProps) => {
   const [neighborhood, setNeighborhood] = useState(initialNeighborhood);
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!neighborhood) {
       toast({
         title: "Error",
@@ -34,7 +35,13 @@ const NeighborhoodUpdateForm = ({
       return;
     }
     
-    onSubmit(neighborhood);
+    setIsSubmitting(true);
+    
+    try {
+      await onSubmit(neighborhood);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -60,21 +67,32 @@ const NeighborhoodUpdateForm = ({
             className="text-sm cursor-pointer flex items-center"
           >
             <Navigation className="h-4 w-4 mr-2" />
-            Automatically determine my location from address
+            Use my precise location
           </label>
         </div>
         
         <p className="text-xs text-muted-foreground">
           {useGeolocation 
-            ? "When enabled, we'll automatically set your pin location based on your address."
-            : "When disabled, we'll only update your neighborhood name without changing your pin location."}
+            ? "When enabled, we'll use your browser's location feature to precisely locate you."
+            : "When disabled, we'll only update your neighborhood name without detecting your location."}
         </p>
       </div>
       <div className="flex gap-2">
-        <Button variant="warm" onClick={handleSubmit}>
-          Save
+        <Button 
+          variant="warm" 
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></div>
+              Saving...
+            </>
+          ) : (
+            'Save'
+          )}
         </Button>
-        <Button variant="outline" onClick={onCancel}>
+        <Button variant="outline" onClick={onCancel} disabled={isSubmitting}>
           Cancel
         </Button>
       </div>

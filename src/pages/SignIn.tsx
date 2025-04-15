@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -68,14 +67,21 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
       setIsLoading(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const coordinates = {
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString()
+          };
+          
+          console.log("Got precise coordinates:", coordinates);
+          
           const randomIndex = Math.floor(Math.random() * neighborhoods.length);
           const autoDetectedNeighborhood = neighborhoods[randomIndex];
           
           setSignUpData(prev => ({
             ...prev,
             neighborhood: autoDetectedNeighborhood,
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString(),
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
           }));
           
           toast({
@@ -92,6 +98,11 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
             variant: "destructive"
           });
           setIsLoading(false);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         }
       );
     } else {
@@ -176,7 +187,6 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           }
         );
         
-        // Let's skip the OTP for now since we're not implementing phone verification
         skipVerification();
       } catch (error) {
         console.error("Sign up error:", error);

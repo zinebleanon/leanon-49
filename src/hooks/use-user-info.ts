@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 interface Kid {
@@ -104,33 +105,58 @@ export const useUserInfo = () => {
     }
   };
 
+  // This function uses the browser's geolocation API to get the user's location
+  // and updates the neighborhood based on the address provided
   const updateNeighborhoodWithGeolocation = async (address: string) => {
     try {
+      // First, update the neighborhood immediately
+      updateUserInfo({ neighborhood: address });
+      
+      // If geolocation isn't enabled, we're done
       if (!userInfo?.useGeolocationForNeighborhood) {
-        // Just update the neighborhood without geolocation
-        updateUserInfo({ neighborhood: address });
         return true;
       }
 
-      // In a real app, we would use a geocoding service here
-      // For this demo, we'll simulate getting coordinates
-      // This would normally be done with something like Google Maps Geocoding API
-      
-      // Simulated coordinates (this would come from the geocoding service)
-      const simulatedCoordinates = {
-        latitude: "25.2048" + Math.random().toString().substring(0, 6), 
-        longitude: "55.2708" + Math.random().toString().substring(0, 6)
-      };
-      
-      const newUserInfo = {
-        ...userInfo,
-        neighborhood: address,
-        location: simulatedCoordinates
-      };
-      
-      setUserInfo(newUserInfo);
-      localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
-      return true;
+      // Request current position from browser
+      return new Promise<boolean>((resolve) => {
+        if (!navigator.geolocation) {
+          console.warn("Geolocation is not supported by this browser");
+          resolve(true); // We still updated the neighborhood name
+          return;
+        }
+        
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Got real coordinates - update with precise location
+            const coordinates = {
+              latitude: position.coords.latitude.toString(),
+              longitude: position.coords.longitude.toString()
+            };
+            
+            console.log("Got precise coordinates:", coordinates);
+            
+            const newUserInfo = {
+              ...userInfo,
+              neighborhood: address,
+              location: coordinates
+            };
+            
+            setUserInfo(newUserInfo);
+            localStorage.setItem('userInfo', JSON.stringify(newUserInfo));
+            resolve(true);
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+            // Still return true since we updated the neighborhood
+            resolve(true);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          }
+        );
+      });
     } catch (error) {
       console.error('Error updating neighborhood with geolocation:', error);
       return false;
