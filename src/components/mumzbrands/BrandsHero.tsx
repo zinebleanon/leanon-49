@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { HeartHandshake, BadgePercent, Info, Tags } from 'lucide-react';
+import { Tags } from 'lucide-react';
 import BrandsHowItWorksDialog from '@/components/mumzbrands/BrandsHowItWorksDialog';
-import { useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BrandsHeroProps {
@@ -12,7 +11,6 @@ interface BrandsHeroProps {
 }
 
 const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => {
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
   
   const handleDiscountDialogOpen = () => {
@@ -37,25 +35,13 @@ const BrandsHero = ({ onOpenDialog, onOpenDiscountDialog }: BrandsHeroProps) => 
             />
             
             <Button 
-              variant="outline"
-              size={isMobile ? "default" : "lg"}
-              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform cursor-pointer bg-white hover:bg-white/90"
+              size="lg" 
+              className="rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center w-full sm:w-auto"
               onClick={handleDiscountDialogOpen}
               trackingName="brands_browse_discounts"
             >
-              <Tags className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> 
-              <span>View All Brand Discounts</span>
-            </Button>
-            
-            <Button 
-              variant="warm"
-              size={isMobile ? "default" : "lg"}
-              className="rounded-full h-10 md:h-11 px-4 md:px-8 w-full sm:w-auto flex items-center gap-2 active:scale-95 transition-transform cursor-pointer"
-              onClick={handleDiscountDialogOpen}
-              trackingName="brands_browse_discounts_alt"
-            >
-              <BadgePercent className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> 
-              <span>Browse Available Discounts</span>
+              <Tags className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
+              <span className="my-auto">View All Brand Discounts</span>
             </Button>
           </div>
         </div>
