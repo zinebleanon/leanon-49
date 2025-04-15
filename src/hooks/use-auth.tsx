@@ -29,6 +29,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null);
       
       if (event === 'SIGNED_IN') {
+        if (session?.user?.app_metadata?.provider === 'email' && 
+            session?.user?.app_metadata?.created_at === session?.user?.app_metadata?.last_sign_in_at) {
+          toast({
+            title: "Welcome to LeanOn!",
+            description: "Your account has been created successfully.",
+          });
+        }
         navigate('/ally/subscribe');
       } else if (event === 'SIGNED_OUT') {
         navigate('/sign-in');
@@ -44,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, toast]);
 
   const signIn = async (email: string, password: string) => {
     try {

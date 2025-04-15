@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,13 +7,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Lock, ArrowLeft, Check, MapPin, Gift } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useAuth } from '@/hooks/use-auth';
-import { supabase } from '@/integrations/supabase/client';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { dubaiNeighborhoods } from "@/components/mumzmarketplace/MarketplaceDataProvider";
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
@@ -270,19 +266,23 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           }
         );
         
-        skipVerification();
+        toast({
+          title: "Welcome to LeanOn!",
+          description: `We're excited to have you here, ${signUpData.firstName}!`,
+        });
+
+        // The navigation will be handled by the auth provider in use-auth.tsx
+        // which already redirects to /ally/subscribe on successful signup
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
         
-        // Check if the error is due to email already being in use
         if (error.message?.toLowerCase().includes('email address already in use')) {
           toast({
             title: "Email already registered",
             description: "This email address is already registered. Please sign in or use a different email.",
             variant: "destructive",
           });
-          // Reset to step 1 so user can try with different email
           setSignupStep(1);
         } else {
           toast({
