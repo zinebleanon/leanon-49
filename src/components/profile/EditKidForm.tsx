@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -19,7 +18,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { cn } from '@/lib/utils'; // Added the cn import from utils
+import { cn } from '@/lib/utils';
 import { 
   Select,
   SelectContent,
@@ -48,12 +47,10 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
   const isNewKid = kidIndex === undefined;
   const existingKid = !isNewKid && userInfo?.kids?.[kidIndex];
   
-  // Prepare default values
   let defaultValues: Partial<KidFormValues> = {
     gender: existingKid?.gender || '',
   };
   
-  // Handle the birthDate field which needs to be a Date object
   if (existingKid?.birthDate) {
     try {
       defaultValues.birthDate = new Date(existingKid.birthDate);
@@ -71,10 +68,9 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
     setIsLoading(true);
     
     try {
-      // Convert birthDate to ISO string and ensure gender is always a string (not undefined)
       const formattedData = {
         birthDate: data.birthDate.toISOString(),
-        gender: data.gender // This is now guaranteed to be a string due to our schema validation
+        gender: data.gender
       };
       
       let success = false;
@@ -126,12 +122,15 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                   <FormControl>
                     <Button
                       variant={"outline"}
-                      className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
                     >
                       {field.value ? (
-                        format(field.value, "MMMM d, yyyy")  // More user-friendly format
+                        format(field.value, "MMMM d, yyyy")
                       ) : (
-                        <span>Select birth date</span>
+                        <span>Select child's birth date</span>
                       )}
                       <Calendar className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -143,13 +142,16 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
+                      date > new Date() || date < new Date().setFullYear(new Date().getFullYear() - 18)
                     }
                     initialFocus
                     className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
               </Popover>
+              <p className="text-xs text-muted-foreground mt-1">
+                Please select your child's birth date. Must not be in the future.
+              </p>
               <FormMessage />
             </FormItem>
           )}

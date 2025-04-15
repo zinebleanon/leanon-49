@@ -54,6 +54,9 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
     "Vatican", "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean"
   ];
 
+  const maxDate = new Date(); // Today
+  const minDate = new Date('1900-01-01');
+
   const handleSave = async () => {
     setIsLoading(true);
     
@@ -164,12 +167,15 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full mt-1 justify-start text-left font-normal"
+                className={cn(
+                  "w-full mt-1 justify-start text-left font-normal",
+                  !birthDate && "text-muted-foreground"
+                )}
               >
                 {birthDate ? (
                   format(birthDate, "MMMM d, yyyy")
                 ) : (
-                  <span className="text-muted-foreground">Select your birth date</span>
+                  <span>Select your birth date</span>
                 )}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
@@ -180,13 +186,16 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
                 selected={birthDate}
                 onSelect={setBirthDate}
                 disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
+                  date > maxDate || date < minDate
                 }
                 initialFocus
                 className={cn("p-3 pointer-events-auto")}
               />
             </PopoverContent>
           </Popover>
+          <p className="text-xs text-muted-foreground mt-1">
+            Please select your date of birth. Must be between 1900 and today.
+          </p>
         </div>
         
         <div>
