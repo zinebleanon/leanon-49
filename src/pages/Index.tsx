@@ -8,6 +8,7 @@ import useViewportHeight from '@/hooks/use-viewport-height';
 import { BellRing, Gift, Share2, User, Clock, Plus, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { useAuth } from '@/hooks/use-auth';
 import { askNotificationPermission, sendPushNotification } from '@/utils/pushNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
@@ -28,6 +29,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { userInfo, updateUserInfo } = useUserInfo();
+  const { user } = useAuth();
   const [showProfileUpdate, setShowProfileUpdate] = useState(false);
   const location = useLocation();
 
@@ -97,13 +99,13 @@ const Index = () => {
   };
   
   const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
   };
   
   const getCapitalizedFirstName = () => {
     if (!userInfo) return '';
     
-    const firstName = userInfo.firstName || userInfo.name.split(' ')[0];
+    const firstName = userInfo.firstName || (userInfo.name ? userInfo.name.split(' ')[0] : '');
     return capitalizeFirstLetter(firstName);
   };
   
@@ -216,7 +218,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      {userInfo ? (
+      {user ? (
         <div className="container px-4 py-20 pt-32 md:pt-36 min-h-screen">
           {showProfileUpdate ? (
             <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden max-w-md w-full mx-auto mb-8">
@@ -557,7 +559,7 @@ const Index = () => {
               <Card className="bg-white/90 border-pastel-yellow/30 shadow-md overflow-hidden w-full">
                 <CardHeader className="pb-2 bg-pastel-yellow/20">
                   <CardTitle className="text-3xl md:text-4xl font-playfair text-center">
-                    Welcome back, {getCapitalizedFirstName()}!
+                    Welcome back, {getCapitalizedFirstName() || user.email?.split('@')[0] || 'User'}!
                   </CardTitle>
                   <CardDescription className="text-base md:text-lg mb-1 text-center">
                     It's great to see you again in the LeanOn community
@@ -566,7 +568,7 @@ const Index = () => {
                 
                 <CardContent className="pt-5 pb-6 text-center">
                   <div className="flex flex-col gap-3">
-                    {(!userInfo.birthDate || !userInfo.nationality || !userInfo.kids || userInfo.kids.length === 0) && (
+                    {(!userInfo?.birthDate || !userInfo?.nationality || !userInfo?.kids || userInfo?.kids?.length === 0) && (
                       <Button 
                         variant="outline" 
                         onClick={openProfileUpdateForm}

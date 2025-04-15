@@ -2,13 +2,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Home, HelpCircle, Tag, ShoppingBag, Mail, Bell, Menu, Users, User } from 'lucide-react';
+import { Home, HelpCircle, Tag, ShoppingBag, Mail, Bell, Menu, Users, User, LogOut } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import RibbonIcon from './ui/RibbonIcon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { useAuth } from '@/hooks/use-auth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,6 +28,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { userInfo } = useUserInfo();
+  const { user, signOut } = useAuth();
   
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 10);
@@ -52,6 +54,14 @@ const Navbar = () => {
 
   const handleSignInClick = () => {
     navigate('/sign-in');
+  };
+  
+  const handleSignOutClick = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
   
   const isPathActive = (path: string) => {
@@ -101,7 +111,7 @@ const Navbar = () => {
         </Link>
         
         <div className="flex items-center gap-3 md:gap-4">
-          {userInfo && (
+          {user && (
             <>
               <Link
                 to="/inbox"
@@ -139,14 +149,14 @@ const Navbar = () => {
             </>
           )}
           
-          {userInfo ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                   <Avatar>
-                    <AvatarImage src={userInfo.profileImage} alt={userInfo.name || "User"} />
+                    <AvatarImage src={userInfo?.profileImage} alt={userInfo?.name || "User"} />
                     <AvatarFallback className="bg-primary/20 text-primary">
-                      {getInitials(userInfo.name)}
+                      {getInitials(userInfo?.name || user.email || "")}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
@@ -161,12 +171,8 @@ const Navbar = () => {
                   <Link to="/settings">Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem 
-                  onClick={() => {
-                    localStorage.removeItem('userInfo');
-                    window.location.href = '/';
-                  }}
-                >
+                <DropdownMenuItem onClick={handleSignOutClick}>
+                  <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -198,7 +204,7 @@ const Navbar = () => {
                   : "text-foreground/70 hover:text-foreground"
               )}
               onClick={(e) => {
-                if (!userInfo && item.path !== '/') {
+                if (!user && item.path !== '/') {
                   e.preventDefault();
                   navigate('/sign-in');
                 }
