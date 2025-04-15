@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -189,7 +190,8 @@ const MumzAlly = () => {
       <Navbar />
       
       <div className="flex-grow container mx-auto px-4 py-8">
-        {!isProfileComplete() && (
+        {/* Commented out the complete profile alert */}
+        {/* {!isProfileComplete() && (
           <Alert className="mb-4 bg-amber-50 border-amber-200">
             <AlertDescription className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
@@ -208,7 +210,7 @@ const MumzAlly = () => {
               </Button>
             </AlertDescription>
           </Alert>
-        )}
+        )} */}
 
         <HeroSection
           onFiltersChange={handleFiltersChange}
@@ -244,3 +246,4 @@ const MumzAlly = () => {
 };
 
 export default MumzAlly;
+
