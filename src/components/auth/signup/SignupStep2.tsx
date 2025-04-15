@@ -45,6 +45,7 @@ const SignupStep2 = ({
           value={otpValue} 
           onChange={setOtpValue}
           className="gap-2"
+          disabled={isLoading}
         >
           <InputOTPGroup>
             <InputOTPSlot index={0} className="h-12 w-12 text-lg" />
@@ -72,8 +73,16 @@ const SignupStep2 = ({
           size="sm"
           className="mx-auto text-xs"
           onClick={onSkipVerification}
+          disabled={isLoading}
         >
-          Skip verification (for testing)
+          {isLoading ? (
+            <>
+              <div className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-b-transparent"></div>
+              Skipping...
+            </>
+          ) : (
+            "Skip verification (for testing)"
+          )}
         </Button>
       </div>
     </CardContent>

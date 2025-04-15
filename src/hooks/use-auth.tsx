@@ -27,12 +27,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       console.log("Auth state change event:", event);
+      
+      // First, update the session and user state
       setSession(newSession);
       setUser(newSession?.user ?? null);
       
+      // Then handle redirects and UI updates
       if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
         console.log("User signed in or updated, redirecting to Index");
-        navigate('/', { replace: true });
+        
+        // Use setTimeout to prevent potential auth state deadlocks
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 0);
         
         if (event === 'SIGNED_IN') {
           const isNewUser = newSession?.user?.app_metadata?.provider === 'email' && 
@@ -46,7 +53,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         }
       } else if (event === 'SIGNED_OUT') {
-        navigate('/sign-in', { replace: true });
+        // Use setTimeout to prevent potential auth state deadlocks
+        setTimeout(() => {
+          navigate('/sign-in', { replace: true });
+        }, 0);
       }
     });
 
@@ -56,6 +66,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      
+      if (session) {
+        // Force redirect to home if already authenticated
+        setTimeout(() => {
+          const currentPath = window.location.pathname;
+          if (currentPath === '/sign-in' || currentPath === '/sign-up') {
+            navigate('/', { replace: true });
+          }
+        }, 0);
+      }
     });
 
     return () => {
@@ -66,9 +86,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password: string) => {
     try {
       console.log("Attempting sign in for:", email);
+      setLoading(true);
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      
       // Auth state change event will handle redirect
     } catch (error: any) {
       toast({
@@ -76,6 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: error.message,
         variant: "destructive"
       });
+      setLoading(false);
       throw error;
     }
   };
@@ -83,6 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string; phone?: string }) => {
     try {
       console.log("Attempting sign up for:", email);
+      setLoading(true);
       const { error, data } = await supabase.auth.signUp({
         email,
         password,
@@ -101,6 +123,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
         
         // Auth state change event will handle the redirect
+        // But we'll force a redirect here as a backup
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 500);
       }
     } catch (error: any) {
       toast({
@@ -108,6 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: error.message,
         variant: "destructive"
       });
+      setLoading(false);
       throw error;
     }
   };
@@ -142,14 +169,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
+      setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      // Auth state change will handle redirect
     } catch (error: any) {
       toast({
         title: "Error signing out",
         description: error.message,
         variant: "destructive"
       });
+      setLoading(false);
       throw error;
     }
   };
