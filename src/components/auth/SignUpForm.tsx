@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { CardContent, CardFooter } from '@/components/ui/card';
@@ -24,6 +25,7 @@ const SignUpForm = ({
   const [otpValue, setOtpValue] = useState("");
   const { signUp } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [signUpData, setSignUpData] = useState({
     firstName: '',
@@ -124,8 +126,9 @@ const SignUpForm = ({
           }
         );
         
-        // The redirection will now be handled by the onAuthStateChange event in useAuth
-        console.log("SignUp completed, waiting for redirect...");
+        // Explicit navigation to ensure redirection happens
+        console.log("SignUp completed, redirecting to home...");
+        navigate('/', { replace: true });
       } catch (error: any) {
         console.error("Error completing signup:", error);
         setIsLoading(false);
@@ -183,7 +186,11 @@ const SignUpForm = ({
           last_name: signUpData.lastName,
           phone: signUpData.phone
         }
-      );
+      ).then(() => {
+        // Explicit navigation after signup completes
+        console.log("Skip verification signup completed, redirecting to home...");
+        navigate('/', { replace: true });
+      });
     } catch (error: any) {
       console.error("Error in signup with skip verification:", error);
       toast({
@@ -191,7 +198,6 @@ const SignUpForm = ({
         description: error instanceof Error ? error.message : "An unexpected error occurred",
         variant: "destructive",
       });
-    } finally {
       setIsLoading(false);
     }
   };

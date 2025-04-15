@@ -42,6 +42,7 @@ const AppContent = () => {
 
   // Redirect authenticated users away from auth pages
   if (user && (location.pathname === '/sign-in' || location.pathname === '/sign-up')) {
+    console.log("User already authenticated, redirecting to home from", location.pathname);
     return <Navigate to="/" replace />;
   }
 
