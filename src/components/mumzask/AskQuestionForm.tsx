@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,8 +15,9 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Command } from 'cmdk';
 
-const categoryKeywords: Record<string, string[]> = {
+const categoryKeywords = {
   'Parenting': ['toddler', 'tantrum', 'discipline', 'child', 'behavior', 'parent', 'kids', 'children'],
   'Pregnancy': ['pregnant', 'trimester', 'baby', 'birth', 'ultrasound', 'expecting', 'maternity', 'nausea'],
   'Birth': ['labor', 'delivery', 'contractions', 'birth plan', 'midwife', 'water birth', 'c-section', 'epidural'],
@@ -29,8 +31,8 @@ const categoryKeywords: Record<string, string[]> = {
   'Schools & Nurseries': ['preschool', 'daycare', 'school', 'nursery', 'education', 'learning', 'kindergarten'],
   'Nannies': ['nanny', 'babysitter', 'childcare', 'au pair', 'caregiver', 'sitter', 'childminder'],
   'Entertainment & Birthday': ['party', 'activity', 'birthday', 'holiday', 'event', 'celebration', 'gift', 'present'],
-  'Others': [] // Empty array for Others category - will catch any unmatched keywords
-};
+  'Others': [] 
+} as const;
 
 interface AskQuestionFormProps {
   categories: { name: string; icon: React.ReactNode }[];
@@ -45,6 +47,49 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+
+  const suggestCategory = (text: string): string | null => {
+    const lowercaseText = text.toLowerCase();
+    
+    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+      if (keywords.some(keyword => lowercaseText.includes(keyword.toLowerCase()))) {
+        return category;
+      }
+    }
+    return null;
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    
+    // Auto-suggest category based on title
+    if (!category) {
+      const suggestedCategory = suggestCategory(e.target.value);
+      if (suggestedCategory) {
+        setCategory(suggestedCategory);
+        toast({
+          title: "Category Suggested",
+          description: `Based on your question, we've selected "${suggestedCategory}"`,
+        });
+      }
+    }
+  };
+
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setQuestion(e.target.value);
+    
+    // Auto-suggest category based on question content if not already set
+    if (!category) {
+      const suggestedCategory = suggestCategory(e.target.value);
+      if (suggestedCategory) {
+        setCategory(suggestedCategory);
+        toast({
+          title: "Category Suggested",
+          description: `Based on your question, we've selected "${suggestedCategory}"`,
+        });
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,27 +106,24 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
     setIsSubmitting(true);
 
     try {
-      const questionData = {
-        title,
-        content: question,
-        category,
-        is_neighborhood: isNeighborhood,
-        user_id: user?.id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        status: 'active',
-      };
-
       const { error } = await supabase
         .from('community_questions')
-        .insert([questionData]);
+        .insert([{
+          title,
+          content: question,
+          category,
+          is_neighborhood: isNeighborhood,
+          user_id: user?.id,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          status: 'active',
+        }]);
 
       if (error) throw error;
 
       toast({
         title: "Question submitted",
         description: "Your question has been posted to the community.",
-        variant: "default",
       });
 
       setTitle('');
@@ -106,7 +148,7 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
         <div className="space-y-2">
           <Label htmlFor="category">Category</Label>
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger>
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
@@ -133,9 +175,10 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
           <Input
             id="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             placeholder="Brief title for your question"
             maxLength={100}
+            className="focus-visible:ring-pastel-green"
           />
         </div>
 
@@ -144,9 +187,10 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
           <Textarea
             id="question"
             value={question}
-            onChange={(e) => setQuestion(e.target.value)}
+            onChange={handleQuestionChange}
             placeholder="Describe your question in detail..."
             rows={5}
+            className="focus-visible:ring-pastel-green"
           />
         </div>
 
