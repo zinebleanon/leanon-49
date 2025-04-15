@@ -1,3 +1,4 @@
+
 import {
   Dialog,
   DialogContent,
@@ -7,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import EditProfileForm from "./EditProfileForm";
 import EditKidForm from "./EditKidForm";
+import SimpleProfileForm from "./SimpleProfileForm";
 import { ProfileSection } from "@/pages/Profile";
 import { useEffect } from "react";
 import { useUserInfo } from "@/hooks/use-user-info";
@@ -20,6 +22,7 @@ interface EditProfileDialogProps {
   title: string;
   description: string;
   section?: ProfileSection; // New prop for specific section editing
+  simpleMode?: boolean; // New prop for using the simple form
 }
 
 const EditProfileDialog = ({
@@ -30,6 +33,7 @@ const EditProfileDialog = ({
   title,
   description,
   section = 'all',
+  simpleMode = false,
 }: EditProfileDialogProps) => {
   const { userInfo, updateUserInfo } = useUserInfo();
   
@@ -45,7 +49,21 @@ const EditProfileDialog = ({
     onOpenChange(false);
   };
 
-  console.log("EditProfileDialog rendering with isOpen:", isOpen);
+  console.log("EditProfileDialog rendering with isOpen:", isOpen, "simpleMode:", simpleMode);
+
+  // If simple mode is enabled, render without the dialog chrome
+  if (mode === "profile" && simpleMode) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-md p-0 border-0 bg-transparent shadow-none">
+          <SimpleProfileForm 
+            onSuccess={handleSuccess} 
+            onCancel={() => onOpenChange(false)} 
+          />
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

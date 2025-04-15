@@ -40,6 +40,7 @@ const MumzAlly = () => {
   const { toast } = useToast();
   const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
   const [editProfileSection, setEditProfileSection] = useState<ProfileSection>('all');
+  const [useSimpleProfileForm, setUseSimpleProfileForm] = useState(false);
 
   const isProfileComplete = () => {
     return !!(
@@ -176,9 +177,10 @@ const MumzAlly = () => {
     console.log('filters', filters);
   };
 
-  const handleCompleteProfile = () => {
-    console.log("Opening profile dialog");
+  const handleCompleteProfile = (simple = false) => {
+    console.log("Opening profile dialog with simple mode:", simple);
     setEditProfileSection('all');
+    setUseSimpleProfileForm(simple);
     setEditProfileDialogOpen(true);
   };
 
@@ -197,7 +199,7 @@ const MumzAlly = () => {
                 </span>
               </div>
               <Button 
-                onClick={handleCompleteProfile}
+                onClick={() => handleCompleteProfile(true)}
                 variant="warm" 
                 className="whitespace-nowrap bg-pastel-yellow hover:bg-pastel-yellow/90 gap-2"
               >
@@ -215,7 +217,7 @@ const MumzAlly = () => {
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           isProfileComplete={isProfileComplete()}
-          onCompleteProfile={handleCompleteProfile}
+          onCompleteProfile={() => handleCompleteProfile(true)}
         />
 
         <SwipeableProfiles
@@ -233,6 +235,7 @@ const MumzAlly = () => {
         title="Complete Your Profile"
         description="Fill in your profile details to connect with more LeanMoms"
         section={editProfileSection}
+        simpleMode={useSimpleProfileForm}
       />
       
       <Footer />
