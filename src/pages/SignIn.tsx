@@ -13,6 +13,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import RibbonIcon from '@/components/ui/RibbonIcon';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { dubaiNeighborhoods } from "@/components/mumzmarketplace/MarketplaceDataProvider";
 
 interface SignInProps {
   defaultTab?: 'signin' | 'signup';
@@ -62,6 +64,9 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
     "Al Barsha", "Deira", "Bur Dubai", "The Springs", "The Meadows", "The Greens",
     "Jumeirah", "Umm Suqeim", "Discovery Gardens", "International City"
   ];
+  
+  const [neighborhoodSearch, setNeighborhoodSearch] = useState('');
+  const [showNeighborhoodSearch, setShowNeighborhoodSearch] = useState(false);
   
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -561,21 +566,47 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
                           <span>Get Location</span>
                         </Button>
                       </div>
-                      <select
-                        id="signup-neighborhood"
-                        name="neighborhood"
-                        className="w-full rounded-md border-secondary/30 focus:border-secondary h-10 px-3"
-                        value={signUpData.neighborhood}
-                        onChange={handleSignUpChange}
-                        required
-                      >
-                        <option value="" disabled>Select your neighborhood</option>
-                        {neighborhoods.map((neighborhood) => (
-                          <option key={neighborhood} value={neighborhood}>
-                            {neighborhood}
-                          </option>
-                        ))}
-                      </select>
+                      
+                      <div className="relative">
+                        <Input
+                          id="signup-neighborhood"
+                          name="neighborhood"
+                          value={signUpData.neighborhood}
+                          onClick={() => setShowNeighborhoodSearch(true)}
+                          readOnly
+                          placeholder="Select your neighborhood"
+                          className="border-secondary/30 focus:border-secondary"
+                        />
+                        
+                        <CommandDialog open={showNeighborhoodSearch} onOpenChange={setShowNeighborhoodSearch}>
+                          <CommandInput 
+                            placeholder="Search neighborhoods..." 
+                            value={neighborhoodSearch}
+                            onValueChange={setNeighborhoodSearch}
+                          />
+                          <CommandList>
+                            <CommandEmpty>No neighborhood found.</CommandEmpty>
+                            <CommandGroup heading="Dubai Neighborhoods">
+                              {dubaiNeighborhoods
+                                .filter(n => n.toLowerCase().includes(neighborhoodSearch.toLowerCase()))
+                                .map((neighborhood) => (
+                                  <CommandItem
+                                    key={neighborhood}
+                                    onSelect={() => {
+                                      setSignUpData(prev => ({ ...prev, neighborhood }));
+                                      setShowNeighborhoodSearch(false);
+                                    }}
+                                    className="cursor-pointer"
+                                  >
+                                    {neighborhood}
+                                  </CommandItem>
+                                ))
+                              }
+                            </CommandGroup>
+                          </CommandList>
+                        </CommandDialog>
+                      </div>
+                      
                       <p className="text-xs text-muted-foreground mt-1">
                         Activate location so we can propose the closest Moms to you.
                       </p>
