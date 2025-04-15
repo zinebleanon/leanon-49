@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -35,12 +34,10 @@ const MumzBrands = () => {
   
   const navigate = useNavigate();
   
-  // Use the viewport height hook to fix iOS height issues
   useViewportHeight();
   
   useEffect(() => {
     setIsVisible(true);
-    // Increase the loading time slightly to ensure all content is ready
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
@@ -49,7 +46,6 @@ const MumzBrands = () => {
   }, []);
   
   useEffect(() => {
-    // Initialize brands data
     setBrands([
       {
         id: '1',
@@ -134,13 +130,11 @@ const MumzBrands = () => {
       <Navbar />
       
       <main className="flex-1 pt-20 pb-6 md:pb-10 overflow-visible">
-        {/* Hero Section */}
         <BrandsHero 
           onOpenDialog={() => setIsLocalBrandsDialogOpen(true)} 
           onOpenDiscountDialog={() => setIsDiscountDialogOpen(true)}
         />
         
-        {/* Centered ribbon tag image - moved even higher with larger negative margin */}
         <div className="flex justify-center items-center bg-[#B8CEC2] px-4 md:px-8 py-0 mt-[-90px]">
           <img 
             src="/lovable-uploads/db360cb5-1f27-448e-a198-570b6a599830.png" 
@@ -150,13 +144,11 @@ const MumzBrands = () => {
           />
         </div>
         
-        {/* Support Local Brands Dialog */}
         <SupportLocalBrandsDialog 
           isOpen={isLocalBrandsDialogOpen}
           onClose={() => setIsLocalBrandsDialogOpen(false)}
         />
         
-        {/* Browse Discounts Dialog */}
         <UnlockDiscountDialog
           isOpen={isDiscountDialogOpen}
           onClose={() => setIsDiscountDialogOpen(false)}
@@ -164,7 +156,6 @@ const MumzBrands = () => {
           onBrandSelect={handleOpenBrandDetail}
         />
         
-        {/* Brand Detail Dialog */}
         <BrandDetailDialog
           brand={selectedBrand}
           isOpen={isBrandDetailDialogOpen}
