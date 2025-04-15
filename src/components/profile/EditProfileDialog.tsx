@@ -23,6 +23,7 @@ interface EditProfileDialogProps {
   description: string;
   section?: ProfileSection; // New prop for specific section editing
   simpleMode?: boolean; // New prop for using the simple form
+  onSuccess?: () => void; // Added this missing prop
 }
 
 const EditProfileDialog = ({
@@ -34,6 +35,7 @@ const EditProfileDialog = ({
   description,
   section = 'all',
   simpleMode = false,
+  onSuccess,
 }: EditProfileDialogProps) => {
   const { userInfo, updateUserInfo } = useUserInfo();
   
@@ -46,6 +48,9 @@ const EditProfileDialog = ({
 
   const handleSuccess = () => {
     trackProfileUpdate(['profile']);
+    if (onSuccess) {
+      onSuccess();
+    }
     onOpenChange(false);
   };
 

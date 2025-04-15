@@ -48,7 +48,9 @@ const MumzAlly = () => {
       userInfo?.name &&
       userInfo?.neighborhood &&
       userInfo?.kids &&
-      userInfo?.kids.length > 0
+      userInfo?.kids.length > 0 &&
+      userInfo?.nationality &&
+      userInfo?.birthDate
     );
   };
 
