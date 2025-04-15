@@ -109,7 +109,13 @@ Use my referral code: ${userInfo.referralCode} to join, and you can invite other
     if (!userInfo) return '';
     
     const firstName = userInfo.firstName || (userInfo.name ? userInfo.name.split(' ')[0] : '');
-    return capitalizeFirstLetter(firstName);
+    const lastName = userInfo.lastName || (userInfo.name ? userInfo.name.split(' ')[1] : '');
+    
+    const formattedName = lastName 
+      ? `${capitalizeFirstLetter(firstName)} ${capitalizeFirstLetter(lastName[0])}`.trim()
+      : capitalizeFirstLetter(firstName);
+    
+    return formattedName;
   };
   
   const handleJoinClick = () => {
