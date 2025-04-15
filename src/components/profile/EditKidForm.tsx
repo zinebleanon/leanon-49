@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -138,7 +137,7 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
-                  <CalendarComponent
+                  <Calendar
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
@@ -146,16 +145,19 @@ const EditKidForm = ({ kidIndex, onSuccess }: EditKidFormProps) => {
                       const today = new Date();
                       const eighteenYearsAgo = new Date(today);
                       eighteenYearsAgo.setFullYear(today.getFullYear() - 18);
-                      
                       return date > today || date < eighteenYearsAgo;
                     }}
                     initialFocus
                     className={cn("p-3 pointer-events-auto")}
+                    captionLayout="dropdown-buttons"
+                    fromYear={new Date().getFullYear() - 18}
+                    toYear={new Date().getFullYear()}
+                    defaultMonth={field.value || new Date(new Date().setFullYear(new Date().getFullYear() - 5))}
                   />
                 </PopoverContent>
               </Popover>
               <p className="text-xs text-muted-foreground mt-1">
-                Please select your child's birth date. Must be between today and 18 years ago.
+                Please select your child's birth date (up to 18 years ago)
               </p>
               <FormMessage />
             </FormItem>
