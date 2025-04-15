@@ -2,17 +2,16 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import { 
   Send,
   AlertCircle,
   Tag,
   ArrowLeft,
   Image,
-  X,
-  Check
+  X
 } from 'lucide-react';
 import { DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
@@ -60,6 +59,7 @@ const AskQuestionForm = ({ categories, onClose, isNeighborhood = false }: AskQue
     images?: string;
   }>({});
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (details.length > 2) {
@@ -118,8 +118,8 @@ const AskQuestionForm = ({ categories, onClose, isNeighborhood = false }: AskQue
     
     if (validateForm()) {
       toast({
-        title: "Question Submitted",
-        description: `Your question with ${images.length > 0 ? images.length + ' images' : 'no images'} has been sent for review and will be published once approved by an admin.`,
+        title: "Question Submitted Successfully",
+        description: "Your question has been sent for review and will be published once approved by an admin.",
       });
       
       setDetails('');
@@ -129,6 +129,8 @@ const AskQuestionForm = ({ categories, onClose, isNeighborhood = false }: AskQue
       if (onClose) {
         onClose();
       }
+      
+      navigate('/ask');
     }
   };
 
