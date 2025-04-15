@@ -43,9 +43,10 @@ interface HowItWorksModalProps {
   className?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  trackingName?: string;
 }
 
-const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps) => {
+const HowItWorksModal = ({ className, open, onOpenChange, trackingName }: HowItWorksModalProps) => {
   if (open !== undefined && onOpenChange) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -86,7 +87,8 @@ const HowItWorksModal = ({ className, open, onOpenChange }: HowItWorksModalProps
       <DialogTrigger asChild>
         <Button 
           size="lg" 
-          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
+          className={`rounded-full px-6 border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className || ""}`}
+          trackingName={trackingName}
         >
           <Info className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
           <span className="my-auto">How It Works</span>

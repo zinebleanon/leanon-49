@@ -12,9 +12,10 @@ import { MessageCircle, Search, UserCheck, Tag, Info } from "lucide-react";
 
 interface AskHowItWorksModalProps {
   className?: string;
+  trackingName?: string;
 }
 
-const AskHowItWorksModal = ({ className }: AskHowItWorksModalProps) => {
+const AskHowItWorksModal = ({ className, trackingName }: AskHowItWorksModalProps) => {
   const steps = [
     {
       icon: <MessageCircle className="w-6 h-6 text-primary" />,
@@ -48,6 +49,7 @@ const AskHowItWorksModal = ({ className }: AskHowItWorksModalProps) => {
         <Button 
           size="lg" 
           className={`rounded-full h-11 px-8 w-full sm:w-auto border border-[#FFD9A7] bg-[#FFD9A7] hover:bg-[#FFD9A7]/80 text-foreground active:bg-[#FFD9A7]/90 transition-colors flex items-center ${className}`}
+          trackingName={trackingName}
         >
           <Info className="h-5 w-5 mr-2 flex-shrink-0 my-auto" /> 
           <span className="my-auto">How It Works</span>
