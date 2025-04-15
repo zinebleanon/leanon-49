@@ -65,6 +65,7 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
   const getLocation = () => {
     if (navigator.geolocation) {
       setIsLoading(true);
+      
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const coordinates = {
@@ -74,8 +75,21 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           
           console.log("Got precise coordinates:", coordinates);
           
-          const randomIndex = Math.floor(Math.random() * neighborhoods.length);
-          const autoDetectedNeighborhood = neighborhoods[randomIndex];
+          // In a real app, we would use reverse geocoding API here to get the neighborhood name
+          // For demonstration purposes, we'll simulate this by doing one of these options:
+          
+          // Option 1: Use the coordinates as the neighborhood for more precision
+          const locationString = `${coordinates.latitude.substring(0, 8)}, ${coordinates.longitude.substring(0, 8)}`;
+          
+          // Option 2 (fallback): Use a random neighborhood from our list
+          let autoDetectedNeighborhood = locationString;
+          
+          // For demonstration, we can also use a random neighborhood from our list
+          // (but in a real app, you would use the reverse geocoding result)
+          if (Math.random() > 0.5) {
+            const randomIndex = Math.floor(Math.random() * neighborhoods.length);
+            autoDetectedNeighborhood = neighborhoods[randomIndex];
+          }
           
           setSignUpData(prev => ({
             ...prev,
@@ -86,15 +100,30 @@ const SignIn = ({ defaultTab = 'signin' }: SignInProps) => {
           
           toast({
             title: "Location detected",
-            description: `We detected your neighborhood as ${autoDetectedNeighborhood}`,
+            description: `We detected your location as ${autoDetectedNeighborhood}`,
           });
           setIsLoading(false);
         },
         (error) => {
           console.error("Error getting location:", error);
+          
+          let errorMessage = "Could not get your location. You can still select your neighborhood.";
+          
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = "Location permission denied. Please enable location services.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = "Location information is unavailable.";
+              break;
+            case error.TIMEOUT:
+              errorMessage = "Location request timed out.";
+              break;
+          }
+          
           toast({
             title: "Location error",
-            description: "Could not get your location. You can still select your neighborhood.",
+            description: errorMessage,
             variant: "destructive"
           });
           setIsLoading(false);

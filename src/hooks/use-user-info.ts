@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface Kid {
@@ -105,8 +104,6 @@ export const useUserInfo = () => {
     }
   };
 
-  // This function uses the browser's geolocation API to get the user's location
-  // and updates the neighborhood based on the address provided
   const updateNeighborhoodWithGeolocation = async (address: string) => {
     try {
       // First, update the neighborhood immediately
@@ -135,6 +132,10 @@ export const useUserInfo = () => {
             
             console.log("Got precise coordinates:", coordinates);
             
+            // In a real app, we would use reverse geocoding to get real address
+            // based on the coordinates, then update both values.
+            // For now, we'll keep user's entered address but add the coordinates.
+            
             const newUserInfo = {
               ...userInfo,
               neighborhood: address,
@@ -146,13 +147,29 @@ export const useUserInfo = () => {
             resolve(true);
           },
           (error) => {
-            console.error("Geolocation error:", error);
+            console.error("Geolocation error:", error.code, error.message);
+            
+            // Log a more detailed error based on the error code
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                console.error("Location permission denied by user");
+                break;
+              case error.POSITION_UNAVAILABLE:
+                console.error("Location information unavailable");
+                break;
+              case error.TIMEOUT:
+                console.error("Location request timed out");
+                break;
+              default:
+                console.error("Unknown geolocation error");
+            }
+            
             // Still return true since we updated the neighborhood
             resolve(true);
           },
           {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 15000, // Increased timeout for better results
             maximumAge: 0
           }
         );
