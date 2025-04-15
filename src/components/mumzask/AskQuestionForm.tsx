@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -102,17 +102,6 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
 
   return (
     <div className="py-2">
-      <div className="space-y-2 mb-4">
-        <h2 className="text-xl font-semibold leading-none tracking-tight">
-          {isNeighborhood ? 'Ask Your Neighborhood' : 'Ask the Community'}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {isNeighborhood 
-            ? 'Get advice and support from mums in your neighborhood.' 
-            : 'Get advice and support from our community of mums.'}
-        </p>
-      </div>
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="category">Category</Label>
@@ -121,7 +110,7 @@ const AskQuestionForm = ({ categories, isNeighborhood = false, onClose }: AskQue
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              <ScrollArea className="h-[200px]">
+              <ScrollArea className="h-[250px]">
                 {categories.map((cat, idx) => (
                   <SelectItem 
                     key={idx} 
