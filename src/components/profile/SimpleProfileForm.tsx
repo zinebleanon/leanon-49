@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { cn } from '@/lib/utils';
+import InterestsSelector from './InterestsSelector';
 
 interface SimpleProfileFormProps {
   onSuccess: () => void;
@@ -37,6 +38,9 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
   const [selectedMonth, setSelectedMonth] = useState<string>(
     birthDate ? (birthDate.getMonth() + 1).toString().padStart(2, '0') : 
     (new Date().getMonth() + 1).toString().padStart(2, '0')
+  );
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(
+    userInfo?.interests ? userInfo.interests.split(',').map(i => i.trim()) : []
   );
 
   const nationalities = [
@@ -92,6 +96,7 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
         workStatus,
         nationality,
         birthDate: birthDate ? birthDate.toISOString() : undefined,
+        interests: selectedInterests.join(', '),
       };
       
       const success = updateUserInfo(updatedInfo);
@@ -273,6 +278,13 @@ const SimpleProfileForm = ({ onSuccess, onCancel }: SimpleProfileFormProps) => {
           <p className="text-xs text-muted-foreground mt-1">
             Please select your date of birth
           </p>
+        </div>
+        
+        <div>
+          <InterestsSelector
+            selectedInterests={selectedInterests}
+            onInterestsChange={setSelectedInterests}
+          />
         </div>
         
         <div>
