@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -46,7 +45,6 @@ const MumzAlly = () => {
   const [loading, setLoading] = useState(true);
   const { connections } = useConnections();
 
-  // Updated profile completion check to match the same logic used in Index.tsx
   const isProfileComplete = () => {
     return !!(
       userInfo?.name &&
@@ -56,17 +54,14 @@ const MumzAlly = () => {
       userInfo?.nationality &&
       userInfo?.birthDate &&
       userInfo?.interests &&
-      !userInfo?.profileNeedsUpdate // Add this check to match Index.tsx logic
+      !userInfo?.profileNeedsUpdate
     );
   };
 
-  // Fetch real profiles from the database
   useEffect(() => {
     const fetchProfiles = async () => {
       setLoading(true);
       try {
-        // In a real app, this would fetch profiles from the database
-        // For now, we'll just use an empty array to avoid showing fake profiles
         setProfiles([]);
         setFilteredProfiles([]);
       } catch (error) {

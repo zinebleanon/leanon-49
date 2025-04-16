@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
@@ -214,11 +214,18 @@ Use my referral code: ${userInfo.referralCode} to join, and you can invite other
     });
   };
   
-  const isProfileIncomplete = !userInfo?.birthDate || 
-                            !userInfo?.nationality || 
-                            !userInfo?.kids || 
-                            userInfo?.kids?.length === 0 || 
-                            userInfo?.profileNeedsUpdate;
+  const isProfileComplete = () => {
+    return !!(
+      userInfo?.name &&
+      userInfo?.neighborhood &&
+      userInfo?.kids &&
+      userInfo?.kids.length > 0 &&
+      userInfo?.nationality &&
+      userInfo?.birthDate &&
+      userInfo?.interests &&
+      !userInfo?.profileNeedsUpdate
+    );
+  };
 
   if (isLoading) {
     return (
@@ -405,7 +412,7 @@ Use my referral code: ${userInfo.referralCode} to join, and you can invite other
                 
                 <CardContent className="pt-5 pb-6 text-center">
                   <div className="flex flex-col gap-3">
-                    {isProfileIncomplete && (
+                    {!isProfileComplete() && (
                       <Button 
                         variant="warm" 
                         onClick={openProfileUpdateForm}
