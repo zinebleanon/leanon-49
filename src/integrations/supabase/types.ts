@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      brands: {
+        Row: {
+          bg_color: string
+          category: string
+          created_at: string | null
+          description: string
+          discount_code: string
+          discount_value: string
+          id: string
+          logo: string
+          name: string
+          updated_at: string | null
+          website: string
+        }
+        Insert: {
+          bg_color: string
+          category: string
+          created_at?: string | null
+          description: string
+          discount_code: string
+          discount_value: string
+          id?: string
+          logo: string
+          name: string
+          updated_at?: string | null
+          website: string
+        }
+        Update: {
+          bg_color?: string
+          category?: string
+          created_at?: string | null
+          description?: string
+          discount_code?: string
+          discount_value?: string
+          id?: string
+          logo?: string
+          name?: string
+          updated_at?: string | null
+          website?: string
+        }
+        Relationships: []
+      }
       button_clicks: {
         Row: {
           button_name: string
@@ -115,6 +157,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      marketplace_listings: {
+        Row: {
+          age_group: string
+          approved: boolean | null
+          brand: string
+          category: string
+          condition: string
+          created_at: string | null
+          description: string
+          id: string
+          image_url: string | null
+          price: string
+          size: string | null
+          status: string | null
+          sub_category: string
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          age_group: string
+          approved?: boolean | null
+          brand: string
+          category: string
+          condition: string
+          created_at?: string | null
+          description: string
+          id?: string
+          image_url?: string | null
+          price: string
+          size?: string | null
+          status?: string | null
+          sub_category: string
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          age_group?: string
+          approved?: boolean | null
+          brand?: string
+          category?: string
+          condition?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          image_url?: string | null
+          price?: string
+          size?: string | null
+          status?: string | null
+          sub_category?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       messages: {
         Row: {

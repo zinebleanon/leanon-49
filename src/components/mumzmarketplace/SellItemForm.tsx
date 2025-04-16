@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,6 +18,26 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ShieldCheck, Check, X, Upload, Image } from 'lucide-react';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
 import { trackItemListing } from '@/utils/track-user-activity';
+import { useMarketplaceListings } from '@/hooks/use-marketplace-listings';
+import { supabase } from '@/integrations/supabase/client';
+
+interface MarketplaceItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  subCategory: string;
+  brand: string;
+  condition: string;
+  pricingType: string;
+  price: string;
+  ageGroup: string;
+  size: string;
+  isFreeItem: boolean;
+  status: string;
+  image: File | null;
+  imagePreview: string | null;
+}
 
 const SellItemForm = () => {
   const navigate = useNavigate();
@@ -71,6 +91,97 @@ const SellItemForm = () => {
     "XS", "S", "M", "L", "XL", "XXL", "Not Applicable"
   ];
   
+  const { createListing, updateListing, deleteListing } = useMarketplaceListings();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!title || !description || !category || !subCategory || !brand || !condition || (!isFreeItem && pricingType === 'paid' && !price) || !ageGroup) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill out all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      let imageUrl = null;
+      if (image) {
+        const fileExt = image.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${Date.now()}_${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('marketplace-images')
+          .upload(filePath, image);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('marketplace-images')
+          .getPublicUrl(filePath);
+
+        imageUrl = publicUrl;
+      }
+
+      const finalPrice = pricingType === 'free' 
+        ? 'Free' 
+        : pricingType === 'contact' 
+          ? 'Contact MomSeller' 
+          : `${price} AED`;
+
+      const { error } = await createListing({
+        title,
+        description,
+        category,
+        sub_category: subCategory,
+        brand,
+        age_group: ageGroup,
+        size: size || 'Not Applicable',
+        condition,
+        price: finalPrice,
+        image_url: imageUrl
+      });
+
+      if (error) throw error;
+
+      // Track the item listing activity
+      trackItemListing(title, category);
+
+      toast({
+        title: "Item Submitted for Review",
+        description: "Your item has been submitted and is pending admin approval."
+      });
+
+      // Reset form
+      setTitle('');
+      setDescription('');
+      setCategory('');
+      setSubCategory('');
+      setBrand('');
+      setCondition('');
+      setPricingType('paid');
+      setPrice('');
+      setAgeGroup('');
+      setSize('');
+      setIsFreeItem(false);
+      setImage(null);
+      setImagePreview(null);
+    } catch (error) {
+      console.error('Error submitting item:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit item. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   useEffect(() => {
     const currentMonth = new Date().getMonth();
     const storedMonth = localStorage.getItem('listingsMonth');
@@ -134,96 +245,6 @@ const SellItemForm = () => {
     setImagePreview(null);
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (monthlyListingsCount >= 3) {
-      toast({
-        title: "Monthly Limit Reached",
-        description: "You can only list up to 3 items per month.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    if (!title || !description || !category || !subCategory || !brand || !condition || (!isFreeItem && pricingType === 'paid' && !price) || !ageGroup) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill out all required fields.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    setTimeout(() => {
-      const finalPrice = pricingType === 'free' 
-        ? 'Free' 
-        : pricingType === 'contact' 
-          ? 'Contact MomSeller' 
-          : `${price} AED`;
-          
-      // Convert image to base64 for storage if it exists
-      let imageData = null;
-      if (imagePreview) {
-        imageData = imagePreview;
-      }
-      
-      const newItem = {
-        id: Date.now().toString(),
-        title,
-        description,
-        category,
-        subCategory,
-        brand,
-        ageGroup,
-        size: size || 'Not Applicable',
-        condition,
-        price: finalPrice,
-        createdDate: new Date().toISOString(),
-        status: 'available',
-        approved: false,
-        image: imageData
-      };
-      
-      // Track the item listing activity
-      trackItemListing(newItem.id, newItem.title);
-      
-      const existingItems = localStorage.getItem('listedItems');
-      const allItems = existingItems ? JSON.parse(existingItems) : [];
-      const updatedItems = [...allItems, newItem];
-      
-      localStorage.setItem('listedItems', JSON.stringify(updatedItems));
-      
-      setPendingApprovalItems([...pendingApprovalItems, newItem]);
-      
-      const newCount = monthlyListingsCount + 1;
-      localStorage.setItem('monthlyListingsCount', newCount.toString());
-      setMonthlyListingsCount(newCount);
-      
-      toast({
-        title: "Item Submitted for Review",
-        description: "Your item has been submitted and is pending admin approval."
-      });
-      
-      setTitle('');
-      setDescription('');
-      setCategory('');
-      setSubCategory('');
-      setBrand('');
-      setCondition('');
-      setPricingType('paid');
-      setPrice('');
-      setAgeGroup('');
-      setSize('');
-      setIsFreeItem(false);
-      setImage(null);
-      setImagePreview(null);
-      
-      setIsSubmitting(false);
-    }, 1500);
-  };
   
   const handleStatusChange = (itemId: string, newStatus: string) => {
     const allItems = localStorage.getItem('listedItems');

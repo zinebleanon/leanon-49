@@ -32,12 +32,14 @@ export const useBrands = () => {
     try {
       setIsLoading(true);
       
-      // Initialize with empty array since the brands table doesn't exist yet in the database
-      // This is a placeholder for future implementation
-      const brandsData: Brand[] = [];
+      const { data: brandsData, error } = await supabase
+        .from('brands')
+        .select('*');
+
+      if (error) throw error;
       
       // Transform data to include required aliases for compatibility
-      const transformedBrands = brandsData.map(brand => ({
+      const transformedBrands = (brandsData || []).map(brand => ({
         ...brand,
         discountCode: brand.discount_code,
         discountValue: brand.discount_value,
@@ -53,5 +55,5 @@ export const useBrands = () => {
     }
   };
 
-  return { brands, isLoading, error };
+  return { brands, isLoading, error, refetch: fetchBrands };
 };

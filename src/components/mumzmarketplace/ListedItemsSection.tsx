@@ -1,5 +1,3 @@
-
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -14,39 +12,23 @@ import { toast } from '@/hooks/use-toast';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
 import { Check, Clock, X, Tag, AlertTriangle, CheckCircle2, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useMarketplaceListings } from '@/hooks/use-marketplace-listings';
 
 const ListedItemsSection = () => {
-  const [listedItems, setListedItems] = useState<any[]>([]);
-  const [pendingApprovalItems, setPendingApprovalItems] = useState<any[]>([]);
   const navigate = useNavigate();
+  const { listedItems, pendingApprovalItems, updateListing } = useMarketplaceListings();
   
-  useEffect(() => {
-    const items = localStorage.getItem('listedItems');
-    if (items) {
-      const parsedItems = JSON.parse(items);
-      const approved = parsedItems.filter((item: any) => item.approved && !item.closed);
-      const pending = parsedItems.filter((item: any) => !item.approved && !item.closed);
-      setListedItems(approved);
-      setPendingApprovalItems(pending);
+  const handleStatusChange = async (itemId: string, newStatus: string) => {
+    const { error } = await updateListing(itemId, { status: newStatus });
+    
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update status. Please try again.",
+        variant: "destructive"
+      });
+      return;
     }
-  }, []);
-  
-  const handleStatusChange = (itemId: string, newStatus: string) => {
-    const allItems = localStorage.getItem('listedItems');
-    if (!allItems) return;
-    
-    const parsedItems = JSON.parse(allItems);
-    const updatedItems = parsedItems.map((item: any) => {
-      if (item.id === itemId) {
-        return { ...item, status: newStatus };
-      }
-      return item;
-    });
-    
-    localStorage.setItem('listedItems', JSON.stringify(updatedItems));
-    
-    const updatedApproved = updatedItems.filter((item: any) => item.approved && !item.closed);
-    setListedItems(updatedApproved);
     
     toast({
       title: "Status Updated",
@@ -54,22 +36,17 @@ const ListedItemsSection = () => {
     });
   };
   
-  const closeItem = (itemId: string) => {
-    const allItems = localStorage.getItem('listedItems');
-    if (!allItems) return;
+  const closeItem = async (itemId: string) => {
+    const { error } = await updateListing(itemId, { status: 'sold' });
     
-    const parsedItems = JSON.parse(allItems);
-    const updatedItems = parsedItems.map((item: any) => {
-      if (item.id === itemId) {
-        return { ...item, closed: true, status: 'sold' };
-      }
-      return item;
-    });
-    
-    localStorage.setItem('listedItems', JSON.stringify(updatedItems));
-    
-    const updatedApproved = updatedItems.filter((item: any) => item.approved && !item.closed);
-    setListedItems(updatedApproved);
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to close listing. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     toast({
       title: "Listing Closed",
