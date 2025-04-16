@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -12,10 +11,9 @@ export interface Brand {
   discount_code: string;
   discount_value: string;
   bg_color: string;
-  // Aliases for compatibility with existing components
-  discountCode?: string;
-  discountValue?: string;
-  bgColor?: string;
+  discountCode: string;
+  discountValue: string;
+  bgColor: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -34,7 +32,7 @@ export const useBrands = () => {
       // Initialize with empty array until we create the brands table in Supabase
       const brandsData: Brand[] = [];
       
-      // Transform data to include aliases for compatibility
+      // Transform data to include required aliases for compatibility
       const transformedBrands = brandsData.map(brand => ({
         ...brand,
         discountCode: brand.discount_code,

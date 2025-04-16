@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserInfo } from './use-user-info';
@@ -24,70 +23,51 @@ export function useConnections() {
 
     const fetchConnections = async () => {
       try {
-        // Insert a test connection request for demonstration
-        if (userInfo.email === 'test@example.com') {
-          const testRequest = {
-            requester_id: 'sarah@example.com',
-            recipient_id: userInfo.email,
-            status: 'pending' as const
-          };
-
-          const { error: existingError } = await supabase
-            .from('connection_requests')
-            .select('*')
-            .eq('requester_id', testRequest.requester_id)
-            .eq('recipient_id', testRequest.recipient_id)
-            .single();
-
-          if (existingError) {
-            // No existing request found, insert the test request
-            const { error } = await supabase
-              .from('connection_requests')
-              .insert(testRequest);
-
-            if (error) {
-              console.error('Error creating test connection:', error);
-            }
-          }
-        }
-
-        const { data, error } = await supabase
+        // Get pending requests where user is recipient
+        const { data: pendingRequests, error: pendingError } = await supabase
           .from('connection_requests')
           .select('*')
-          .or(`requester_id.eq.${userInfo.email},recipient_id.eq.${userInfo.email}`);
+          .eq('recipient_id', userInfo.email)
+          .eq('status', 'pending');
 
-        if (error) {
-          console.error('Error fetching connections:', error);
-          return;
-        }
+        if (pendingError) throw pendingError;
+        
+        setPendingRequestsCount(pendingRequests?.length || 0);
 
-        setConnections(data || []);
-        // Count pending requests where user is the recipient
-        const pendingCount = (data || []).filter(
-          conn => conn.status === 'pending' && conn.recipient_id === userInfo.email
-        ).length;
-        setPendingRequestsCount(pendingCount);
-        setLoading(false);
+        // Get all connections for the user
+        const { data: connectionData, error } = await supabase
+          .from('connection_requests')
+          .select('*')
+          .or(`recipient_id.eq.${userInfo.email},requester_id.eq.${userInfo.email}`);
+
+        if (error) throw error;
+        setConnections(connectionData || []);
       } catch (err) {
-        console.error('Fetch connections error:', err);
+        console.error('Error fetching connections:', err);
+        toast({
+          title: "Error",
+          description: "Failed to load connections. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
         setLoading(false);
       }
     };
 
     fetchConnections();
 
-    // Subscribe to changes in real-time
+    // Subscribe to real-time updates
     const channel = supabase
       .channel('connection_changes')
       .on('postgres_changes', 
         { 
           event: '*', 
           schema: 'public', 
-          table: 'connection_requests' 
+          table: 'connection_requests',
+          filter: `recipient_id=eq.${userInfo.email}`,
         }, 
-        (payload) => {
-          console.log('Connection change received:', payload);
-          fetchConnections(); // Refresh the connections list when changes occur
+        () => {
+          fetchConnections(); // Refresh data when changes occur
         }
       )
       .subscribe();

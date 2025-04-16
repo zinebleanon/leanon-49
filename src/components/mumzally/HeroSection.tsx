@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +8,7 @@ import ConnectionRequests from "./ConnectionRequests";
 import HeroTitle from "./HeroTitle";
 import ActionButtons from "./ActionButtons";
 import SearchBar from "./SearchBar";
+import { useConnections } from '@/hooks/use-connections';
 
 interface HeroSectionProps {
   onFiltersChange?: (filters: Record<string, any>) => void;
@@ -34,6 +34,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isConnectionRequestsOpen, setIsConnectionRequestsOpen] = useState(false);
+  const { connections, loading, pendingRequestsCount } = useConnections();
 
   const handleFiltersChange = (filters: Record<string, any>) => {
     setIsFiltersOpen(false);
@@ -41,8 +42,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       onFiltersChange(filters);
     }
   };
-
-  const totalPendingRequests = 4;
 
   return (
     <div className="mb-8">
@@ -53,7 +52,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         <ActionButtons 
           onHowItWorksClick={() => setIsHowItWorksOpen(true)}
           onConnectionRequestsClick={() => setIsConnectionRequestsOpen(true)}
-          pendingRequestsCount={totalPendingRequests}
+          pendingRequestsCount={pendingRequestsCount}
         />
       </div>
       
