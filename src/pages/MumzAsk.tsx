@@ -22,7 +22,6 @@ import {
   Tent,
   Smile,
   Bed,
-  // Import the Tooth icon correctly
 } from 'lucide-react';
 import { AskQuestionForm } from '@/components/mumzask/AskQuestionForm';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -50,14 +49,14 @@ const MumzAsk = () => {
     { name: 'Postpartum', icon: <User className="h-4 w-4 mr-2" /> },
     { name: 'Health', icon: <Activity className="h-4 w-4 mr-2" /> },
     { name: 'Sleep', icon: <Bed className="h-4 w-4 mr-2" /> },
-    { name: 'Teething', icon: <Baby className="h-4 w-4 mr-2" /> }, // Changed to Baby icon since Tooth isn't available
+    { name: 'Teething', icon: <Baby className="h-4 w-4 mr-2" /> },
     { name: 'Diversification', icon: <UtensilsCrossed className="h-4 w-4 mr-2" /> },
     { name: 'Feeding & Breastfeeding', icon: <Baby className="h-4 w-4 mr-2" /> },
     { name: 'Shopping', icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
     { name: 'Schools & Nurseries', icon: <School className="h-4 w-4 mr-2" /> },
     { name: 'Nannies', icon: <User className="h-4 w-4 mr-2" /> },
     { name: 'Entertainment & Birthday', icon: <CalendarDays className="h-4 w-4 mr-2" /> },
-    { name: 'Others', icon: <HelpCircle className="h-4 w-4 mr-2" /> }
+    { name: 'LeanCommunity', icon: <HelpCircle className="h-4 w-4 mr-2" /> }
   ];
   
   const neighborhoodCategories = [
@@ -89,7 +88,7 @@ const MumzAsk = () => {
             <div className="text-center md:text-left md:max-w-3xl mx-auto">
               <h1 className={`text-3xl md:text-5xl font-bold mb-8 md:mb-10 font-playfair ${textStyles} ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#403E43] to-[#222222]">
-                  LeanOn the Community
+                  LeanOn the LeanCommunity
                 </span>
               </h1>
               
@@ -164,3 +163,4 @@ const MumzAsk = () => {
 };
 
 export default MumzAsk;
+
