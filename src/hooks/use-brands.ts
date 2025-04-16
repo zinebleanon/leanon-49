@@ -32,22 +32,9 @@ export const useBrands = () => {
     try {
       setIsLoading(true);
       
-      // Try to fetch brands from the database if the table exists
-      let brandsData: Brand[] = [];
-      
-      try {
-        const { data, error } = await supabase
-          .from('brands')
-          .select('*');
-        
-        if (!error && data) {
-          brandsData = data;
-        }
-      } catch (dbError) {
-        console.log('Brands table may not exist yet:', dbError);
-        // Initialize with empty array if table doesn't exist
-        brandsData = [];
-      }
+      // Initialize with empty array since the brands table doesn't exist yet in the database
+      // This is a placeholder for future implementation
+      const brandsData: Brand[] = [];
       
       // Transform data to include required aliases for compatibility
       const transformedBrands = brandsData.map(brand => ({

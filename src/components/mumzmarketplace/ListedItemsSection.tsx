@@ -149,7 +149,7 @@ const ListedItemsSection = () => {
           <CardHeader className="bg-green-50 border-b flex flex-row justify-between items-center">
             <CardTitle className="text-xl flex items-center gap-2">
               <Check className="h-5 w-5 text-green-500" />
-              Your Approved Listings
+              Your Listings
             </CardTitle>
             <Button 
               variant="outline" 
@@ -223,7 +223,7 @@ const ListedItemsSection = () => {
         </Card>
       ) : (
         <div className="text-center p-8 border rounded-md bg-gray-50">
-          <p className="text-muted-foreground">You don't have any approved listings yet.</p>
+          <p className="text-muted-foreground">You don't have any listings yet.</p>
         </div>
       )}
     </div>
