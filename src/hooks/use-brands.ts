@@ -12,6 +12,10 @@ export interface Brand {
   discount_code: string;
   discount_value: string;
   bg_color: string;
+  // Aliases for compatibility with existing components
+  discountCode?: string;
+  discountValue?: string;
+  bgColor?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -28,7 +32,17 @@ export const useBrands = () => {
   const fetchBrands = async () => {
     try {
       // Initialize with empty array until we create the brands table in Supabase
-      setBrands([]);
+      const brandsData: Brand[] = [];
+      
+      // Transform data to include aliases for compatibility
+      const transformedBrands = brandsData.map(brand => ({
+        ...brand,
+        discountCode: brand.discount_code,
+        discountValue: brand.discount_value,
+        bgColor: brand.bg_color,
+      }));
+      
+      setBrands(transformedBrands);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching brands:', error);

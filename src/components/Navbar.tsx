@@ -10,6 +10,8 @@ import RibbonIcon from './ui/RibbonIcon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { useAuth } from '@/hooks/use-auth';
+import { useNotifications } from '@/hooks/use-notifications';
+import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,13 +24,67 @@ import {
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(3);
-  const [notificationCount, setNotificationCount] = useState(2);
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { userInfo } = useUserInfo();
   const { user, signOut } = useAuth();
+  const { notifications } = useNotifications();
+  
+  // Calculate unread notifications count
+  const notificationCount = notifications.filter(n => !n.read).length;
+  
+  // Fetch unread messages count
+  useEffect(() => {
+    const fetchUnreadMessages = async () => {
+      if (!user?.email) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('id')
+          .eq('receiver_id', user.email)
+          .is('read_at', null);
+          
+        if (error) {
+          console.error('Error fetching unread messages:', error);
+          return;
+        }
+        
+        setUnreadMessageCount(data?.length || 0);
+      } catch (err) {
+        console.error('Error fetching unread message count:', err);
+      }
+    };
+    
+    fetchUnreadMessages();
+    
+    // Set up subscription for new messages
+    const channel = supabase
+      .channel('unread_messages')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: user?.email ? `receiver_id=eq.${user.email}` : undefined
+      }, () => {
+        fetchUnreadMessages();
+      })
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'messages',
+        filter: user?.email ? `receiver_id=eq.${user.email}` : undefined
+      }, () => {
+        fetchUnreadMessages();
+      })
+      .subscribe();
+      
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.email]);
   
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 10);
@@ -123,9 +179,9 @@ const Navbar = () => {
                 )}
               >
                 <Mail className="h-5 w-5" />
-                {unreadCount > 0 && (
+                {unreadMessageCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                    {unreadCount}
+                    {unreadMessageCount > 99 ? '99+' : unreadMessageCount}
                   </span>
                 )}
               </Link>
@@ -142,7 +198,7 @@ const Navbar = () => {
                 <Bell className="h-5 w-5" />
                 {notificationCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
-                    {notificationCount}
+                    {notificationCount > 99 ? '99+' : notificationCount}
                   </span>
                 )}
               </Link>

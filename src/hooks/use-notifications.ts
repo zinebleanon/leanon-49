@@ -23,10 +23,17 @@ export const useNotifications = () => {
   const { toast } = useToast();
 
   const fetchNotifications = async () => {
+    if (!user) {
+      setNotifications([]);
+      setIsLoading(false);
+      return;
+    }
+    
     try {
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -68,8 +75,6 @@ export const useNotifications = () => {
           notif.id === id ? { ...notif, read: true } : notif
         )
       );
-
-      // Removed the call to trackUserActivity as it's not defined
     } catch (error) {
       console.error('Error marking notification as read:', error);
       toast({
@@ -81,6 +86,8 @@ export const useNotifications = () => {
   };
 
   const markAllAsRead = async () => {
+    if (!user) return;
+    
     try {
       const unreadNotifications = notifications.filter(n => !n.read);
       
@@ -89,7 +96,7 @@ export const useNotifications = () => {
       const { error } = await supabase
         .from('notifications')
         .update({ read: true })
-        .eq('user_id', user?.id)
+        .eq('user_id', user.id)
         .eq('read', false);
 
       if (error) throw error;
@@ -102,8 +109,6 @@ export const useNotifications = () => {
         title: "Success",
         description: `Marked ${unreadNotifications.length} notifications as read`,
       });
-
-      // Removed the call to trackUserActivity as it's not defined
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
       toast({
@@ -124,8 +129,6 @@ export const useNotifications = () => {
       if (error) throw error;
 
       setNotifications(prev => prev.filter(notif => notif.id !== id));
-
-      // Removed the call to trackUserActivity as it's not defined
     } catch (error) {
       console.error('Error deleting notification:', error);
       toast({
@@ -135,6 +138,11 @@ export const useNotifications = () => {
       });
     }
   };
+
+  // Initial fetch
+  useEffect(() => {
+    fetchNotifications();
+  }, [user]);
 
   // Subscribe to real-time notifications
   useEffect(() => {
@@ -163,18 +171,24 @@ export const useNotifications = () => {
           setNotifications(prev => [newNotification, ...prev]);
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          // Refetch notifications when updates occur
+          fetchNotifications();
+        }
+      )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
-
-  // Initial fetch
-  useEffect(() => {
-    if (user) {
-      fetchNotifications();
-    }
   }, [user]);
 
   return {
