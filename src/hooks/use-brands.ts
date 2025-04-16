@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -29,8 +30,24 @@ export const useBrands = () => {
 
   const fetchBrands = async () => {
     try {
-      // Initialize with empty array until we create the brands table in Supabase
-      const brandsData: Brand[] = [];
+      setIsLoading(true);
+      
+      // Try to fetch brands from the database if the table exists
+      let brandsData: Brand[] = [];
+      
+      try {
+        const { data, error } = await supabase
+          .from('brands')
+          .select('*');
+        
+        if (!error && data) {
+          brandsData = data;
+        }
+      } catch (dbError) {
+        console.log('Brands table may not exist yet:', dbError);
+        // Initialize with empty array if table doesn't exist
+        brandsData = [];
+      }
       
       // Transform data to include required aliases for compatibility
       const transformedBrands = brandsData.map(brand => ({
@@ -41,10 +58,10 @@ export const useBrands = () => {
       }));
       
       setBrands(transformedBrands);
-      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching brands:', error);
       setError(error instanceof Error ? error.message : 'An error occurred');
+    } finally {
       setIsLoading(false);
     }
   };

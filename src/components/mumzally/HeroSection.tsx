@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -84,7 +85,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       
       <ConnectionRequests
         dialogMode={true}
-        nearbyMoms={nearbyMoms}
+        nearbyMoms={[]} // Pass empty array instead of nearbyMoms
         open={isConnectionRequestsOpen}
         onOpenChange={setIsConnectionRequestsOpen}
       />

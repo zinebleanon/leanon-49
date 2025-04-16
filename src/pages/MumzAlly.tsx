@@ -11,6 +11,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { User } from 'lucide-react';
 import EditProfileDialog from '@/components/profile/EditProfileDialog';
 import { ProfileSection } from '@/pages/Profile';
+import { supabase } from '@/integrations/supabase/client';
+import { useConnections } from '@/hooks/use-connections';
 
 interface Kid {
   age: number;
@@ -33,7 +35,6 @@ export interface MumzProfile {
 
 const MumzAlly = () => {
   const { userInfo, neighborhood } = useUserInfo();
-  const [nearbyMoms, setNearbyMoms] = useState<MumzProfile[]>([]);
   const [profiles, setProfiles] = useState<MumzProfile[]>([]);
   const [filteredProfiles, setFilteredProfiles] = useState<MumzProfile[]>([]);
   const [sentConnections, setSentConnections] = useState<number[]>([]);
@@ -42,6 +43,8 @@ const MumzAlly = () => {
   const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
   const [editProfileSection, setEditProfileSection] = useState<ProfileSection>('all');
   const [useSimpleProfileForm, setUseSimpleProfileForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { connections } = useConnections();
 
   // Updated profile completion check to match the same logic used in Index.tsx
   const isProfileComplete = () => {
@@ -57,106 +60,40 @@ const MumzAlly = () => {
     );
   };
 
+  // Fetch real profiles from the database
   useEffect(() => {
-    const exampleProfiles: MumzProfile[] = [
-      {
-        id: 1,
-        name: 'Layla K',
-        age: 32,
-        location: neighborhood || 'Downtown Dubai',
-        kids: [{ age: 2, gender: 'girl' }],
-        nationality: 'Emirati',
-        workStatus: 'full-time',
-        interests: ['Cooking', 'Reading'],
-        bio: 'Hi! I\'m Layla, a full-time mom who loves cooking and reading.',
-        compatibility: 85,
-      },
-      {
-        id: 2,
-        name: 'Fatima A',
-        age: 28,
-        location: neighborhood || 'Dubai Marina',
-        kids: [{ age: 1, gender: 'boy' }],
-        nationality: 'Lebanese',
-        workStatus: 'working',
-        interests: ['Fitness', 'Travel'],
-        bio: 'Hey there! I\'m Fatima, a working mom passionate about fitness and travel.',
-        compatibility: 92,
-      },
-      {
-        id: 3,
-        name: 'Aisha M',
-        age: 35,
-        location: neighborhood || 'Jumeirah',
-        kids: [{ age: 3, gender: 'girl' }, { age: 5, gender: 'boy' }],
-        nationality: 'Saudi',
-        workStatus: 'full-time',
-        interests: ['Crafts', 'Gardening'],
-        bio: 'Hello! I\'m Aisha, a full-time mom who enjoys crafts and gardening.',
-        compatibility: 78,
-      },
-      {
-        id: 4,
-        name: 'Noura S',
-        age: 29,
-        location: neighborhood || 'Arabian Ranches',
-        kids: [{ age: 2, gender: 'boy' }],
-        nationality: 'Egyptian',
-        workStatus: 'working',
-        interests: ['Movies', 'Music'],
-        bio: 'Hi! I\'m Noura, a working mom who loves movies and music.',
-        compatibility: 88,
-      },
-      {
-        id: 5,
-        name: 'Hessa R',
-        age: 31,
-        location: neighborhood || 'Emirates Hills',
-        kids: [{ age: 4, gender: 'girl' }],
-        nationality: 'Qatari',
-        workStatus: 'full-time',
-        interests: ['Fashion', 'Beauty'],
-        bio: 'Hey there! I\'m Hessa, a full-time mom passionate about fashion and beauty.',
-        compatibility: 95,
-      },
-      {
-        id: 6,
-        name: 'Mariam T',
-        age: 27,
-        location: neighborhood || 'Mirdif',
-        kids: [{ age: 1, gender: 'boy' }],
-        nationality: 'Omani',
-        workStatus: 'working',
-        interests: ['Photography', 'Art'],
-        bio: 'Hello! I\'m Mariam, a working mom who enjoys photography and art.',
-        compatibility: 82,
-      },
-    ];
+    const fetchProfiles = async () => {
+      setLoading(true);
+      try {
+        // In a real app, this would fetch profiles from the database
+        // For now, we'll just use an empty array to avoid showing fake profiles
+        setProfiles([]);
+        setFilteredProfiles([]);
+      } catch (error) {
+        console.error('Error fetching profiles:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load profiles. Please try again.',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setProfiles(exampleProfiles);
-
-    if (isProfileComplete()) {
-      const nearby = exampleProfiles.filter(profile => profile.location === neighborhood);
-      setNearbyMoms(nearby);
-      setFilteredProfiles(nearby);
-    } else {
-      setNearbyMoms([]);
-      setFilteredProfiles(exampleProfiles);
-    }
-  }, [neighborhood, userInfo]);
+    fetchProfiles();
+  }, [neighborhood, userInfo, toast]);
 
   useEffect(() => {
-    const baseProfiles = isProfileComplete() ? nearbyMoms : profiles;
-    
     if (searchTerm) {
-      const searchResults = baseProfiles.filter(profile =>
+      const searchResults = profiles.filter(profile =>
         profile.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredProfiles(searchResults);
     } else {
-      setFilteredProfiles(baseProfiles);
+      setFilteredProfiles(profiles);
     }
-  }, [searchTerm, profiles, nearbyMoms, userInfo]);
+  }, [searchTerm, profiles]);
 
   const handleLeanOn = (id: number, name: string) => {
     if (sentConnections.includes(id)) {
@@ -221,7 +158,7 @@ const MumzAlly = () => {
         <HeroSection
           onFiltersChange={handleFiltersChange}
           profiles={filteredProfiles}
-          nearbyMoms={nearbyMoms}
+          nearbyMoms={[]} // Empty array instead of nearbyMoms
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           isProfileComplete={profileComplete}

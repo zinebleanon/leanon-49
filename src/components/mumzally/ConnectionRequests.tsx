@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare, ArrowDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,6 +12,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { trackConnection } from '@/utils/track-user-activity';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from '@/integrations/supabase/client';
+import { useConnections } from '@/hooks/use-connections';
 
 interface ConnectionRequest {
   id: number;
@@ -61,6 +61,7 @@ const ConnectionRequests = ({
   const [sentRequests, setSentRequests] = useState<ConnectionRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = useUserInfo();
+  const { connections, pendingRequestsCount, updateConnectionStatus } = useConnections();
 
   useEffect(() => {
     const fetchConnectionRequests = async () => {
@@ -70,57 +71,18 @@ const ConnectionRequests = ({
       }
       
       try {
-        // Fetch connection requests from Supabase
-        const { data, error } = await supabase
-          .from('connection_requests')
-          .select('*')
-          .eq('recipient_id', userInfo.email)
-          .eq('status', 'pending');
-        
-        if (error) throw error;
-        
-        // No connection requests found in real DB
         setConnectionRequests([]);
         setSentRequests([]);
         setLeanBackMoms([]);
-        
-        // Get accepted requests
-        const { data: acceptedData, error: acceptedError } = await supabase
-          .from('connection_requests')
-          .select('*')
-          .eq('status', 'connected')
-          .or(`recipient_id.eq.${userInfo.email},requester_id.eq.${userInfo.email}`);
-          
-        if (!acceptedError && acceptedData) {
-          // We'd map these to leanBackMoms with full user profiles
-          // but for now just create empty arrays
-        }
+        setIsLoading(false);
       } catch (err) {
         console.error("Error fetching connection requests:", err);
-      } finally {
         setIsLoading(false);
       }
     };
     
-    const savedAcceptedRequests = localStorage.getItem('acceptedRequests');
-    if (savedAcceptedRequests) {
-      setAcceptedRequests(JSON.parse(savedAcceptedRequests));
-    }
-    
-    const savedRejectedRequests = localStorage.getItem('rejectedRequests');
-    if (savedRejectedRequests) {
-      setRejectedRequests(JSON.parse(savedRejectedRequests));
-    }
-
-    const savedLeanBackMoms = localStorage.getItem('leanBackMoms');
-    if (savedLeanBackMoms) {
-      setLeanBackMoms(JSON.parse(savedLeanBackMoms));
-    } else {
-      localStorage.setItem('leanBackMoms', JSON.stringify([]));
-    }
-    
     fetchConnectionRequests();
-  }, [userInfo?.email]);
+  }, [userInfo?.email, connections]);
 
   const handleMessageClick = (id: number, name: string) => {
     setSelectedRecipient({ id, name });
@@ -147,20 +109,12 @@ const ConnectionRequests = ({
     }
 
     try {
-      // In a real implementation, this would update the connection in the database
-      // Placeholder for now
-      console.log(`Accepting connection request with ID ${id}`);
+      await updateConnectionStatus(id.toString(), 'connected');
       
       const updatedAccepted = [...acceptedRequests, id];
       setAcceptedRequests(updatedAccepted);
-      localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
       
       trackConnection(id.toString(), name);
-      
-      toast({
-        title: "Connection Request Accepted",
-        description: `You are now connected with ${name}!`,
-      });
     } catch (err) {
       console.error("Error accepting connection request:", err);
       toast({
@@ -182,18 +136,10 @@ const ConnectionRequests = ({
     }
 
     try {
-      // In a real implementation, this would update the connection in the database
-      // Placeholder for now
-      console.log(`Rejecting connection request with ID ${id}`);
+      await updateConnectionStatus(id.toString(), 'declined');
       
       const updatedRejected = [...rejectedRequests, id];
       setRejectedRequests(updatedRejected);
-      localStorage.setItem('rejectedRequests', JSON.stringify(updatedRejected));
-      
-      toast({
-        title: "Connection Request Declined",
-        description: `You've declined ${name}'s connection request.`,
-      });
     } catch (err) {
       console.error("Error rejecting connection request:", err);
       toast({
@@ -215,7 +161,7 @@ const ConnectionRequests = ({
           <TabsTrigger value="received" className="flex items-center gap-2">
             <ArrowDown className="h-4 w-4" />
             <span>Received</span>
-            <Badge variant="secondary" className="ml-2">{filteredRequests.length}</Badge>
+            <Badge variant="secondary" className="ml-2">{pendingRequestsCount}</Badge>
           </TabsTrigger>
           <TabsTrigger value="sent" className="flex items-center gap-2">
             <ArrowUp className="h-4 w-4" />

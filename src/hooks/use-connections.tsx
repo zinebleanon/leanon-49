@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserInfo } from './use-user-info';
@@ -32,7 +33,9 @@ export function useConnections() {
 
         if (pendingError) throw pendingError;
         
-        setPendingRequestsCount(pendingRequests?.length || 0);
+        const pendingCount = pendingRequests?.length || 0;
+        console.log('Pending requests count:', pendingCount);
+        setPendingRequestsCount(pendingCount);
 
         // Get all connections for the user
         const { data: connectionData, error } = await supabase
@@ -56,7 +59,7 @@ export function useConnections() {
 
     fetchConnections();
 
-    // Subscribe to real-time updates
+    // Subscribe to real-time updates for connection_requests
     const channel = supabase
       .channel('connection_changes')
       .on('postgres_changes', 
@@ -66,7 +69,8 @@ export function useConnections() {
           table: 'connection_requests',
           filter: `recipient_id=eq.${userInfo.email}`,
         }, 
-        () => {
+        (payload) => {
+          console.log('Connection request changed:', payload);
           fetchConnections(); // Refresh data when changes occur
         }
       )
@@ -75,7 +79,7 @@ export function useConnections() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userInfo?.email]);
+  }, [userInfo?.email, toast]);
 
   const sendConnectionRequest = async (recipientEmail: string) => {
     if (!userInfo?.email) {
