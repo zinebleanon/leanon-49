@@ -122,14 +122,12 @@ const MumzAlly = () => {
     setEditProfileDialogOpen(true);
   };
 
-  const profileComplete = isProfileComplete();
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <div className="flex-grow container mx-auto px-4 py-8">
-        {!profileComplete && (
+        {!isProfileComplete() && (
           <Alert className="mb-4 bg-amber-50 border-amber-200">
             <AlertDescription className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div>
@@ -156,7 +154,7 @@ const MumzAlly = () => {
           nearbyMoms={[]} // Empty array instead of nearbyMoms
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
-          isProfileComplete={profileComplete}
+          isProfileComplete={isProfileComplete()}
         />
 
         <SwipeableProfiles
