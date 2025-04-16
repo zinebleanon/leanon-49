@@ -27,18 +27,12 @@ export const useBrands = () => {
 
   const fetchBrands = async () => {
     try {
-      const { data, error } = await supabase
-        .from('brands')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-
-      setBrands(data || []);
+      // Initialize with empty array until we create the brands table in Supabase
+      setBrands([]);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching brands:', error);
       setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
       setIsLoading(false);
     }
   };

@@ -25,12 +25,27 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
-    // In a real implementation, this would fetch messages from the database
-    setTimeout(() => {
-      setMessages([]);
-      setIsLoading(false);
-    }, 800);
-  }, []);
+    const fetchMessages = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('questions')
+          .select('*')
+          .eq('is_neighborhood', activeTab === 'neighborhood')
+          .eq('status', 'active');
+        
+        if (error) throw error;
+        
+        setMessages(data || []);
+      } catch (err) {
+        console.error("Error fetching messages:", err);
+        setMessages([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, [activeTab]);
 
   const allCategories = [
     { name: 'All Categories', icon: null },
@@ -88,7 +103,43 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
             </div>
           ) : filteredMessages.length > 0 ? (
             <div className="space-y-4">
-              {/* Messages would be rendered here */}
+              {filteredMessages.map((msg) => (
+                <Card key={msg.id} className="overflow-hidden">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center shrink-0">
+                        <User className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-lg">{msg.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{msg.content}</p>
+                        
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          <Badge variant="outline" className="text-xs">
+                            {msg.category}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="py-2 px-4 bg-muted/30 flex justify-between">
+                    <div className="flex items-center gap-4">
+                      <Button variant="ghost" size="sm" className="p-0 h-8 text-muted-foreground flex items-center gap-1">
+                        <ThumbsUp className="h-4 w-4" />
+                        <span className="text-xs">0</span>
+                      </Button>
+                      <Button variant="ghost" size="sm" className="p-0 h-8 text-muted-foreground flex items-center gap-1">
+                        <Heart className="h-4 w-4" />
+                        <span className="text-xs">0</span>
+                      </Button>
+                      <Button variant="ghost" size="sm" className="p-0 h-8 text-muted-foreground flex items-center gap-1">
+                        <MessageSquare className="h-4 w-4" />
+                        <span className="text-xs">0</span>
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           ) : (
             <div className="py-16 text-center">
@@ -115,7 +166,43 @@ const CommunityMessages = ({ categories, neighborhoodCategories }: CommunityMess
             </div>
           ) : filteredMessages.length > 0 ? (
             <div className="space-y-4">
-              {/* Neighborhood messages would be rendered here */}
+              {filteredMessages.map((msg) => (
+                <Card key={msg.id} className="overflow-hidden">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center shrink-0">
+                        <User className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-lg">{msg.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">{msg.content}</p>
+                        
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          <Badge variant="outline" className="text-xs">
+                            {msg.category}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="py-2 px-4 bg-muted/30 flex justify-between">
+                    <div className="flex items-center gap-4">
+                      <Button variant="ghost" size="sm" className="p-0 h-8 text-muted-foreground flex items-center gap-1">
+                        <ThumbsUp className="h-4 w-4" />
+                        <span className="text-xs">0</span>
+                      </Button>
+                      <Button variant="ghost" size="sm" className="p-0 h-8 text-muted-foreground flex items-center gap-1">
+                        <Heart className="h-4 w-4" />
+                        <span className="text-xs">0</span>
+                      </Button>
+                      <Button variant="ghost" size="sm" className="p-0 h-8 text-muted-foreground flex items-center gap-1">
+                        <MessageSquare className="h-4 w-4" />
+                        <span className="text-xs">0</span>
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           ) : (
             <div className="py-16 text-center">

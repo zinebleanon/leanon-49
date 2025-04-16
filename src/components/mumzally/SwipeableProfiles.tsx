@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Icons } from '@/components/ui/icons';
 import { UserCircle, MapPin, Baby, X, Heart, Users } from 'lucide-react';
 import { MumzProfile } from '@/pages/MumzAlly';
 import BowRibbon from './BowRibbon';

@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -33,11 +34,61 @@ const Inbox = () => {
   const { userInfo } = useUserInfo();
   
   useEffect(() => {
-    setTimeout(() => {
-      setConversations([]);
-      setIsLoading(false);
-    }, 800);
-  }, []);
+    const fetchConversations = async () => {
+      if (!userInfo?.email) {
+        setConversations([]);
+        setIsLoading(false);
+        return;
+      }
+      
+      try {
+        // Get all messages where user is either sender or receiver
+        const { data: messageData, error: messageError } = await supabase
+          .from('messages')
+          .select('*')
+          .or(`sender_id.eq.${userInfo.email},receiver_id.eq.${userInfo.email}`)
+          .order('created_at', { ascending: false });
+        
+        if (messageError) throw messageError;
+        
+        // Process messages into conversations
+        const conversationMap = new Map<string, Conversation>();
+        
+        messageData?.forEach((message) => {
+          const isUserSender = message.sender_id === userInfo.email;
+          const partnerId = isUserSender ? message.receiver_id : message.sender_id;
+          
+          if (!conversationMap.has(partnerId)) {
+            conversationMap.set(partnerId, {
+              id: `conv-${partnerId}`,
+              participantId: partnerId,
+              participantName: partnerId, // Use email until we can fetch profile data
+              lastMessage: message.content,
+              lastMessageTimestamp: message.created_at,
+              unreadCount: (!isUserSender && !message.read_at) ? 1 : 0,
+              type: 'connect' // Default for now
+            });
+          } else if (new Date(message.created_at) > new Date(conversationMap.get(partnerId)!.lastMessageTimestamp)) {
+            // Update last message if this one is newer
+            const existingConv = conversationMap.get(partnerId)!;
+            existingConv.lastMessage = message.content;
+            existingConv.lastMessageTimestamp = message.created_at;
+            if (!isUserSender && !message.read_at) {
+              existingConv.unreadCount += 1;
+            }
+          }
+        });
+        
+        setConversations(Array.from(conversationMap.values()));
+      } catch (err) {
+        console.error("Error fetching conversations:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchConversations();
+  }, [userInfo?.email]);
   
   const filteredConversations = useMemo(() => {
     let filtered = conversations;
@@ -209,7 +260,6 @@ const Inbox = () => {
                               <div className="flex items-center gap-3">
                                 <div className="relative">
                                   <Avatar className="bg-[#FFD9A7] text-primary">
-                                    <AvatarImage src={conversation.participantAvatar} />
                                     <AvatarFallback className="bg-[#FFD9A7] text-primary font-medium">
                                       {getInitials(conversation.participantName)}
                                     </AvatarFallback>

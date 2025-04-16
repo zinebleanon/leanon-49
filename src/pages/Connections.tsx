@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,6 +11,7 @@ import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSq
 import { useConnections } from '@/hooks/use-connections';
 import { useMessages } from '@/hooks/use-messages';
 import { useUserInfo } from '@/hooks/use-user-info';
+import { useToast } from '@/hooks/use-toast';
 
 const Connections = () => {
   const navigate = useNavigate();
@@ -21,8 +22,9 @@ const Connections = () => {
   const { userInfo } = useUserInfo();
   const { connections, loading } = useConnections();
   const { sendMessage } = useMessages(selectedRecipient?.id);
+  const { toast } = useToast();
 
-  // Filter only connected users - now includes both accepted and declined requests
+  // Filter only connected users - includes both accepted requests
   const connectedUsers = connections.filter(conn => 
     conn.status === 'connected' &&
     (conn.requester_id === userInfo?.email || conn.recipient_id === userInfo?.email)
@@ -35,7 +37,13 @@ const Connections = () => {
   
   const handleSendMessage = async (text: string, image: string | null) => {
     if (!selectedRecipient) return;
-    await sendMessage(selectedRecipient.id, text, image || undefined);
+    const result = await sendMessage(selectedRecipient.id, text, image || undefined);
+    if (result) {
+      toast({
+        title: "Message Sent",
+        description: "Your message has been sent successfully.",
+      });
+    }
   };
 
   const filteredUsers = connectedUsers.filter(conn => {
