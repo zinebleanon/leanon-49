@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
-import { useNotifications } from '@/hooks/use-notifications';
+import { useNotifications, Notification } from '@/hooks/use-notifications';
 
 const Notifications = () => {
   const [activeTab, setActiveTab] = useState<string>('all');

@@ -149,7 +149,9 @@ export type Database = {
       notifications: {
         Row: {
           created_at: string | null
+          feature: string | null
           id: string
+          link: string | null
           message: string
           read: boolean | null
           title: string
@@ -158,7 +160,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          feature?: string | null
           id?: string
+          link?: string | null
           message: string
           read?: boolean | null
           title: string
@@ -167,7 +171,9 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          feature?: string | null
           id?: string
+          link?: string | null
           message?: string
           read?: boolean | null
           title?: string
