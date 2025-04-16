@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -6,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import MessageDialog from '@/components/mumzally/MessageDialog';
-import { UserCircle, MessageSquare, Search, X } from 'lucide-react';
+import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare, ArrowDown, ArrowUp, Search, X } from 'lucide-react';
 import { useConnections } from '@/hooks/use-connections';
 import { useMessages } from '@/hooks/use-messages';
 import { useUserInfo } from '@/hooks/use-user-info';
@@ -83,7 +84,6 @@ const Connections = () => {
                 <div className="space-y-1">
                   {filteredUsers.map((conn) => {
                     const partnerId = conn.requester_id === userInfo?.email ? conn.recipient_id : conn.requester_id;
-                    // Note: In a real app, you would display actual user data
                     return (
                       <Card key={conn.id} className="border-transparent hover:bg-muted/30 transition-colors">
                         <CardContent className="p-3 flex items-center justify-between">
@@ -93,14 +93,14 @@ const Connections = () => {
                             </div>
                             <div>
                               <h3 className="font-medium">
-                                {partnerId} {/* Replace with actual user name */}
+                                {partnerId}
                               </h3>
                             </div>
                           </div>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleMessageClick(partnerId, partnerId)} // Replace second parameter with actual user name
+                            onClick={() => handleMessageClick(partnerId, partnerId)}
                           >
                             <MessageSquare className="h-5 w-5 text-primary" />
                           </Button>

@@ -1,4 +1,3 @@
-
 import { UserCircle, MessageCircle, ExternalLink, MapPin, Baby, Users, MessageSquare, ArrowDown, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,10 +8,10 @@ import BowRibbon from './BowRibbon';
 import { useUserInfo } from '@/hooks/use-user-info';
 import { Link } from 'react-router-dom';
 import MessageDialog from './MessageDialog';
-import LeanMomsDialog from './LeanMomsDialog';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { trackConnection } from '@/utils/track-user-activity';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from '@/integrations/supabase/client';
 
 interface ConnectionRequest {
   id: number;
@@ -52,43 +51,14 @@ const ConnectionRequests = ({
   open,
   onOpenChange
 }: ConnectionRequestsProps) => {
-  const connectionRequests: ConnectionRequest[] = [
-    {
-      id: 3,
-      name: "Jessica Miller",
-      age: 31,
-      location: "Palm Jumeirah",
-      compatibility: 79,
-      activeInCommunity: true,
-      kids: [
-        { age: 3, gender: 'girl' },
-        { age: 1, gender: 'boy' }
-      ],
-      nationality: "British",
-      workStatus: "Part-time",
-      interests: ["Cooking", "Yoga", "Reading"]
-    },
-    {
-      id: 4,
-      name: "Aisha Ahmed",
-      age: 34,
-      location: "Dubai Marina",
-      compatibility: 85,
-      activeInCommunity: false,
-      kids: [
-        { age: 2, gender: 'girl' }
-      ],
-      nationality: "Emirati",
-      workStatus: "Full-time",
-      interests: ["Travel", "Art", "Swimming"]
-    }
-  ];
-
+  const [connectionRequests, setConnectionRequests] = useState<ConnectionRequest[]>([]);
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<{id: number, name: string} | null>(null);
   const [acceptedRequests, setAcceptedRequests] = useState<number[]>([]);
   const [rejectedRequests, setRejectedRequests] = useState<number[]>([]);
   const [leanBackMoms, setLeanBackMoms] = useState<ConnectionRequest[]>([]);
+  const [sentRequests, setSentRequests] = useState<ConnectionRequest[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const savedAcceptedRequests = localStorage.getItem('acceptedRequests');
@@ -105,9 +75,12 @@ const ConnectionRequests = ({
     if (savedLeanBackMoms) {
       setLeanBackMoms(JSON.parse(savedLeanBackMoms));
     } else {
-      // Initialize with empty array
       localStorage.setItem('leanBackMoms', JSON.stringify([]));
     }
+    
+    setConnectionRequests([]);
+    setSentRequests([]);
+    setIsLoading(false);
   }, []);
 
   const handleMessageClick = (id: number, name: string) => {
@@ -120,16 +93,13 @@ const ConnectionRequests = ({
   };
 
   const handleAcceptRequest = (id: number, name: string) => {
-    // Find the accepted mom from the connection requests
     const acceptedMom = connectionRequests.find(request => request.id === id);
     
     if (acceptedMom) {
-      // Add to lean back moms list
       const updatedLeanBackMoms = [...leanBackMoms, acceptedMom];
       setLeanBackMoms(updatedLeanBackMoms);
       localStorage.setItem('leanBackMoms', JSON.stringify(updatedLeanBackMoms));
       
-      // Add to accepted requests for tracking
       const updatedAccepted = [...acceptedRequests, id];
       setAcceptedRequests(updatedAccepted);
       localStorage.setItem('acceptedRequests', JSON.stringify(updatedAccepted));
@@ -158,33 +128,6 @@ const ConnectionRequests = ({
     !acceptedRequests.includes(request.id) && !rejectedRequests.includes(request.id)
   );
 
-  const sentRequests: ConnectionRequest[] = [
-    {
-      id: 5,
-      name: "Sarah Smith",
-      age: 29,
-      location: "JBR",
-      compatibility: 82,
-      activeInCommunity: true,
-      kids: [{ age: 1, gender: 'girl' }],
-      nationality: "American",
-      workStatus: "Full-time",
-      interests: ["Reading", "Hiking", "Movies"]
-    },
-    {
-      id: 6,
-      name: "Maria Rodriguez",
-      age: 33,
-      location: "Business Bay",
-      compatibility: 75,
-      activeInCommunity: false,
-      kids: [{ age: 2, gender: 'boy' }],
-      nationality: "Spanish",
-      workStatus: "Part-time",
-      interests: ["Dancing", "Cooking", "Travel"]
-    }
-  ];
-
   const content = (
     <div className="mb-6">
       <Tabs defaultValue="received" className="w-full">
@@ -197,12 +140,16 @@ const ConnectionRequests = ({
           <TabsTrigger value="sent" className="flex items-center gap-2">
             <ArrowUp className="h-4 w-4" />
             <span>Sent</span>
-            <Badge variant="secondary" className="ml-2">2</Badge>
+            <Badge variant="secondary" className="ml-2">{sentRequests.length}</Badge>
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="received">
-          {filteredRequests.length > 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center items-center h-40">
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : filteredRequests.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredRequests.map((request) => (
                 <Card key={request.id} className="overflow-hidden bg-white/90">
@@ -319,51 +266,61 @@ const ConnectionRequests = ({
         </TabsContent>
 
         <TabsContent value="sent">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {sentRequests.map((request) => (
-              <Card key={request.id} className="overflow-hidden bg-white/90">
-                <CardContent className="p-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                      <UserCircle className="h-6 w-6 text-primary" />
+          {sentRequests.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {sentRequests.map((request) => (
+                <Card key={request.id} className="overflow-hidden bg-white/90">
+                  <CardContent className="p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                        <UserCircle className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
+                          {request.name}
+                        </Link>
+                        <p className="text-xs text-muted-foreground">
+                          {request.age}, {request.location}
+                          {request.activeInCommunity && (
+                            <span className="ml-1 text-green-600">● Active</span>
+                          )}
+                        </p>
+                      </div>
+                      <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
+                        {request.compatibility}%
+                      </Badge>
                     </div>
-                    <div>
-                      <Link to={`/ally/profile/${request.id}`} className="font-medium text-sm hover:underline">
-                        {request.name}
-                      </Link>
-                      <p className="text-xs text-muted-foreground">
-                        {request.age}, {request.location}
-                        {request.activeInCommunity && (
-                          <span className="ml-1 text-green-600">● Active</span>
-                        )}
-                      </p>
+                    <div className="flex items-center justify-end gap-2">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        className="text-xs"
+                        onClick={() => handleMessageClick(request.id, request.name)}
+                      >
+                        <MessageSquare className="h-4 w-4 mr-1" />
+                        Message
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="text-xs"
+                      >
+                        Pending
+                      </Button>
                     </div>
-                    <Badge className="ml-auto bg-primary/50 text-foreground text-xs font-bold border-primary/30">
-                      {request.compatibility}%
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-end gap-2">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="text-xs"
-                      onClick={() => handleMessageClick(request.id, request.name)}
-                    >
-                      <MessageSquare className="h-4 w-4 mr-1" />
-                      Message
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="text-xs"
-                    >
-                      Pending
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-40 text-center p-4">
+              <Users className="h-10 w-10 text-muted-foreground mb-2" />
+              <h3 className="font-medium mb-1">No Sent Requests</h3>
+              <p className="text-sm text-muted-foreground">
+                You haven't sent any connection requests yet
+              </p>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
       
@@ -392,97 +349,105 @@ const ConnectionRequests = ({
     
     return (
       <div className="space-y-2">
-        {pendingRequests.length > 0 && (
-          <div className="mb-4">
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">Pending Requests</h3>
-            {pendingRequests.map((request) => (
-              <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
-                <CardContent className="p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                      <UserCircle className="h-7 w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium">
-                        {request.name}
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="relative group"
-                      onClick={() => handleMessageClick(request.id, request.name)}
-                    >
-                      <MessageSquare className="h-5 w-5 text-primary" />
-                      <div className="absolute right-0 top-full mt-1 bg-white shadow-md rounded-md p-2 hidden group-hover:flex flex-col gap-1 z-10 min-w-28">
-                        <Button 
-                          variant="default" 
-                          size="sm"
-                          className="text-xs w-full"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAcceptRequest(request.id, request.name);
-                          }}
-                        >
-                          LeanBack
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="text-xs w-full"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRejectRequest(request.id, request.name);
-                          }}
-                        >
-                          Decline
-                        </Button>
-                      </div>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-        
-        {leanBackMoms.length > 0 ? (
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">My LeanMoms</h3>
-            {leanBackMoms.map((mom) => (
-              <Card key={mom.id} className="border-transparent hover:bg-muted/30 transition-colors">
-                <CardContent className="p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                      <UserCircle className="h-7 w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium">
-                        {mom.name}
-                      </h3>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleMessageClick(mom.id, mom.name)}
-                  >
-                    <MessageSquare className="h-5 w-5 text-primary" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-40 text-center p-4">
-            <Users className="h-10 w-10 text-muted-foreground mb-2" />
-            <h3 className="font-medium mb-1">No LeanMoms Yet</h3>
-            <p className="text-sm text-muted-foreground">
-              LeanBack on connect requests to add moms to your LeanMoms list
-            </p>
-          </div>
+          <>
+            {pendingRequests.length > 0 && (
+              <div className="mb-4">
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Pending Requests</h3>
+                {pendingRequests.map((request) => (
+                  <Card key={request.id} className="border-transparent hover:bg-muted/30 transition-colors">
+                    <CardContent className="p-3 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                          <UserCircle className="h-7 w-7 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">
+                            {request.name}
+                          </h3>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="relative group"
+                          onClick={() => handleMessageClick(request.id, request.name)}
+                        >
+                          <MessageSquare className="h-5 w-5 text-primary" />
+                          <div className="absolute right-0 top-full mt-1 bg-white shadow-md rounded-md p-2 hidden group-hover:flex flex-col gap-1 z-10 min-w-28">
+                            <Button 
+                              variant="default" 
+                              size="sm"
+                              className="text-xs w-full"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAcceptRequest(request.id, request.name);
+                              }}
+                            >
+                              LeanBack
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="text-xs w-full"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRejectRequest(request.id, request.name);
+                              }}
+                            >
+                              Decline
+                            </Button>
+                          </div>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+            
+            {leanBackMoms.length > 0 ? (
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">My LeanMoms</h3>
+                {leanBackMoms.map((mom) => (
+                  <Card key={mom.id} className="border-transparent hover:bg-muted/30 transition-colors">
+                    <CardContent className="p-3 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                          <UserCircle className="h-7 w-7 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">
+                            {mom.name}
+                          </h3>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleMessageClick(mom.id, mom.name)}
+                      >
+                        <MessageSquare className="h-5 w-5 text-primary" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-40 text-center p-4">
+                <Users className="h-10 w-10 text-muted-foreground mb-2" />
+                <h3 className="font-medium mb-1">No LeanMoms Yet</h3>
+                <p className="text-sm text-muted-foreground">
+                  LeanBack on connect requests to add moms to your LeanMoms list
+                </p>
+              </div>
+            )}
+          </>
         )}
         
         {selectedRecipient && (

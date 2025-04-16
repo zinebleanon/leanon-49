@@ -1,18 +1,16 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Search, Mail, Users, ShoppingBag } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserInfo } from '@/hooks/use-user-info';
 import ConnectionRequests from '@/components/mumzally/ConnectionRequests';
-import { toast } from '@/hooks/use-toast';
-import MessageDialog from '@/components/mumzally/MessageDialog';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Conversation {
   id: string;
@@ -30,75 +28,26 @@ const Inbox = () => {
   const [activeMessageTab, setActiveMessageTab] = useState('connect');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
-  const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { userInfo } = useUserInfo();
   
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      const mockConversations: Conversation[] = [
-        {
-          id: 'conv1',
-          participantId: 'user1',
-          participantName: 'Sarah Johnson',
-          participantAvatar: undefined,
-          lastMessage: 'Hi there! How are you doing today?',
-          lastMessageTimestamp: '2025-04-08T10:30:00Z',
-          unreadCount: 2,
-          type: 'connect'
-        },
-        {
-          id: 'conv2',
-          participantId: 'user2',
-          participantName: 'Emily Carter',
-          participantAvatar: undefined,
-          lastMessage: 'Thanks for the playdate recommendation!',
-          lastMessageTimestamp: '2025-04-07T15:45:00Z',
-          unreadCount: 0,
-          type: 'connect'
-        },
-        {
-          id: 'conv3',
-          participantId: 'user3',
-          participantName: 'Michelle Lee',
-          participantAvatar: undefined,
-          lastMessage: 'Is the baby carrier still available?',
-          lastMessageTimestamp: '2025-04-06T09:15:00Z',
-          unreadCount: 1,
-          type: 'preloved'
-        },
-        {
-          id: 'conv4',
-          participantId: 'user4',
-          participantName: 'Jessica Williams',
-          participantAvatar: undefined,
-          lastMessage: "I'm interested in the toddler shoes, can you send more photos?",
-          lastMessageTimestamp: '2025-04-05T14:20:00Z',
-          unreadCount: 3,
-          type: 'preloved'
-        }
-      ];
-      
-      setConversations(mockConversations);
+    setTimeout(() => {
+      setConversations([]);
       setIsLoading(false);
     }, 800);
-    
-    return () => clearTimeout(timeout);
   }, []);
   
   const filteredConversations = useMemo(() => {
     let filtered = conversations;
     
-    // First filter by message type if on a specific message tab
     if (activeTab === 'messages') {
       filtered = conversations.filter(conversation => 
         conversation.type === activeMessageTab
       );
     }
     
-    // Then apply search filter if there's a search query
     if (searchQuery.trim()) {
       filtered = filtered.filter(conversation => 
         conversation.participantName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -137,41 +86,10 @@ const Inbox = () => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
   };
   
-  const handleConversationClick = (conversation: Conversation) => {
-    setSelectedConversation(conversation);
-    setMessageDialogOpen(true);
-    
-    setConversations(prev => 
-      prev.map(conv => 
-        conv.id === conversation.id 
-          ? { ...conv, unreadCount: 0 } 
-          : conv
-      )
-    );
-  };
-  
-  const handleSendMessage = (text: string, image: string | null) => {
-    if (!selectedConversation) return;
-    
-    const displayMessage = text.trim() || (image ? 'Sent an image' : '');
-    
-    setConversations(prev => 
-      prev.map(conv => 
-        conv.id === selectedConversation.id 
-          ? { 
-              ...conv, 
-              lastMessage: displayMessage,
-              lastMessageTimestamp: new Date().toISOString()
-            } 
-          : conv
-      )
-    );
-  };
-  
   const handleSearchSelect = (conversationId: string) => {
     const conversation = conversations.find(conv => conv.id === conversationId);
     if (conversation) {
-      handleConversationClick(conversation);
+      console.log('Selected conversation:', conversation);
     }
     setIsSearchOpen(false);
     setSearchQuery('');
@@ -287,15 +205,7 @@ const Inbox = () => {
                       ) : (
                         <div className="space-y-1">
                           {filteredConversations.map((conversation) => (
-                            <div 
-                              key={conversation.id}
-                              className={`p-3 rounded-md cursor-pointer transition-colors ${
-                                selectedConversation?.id === conversation.id && messageDialogOpen
-                                  ? 'bg-primary/20' 
-                                  : 'hover:bg-muted/50'
-                              }`}
-                              onClick={() => handleConversationClick(conversation)}
-                            >
+                            <Card key={conversation.id} className="p-3 rounded-md cursor-pointer hover:bg-muted/50 transition-colors">
                               <div className="flex items-center gap-3">
                                 <div className="relative">
                                   <Avatar className="bg-[#FFD9A7] text-primary">
@@ -328,7 +238,7 @@ const Inbox = () => {
                                   </p>
                                 </div>
                               </div>
-                            </div>
+                            </Card>
                           ))}
                         </div>
                       )}
@@ -345,19 +255,9 @@ const Inbox = () => {
         </div>
       </main>
       
-      {selectedConversation && (
-        <MessageDialog
-          open={messageDialogOpen}
-          onOpenChange={setMessageDialogOpen}
-          conversation={selectedConversation}
-          onSendMessage={handleSendMessage}
-        />
-      )}
-      
       <Footer />
     </div>
   );
 };
 
 export default Inbox;
-

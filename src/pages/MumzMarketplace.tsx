@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -9,128 +10,14 @@ import { Search, Package, Filter } from 'lucide-react';
 import MarketplaceHowItWorksDialog from '@/components/mumzmarketplace/MarketplaceHowItWorksDialog';
 import MarketplaceFilterDialog from '@/components/mumzmarketplace/MarketplaceFilterDialog';
 import { filterMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceFilterUtils';
-import { allMarketplaceItems } from '@/components/mumzmarketplace/MarketplaceDataProvider';
-
-const approvedListings = [
-  {
-    title: "Cybex Stroller (Like New)",
-    seller: "Emma's Shop in Dubai Marina",
-    price: "900 AED",
-    condition: "Barely Used",
-    image: "walker",
-    brand: "Cybex",
-    category: "Strollers",
-    ageGroup: "0-3 years",
-    size: "One Size",
-    status: "available",
-    priceValue: 900,
-    superMom: true
-  },
-  {
-    title: "Plan Toys Wooden Set",
-    seller: "Natural Kids Al Ain",
-    price: "149 AED",
-    condition: "New",
-    image: "toys",
-    brand: "Plan Toys",
-    category: "Toys",
-    ageGroup: "1-2 years",
-    size: "One Size",
-    status: "available",
-    priceValue: 149,
-    superMom: false
-  },
-  {
-    title: "Baby Clothes Bundle (0-3m)",
-    seller: "Second Life Sharjah",
-    price: "120 AED",
-    condition: "Good",
-    image: "clothes",
-    brand: "Carter's",
-    category: "Baby Clothes",
-    ageGroup: "0-3 months",
-    size: "0-3M",
-    status: "available",
-    priceValue: 120,
-    superMom: true
-  },
-  {
-    title: "Avent Baby Bottles (Set of 4)",
-    seller: "Mom's Corner Abu Dhabi",
-    price: "85 AED",
-    condition: "Like New",
-    image: "walker",
-    brand: "Avent",
-    category: "Feeding",
-    ageGroup: "0-12 months",
-    size: "One Size",
-    status: "available",
-    priceValue: 85,
-    superMom: false
-  },
-  {
-    title: "Graco Car Seat",
-    seller: "Baby World Dubai",
-    price: "350 AED",
-    condition: "Good",
-    image: "clothes",
-    brand: "Graco",
-    category: "Car Seats",
-    ageGroup: "0-12 months",
-    size: "One Size",
-    status: "reserved",
-    priceValue: 350,
-    superMom: true
-  },
-  {
-    title: "Wooden Baby Gym",
-    seller: "Eco Mom Dubai",
-    price: "Free",
-    condition: "Good",
-    image: "toys",
-    brand: "Handmade",
-    category: "Toys",
-    ageGroup: "0-6 months",
-    size: "One Size",
-    status: "available",
-    priceValue: 0,
-    superMom: false
-  },
-  {
-    title: "Baby Walker",
-    seller: "Quality Kids Abu Dhabi",
-    price: "Contact Seller",
-    condition: "Like New",
-    image: "walker",
-    brand: "Chicco",
-    category: "Baby Gear",
-    ageGroup: "6-18 months",
-    size: "One Size",
-    status: "available",
-    priceValue: null,
-    superMom: true
-  },
-  {
-    title: "Maternity Clothes Bundle (Size M)",
-    seller: "Maternity Closet Dubai",
-    price: "200 AED",
-    condition: "Like New",
-    image: "clothes",
-    brand: "Mixed",
-    category: "Maternity",
-    ageGroup: "Adult",
-    size: "M",
-    status: "available",
-    priceValue: 200,
-    superMom: false
-  }
-];
+import { supabase } from '@/integrations/supabase/client';
 
 const MumzMarketplace = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [marketplaceItems, setMarketplaceItems] = useState<any[]>([]);
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
   
@@ -144,16 +31,19 @@ const MumzMarketplace = () => {
   
   useEffect(() => {
     setIsVisible(true);
-    const timer = setTimeout(() => {
+    
+    // Empty marketplace items for now - will be populated from database in future
+    setMarketplaceItems([]);
+    setFilteredItems([]);
+    
+    setTimeout(() => {
       setIsLoading(false);
     }, 500);
-    
-    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     // Filter items based on search query and other filters
-    const filtered = filterMarketplaceItems(approvedListings, {
+    const filtered = filterMarketplaceItems(marketplaceItems, {
       searchQuery,
       selectedCategory,
       selectedSubCategory: 'all',
@@ -165,7 +55,7 @@ const MumzMarketplace = () => {
       superMomOnly: false
     });
     setFilteredItems(filtered);
-  }, [searchQuery, selectedCategory, selectedBrand, selectedAgeGroup, selectedSize, selectedCondition, priceRange]);
+  }, [searchQuery, selectedCategory, selectedBrand, selectedAgeGroup, selectedSize, selectedCondition, priceRange, marketplaceItems]);
 
   const handleFiltersChange = (filters: any) => {
     setSelectedCategory(filters.category || 'all');
@@ -254,7 +144,17 @@ const MumzMarketplace = () => {
             />
           </div>
           
-          <MarketplaceItemsGrid items={filteredItems.length > 0 ? filteredItems : approvedListings} />
+          {/* If no items, show empty state */}
+          {filteredItems.length === 0 ? (
+            <div className="text-center py-16">
+              <h3 className="text-xl font-medium mb-2">No listings found</h3>
+              <p className="text-muted-foreground">
+                There are no preloved items listed yet. Be the first to list your items!
+              </p>
+            </div>
+          ) : (
+            <MarketplaceItemsGrid items={filteredItems} />
+          )}
         </div>
       </main>
       

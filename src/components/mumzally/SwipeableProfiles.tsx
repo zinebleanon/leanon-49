@@ -1,221 +1,273 @@
 
-import React, { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Baby, MapPin, Flag, Briefcase, Star, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { UserCircle } from 'lucide-react';
+import { Icons } from '@/components/ui/icons';
+import { UserCircle, MapPin, Baby, X, Heart, Users } from 'lucide-react';
+import { MumzProfile } from '@/pages/MumzAlly';
 import BowRibbon from './BowRibbon';
-import { Link } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
+import EditProfileDialog from '@/components/profile/EditProfileDialog';
+import { useUserInfo } from '@/hooks/use-user-info';
 
-interface Kid {
-  age: number;
-  gender: string;
-}
-
-interface NearbyMom {
-  id: number;
-  name: string;
-  age: number;
-  location: string;
-  kids: Kid[];
-  nationality: string;
-  workStatus: string;
-  interests: string[];
-  bio: string;
-  compatibility: number;
-}
-
-interface SwipeableProfilesProps {
-  profiles: NearbyMom[];
+interface ProfileProps {
+  profiles: MumzProfile[];
   onLeanOn: (id: number, name: string) => void;
   onSkip: (id: number) => void;
   disableConnections?: boolean;
 }
 
-const SwipeableProfiles: React.FC<SwipeableProfilesProps> = ({ 
-  profiles, 
-  onLeanOn, 
-  onSkip,
-  disableConnections = false
-}) => {
-  const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
-  const [swiped, setSwiped] = useState<'left' | 'right' | null>(null);
+const SwipeableProfiles = ({ profiles, onLeanOn, onSkip, disableConnections = false }: ProfileProps) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [editProfileDialogOpen, setEditProfileDialogOpen] = useState(false);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const initialX = useRef<number | null>(null);
+  const [swiping, setSwiping] = useState(false);
+  const { userInfo } = useUserInfo();
 
-  if (profiles.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8 px-4 text-center bg-white rounded-lg shadow">
-        <UserCircle className="h-20 w-20 text-primary/30 mb-4" />
-        <h3 className="text-xl font-medium mb-2">No nearby moms found</h3>
-        <p className="text-muted-foreground max-w-md">
-          There don't seem to be any moms in your area yet. Try expanding your search area or check back later.
-        </p>
-      </div>
-    );
-  }
-
-  if (currentProfileIndex >= profiles.length) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8 px-4 text-center bg-white rounded-lg shadow">
-        <UserCircle className="h-20 w-20 text-primary/30 mb-4" />
-        <h3 className="text-xl font-medium mb-2">You've viewed all nearby moms</h3>
-        <p className="text-muted-foreground max-w-md mb-4">
-          You've gone through all the profiles in your area. Check back later for new matches!
-        </p>
-        <Button 
-          onClick={() => setCurrentProfileIndex(0)}
-          className="mt-2"
-        >
-          Start Over
-        </Button>
-      </div>
-    );
-  }
-
-  const currentProfile = profiles[currentProfileIndex];
+  // Check if we have profiles to display
+  const noProfiles = profiles.length === 0;
+  
+  const goToNextProfile = () => {
+    if (activeIndex < profiles.length - 1) {
+      setActiveIndex(activeIndex + 1);
+    }
+  };
 
   const handleLeanOn = () => {
-    if (disableConnections) return;
-    
-    setSwiped('right');
-    setTimeout(() => {
+    const currentProfile = profiles[activeIndex];
+    if (currentProfile) {
       onLeanOn(currentProfile.id, currentProfile.name);
-      setCurrentProfileIndex(prev => prev + 1);
-      setSwiped(null);
-    }, 300);
+      goToNextProfile();
+    }
   };
 
   const handleSkip = () => {
-    setSwiped('left');
-    setTimeout(() => {
+    const currentProfile = profiles[activeIndex];
+    if (currentProfile) {
       onSkip(currentProfile.id);
-      setCurrentProfileIndex(prev => prev + 1);
-      setSwiped(null);
-    }, 300);
+      goToNextProfile();
+    }
   };
 
-  const cardClass = swiped === 'left' 
-    ? 'transform -translate-x-full opacity-0 transition-all duration-300' 
-    : swiped === 'right' 
-      ? 'transform translate-x-full opacity-0 transition-all duration-300' 
-      : 'transform transition-all duration-300';
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    initialX.current = e.touches[0].clientX;
+    setSwiping(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>, index: number) => {
+    if (initialX.current === null || index !== activeIndex) return;
+    
+    const currentX = e.touches[0].clientX;
+    const diffX = currentX - initialX.current;
+    const card = cardRefs.current[index];
+    
+    if (card) {
+      card.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.1}deg)`;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>, index: number) => {
+    if (initialX.current === null || index !== activeIndex) return;
+    
+    const currentX = e.changedTouches[0].clientX;
+    const diffX = currentX - initialX.current;
+    const card = cardRefs.current[index];
+    
+    if (card) {
+      if (diffX > 100) {
+        // Swipe right: LeanOn
+        card.style.transform = 'translateX(1000px) rotate(30deg)';
+        handleLeanOn();
+      } else if (diffX < -100) {
+        // Swipe left: Skip
+        card.style.transform = 'translateX(-1000px) rotate(-30deg)';
+        handleSkip();
+      } else {
+        // Reset position
+        card.style.transform = 'translateX(0) rotate(0)';
+      }
+    }
+    
+    initialX.current = null;
+    setSwiping(false);
+  };
+
+  const isProfileComplete = () => {
+    return !!(
+      userInfo?.name &&
+      userInfo?.neighborhood &&
+      userInfo?.kids &&
+      userInfo?.kids.length > 0 &&
+      userInfo?.nationality &&
+      userInfo?.birthDate &&
+      userInfo?.interests &&
+      !userInfo?.profileNeedsUpdate
+    );
+  };
+
+  const handleCompleteProfile = () => {
+    setEditProfileDialogOpen(true);
+  };
 
   return (
-    <div className="w-full max-w-md mx-auto px-4 relative">
-      <div className={cardClass}>
-        <Card className="overflow-hidden shadow-md bg-white">
-          <div className="flex md:flex-row flex-col h-full">
-            <div className="w-full md:w-2/5 bg-[#FFD9A7]/20 flex items-center justify-center p-6">
-              <div className="w-32 h-32 rounded-full bg-[#FFD9A7] flex items-center justify-center">
-                <UserCircle className="h-24 w-24 text-primary" />
-              </div>
-            </div>
-            
-            <div className="w-full md:w-3/5 p-5">
-              <div className="flex justify-between items-center mb-3">
-                <div>
-                  <h2 className="text-xl font-semibold">
-                    <Link to={`/ally/profile/${currentProfile.id}`} className="hover:underline">
-                      {currentProfile.name}
-                    </Link>
-                  </h2>
-                  <p className="text-sm text-muted-foreground">{currentProfile.age} years old</p>
-                </div>
-                <Badge className="bg-primary/70 text-foreground font-bold border-primary/30">
-                  {currentProfile.compatibility}% Match
-                </Badge>
-              </div>
-              
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-amber-500 flex-shrink-0" />
-                  <span className="text-sm">{currentProfile.location}</span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <Baby className="h-4 w-4 text-amber-500 flex-shrink-0" />
-                  <span className="text-sm">
-                    {currentProfile.kids.map((kid, i) => (
-                      <span key={i}>
-                        {kid.age} y/o {kid.gender}
-                        {i < currentProfile.kids.length - 1 ? ', ' : ''}
-                      </span>
-                    ))}
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <Flag className="h-4 w-4 text-amber-500 flex-shrink-0" />
-                  <span className="text-sm">{currentProfile.nationality}</span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <Briefcase className="h-4 w-4 text-amber-500 flex-shrink-0" />
-                  <span className="text-sm">{currentProfile.workStatus}</span>
-                </div>
-              </div>
-              
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Star className="h-4 w-4 text-amber-500" />
-                  <span className="text-sm font-medium">Interests</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {currentProfile.interests.map((interest, i) => (
-                    <Badge key={i} variant="outline" className="bg-secondary/30 text-xs">
-                      {interest}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="mt-3 text-sm text-muted-foreground">
-                <p>{currentProfile.bio}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex justify-center p-4 gap-6 bg-gray-50">
-            <Button 
-              variant="outline"
-              size="lg"
-              className="rounded-full h-14 w-14 p-0 border-2"
-              onClick={handleSkip}
-            >
-              <X className="h-6 w-6 text-muted-foreground" />
-            </Button>
-            
-            <Button 
-              variant="default"
-              size="lg"
-              className="rounded-full h-14 w-14 p-0"
-              onClick={handleLeanOn}
-            >
-              <BowRibbon className="w-9 h-9" color="#FFD9A7" />
-            </Button>
-          </div>
-        </Card>
-      </div>
+    <div className="mt-6 relative pb-14">
+      {!isProfileComplete() && !noProfiles && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+          <p className="text-sm text-amber-800">
+            Complete your profile to increase your chances of connecting with compatible moms!
+          </p>
+          <Button 
+            onClick={handleCompleteProfile}
+            variant="outline" 
+            size="sm" 
+            className="mt-2 bg-amber-100"
+          >
+            Complete Profile
+          </Button>
+        </div>
+      )}
       
-      <div className="flex justify-center mt-4 gap-1">
-        {profiles.slice(0, Math.min(profiles.length, 5)).map((_, index) => (
-          <div 
-            key={index} 
-            className={`h-1 rounded-full ${
-              index === currentProfileIndex 
-                ? 'w-8 bg-primary' 
-                : index < currentProfileIndex 
-                  ? 'w-4 bg-primary/30' 
-                  : 'w-4 bg-gray-200'
-            }`}
-          />
-        ))}
-        {profiles.length > 5 && (
-          <div className="h-1 w-4 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-xs text-gray-400">+{profiles.length - 5}</span>
-          </div>
-        )}
-      </div>
+      {noProfiles ? (
+        <div className="flex flex-col items-center justify-center bg-card p-10 rounded-xl shadow-md text-center">
+          <Users className="w-12 h-12 text-muted-foreground mb-4" />
+          <h3 className="text-xl font-medium mb-2">No Moms Found</h3>
+          <p className="text-muted-foreground mb-6 max-w-md">
+            We don't have any moms to show you right now. Complete your profile to help us find the perfect LeanMoms for you!
+          </p>
+          <Button 
+            onClick={handleCompleteProfile}
+            className="bg-pastel-yellow hover:bg-pastel-yellow/90 text-foreground"
+          >
+            Complete Your Profile
+          </Button>
+        </div>
+      ) : (
+        <div className="relative h-[500px] md:max-w-lg mx-auto">
+          {profiles.map((profile, index) => (
+            <Card
+              key={profile.id}
+              ref={el => cardRefs.current[index] = el}
+              className={`absolute top-0 left-0 right-0 mx-auto w-full max-w-md shadow-lg transition-all duration-300 ${
+                index < activeIndex ? 'opacity-0 -z-10' : 
+                index > activeIndex ? 'opacity-80 scale-95 -z-10' : 
+                'z-10'
+              } ${swiping && index === activeIndex ? 'transition-transform' : ''}`}
+              onTouchStart={handleTouchStart}
+              onTouchMove={(e) => handleTouchMove(e, index)}
+              onTouchEnd={(e) => handleTouchEnd(e, index)}
+            >
+              <CardContent className="p-0">
+                <div className="p-6 pb-4">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-[#FFD9A7] flex items-center justify-center">
+                        <UserCircle className="h-8 w-8 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-medium">
+                          {profile.name}, {profile.age}
+                        </h3>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <MapPin className="h-3.5 w-3.5 mr-1" />
+                          {profile.location}
+                          {profile.activeInCommunity && (
+                            <span className="ml-2 text-green-600 flex items-center">
+                              ● Active
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <Badge className="bg-primary/50 text-black border-primary/30">
+                      {profile.compatibility}% Match
+                    </Badge>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium mb-1">Kids</h4>
+                      <div className="flex items-center flex-wrap gap-1">
+                        {profile.kids.map((kid, i) => (
+                          <Badge key={i} variant="secondary" className="text-xs">
+                            <Baby className="h-3 w-3 mr-1" />
+                            {kid.age} y/o {kid.gender}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium mb-1">Nationality</h4>
+                      <p className="text-sm">{profile.nationality}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium mb-1">Work Status</h4>
+                      <p className="text-sm">{profile.workStatus}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium mb-1">Interests</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {profile.interests.map((interest, i) => (
+                          <Badge key={i} variant="outline" className="text-xs">
+                            {interest}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium mb-1">Bio</h4>
+                      <p className="text-sm text-muted-foreground">{profile.bio}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {!disableConnections && (
+                  <div className="border-t p-4 flex items-center justify-center gap-4">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="rounded-full w-14 h-14 p-0"
+                      onClick={handleSkip}
+                    >
+                      <X className="h-6 w-6 text-gray-500" />
+                    </Button>
+                    <Button
+                      size="lg"
+                      className="rounded-full w-14 h-14 p-0 bg-[#FFD9A7] hover:bg-[#FFD9A7]/90 text-foreground"
+                      onClick={handleLeanOn}
+                    >
+                      <BowRibbon className="w-10 h-10" color="#AF8A5C" />
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+          
+          {!noProfiles && (
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center -mb-6">
+              <Badge variant="outline" className="bg-background">
+                {activeIndex + 1} of {profiles.length}
+              </Badge>
+            </div>
+          )}
+        </div>
+      )}
+      
+      <EditProfileDialog
+        isOpen={editProfileDialogOpen}
+        onOpenChange={setEditProfileDialogOpen}
+        mode="profile"
+        title="Complete Your Profile"
+        description="Fill in your profile details to connect with more LeanMoms"
+        section="all"
+        simpleMode={true}
+      />
     </div>
   );
 };

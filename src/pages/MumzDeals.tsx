@@ -12,12 +12,14 @@ import { Button } from '@/components/ui/button';
 import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
 import DealsHero from '@/components/mumzdeals/DealsHero';
 import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
+import { useBrands } from '@/hooks/use-brands';
 
 const MumzDeals = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [isDiscountDialogOpen, setIsDiscountDialogOpen] = useState(false);
   const navigate = useNavigate();
+  const { brands, isLoading: brandsLoading } = useBrands();
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -35,7 +37,7 @@ const MumzDeals = () => {
     setIsDiscountDialogOpen(true);
   };
 
-  if (isLoading) {
+  if (isLoading || brandsLoading) {
     return <LoadingSpinner />;
   }
   
@@ -81,6 +83,8 @@ const MumzDeals = () => {
         <UnlockDiscountDialog
           isOpen={isDiscountDialogOpen}
           onClose={() => setIsDiscountDialogOpen(false)}
+          brands={brands}
+          onBrandSelect={(brand) => console.log('Selected brand:', brand)}
         />
       </main>
       
