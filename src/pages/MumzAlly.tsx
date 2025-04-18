@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -62,8 +63,26 @@ const MumzAlly = () => {
     const fetchProfiles = async () => {
       setLoading(true);
       try {
-        setProfiles([]);
-        setFilteredProfiles([]);
+        // Create a sample profile for demonstration
+        const sampleProfile: MumzProfile = {
+          id: 1,
+          name: 'Sarah Ahmed',
+          age: 34,
+          location: 'Dubai Marina',
+          kids: [
+            { age: 4, gender: 'Female' },
+            { age: 2, gender: 'Male' }
+          ],
+          nationality: 'Emirati',
+          workStatus: 'Part-time Marketing Consultant',
+          interests: ['Yoga', 'Cooking', 'Sustainable Living', 'Book Clubs'],
+          bio: 'Passionate mom trying to balance work and family. Love meeting new people and sharing experiences!',
+          compatibility: 85,
+          activeInCommunity: true
+        };
+
+        setProfiles([sampleProfile]);
+        setFilteredProfiles([sampleProfile]);
       } catch (error) {
         console.error('Error fetching profiles:', error);
         toast({
