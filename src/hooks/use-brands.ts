@@ -41,12 +41,13 @@ export const useBrands = () => {
       // Transform data to include required aliases for compatibility
       const transformedBrands = (brandsData || []).map(brand => ({
         ...brand,
+        category: brand.category as 'local' | 'international',
         discountCode: brand.discount_code,
         discountValue: brand.discount_value,
         bgColor: brand.bg_color,
       }));
       
-      setBrands(transformedBrands);
+      setBrands(transformedBrands as Brand[]);
     } catch (error) {
       console.error('Error fetching brands:', error);
       setError(error instanceof Error ? error.message : 'An error occurred');

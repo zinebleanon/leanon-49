@@ -39,8 +39,9 @@ export const useMarketplaceListings = () => {
       if (error) throw error;
 
       if (listings) {
-        const approved = listings.filter(item => item.approved && item.status !== 'sold');
-        const pending = listings.filter(item => !item.approved);
+        const typedListings = listings as MarketplaceListing[];
+        const approved = typedListings.filter(item => item.approved && item.status !== 'sold');
+        const pending = typedListings.filter(item => !item.approved);
         setListedItems(approved);
         setPendingApprovalItems(pending);
       }
@@ -54,9 +55,17 @@ export const useMarketplaceListings = () => {
 
   const createListing = async (listing: Omit<MarketplaceListing, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'approved' | 'status'>) => {
     try {
+      const user = supabase.auth.getUser();
+      const userId = (await user).data.user?.id || 'anonymous';
+
       const { data, error } = await supabase
         .from('marketplace_listings')
-        .insert([{ ...listing, status: 'available' }])
+        .insert([{ 
+          ...listing, 
+          user_id: userId,
+          status: 'available' as const,
+          approved: false
+        }])
         .select()
         .single();
 

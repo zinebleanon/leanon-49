@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -12,13 +13,13 @@ import { toast } from '@/hooks/use-toast';
 import { StatusUpdateReminder } from './StatusUpdateReminder';
 import { Check, Clock, X, Tag, AlertTriangle, CheckCircle2, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useMarketplaceListings } from '@/hooks/use-marketplace-listings';
+import { useMarketplaceListings, MarketplaceListing } from '@/hooks/use-marketplace-listings';
 
 const ListedItemsSection = () => {
   const navigate = useNavigate();
   const { listedItems, pendingApprovalItems, updateListing } = useMarketplaceListings();
   
-  const handleStatusChange = async (itemId: string, newStatus: string) => {
+  const handleStatusChange = async (itemId: string, newStatus: "available" | "sold" | "reserved") => {
     const { error } = await updateListing(itemId, { status: newStatus });
     
     if (error) {
@@ -88,11 +89,11 @@ const ListedItemsSection = () => {
             <div className="space-y-4">
               {pendingApprovalItems.map((item) => (
                 <div key={item.id} className="border p-4 rounded-md hover:bg-gray-50 transition-colors">
-                  <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} isPending={true} />
+                  <StatusUpdateReminder itemName={item.title} createdDate={item.created_at} isPending={true} />
                   <div className="flex gap-4">
-                    {item.image && (
+                    {item.image_url && (
                       <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
-                        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                        <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                     )}
                     <div className="flex flex-col gap-2">
@@ -101,11 +102,11 @@ const ListedItemsSection = () => {
                       <div className="flex flex-wrap gap-2 mt-1">
                         <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
                         <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
-                        <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
+                        <Badge variant="outline" className="bg-purple-50">{item.age_group}</Badge>
                         {item.size !== "Not Applicable" && (
                           <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
                         )}
-                        <Badge variant="outline">{item.subCategory}</Badge>
+                        <Badge variant="outline">{item.sub_category}</Badge>
                         <Badge variant="outline">{item.brand}</Badge>
                       </div>
                       <div className="flex items-center gap-2 mt-2">
@@ -142,12 +143,12 @@ const ListedItemsSection = () => {
             <div className="space-y-4">
               {listedItems.map((item) => (
                 <div key={item.id} className="border p-4 rounded-md hover:bg-gray-50 transition-colors">
-                  <StatusUpdateReminder itemName={item.title} createdDate={item.createdDate} />
+                  <StatusUpdateReminder itemName={item.title} createdDate={item.created_at} />
                   <div className="flex justify-between items-start">
                     <div className="flex gap-4">
-                      {item.image && (
+                      {item.image_url && (
                         <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
-                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                          <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
                         </div>
                       )}
                       <div>
@@ -156,11 +157,11 @@ const ListedItemsSection = () => {
                         <div className="flex flex-wrap gap-2">
                           <Badge variant="outline" className="bg-green-50">{item.price}</Badge>
                           <Badge variant="outline" className="bg-blue-50">{item.condition}</Badge>
-                          <Badge variant="outline" className="bg-purple-50">{item.ageGroup}</Badge>
+                          <Badge variant="outline" className="bg-purple-50">{item.age_group}</Badge>
                           {item.size !== "Not Applicable" && (
                             <Badge variant="outline" className="bg-gray-50">Size: {item.size}</Badge>
                           )}
-                          <Badge variant="outline">{item.subCategory}</Badge>
+                          <Badge variant="outline">{item.sub_category}</Badge>
                           <Badge variant="outline">{item.brand}</Badge>
                         </div>
                       </div>
@@ -170,7 +171,7 @@ const ListedItemsSection = () => {
                         {getStatusIcon(item.status)}
                         <Select 
                           value={item.status} 
-                          onValueChange={(value) => handleStatusChange(item.id, value)}
+                          onValueChange={(value) => handleStatusChange(item.id, value as "available" | "sold" | "reserved")}
                         >
                           <SelectTrigger className="h-8 w-[140px]">
                             <SelectValue placeholder="Status" />
