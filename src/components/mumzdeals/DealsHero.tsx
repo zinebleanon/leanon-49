@@ -12,7 +12,7 @@ const GuideHerHero = ({ onOpenContentDialog }: GuideHerHeroProps) => {
   return (
     <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
       <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
-        <span className="text-foreground">Guide</span> <span className="text-orange-500">Her</span>
+        <span className="text-foreground">Lean</span> <span className="text-orange-500">On</span>
       </h1>
       <p className="text-base md:text-lg text-muted-foreground mb-6">
         Personalized expert content for every stage of your motherhood journey

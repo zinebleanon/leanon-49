@@ -8,7 +8,7 @@ const SelectHero = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
-              <span className="text-foreground">Guide</span> <span className="text-orange-500">Her</span>
+              <span className="text-foreground">Lean</span> <span className="text-orange-500">On</span>
             </h1>
             <p className="text-base md:text-lg text-muted-foreground mb-6">
               Expert content, posts and videos tailored to your journey as a mom. Discover personalized parenting advice and tips based on your profile and your children's ages.
@@ -39,7 +39,7 @@ const SelectHero = () => {
           <div className="relative hidden md:block">
             <img 
               src="/lovable-uploads/01f579f8-89e7-4c0c-b14e-96ac7cdf8637.png" 
-              alt="Guide Her Content Categories" 
+              alt="LeanOn Content Categories" 
               className="rounded-lg shadow-md max-w-full h-auto object-cover"
             />
           </div>

@@ -103,7 +103,7 @@ const Navbar = () => {
       description: 'LeanOn Moms around you, in the same neighborhood, with same age kids' 
     },
     { name: 'Ask', icon: <HelpCircle className="h-5 w-5" />, path: '/ask' },
-    { name: 'Guide Her', icon: <BookOpen className="h-5 w-5" />, path: '/guide-her' },
+    { name: 'LeanOn', icon: <BookOpen className="h-5 w-5" />, path: '/guide-her' },
     { name: 'Preloved', icon: <ShoppingBag className="h-5 w-5" />, path: '/marketplace' },
   ];
 
