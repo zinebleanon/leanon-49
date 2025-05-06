@@ -7,7 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BookOpen } from 'lucide-react'; // Fix: Import BookOpen from lucide-react
 import { Button } from '@/components/ui/button';
 import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
 import GuideHerHero from '@/components/mumzdeals/DealsHero';
