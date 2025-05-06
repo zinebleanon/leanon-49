@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Search, Star, StarHalf, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBrands } from '@/hooks/use-brands';
 import { contentCategories as allContentCategories } from '@/components/mumzdeals/ContentCategories';
+import { useToast } from '@/hooks/use-toast';
+import { trackContentInteraction } from '@/utils/track-content-interaction';
+import { useAuth } from '@/hooks/use-auth';
 
 // Mock content data structure
 interface ContentItem {
@@ -21,6 +24,9 @@ interface ContentItem {
   category: string;
   subcategory: string;
   ageGroup: string;
+  averageRating?: number;
+  userRating?: number;
+  totalRatings?: number;
 }
 
 const MumzGuideHer = () => {
@@ -30,9 +36,11 @@ const MumzGuideHer = () => {
   const [selectedSubcategories, setSelectedSubcategories] = useState<Record<string, string[]>>({});
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const { brands, isLoading: brandsLoading } = useBrands();
+  const { toast } = useToast();
+  const { user } = useAuth();
   
   // Mock content data
-  const [allContent] = useState<ContentItem[]>([
+  const [allContent, setAllContent] = useState<ContentItem[]>([
     {
       id: 1,
       title: "Understanding Your Toddler's Emotional Development",
@@ -40,7 +48,9 @@ const MumzGuideHer = () => {
       author: "Dr. Sarah Johnson",
       category: "Parenting Guidance",
       subcategory: "Emotional & Social development",
-      ageGroup: "2-3 Years"
+      ageGroup: "2-3 Years",
+      averageRating: 4.5,
+      totalRatings: 28
     },
     {
       id: 2,
@@ -49,7 +59,9 @@ const MumzGuideHer = () => {
       author: "Dr. Michael Chen",
       category: "Health Care & Professional support",
       subcategory: "Sleep",
-      ageGroup: "0-1 Year"
+      ageGroup: "0-1 Year",
+      averageRating: 4.2,
+      totalRatings: 45
     },
     {
       id: 3,
@@ -58,7 +70,9 @@ const MumzGuideHer = () => {
       author: "Emma Rodriguez",
       category: "Childcare & Schooling",
       subcategory: "School",
-      ageGroup: "3-4 Years"
+      ageGroup: "3-4 Years",
+      averageRating: 4.8,
+      totalRatings: 16
     },
     {
       id: 4,
@@ -67,7 +81,9 @@ const MumzGuideHer = () => {
       author: "Dr. Lisa Patel",
       category: "Emotional, Mental & Physical wellbeing",
       subcategory: "Postpartum",
-      ageGroup: "New Moms"
+      ageGroup: "New Moms",
+      averageRating: 4.7,
+      totalRatings: 32
     }
   ]);
   
@@ -166,6 +182,69 @@ const MumzGuideHer = () => {
     setSelectedSubcategories({});
     setSearchKeyword('');
   };
+
+  // Render stars based on rating
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<Star key={`full-${i}`} className="h-4 w-4 fill-amber-400 text-amber-400" />);
+    }
+    
+    if (hasHalfStar) {
+      stars.push(<StarHalf key="half" className="h-4 w-4 fill-amber-400 text-amber-400" />);
+    }
+    
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(<Star key={`empty-${i}`} className="h-4 w-4 text-gray-300" />);
+    }
+    
+    return stars;
+  };
+
+  // Handle rating
+  const handleRating = (contentItem: ContentItem, newRating: number) => {
+    if (!user) {
+      setIsJoinModalOpen(true);
+      return;
+    }
+
+    // Update local state with user's rating
+    setAllContent(prevContent => prevContent.map(item => {
+      if (item.id === contentItem.id) {
+        // Calculate new average based on existing ratings + new rating
+        const totalRatings = (item.totalRatings || 0) + (item.userRating ? 0 : 1);
+        const oldRatingSum = (item.averageRating || 0) * (item.totalRatings || 0);
+        const newRatingSum = oldRatingSum - (item.userRating || 0) + newRating;
+        const newAverage = newRatingSum / totalRatings;
+
+        return {
+          ...item,
+          userRating: newRating,
+          averageRating: newAverage,
+          totalRatings
+        };
+      }
+      return item;
+    }));
+
+    // Track this interaction
+    trackContentInteraction({
+      contentId: contentItem.id,
+      contentTitle: contentItem.title,
+      rating: newRating,
+      interactionType: 'rate'
+    });
+
+    toast({
+      title: "Rating submitted",
+      description: `You rated "${contentItem.title}" ${newRating} stars.`,
+      duration: 3000,
+    });
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -245,9 +324,40 @@ const MumzGuideHer = () => {
                           </div>
                           <h3 className="text-lg font-medium my-2">{item.title}</h3>
                           <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-gray-500">By {item.author}</span>
-                            <Button variant="ghost" size="sm" className="text-primary">Read More</Button>
+                          
+                          <div className="flex flex-col space-y-3">
+                            {/* Rating display */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center">
+                                <div className="flex mr-1">
+                                  {renderStars(item.averageRating || 0)}
+                                </div>
+                                <span className="text-xs text-gray-500">
+                                  ({item.totalRatings || 0} {item.totalRatings === 1 ? 'rating' : 'ratings'})
+                                </span>
+                              </div>
+                              <span className="text-xs text-gray-500">By {item.author}</span>
+                            </div>
+                            
+                            {/* User rating buttons */}
+                            <div className="flex items-center justify-between">
+                              <div className="flex space-x-1">
+                                {[1, 2, 3, 4, 5].map((rating) => (
+                                  <button 
+                                    key={rating} 
+                                    onClick={() => handleRating(item, rating)}
+                                    className={`p-1 rounded-full hover:bg-gray-100 ${item.userRating === rating ? 'bg-gray-100' : ''}`}
+                                    aria-label={`Rate ${rating} stars`}
+                                    title={`Rate ${rating} stars`}
+                                  >
+                                    <Star 
+                                      className={`h-5 w-5 ${item.userRating === rating ? 'fill-amber-400 text-amber-400' : 'text-gray-400'}`} 
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                              <Button variant="ghost" size="sm" className="text-primary">Read More</Button>
+                            </div>
                           </div>
                         </div>
                       </div>
