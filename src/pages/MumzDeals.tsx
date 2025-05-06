@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft, Search, Star, StarHalf, ThumbsUp, Calendar, MapPin, Bookmark, Share2 } from 'lucide-react';
+import { ArrowLeft, Search, Star, StarHalf, ThumbsUp, Calendar, MapPin, Bookmark, Share2, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBrands } from '@/hooks/use-brands';
