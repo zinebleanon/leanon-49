@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -6,7 +5,7 @@ import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft, Search, Star, StarHalf, ThumbsUp, Calendar, MapPin, Bookmark, Share2, BookOpen } from 'lucide-react';
+import { ArrowLeft, Search, Star, StarHalf, ThumbsUp, Calendar, MapPin, Bookmark, Share2, BookOpen, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBrands } from '@/hooks/use-brands';
@@ -29,8 +28,8 @@ interface ContentItem {
   averageRating?: number;
   userRating?: number;
   totalRatings?: number;
-  // New fields
-  contentType?: 'article' | 'event' | 'location';
+  // Updated content types
+  contentType?: 'articles/video' | 'event' | 'list';
   eventDate?: string;
   address?: string;
   isSaved?: boolean;
@@ -49,7 +48,7 @@ const MumzGuideHer = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   
-  // Mock content data with events and locations
+  // Mock content data with events and lists (formerly locations)
   const [allContent, setAllContent] = useState<ContentItem[]>([
     {
       id: 1,
@@ -61,7 +60,7 @@ const MumzGuideHer = () => {
       ageGroup: "2-3 Years",
       averageRating: 4.5,
       totalRatings: 28,
-      contentType: "article"
+      contentType: "articles/video"
     },
     {
       id: 2,
@@ -73,7 +72,7 @@ const MumzGuideHer = () => {
       ageGroup: "0-1 Year",
       averageRating: 4.2,
       totalRatings: 45,
-      contentType: "article"
+      contentType: "articles/video"
     },
     {
       id: 3,
@@ -85,7 +84,7 @@ const MumzGuideHer = () => {
       ageGroup: "3-4 Years",
       averageRating: 4.8,
       totalRatings: 16,
-      contentType: "article"
+      contentType: "articles/video"
     },
     {
       id: 4,
@@ -97,7 +96,7 @@ const MumzGuideHer = () => {
       ageGroup: "New Moms",
       averageRating: 4.7,
       totalRatings: 32,
-      contentType: "article"
+      contentType: "articles/video"
     },
     {
       id: 5,
@@ -109,7 +108,7 @@ const MumzGuideHer = () => {
       ageGroup: "0-3 Months",
       averageRating: 4.9,
       totalRatings: 42,
-      contentType: "article"
+      contentType: "articles/video"
     },
     {
       id: 7,
@@ -121,7 +120,7 @@ const MumzGuideHer = () => {
       ageGroup: "1-4 Years",
       averageRating: 4.3,
       totalRatings: 24,
-      contentType: "article"
+      contentType: "articles/video"
     },
     {
       id: 8,
@@ -161,7 +160,7 @@ const MumzGuideHer = () => {
       ageGroup: "1-4 Years",
       averageRating: 4.9,
       totalRatings: 22,
-      contentType: "location",
+      contentType: "list",
       address: "Palm Jumeirah, Dubai"
     },
     {
@@ -174,7 +173,7 @@ const MumzGuideHer = () => {
       ageGroup: "0-5 Years",
       averageRating: 5.0,
       totalRatings: 17,
-      contentType: "location",
+      contentType: "list",
       address: "Dubai Healthcare City, Dubai"
     }
   ]);
@@ -430,9 +429,9 @@ const MumzGuideHer = () => {
   // Content type filter buttons
   const contentTypeFilters = [
     { type: null, label: 'All Types' },
-    { type: 'article', label: 'Articles' },
+    { type: 'articles/video', label: 'Articles/Video' },
     { type: 'event', label: 'Events' },
-    { type: 'location', label: 'Locations' }
+    { type: 'list', label: 'Lists' }
   ];
   
   return (
@@ -494,7 +493,7 @@ const MumzGuideHer = () => {
               <div className="mt-0 bg-card rounded-lg shadow-sm p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-semibold font-playfair">
-                    {selectedCategory || "Featured"} {selectedContentType ? `${selectedContentType.charAt(0).toUpperCase() + selectedContentType.slice(1)}s` : "Expert Content"}
+                    {selectedCategory || "Featured"} {selectedContentType ? `${selectedContentType.charAt(0).toUpperCase() + selectedContentType.slice(1)}` : "Expert Content"}
                   </h2>
                   <span className="text-sm text-muted-foreground">
                     {filteredContent.length} {filteredContent.length === 1 ? 'item' : 'items'}
@@ -524,15 +523,15 @@ const MumzGuideHer = () => {
                                 <Calendar className="h-3 w-3 mr-1" />
                                 Event
                               </Badge>
-                            ) : item.contentType === 'location' ? (
+                            ) : item.contentType === 'list' ? (
                               <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-emerald-200">
-                                <MapPin className="h-3 w-3 mr-1" />
-                                Location
+                                <List className="h-3 w-3 mr-1" />
+                                List
                               </Badge>
                             ) : (
                               <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">
                                 <BookOpen className="h-3 w-3 mr-1" />
-                                Article
+                                Articles/Video
                               </Badge>
                             )}
                           </div>
@@ -542,6 +541,7 @@ const MumzGuideHer = () => {
                             <span className="text-lg font-medium text-primary/60">Content</span>
                           </div>
                         </div>
+                        
                         <div className="p-4">
                           <div className="flex flex-wrap gap-1 mb-2">
                             <span className="text-xs text-orange-500 font-medium">{item.category}</span>
