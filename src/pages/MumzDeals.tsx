@@ -84,6 +84,39 @@ const MumzGuideHer = () => {
       ageGroup: "New Moms",
       averageRating: 4.7,
       totalRatings: 32
+    },
+    {
+      id: 5,
+      title: "Newborn Essentials Checklist",
+      description: "Complete guide to everything you'll need for your newborn's first three months.",
+      author: "Dr. Rachel Green",
+      category: "Kids Essentials Checklist",
+      subcategory: "Newborn Essentials",
+      ageGroup: "0-3 Months",
+      averageRating: 4.9,
+      totalRatings: 42
+    },
+    {
+      id: 6,
+      title: "Top Baby Gear Brands of 2025",
+      description: "Expert reviews and recommendations for the most reliable baby gear brands this year.",
+      author: "Emily Parker",
+      category: "Kids Essentials Checklist",
+      subcategory: "Recommended Brands",
+      ageGroup: "0-3 Years",
+      averageRating: 4.6,
+      totalRatings: 37
+    },
+    {
+      id: 7,
+      title: "Travel Essentials for Toddlers",
+      description: "Must-have items to make traveling with your toddler easier and more enjoyable.",
+      author: "James Wilson",
+      category: "Kids Essentials Checklist",
+      subcategory: "Travel Items",
+      ageGroup: "1-4 Years",
+      averageRating: 4.3,
+      totalRatings: 24
     }
   ]);
   

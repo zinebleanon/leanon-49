@@ -15,7 +15,7 @@ interface ContentInteractionData {
 export const trackContentInteraction = async (interaction: ContentInteractionData) => {
   // Track in user activities table for analytics
   return trackUserActivity({
-    type: 'content_interaction',
+    type: 'content-interaction', // Changed from 'content_interaction' to match ActivityType
     description: `${interaction.interactionType === 'rate' ? 
       `Rated content (${interaction.rating} stars)` : 
       `${interaction.interactionType} content`}: ${interaction.contentTitle}`,

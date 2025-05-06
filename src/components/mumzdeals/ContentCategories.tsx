@@ -1,5 +1,5 @@
 
-import { Activity, Heart, Baby, School, Film } from 'lucide-react';
+import { Activity, Heart, Baby, School, Film, ListCheck } from 'lucide-react';
 import { ReactNode } from 'react';
 
 export interface SubCategory {
@@ -69,6 +69,18 @@ export const contentCategories: Category[] = [
       { name: "Birthdays" },
       { name: "Activities" },
       { name: "Camps" },
+    ]
+  },
+  {
+    name: "Kids Essentials Checklist",
+    color: "#FDE1D3", // Soft Peach
+    icon: <ListCheck className="h-5 w-5 text-green-400" />,
+    subcategories: [
+      { name: "Newborn Essentials" },
+      { name: "Toddler Must-Haves" },
+      { name: "School Supplies" },
+      { name: "Travel Items" },
+      { name: "Recommended Brands" },
     ]
   }
 ];
