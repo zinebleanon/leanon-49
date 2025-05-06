@@ -2,12 +2,14 @@
 import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Calendar } from 'lucide-react';
 import BowIcon from './ui/BowIcon';
+import { cn } from '@/lib/utils';
 
 interface HowToJoinSectionProps {
   onJoinClick: () => void;
+  className?: string;
 }
 
-const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
+const HowToJoinSection = ({ onJoinClick, className }: HowToJoinSectionProps) => {
   const steps = [
     {
       icon: <Mail className="h-5 w-5 md:h-6 md:w-6 text-primary" />,
@@ -32,7 +34,7 @@ const HowToJoinSection = ({ onJoinClick }: HowToJoinSectionProps) => {
   ];
 
   return (
-    <section className="py-10 md:py-16 px-4 md:px-8 bg-background">
+    <section className={cn("py-10 md:py-16 px-4 md:px-8 bg-background", className)}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 font-playfair">
