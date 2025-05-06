@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -5,8 +6,9 @@ import { Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useBrands } from '@/hooks/use-brands';
 import { contentCategories as allContentCategories } from '@/components/mumzdeals/ContentCategories';
 
@@ -26,6 +28,7 @@ const MumzGuideHer = () => {
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategories, setSelectedSubcategories] = useState<Record<string, string[]>>({});
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
   const { brands, isLoading: brandsLoading } = useBrands();
   
   // Mock content data
@@ -79,7 +82,7 @@ const MumzGuideHer = () => {
   }, []);
 
   useEffect(() => {
-    // Filter content based on selected category and subcategories
+    // Filter content based on selected category, subcategories, and search keyword
     let filtered = [...allContent];
     
     // If we have a selected category, filter by it
@@ -97,9 +100,20 @@ const MumzGuideHer = () => {
         return selectedSubcategories[item.category].includes(item.subcategory);
       });
     }
+
+    // Filter by search keyword if present
+    if (searchKeyword.trim()) {
+      const keyword = searchKeyword.toLowerCase();
+      filtered = filtered.filter(item => 
+        item.title.toLowerCase().includes(keyword) || 
+        item.description.toLowerCase().includes(keyword) || 
+        item.author.toLowerCase().includes(keyword) ||
+        item.ageGroup.toLowerCase().includes(keyword)
+      );
+    }
     
     setFilteredContent(filtered);
-  }, [selectedCategory, selectedSubcategories, allContent]);
+  }, [selectedCategory, selectedSubcategories, searchKeyword, allContent]);
 
   if (isLoading || brandsLoading) {
     return <LoadingSpinner />;
@@ -140,6 +154,18 @@ const MumzGuideHer = () => {
       return updatedSubcategories;
     });
   };
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSelectedCategory(null);
+    setSelectedSubcategories({});
+    setSearchKeyword('');
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -156,6 +182,18 @@ const MumzGuideHer = () => {
           
           <div className="grid md:grid-cols-3 gap-8 mt-8">
             <div className="md:col-span-1">
+              <div className="mb-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input 
+                    type="search"
+                    placeholder="Search by keyword..."
+                    className="pl-10"
+                    value={searchKeyword}
+                    onChange={handleSearchChange}
+                  />
+                </div>
+              </div>
               <CategorySection 
                 activeTab="content"
                 contentCategories={contentCategoryNames}
@@ -182,10 +220,7 @@ const MumzGuideHer = () => {
                     <Button 
                       variant="outline" 
                       className="mt-4"
-                      onClick={() => {
-                        setSelectedCategory(null);
-                        setSelectedSubcategories({});
-                      }}
+                      onClick={clearAllFilters}
                     >
                       Clear all filters
                     </Button>
