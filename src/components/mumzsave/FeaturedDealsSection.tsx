@@ -1,8 +1,7 @@
-
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingBag, Gift, Package, DollarSign, BookOpen, Heart, School, Users, Baby, Film } from 'lucide-react';
+import { ShoppingBag, Gift, Package, DollarSign, BookOpen, Heart, School, Users, Baby, Film, Calendar } from 'lucide-react';
 
 interface DealItem {
   title: string;
@@ -97,7 +96,7 @@ const FeaturedDealsSection = ({
         <div className="flex justify-between items-center mb-8">
           <h2 id="featured-deals" className="text-3xl font-semibold font-playfair">
             {activeTab === 'deals' ? 'Featured Deals' : 
-             activeTab === 'content' ? 'Featured Expert Content' : 'Featured Items'}
+             activeTab === 'content' ? 'Events this Month' : 'Featured Items'}
           </h2>
           <Button variant="ghost" className="rounded-full">View All</Button>
         </div>
