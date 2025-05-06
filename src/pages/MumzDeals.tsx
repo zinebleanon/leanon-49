@@ -41,9 +41,13 @@ const MumzGuideHer = () => {
     return <LoadingSpinner />;
   }
   
+  // Updated content categories based on the provided image
   const contentCategories = [
-    "Newborns", "Toddlers", "Preschoolers", "School-Age", "Tweens", 
-    "Nutrition", "Health", "Education", "Development", "Self-Care"
+    "Health Care & Professional support",
+    "Emotional, Mental & Physical wellbeing",
+    "Parenting Guidance",
+    "Childcare & Schooling",
+    "Kids Entertainment"
   ];
   
   return (
@@ -87,7 +91,7 @@ const MumzGuideHer = () => {
                   <BookOpen className="h-12 w-12 text-gray-400" />
                 </div>
                 <div className="p-4">
-                  <span className="text-xs text-orange-500 font-medium">Development • 2-3 Years</span>
+                  <span className="text-xs text-orange-500 font-medium">Parenting Guidance • 2-3 Years</span>
                   <h3 className="text-lg font-medium my-2">Understanding Your Toddler's Emotional Development</h3>
                   <p className="text-sm text-muted-foreground mb-3">Expert tips to help navigate the emotional rollercoaster of toddlerhood with patience and understanding.</p>
                   <div className="flex items-center justify-between">
