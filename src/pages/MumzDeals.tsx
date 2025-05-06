@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -95,17 +94,6 @@ const MumzGuideHer = () => {
       ageGroup: "0-3 Months",
       averageRating: 4.9,
       totalRatings: 42
-    },
-    {
-      id: 6,
-      title: "Top Baby Gear Brands of 2025",
-      description: "Expert reviews and recommendations for the most reliable baby gear brands this year.",
-      author: "Emily Parker",
-      category: "Kids Essentials Checklist",
-      subcategory: "Recommended Brands",
-      ageGroup: "0-3 Years",
-      averageRating: 4.6,
-      totalRatings: 37
     },
     {
       id: 7,

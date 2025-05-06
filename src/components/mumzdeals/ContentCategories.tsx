@@ -80,7 +80,6 @@ export const contentCategories: Category[] = [
       { name: "Toddler Must-Haves" },
       { name: "School Supplies" },
       { name: "Travel Items" },
-      { name: "Recommended Brands" },
     ]
   }
 ];
