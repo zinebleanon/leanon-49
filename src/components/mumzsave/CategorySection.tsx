@@ -3,34 +3,49 @@ import { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { Activity, Heart, Baby, School, Film } from 'lucide-react';
+import { Activity, Heart, Baby, School, Film, ChevronDown, ChevronUp } from 'lucide-react';
+import { contentCategories } from '@/components/mumzdeals/ContentCategories';
+import { Badge } from '@/components/ui/badge';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 interface CategorySectionProps {
   activeTab: string; // 'deals' or 'marketplace' or 'content'
   dealCategories?: string[];
   marketplaceCategories?: string[];
   contentCategories?: string[];
+  onCategorySelect?: (category: string, index: number) => void;
+  onSubcategorySelect?: (category: string, subcategory: string, checked: boolean) => void;
+  selectedSubcategories?: Record<string, string[]>;
 }
 
 const CategorySection = ({ 
   activeTab, 
   dealCategories = [], 
   marketplaceCategories = [],
-  contentCategories = []
+  contentCategories: propContentCategories = [],
+  onCategorySelect,
+  onSubcategorySelect,
+  selectedSubcategories = {}
 }: CategorySectionProps) => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   // Determine which categories to display based on the active tab
   let categories = dealCategories;
   if (activeTab === 'marketplace') {
     categories = marketplaceCategories;
   } else if (activeTab === 'content') {
-    categories = contentCategories;
+    categories = propContentCategories;
   }
 
   const handleCategorySelect = (index: number) => {
     setSelectedCategory(index);
+    if (onCategorySelect && categories[index]) {
+      onCategorySelect(categories[index], index);
+    }
   };
   
   if (categories.length === 0) return null;
@@ -70,31 +85,108 @@ const CategorySection = ({
     return colors[index % colors.length];
   };
 
+  const toggleCategoryExpansion = (category: string) => {
+    if (expandedCategory === category) {
+      setExpandedCategory(null);
+    } else {
+      setExpandedCategory(category);
+    }
+  };
+
+  // Find the corresponding content category object
+  const findContentCategory = (categoryName: string) => {
+    return contentCategories.find(cat => cat.name === categoryName);
+  };
+
+  // Check if subcategory is selected
+  const isSubcategorySelected = (category: string, subcategory: string): boolean => {
+    return selectedSubcategories[category]?.includes(subcategory) || false;
+  };
+
+  // Handle subcategory selection
+  const handleSubcategoryChange = (category: string, subcategory: string, checked: boolean) => {
+    if (onSubcategorySelect) {
+      onSubcategorySelect(category, subcategory, checked);
+    }
+  };
+
+  // Calculate how many filters are applied per category
+  const getActiveFiltersCount = (category: string): number => {
+    return selectedSubcategories[category]?.length || 0;
+  };
+
   return (
     <section className="bg-card p-6 rounded-lg shadow-sm">
       <h2 className="text-xl font-semibold mb-4 font-playfair">
         {activeTab === 'deals' && 'Browse by Category'}
         {activeTab === 'marketplace' && 'Shop by Category'}
-        {activeTab === 'content' && 'Browse Content by Topic'}
+        {activeTab === 'content' && 'Filter by Topic'}
       </h2>
       
       <div className="flex flex-col gap-2">
-        {categories.map((category, index) => (
-          <button
-            key={index}
-            onClick={() => handleCategorySelect(index)}
-            className={cn(
-              "py-3 px-4 rounded-md text-sm font-medium transition-colors w-full text-left flex items-center gap-3",
-              selectedCategory === index 
-                ? "ring-2 ring-primary" 
-                : "",
-              getCategoryColor(category, index)
-            )}
-          >
-            {getCategoryIcon(index)}
-            <span>{category}</span>
-          </button>
-        ))}
+        {categories.map((category, index) => {
+          const contentCategory = activeTab === 'content' ? findContentCategory(category) : null;
+          const activeFiltersCount = getActiveFiltersCount(category);
+          
+          return (
+            <div key={index} className="rounded-md overflow-hidden border border-transparent">
+              <button
+                className={cn(
+                  "py-3 px-4 rounded-t-md text-sm font-medium transition-colors w-full text-left flex items-center gap-3",
+                  selectedCategory === index ? "ring-2 ring-primary" : "",
+                  getCategoryColor(category, index)
+                )}
+                onClick={() => {
+                  handleCategorySelect(index);
+                  if (contentCategory) {
+                    toggleCategoryExpansion(category);
+                  }
+                }}
+              >
+                {getCategoryIcon(index)}
+                <div className="flex flex-1 justify-between items-center">
+                  <span>{category}</span>
+                  {activeFiltersCount > 0 && (
+                    <Badge variant="outline" className="ml-2 bg-white/50 text-xs">
+                      {activeFiltersCount}
+                    </Badge>
+                  )}
+                </div>
+                {contentCategory && (
+                  <div className="ml-auto">
+                    {expandedCategory === category ? (
+                      <ChevronUp className="h-4 w-4 text-gray-500" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 text-gray-500" />
+                    )}
+                  </div>
+                )}
+              </button>
+              
+              {contentCategory && expandedCategory === category && (
+                <div className="pl-12 pr-4 py-2 space-y-2 bg-white border-t border-gray-100">
+                  {contentCategory.subcategories.map((subcategory, subIndex) => (
+                    <div key={subIndex} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={`${category}-${subcategory.name}`}
+                        checked={isSubcategorySelected(category, subcategory.name)}
+                        onCheckedChange={(checked) => 
+                          handleSubcategoryChange(category, subcategory.name, checked === true)
+                        }
+                      />
+                      <Label 
+                        htmlFor={`${category}-${subcategory.name}`}
+                        className="text-xs cursor-pointer"
+                      >
+                        {subcategory.name}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
