@@ -15,7 +15,7 @@ interface ContentInteractionData {
 export const trackContentInteraction = async (interaction: ContentInteractionData) => {
   // Track in user activities table for analytics
   return trackUserActivity({
-    type: 'content_interaction', // Removed type assertion to fix the error
+    type: 'content_interaction', // Using the correct type to fix the error
     description: `${interaction.interactionType === 'rate' ? 
       `Rated content (${interaction.rating} stars)` : 
       `${interaction.interactionType} content`}: ${interaction.contentTitle}`,

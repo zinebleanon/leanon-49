@@ -29,7 +29,7 @@ interface ContentItem {
   userRating?: number;
   totalRatings?: number;
   // Updated content types
-  contentType?: 'articles/video' | 'event' | 'list';
+  contentType?: 'articles/video' | 'event' | 'curated list';
   eventDate?: string;
   address?: string;
   isSaved?: boolean;
@@ -160,7 +160,7 @@ const MumzGuideHer = () => {
       ageGroup: "1-4 Years",
       averageRating: 4.9,
       totalRatings: 22,
-      contentType: "list",
+      contentType: "curated list",
       address: "Palm Jumeirah, Dubai"
     },
     {
@@ -173,7 +173,7 @@ const MumzGuideHer = () => {
       ageGroup: "0-5 Years",
       averageRating: 5.0,
       totalRatings: 17,
-      contentType: "list",
+      contentType: "curated list",
       address: "Dubai Healthcare City, Dubai"
     }
   ]);
@@ -431,7 +431,7 @@ const MumzGuideHer = () => {
     { type: null, label: 'All Types' },
     { type: 'articles/video', label: 'Articles/Video' },
     { type: 'event', label: 'Events' },
-    { type: 'list', label: 'Lists' }
+    { type: 'curated list', label: 'Curated Lists' }
   ];
   
   return (
@@ -523,10 +523,10 @@ const MumzGuideHer = () => {
                                 <Calendar className="h-3 w-3 mr-1" />
                                 Event
                               </Badge>
-                            ) : item.contentType === 'list' ? (
+                            ) : item.contentType === 'curated list' ? (
                               <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-emerald-200">
                                 <List className="h-3 w-3 mr-1" />
-                                List
+                                Curated List
                               </Badge>
                             ) : (
                               <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">
