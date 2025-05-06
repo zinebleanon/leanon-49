@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { Activity, Heart, Baby, School, Film, ChevronDown, ChevronUp } from 'lucide-react';
+import { Activity, Heart, Baby, School, Film, ChevronDown, ChevronUp, ListCheck } from 'lucide-react';
 import { contentCategories } from '@/components/mumzdeals/ContentCategories';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -65,6 +65,8 @@ const CategorySection = ({
         return <School className="h-5 w-5 text-yellow-400" />;
       case 4:
         return <Film className="h-5 w-5 text-amber-400" />;
+      case 5:
+        return <ListCheck className="h-5 w-5 text-green-400" />;
       default:
         return <Activity className="h-5 w-5 text-rose-400" />;
     }
@@ -80,6 +82,7 @@ const CategorySection = ({
       'bg-[#F9D9FF] hover:bg-[#F9D9FF]/80 text-foreground', // Light Pink for Parenting Guidance
       'bg-[#FFFF8F] hover:bg-[#FFFF8F]/80 text-foreground', // Yellow for Childcare & Schooling
       'bg-[#FFD700] hover:bg-[#FFD700]/80 text-foreground', // Gold yellow for Kids Entertainment
+      'bg-[#FDE1D3] hover:bg-[#FDE1D3]/80 text-foreground', // Soft Peach for Kids Essentials Checklist
     ];
     
     return colors[index % colors.length];
