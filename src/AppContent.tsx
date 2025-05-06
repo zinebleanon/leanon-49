@@ -13,7 +13,7 @@ import MumzMarketplaceFind from "./pages/MumzMarketplaceFind";
 import MumzAllySubscribe from "./pages/MumzAllySubscribe";
 import MumzShoppingHub from "./pages/MumzShoppingHub";
 import MumzSelect from "./pages/MumzSelect";
-import MumzDeals from "./pages/MumzDeals";
+import MumzGuideHer from "./pages/MumzDeals";
 import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
 import AdminNotifications from "./pages/AdminNotifications";
@@ -90,7 +90,8 @@ const AppContent = () => {
       </Route>
       <Route path="/marketplace/sell" element={<ProtectedRoute><MumzMarketplaceSell /></ProtectedRoute>} />
       <Route path="/marketplace/find" element={<ProtectedRoute><MumzMarketplaceFind /></ProtectedRoute>} />
-      <Route path="/deals" element={<ProtectedRoute><MumzDeals /></ProtectedRoute>} />
+      <Route path="/guide-her" element={<ProtectedRoute><MumzGuideHer /></ProtectedRoute>} />
+      <Route path="/deals" element={<Navigate to="/guide-her" replace />} />
       <Route path="/brands" element={<ProtectedRoute><MumzBrands /></ProtectedRoute>} />
       
       {/* Catch-all Route */}

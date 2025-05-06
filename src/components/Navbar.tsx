@@ -1,8 +1,7 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Home, HelpCircle, Tag, ShoppingBag, Mail, Bell, Menu, Users, User, LogOut } from 'lucide-react';
+import { Home, HelpCircle, BookOpen, ShoppingBag, Mail, Bell, Menu, Users, User, LogOut } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import JoinCommunityModal from './JoinCommunityModal';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -104,7 +103,7 @@ const Navbar = () => {
       description: 'LeanOn Moms around you, in the same neighborhood, with same age kids' 
     },
     { name: 'Ask', icon: <HelpCircle className="h-5 w-5" />, path: '/ask' },
-    { name: 'Deals', icon: <Tag className="h-5 w-5" />, path: '/brands' },
+    { name: 'Guide Her', icon: <BookOpen className="h-5 w-5" />, path: '/guide-her' },
     { name: 'Preloved', icon: <ShoppingBag className="h-5 w-5" />, path: '/marketplace' },
   ];
 
@@ -121,10 +120,9 @@ const Navbar = () => {
   };
   
   const isPathActive = (path: string) => {
-    if (path === '/brands') {
+    if (path === '/guide-her') {
       return location.pathname === path || 
-             location.pathname === '/save' || 
-             location.pathname.startsWith('/select/');
+             location.pathname === '/deals';
     }
     if (path === '/marketplace') {
       return location.pathname === path || 

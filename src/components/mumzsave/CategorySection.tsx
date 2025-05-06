@@ -1,64 +1,64 @@
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { Tag, ShoppingBag, Store } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Tab } from '@headlessui/react';
+import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface CategorySectionProps {
-  activeTab: 'deals' | 'marketplace';
-  dealCategories: string[];
-  marketplaceCategories: string[];
+  activeTab: string; // 'deals' or 'marketplace' or 'content'
+  dealCategories?: string[];
+  marketplaceCategories?: string[];
+  contentCategories?: string[];
 }
 
-const CategorySection = ({ activeTab, dealCategories, marketplaceCategories }: CategorySectionProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const isMobile = useIsMobile();
-  
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(selectedCategory === category ? null : category);
+const CategorySection = ({ 
+  activeTab, 
+  dealCategories = [], 
+  marketplaceCategories = [],
+  contentCategories = []
+}: CategorySectionProps) => {
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState(0);
+
+  // Determine which categories to display based on the active tab
+  let categories = dealCategories;
+  if (activeTab === 'marketplace') {
+    categories = marketplaceCategories;
+  } else if (activeTab === 'content') {
+    categories = contentCategories;
+  }
+
+  const handleCategorySelect = (index: number) => {
+    setSelectedCategory(index);
   };
   
-  const categories = activeTab === 'deals' ? dealCategories : marketplaceCategories;
-  
+  if (categories.length === 0) return null;
+
   return (
-    <section className="py-6 px-4 md:px-8" id="categories">
+    <section className="py-8 px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-wrap items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Browse Categories</h2>
-          
-          <div className="flex space-x-2 mt-2 sm:mt-0">
-            <Button variant="outline" size="sm" asChild className="text-sm">
-              <Link to="/brands">
-                <Tag className="mr-1 h-4 w-4" />
-                All Brands
-              </Link>
-            </Button>
-            <Button variant="outline" size="sm" asChild className="text-sm">
-              <Link to="/brands">
-                <Store className="mr-1 h-4 w-4" />
-                All Brands
-              </Link>
-            </Button>
-          </div>
-        </div>
+        <h2 className="text-2xl font-semibold mb-6 font-playfair">
+          {activeTab === 'deals' && 'Browse by Category'}
+          {activeTab === 'marketplace' && 'Shop by Category'}
+          {activeTab === 'content' && 'Browse Content by Topic'}
+        </h2>
         
-        <ScrollArea className="w-full pb-2" type="scroll">
-          <div className="flex flex-nowrap gap-2 pb-2 overflow-x-auto">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategoryClick(category)}
-                className="rounded-full text-sm bg-[#B8CEC2] hover:bg-[#B8CEC2]/90 border-[#B8CEC2]/30 whitespace-nowrap flex-shrink-0"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </ScrollArea>
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          {categories.map((category, index) => (
+            <button
+              key={index}
+              onClick={() => handleCategorySelect(index)}
+              className={cn(
+                "py-2 px-4 rounded-full text-sm font-medium transition-colors whitespace-nowrap",
+                selectedCategory === index 
+                  ? "bg-primary text-primary-foreground" 
+                  : "bg-accent text-accent-foreground hover:bg-accent/60"
+              )}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );
