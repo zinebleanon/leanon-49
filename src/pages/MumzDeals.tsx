@@ -2,23 +2,18 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import HowToJoinSection from '@/components/HowToJoinSection';
 import { useNavigate, Link } from 'react-router-dom';
 import JoinCommunityModal from '@/components/JoinCommunityModal';
 import LoadingSpinner from '@/components/mumzsave/LoadingSpinner';
 import CategorySection from '@/components/mumzsave/CategorySection';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import DealsHowItWorksDialog from '@/components/mumzdeals/DealsHowItWorksDialog';
-import GuideHerHero from '@/components/mumzdeals/DealsHero';
-import UnlockDiscountDialog from '@/components/mumzbrands/UnlockDiscountDialog';
 import { useBrands } from '@/hooks/use-brands';
 import SelectHero from '@/components/mumzdeals/SelectHero';
 
 const MumzGuideHer = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const [isContentDialogOpen, setIsContentDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { brands, isLoading: brandsLoading } = useBrands();
   
@@ -29,14 +24,6 @@ const MumzGuideHer = () => {
     
     return () => clearTimeout(timer);
   }, []);
-
-  const handleJoinButtonClick = () => {
-    setIsJoinModalOpen(true);
-  };
-
-  const handleOpenContentDialog = () => {
-    setIsContentDialogOpen(true);
-  };
 
   if (isLoading || brandsLoading) {
     return <LoadingSpinner />;
@@ -64,8 +51,6 @@ const MumzGuideHer = () => {
             </Link>
           </Button>
           
-          <GuideHerHero onOpenContentDialog={handleOpenContentDialog} />
-          
           <div className="grid md:grid-cols-3 gap-8 mt-8">
             <div className="md:col-span-1">
               <CategorySection 
@@ -75,15 +60,16 @@ const MumzGuideHer = () => {
             </div>
             
             <div className="md:col-span-2">
-              <SelectHero />
-              
-              <div className="mt-8 bg-card rounded-lg shadow-sm p-6">
+              <div className="mt-0 bg-card rounded-lg shadow-sm p-6">
                 <h2 className="text-2xl font-semibold mb-6 font-playfair">Featured Expert Content</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                   {[1, 2, 3, 4].map((item) => (
                     <div key={item} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white/70">
                       <div className="h-48 bg-accent/20 flex items-center justify-center">
-                        <BookOpen className="h-12 w-12 text-primary/60" />
+                        {/* Placeholder for content images */}
+                        <div className="h-12 w-12 text-primary/60 flex items-center justify-center">
+                          <span className="text-lg font-medium text-primary/60">Content</span>
+                        </div>
                       </div>
                       <div className="p-4">
                         <span className="text-xs text-orange-500 font-medium">Parenting Guidance • 2-3 Years</span>
@@ -100,17 +86,7 @@ const MumzGuideHer = () => {
               </div>
             </div>
           </div>
-          
-          <HowToJoinSection onJoinClick={handleJoinButtonClick} className="mt-12" />
         </div>
-        
-        {/* Content Dialog */}
-        <UnlockDiscountDialog
-          isOpen={isContentDialogOpen}
-          onClose={() => setIsContentDialogOpen(false)}
-          brands={brands}
-          onBrandSelect={(brand) => console.log('Selected content:', brand)}
-        />
       </main>
       
       <Footer />
